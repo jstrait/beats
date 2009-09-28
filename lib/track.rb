@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'wavefile'
+#gem 'jstrait-wavefile', '= 0.3.0'
 
 class Track
   REST = "."
@@ -8,10 +9,12 @@ class Track
   def initialize(file_name, pattern)
     begin
       @wavefile = WaveFile.open(file_name)
+      @wavefile.num_channels = :stereo
+      @wavefile.bits_per_sample = 16
     rescue => detail
       puts detail.backtrace
-      puts "ERRROR!"
-      raise StandardError, "File #{file_name} can't be found."
+      puts "ERROR!"
+      raise StandardError, "Error opening #{file_name}."
     end
     
     @name = File.basename(file_name, ".wav")
@@ -65,7 +68,7 @@ class Track
     full_sample_length = sample_length_with_overflow(tick_sample_length)
     
     if(@sample_data == nil)
-      output_data = [].fill(0.0, 0, full_sample_length)
+      output_data = [].fill([0.0, 0.0], 0, full_sample_length)
       
       if(full_sample_length > 0)
         remainder = 0.0

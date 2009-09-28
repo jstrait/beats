@@ -58,7 +58,7 @@ class Song
           
           pattern_sample_data[:primary].keys.each {|track_name|
             if(output_data[track_name] == nil)
-              output_data[track_name] = [].fill(0.0, 0, sample_length_with_overflow())
+              output_data[track_name] = [].fill([0.0, 0.0], 0, sample_length_with_overflow())
             end
 
             output_data[track_name][offset...(offset + pattern_sample_length)] = pattern_sample_data[:primary][track_name]
@@ -81,7 +81,7 @@ class Song
 
         return output_data
       else
-        output_data = [].fill(0.0, 0, self.sample_length_with_overflow)
+        output_data = [].fill([0.0, 0.0], 0, self.sample_length_with_overflow)
 
         offset = 0
         overflow = {}
@@ -97,6 +97,7 @@ class Song
         output_data[offset...output_data.length] = merge_overflow(overflow, num_tracks_in_song)
 
         puts "Final # samples: #{output_data.length}"
+        puts "Final: #{output_data[0]}"
 
         return output_data
       end
@@ -115,14 +116,14 @@ class Song
         pattern_sample_data[:primary].keys.each {|track_name|
           overflow_sample_length = pattern_sample_data[:overflow][track_name].length
           full_sample_length = pattern_sample_length + overflow_sample_length
-          output_data[track_name] = [].fill(0.0, 0, full_sample_length)
+          output_data[track_name] = [].fill([0.0, 0.0], 0, full_sample_length)
           output_data[track_name][0...pattern_sample_length] = pattern_sample_data[:primary][track_name]
           output_data[track_name][pattern_sample_length...full_sample_length] = pattern_sample_data[:overflow][track_name]
         }
         
         return output_data
       else      
-        output_data = [].fill(0.0, 0, pattern.sample_length_with_overflow(@tick_sample_length))
+        output_data = [].fill([0.0, 0.0], 0, pattern.sample_length_with_overflow(@tick_sample_length))
         sample_data = pattern.sample_data(tick_sample_length, num_tracks_in_song, {}, false)
         output_data[0...primary_sample_length] = sample_data[:primary]
         output_data[primary_sample_length...output_data.length] = merge_overflow(sample_data[:overflow], num_tracks_in_song)

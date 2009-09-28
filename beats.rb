@@ -53,7 +53,7 @@ def parse_options
 end
 
 def save_wave_file(file_name, sample_data)
-  output = WaveFile.new(:mono, 44100, 16)
+  output = WaveFile.new(:stereo, 44100, 16)
   
   conversion_start = Time.now
   output.sample_data = sample_data

@@ -45,12 +45,17 @@ private
     num_tracks_in_pattern = track_names.length
     
     if(num_tracks_in_pattern > 0)
-      primary_sample_data = [].fill(0.0, 0, actual_sample_length)
-      
+      primary_sample_data = [].fill([0.0, 0.0], 0, actual_sample_length)
+
       track_names.each {|track_name|
         temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
         
-        (0...temp[:primary].length).each {|i| primary_sample_data[i] += temp[:primary][i]}
+        track_samples = temp[:primary]
+        (0...track_samples.length).each {|i|
+          primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
+                                    primary_sample_data[i][1] + track_samples[i][1]]
+        }
+        
         overflow_sample_data[track_name] = temp[:overflow]
       }
     end
@@ -60,11 +65,12 @@ private
     incoming_overflow.keys.each {|track_name|
       if(!track_names.member?(track_name) && incoming_overflow[track_name].length > 0)
         puts "Overflow for non-included track! #{track_name}"
-        (0...incoming_overflow[track_name].length).each {|i| primary_sample_data[i] += incoming_overflow[track_name][i] }
+        (0...incoming_overflow[track_name].length).each {|i| primary_sample_data[i][0] += incoming_overflow[track_name][i][0]
+                                                             primary_sample_data[i][1] += incoming_overflow[track_name][i][1]}
       end
     }
     
-    primary_sample_data.map! {|sample| sample / num_tracks_in_song }
+    primary_sample_data.map! {|sample| [sample[0] / num_tracks_in_song, sample[1] / num_tracks_in_song] }
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
@@ -83,7 +89,7 @@ private
       if(@tracks[track_name] == nil)
         # TO DO: Add check for when incoming overflow is longer than
         # track full length to prevent track from lengthening.
-        primary_sample_data[track_name] = [].fill(0.0, 0, sample_length(tick_sample_length))
+        primary_sample_data[track_name] = [].fill([0.0, 0.0], 0, sample_length(tick_sample_length))
         primary_sample_data[track_name][0...incoming_overflow[track_name].length] = incoming_overflow[track_name]
         overflow_sample_data[track_name] = []
       end
