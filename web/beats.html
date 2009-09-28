@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Beats Drum Machine</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="description" content="A drum machine written in Ruby." />
+	<meta name="keywords" content="" />
+	<link rel="stylesheet" type="text/css" media="all" href="beats.css" />
+	<link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+	<div class="content-box">
+		<h1>BEATS</h1>
+		<p>is a drum machine written in pure Ruby. Feed it a song notated in YAML, and it will generate a Wave file possessing impeccable timing and feel. Here is an example song:</p>
+		<p><pre><code>Song:
+  Tempo: 120
+  Structure:
+    - Verse:   x2
+    - Chorus:  x2
+    - Verse:   x2
+    - Chorus:  x4
+
+Verse:
+  bass.wav:    X...X...X...XX..X...X...XX..X...
+  snare.wav:   ..X...X...X...X.X...X...X...X...
+  hihat.wav:   X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+  cymbal.wav:  X...............X..............X
+
+Chorus:
+  bass.wav:    X...X...XXXXXXXXX...X...X...X...
+  snare.wav:   ...................X...X...X...X
+  hihat.wav:   X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX.
+  cymbal.wav:  ........X.......X.......X......X
+  sine.wav:    ....X...................X......X</pre></code></p>
+		<p class="last">And here is what it sounds like after getting the Beats treatment: <a href="#">beat.wav</a></p>
+	</div>
+	<div class="content-box">
+		<h2>Installation and Usage</h2>
+		<p>Here are instructions for installation and usage.</p>
+	</div>
+	<div class="content-box">
+		<h2>Creating Songs</h2>
+		<p>Songs are notated using <a href="#">YAML</a>, so each song file is just a plain text file.</p>
+		<p>Each song is divided into one or more patterns. A pattern represents a section of the song, such as a verse, chorus, or bridge. Each pattern in turn has one or more tracks. Each track represents an individual sound, such as a bass drum, snare, hi-hat, etc.</p>
+		<p>Songs should start with a header indicating the tempo and the order that the patterns should be played. Patterns can optionally be repeated one or more times. For example, adding "x2" after the pattern name means to play it twice. Since this is YAML, lines must be indented correctly. Also, each pattern in the structure should be preceded by a dash. Here is an example header:</p>
+		<p><pre><code>Song:
+  Tempo: 120
+  Structure:
+    - Verse
+    - Chorus: x2
+    - Verse:  x3
+    - Chorus: x4
+    - Verse:  x2</code></pre></p>
+		<p>One or more patterns should follow the header. (If there are no patterns, there is nothing to play!) Each pattern definition starts with the pattern name, followed by the specification for each track on separate lines.</p>
+		<p><pre><code>Verse:
+  bass.wav:    X...X...X...XX..X...X...XX..X...
+  snare.wav:   ..X...X...X...X.X...X...X...X...
+  hihat.wav:   X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+  cymbal.wav:  X...............X..............X</code></pre></p>
+		<p>Each track line starts with the sound file to use (only Wave files are supported), followed by the rhythm. Once again, lines must be indented properly. You can use any Wave file you have on your computer as a sound. If the Wave file is not in the current working directory, be sure to include the full path.</p>
+		<p>In the rhythm, an <code>X</code> indicates that the sound should be triggered, and a <code>.</code> indicates a "rest" between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
+		<p>As a final note, patterns and the song header can come in any order. If you want to include the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
+	</div>
+	<div class="content-box">
+		<h2>Where To Find Drum Sounds</h2>
+		<p>Here are some links! To do!</p>
+	</div>
+	<div id="about" class="content-box">
+		<p>Copyright &copy; 2009 <a href="#">Joel Strait</a></p>
+	</div>
+</body>
+</html>
