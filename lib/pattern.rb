@@ -45,7 +45,7 @@ private
     num_tracks_in_pattern = track_names.length
     
     if(num_tracks_in_pattern > 0)
-      primary_sample_data = [].fill([0.0, 0.0], 0, actual_sample_length)
+      primary_sample_data = [].fill([0, 0], 0, actual_sample_length)
 
       track_names.each {|track_name|
         temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
@@ -70,7 +70,7 @@ private
       end
     }
     
-    primary_sample_data.map! {|sample| [sample[0] / num_tracks_in_song, sample[1] / num_tracks_in_song] }
+    primary_sample_data.map! {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round] }
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
@@ -89,7 +89,7 @@ private
       if(@tracks[track_name] == nil)
         # TO DO: Add check for when incoming overflow is longer than
         # track full length to prevent track from lengthening.
-        primary_sample_data[track_name] = [].fill([0.0, 0.0], 0, sample_length(tick_sample_length))
+        primary_sample_data[track_name] = [].fill([0, 0], 0, sample_length(tick_sample_length))
         primary_sample_data[track_name][0...incoming_overflow[track_name].length] = incoming_overflow[track_name]
         overflow_sample_data[track_name] = []
       end

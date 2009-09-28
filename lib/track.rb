@@ -68,11 +68,11 @@ class Track
     full_sample_length = sample_length_with_overflow(tick_sample_length)
     
     if(@sample_data == nil)
-      output_data = [].fill([0.0, 0.0], 0, full_sample_length)
+      output_data = [].fill([0, 0], 0, full_sample_length)
       
       if(full_sample_length > 0)
         remainder = 0.0
-        wave_data = @wavefile.normalized_sample_data
+        wave_data = wavefile.sample_data
 
         offset = @beats[0] * tick_sample_length
         remainder += (@beats[0] * tick_sample_length) - (@beats[0] * tick_sample_length).floor
