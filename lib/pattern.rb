@@ -2,6 +2,7 @@ class Pattern
   def initialize(name)
     @name = name
     @tracks = {}
+    @sample_data = nil
   end
   
   def track(file_name, pattern)
@@ -37,27 +38,33 @@ class Pattern
 private
 
   def combined_sample_data(tick_sample_length, num_tracks_in_song, incoming_overflow)
-    primary_sample_data = []
-    overflow_sample_data = {}
-    actual_sample_length = sample_length(tick_sample_length)
-    
     track_names = @tracks.keys
-    num_tracks_in_pattern = track_names.length
     
-    if(num_tracks_in_pattern > 0)
-      primary_sample_data = [].fill([0, 0], 0, actual_sample_length)
+    if @sample_data == nil
+      primary_sample_data = []
+      overflow_sample_data = {}
+      actual_sample_length = sample_length(tick_sample_length)
+    
+      if(track_names.length > 0)
+        primary_sample_data = [].fill([0, 0], 0, actual_sample_length)
 
-      track_names.each {|track_name|
-        temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
+        track_names.each {|track_name|
+          temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
         
-        track_samples = temp[:primary]
-        (0...track_samples.length).each {|i|
-          primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
-                                    primary_sample_data[i][1] + track_samples[i][1]]
+          track_samples = temp[:primary]
+          (0...track_samples.length).each {|i|
+            primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
+                                      primary_sample_data[i][1] + track_samples[i][1]]
+          }
+        
+          overflow_sample_data[track_name] = temp[:overflow]
         }
-        
-        overflow_sample_data[track_name] = temp[:overflow]
-      }
+      end
+      
+      @sample_data = {:primary => primary_sample_data, :overflow => overflow_sample_data}
+    else
+      primary_sample_data = @sample_data[:primary]
+      overflow_sample_data = @sample_data[:overflow]
     end
     
     # Add samples for tracks with overflow from previous pattern, but not
@@ -70,7 +77,7 @@ private
       end
     }
     
-    primary_sample_data.map! {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round] }
+    primary_sample_data = primary_sample_data.map {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round] }
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
