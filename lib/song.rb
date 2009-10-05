@@ -6,6 +6,7 @@ class Song
 
   def initialize(definition = nil)
     self.tempo = 120
+    @kit = Kit.new()
     @patterns = {}
     @structure = []
 
@@ -39,11 +40,11 @@ class Song
   end
 
   def sample_data(pattern_name, split)
-    puts "TICK SAMPLE LENGTH: #{@tick_sample_length}"
     num_tracks_in_song = self.total_tracks()
+    fill_value = (@kit.num_channels == 1) ? 0 : [].fill(0, 0, @kit.num_channels)
 
     if(pattern_name == "")
-      puts "TOTAL SAMPLE LENGTH: #{sample_length()}"
+      puts "Total samples: #{sample_length()}"
       
       if(split)
         output_data = {}
@@ -51,14 +52,12 @@ class Song
         offset = 0
         overflow = {}
         @structure.each {|pattern_name|
-          puts "================================="
-          puts pattern_name
           pattern_sample_length = @patterns[pattern_name].sample_length(@tick_sample_length)
-          pattern_sample_data = @patterns[pattern_name].sample_data(@tick_sample_length, num_tracks_in_song, overflow, true)
+          pattern_sample_data = @patterns[pattern_name].sample_data(@tick_sample_length, @kit.num_channels, num_tracks_in_song, overflow, true)
           
           pattern_sample_data[:primary].keys.each {|track_name|
             if(output_data[track_name] == nil)
-              output_data[track_name] = [].fill([0, 0], 0, sample_length_with_overflow())
+              output_data[track_name] = [].fill(fill_value, 0, self.sample_length_with_overflow())
             end
 
             output_data[track_name][offset...(offset + pattern_sample_length)] = pattern_sample_data[:primary][track_name]
@@ -66,7 +65,6 @@ class Song
           
           overflow.keys.each {|track_name|
             if(pattern_sample_data[:primary][track_name] == nil)
-              puts "Extra key! #{track_name}"
               output_data[track_name][offset...overflow[track_name].length] = overflow[track_name]
             end
           }
@@ -81,23 +79,20 @@ class Song
 
         return output_data
       else
-        output_data = [].fill([0, 0], 0, self.sample_length_with_overflow)
+        output_data = [].fill(fill_value, 0, self.sample_length_with_overflow)
 
         offset = 0
         overflow = {}
         @structure.each {|pattern_name|
           pattern_sample_length = @patterns[pattern_name].sample_length(@tick_sample_length)
-          pattern_sample_data = @patterns[pattern_name].sample_data(@tick_sample_length, num_tracks_in_song, overflow)
+          pattern_sample_data = @patterns[pattern_name].sample_data(@tick_sample_length, @kit.num_channels, num_tracks_in_song, overflow)
           output_data[offset...offset + pattern_sample_length] = pattern_sample_data[:primary]
           overflow = pattern_sample_data[:overflow]
           offset += pattern_sample_length
         }
-
+        
         # Handle overflow from final pattern
         output_data[offset...output_data.length] = merge_overflow(overflow, num_tracks_in_song)
-
-        puts "Final # samples: #{output_data.length}"
-        puts "Final: #{output_data[0]}"
 
         return output_data
       end
@@ -108,23 +103,21 @@ class Song
       if(split)
         output_data = {}
         
-        puts "================================="
-        puts pattern_name
         pattern_sample_length = pattern.sample_length(@tick_sample_length)
-        pattern_sample_data = pattern.sample_data(@tick_sample_length, num_tracks_in_song, {}, true)
+        pattern_sample_data = pattern.sample_data(@tick_sample_length, @kit.num_channels, num_tracks_in_song, {}, true)
         
         pattern_sample_data[:primary].keys.each {|track_name|
           overflow_sample_length = pattern_sample_data[:overflow][track_name].length
           full_sample_length = pattern_sample_length + overflow_sample_length
-          output_data[track_name] = [].fill([0, 0], 0, full_sample_length)
+          output_data[track_name] = [].fill(fill_value, 0, full_sample_length)
           output_data[track_name][0...pattern_sample_length] = pattern_sample_data[:primary][track_name]
           output_data[track_name][pattern_sample_length...full_sample_length] = pattern_sample_data[:overflow][track_name]
         }
         
         return output_data
       else      
-        output_data = [].fill([0, 0], 0, pattern.sample_length_with_overflow(@tick_sample_length))
-        sample_data = pattern.sample_data(tick_sample_length, num_tracks_in_song, {}, false)
+        output_data = [].fill(fill_value, 0, pattern.sample_length_with_overflow(@tick_sample_length))
+        sample_data = pattern.sample_data(tick_sample_length, @kit.num_channels, num_tracks_in_song, {}, false)
         output_data[0...primary_sample_length] = sample_data[:primary]
         output_data[primary_sample_length...output_data.length] = merge_overflow(sample_data[:overflow], num_tracks_in_song)
 
@@ -142,7 +135,7 @@ class Song
     @tick_sample_length = (SAMPLE_RATE * SECONDS_PER_MINUTE) / new_tempo / 4.0
   end
 
-  attr_reader :tick_sample_length
+  attr_reader :tick_sample_length, :kit
   attr_accessor :structure
 
 private
@@ -159,8 +152,8 @@ private
       }
 
       final_overflow_pattern = Pattern.new(:overflow)
-      final_overflow_pattern.track "bass.wav", "."
-      final_overflow_sample_data = final_overflow_pattern.sample_data(longest_overflow.length, num_tracks_in_song, overflow, false)
+      final_overflow_pattern.track "", [], "."
+      final_overflow_sample_data = final_overflow_pattern.sample_data(longest_overflow.length, @kit.num_channels, num_tracks_in_song, overflow, false)
       merged_sample_data = final_overflow_sample_data[:primary]
     end
 
@@ -207,12 +200,19 @@ private
         track_list = song_definition[key]
         track_list.keys.each{|track_name|
           begin
-            new_pattern.track track_name, track_list[track_name]
+            @kit.add(track_name, track_name)
+            new_pattern.track track_name, [], track_list[track_name]
           rescue => detail
             raise StandardError, detail.message
           end
         }
       end
+    }
+    
+    @patterns.values.each {|p|
+      p.tracks.values.each {|t|
+        t.wave_data = @kit.get_sample_data(t.name)
+      }
     }
   end
 end

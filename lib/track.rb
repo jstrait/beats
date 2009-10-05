@@ -1,23 +1,13 @@
 require 'rubygems'
 require 'wavefile'
-#gem 'jstrait-wavefile', '= 0.3.0'
 
 class Track
   REST = "."
   BEAT = "X"
   
-  def initialize(file_name, pattern)
-    begin
-      @wavefile = WaveFile.open(file_name)
-      @wavefile.num_channels = :stereo
-      @wavefile.bits_per_sample = 16
-    rescue => detail
-      puts detail.backtrace
-      puts "ERROR!"
-      raise StandardError, "Error opening #{file_name}."
-    end
-    
-    @name = File.basename(file_name, ".wav")
+  def initialize(name, wave_data, pattern)
+    @wave_data = wave_data
+    @name = name
     @pattern = pattern
     @sample_data = nil
     @overflow = nil
@@ -55,8 +45,8 @@ class Track
     
     if(@beats != [0])
       beat_sample_length = @beats.last * tick_sample_length
-      if(@wavefile.sample_data.length > beat_sample_length)
-        temp_sample_length += @wavefile.sample_data.length - beat_sample_length.floor
+      if(@wave_data.length > beat_sample_length)
+        temp_sample_length += @wave_data.length - beat_sample_length.floor
       end
     end
     
@@ -68,12 +58,11 @@ class Track
     full_sample_length = sample_length_with_overflow(tick_sample_length)
     
     if(@sample_data == nil)
-      output_data = [].fill([0, 0], 0, full_sample_length)
+      fill_value = (@wave_data.first.class == Array) ? [0, 0] : 0
+      output_data = [].fill(fill_value, 0, full_sample_length)
       
       if(full_sample_length > 0)
         remainder = 0.0
-        wave_data = wavefile.sample_data
-
         offset = @beats[0] * tick_sample_length
         remainder += (@beats[0] * tick_sample_length) - (@beats[0] * tick_sample_length).floor
         
@@ -90,10 +79,7 @@ class Track
           offset += beat_sample_length.floor
         }
         
-        if full_sample_length > actual_sample_length
-          puts "#{name} OVERFLOW! #{full_sample_length - actual_sample_length}"
-          #return {:primary => output_data[0...minimum_sample_length],
-          #        :overflow => output_data[minimum_sample_length...full_sample_length]}
+        if(full_sample_length > actual_sample_length)
           @sample_data = output_data[0...offset]
           @overflow = output_data[actual_sample_length...full_sample_length]
         else
@@ -109,8 +95,6 @@ class Track
     primary_sample_data = @sample_data
     
     if(incoming_overflow != nil && incoming_overflow != [])
-      puts "Incoming overflow for #{@name}! Length is #{incoming_overflow.length}"
-      
       # TO DO: Add check for when incoming overflow is longer than
       # track full length to prevent track from lengthening.
       intro_length = @beats.first * tick_sample_length.floor
@@ -125,5 +109,5 @@ class Track
     return {:primary => primary_sample_data, :overflow => @overflow}
   end
   
-  attr_accessor :name, :wavefile, :pattern
+  attr_accessor :name, :wave_data, :pattern
 end

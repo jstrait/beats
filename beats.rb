@@ -3,6 +3,7 @@ require 'yaml'
 require 'lib/track'
 require 'lib/pattern'
 require 'lib/song'
+require 'lib/kit'
 
 start = Time.now
 
@@ -52,44 +53,42 @@ def parse_options
   return options
 end
 
-def save_wave_file(file_name, sample_data)
-  output = WaveFile.new(:stereo, 44100, 16)
-  
-  conversion_start = Time.now
-  output.sample_data = sample_data
-  puts "Time to convert normalized samples #{file_name}: #{Time.now - conversion_start}"
-  
-  wave_write_start = Time.now
+def save_wave_file(file_name, num_channels, bits_per_sample, sample_data)
+  output = WaveFile.new(num_channels, 44100, bits_per_sample)
+  output.sample_data = sample_data  
   output.save(file_name)
-  puts "Time to write #{file_name}: #{Time.now - wave_write_start}"
 end
 
 options = parse_options
 input_file = ARGV[0]
 output_file = ARGV[1]
 
-song_from_code = build_sample_song()
-begin
+#song_from_code = build_sample_song()
+#begin
   song_from_file = Song.new(YAML.load_file(input_file))
-rescue => detail
-  puts "Error in #{input_file}:"
-  puts "    #{detail.message}"
-  exit(1)
-end
+#rescue => detail
+#  puts "Error in #{input_file}:"
+#  puts "    #{detail.message}"
+#  exit(1)
+#end
+
+kit = song_from_file.kit
 
 generate_samples_start = Time.now
 normalized_samples = song_from_file.sample_data(options[:pattern], options[:split])
 puts "Time to generate sample data: #{Time.now - generate_samples_start}"
 
+wave_write_start = Time.now
 if(options[:split])  
   normalized_samples.keys.each {|track_name|
     extension = File.extname(output_file)
-    file_name = File.basename(output_file, extension) + "-" + track_name.to_s + extension
+    file_name = File.basename(output_file, extension) + "-" + File.basename(track_name.to_s, extension) + extension
     
-    save_wave_file(file_name, normalized_samples[track_name])
+    save_wave_file(file_name, kit.num_channels, kit.bits_per_sample, normalized_samples[track_name])
   }
 else
-  save_wave_file(output_file, normalized_samples)
+  save_wave_file(output_file, kit.num_channels, kit.bits_per_sample, normalized_samples)
 end
+puts "Time to write wave file(s): #{Time.now - wave_write_start}"
 
-puts "Run time: #{Time.now - start}"
+puts "Total run time: #{Time.now - start}"
