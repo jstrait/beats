@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'wavefile'
-
 class Track
   REST = "."
   BEAT = "X"

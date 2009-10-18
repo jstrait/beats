@@ -1,5 +1,3 @@
-require 'yaml'
-
 class Song
   SAMPLE_RATE = 44100
   SECONDS_PER_MINUTE = 60.0

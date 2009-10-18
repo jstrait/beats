@@ -1,9 +1,10 @@
 require 'optparse'
 require 'yaml'
-require 'lib/track'
-require 'lib/pattern'
-require 'lib/song'
-require 'lib/kit'
+require 'wavefile'
+require 'lib/song.rb'
+require 'lib/kit.rb'
+require 'lib/pattern.rb'
+require 'lib/track.rb'
 
 def parse_options
   options = {:split => false, :pattern => ""}
