@@ -198,10 +198,11 @@ private
         new_pattern = self.pattern key.to_sym
 
         track_list = song_definition[key]
-        track_list.keys.each{|track_name|
+        track_list.each{|track_definition|
           begin
+            track_name = track_definition.keys.first
             @kit.add(track_name, track_name)
-            new_pattern.track track_name, [], track_list[track_name]
+            new_pattern.track track_name, [], track_definition[track_name]
           rescue => detail
             raise StandardError, detail.message
           end
