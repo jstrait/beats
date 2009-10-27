@@ -181,6 +181,8 @@ private
       raise StandardError, "Invalid song input"
     end
 
+    @kit = build_kit(song_definition)
+
     song_definition = downcase_hash_keys(song_definition)
     
     # Process each pattern
@@ -191,21 +193,9 @@ private
         track_list = song_definition[key]
         track_list.each{|track_definition|
           track_name = track_definition.keys.first
-          
-          if(!File.exists? track_name)
-            raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
-          end
-
-          @kit.add(track_name, track_name)
-          new_pattern.track track_name, [], track_definition[track_name]
+          new_pattern.track track_name, @kit.get_sample_data(track_name), track_definition[track_name]
         }
       end
-    }
-    
-    @patterns.values.each {|p|
-      p.tracks.values.each {|t|
-        t.wave_data = @kit.get_sample_data(t.name)
-      }
     }
     
     # Process song header
@@ -236,5 +226,26 @@ private
     }
 
     @structure = structure
+  end
+  
+  def build_kit(song_definition)
+    kit = Kit.new()
+    
+    song_definition.keys.each{|key|
+      if(key.downcase != "song")
+        track_list = song_definition[key]
+        track_list.each{|track_definition|
+          track_name = track_definition.keys.first
+        
+          if(!File.exists? track_name)
+            raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
+          end
+          
+          kit.add(track_name, track_name)
+        }
+      end
+    }
+    
+    return kit
   end
 end
