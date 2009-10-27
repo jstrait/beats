@@ -199,10 +199,13 @@ private
     }
     
     # Process song header
-    song_data = downcase_hash_keys(song_definition["song"])
-    self.tempo = song_data["tempo"]
+    parse_song_header(downcase_hash_keys(song_definition["song"]))
+  end
+  
+  def parse_song_header(header_data)
+    self.tempo = header_data["tempo"]
 
-    pattern_list = song_data["structure"]
+    pattern_list = header_data["structure"]
     structure = []
     pattern_list.each{|pattern_item|
       pattern_name = pattern_item.keys.first
