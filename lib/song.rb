@@ -1,3 +1,5 @@
+class SongParseError < RuntimeError; end
+
 class Song
   SAMPLE_RATE = 44100
   SECONDS_PER_MINUTE = 60.0
@@ -129,6 +131,10 @@ class Song
   end
 
   def tempo=(new_tempo)
+    if(new_tempo.class != Fixnum || new_tempo <= 0)
+      raise StandardError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
+    end
+    
     @tempo = new_tempo
     @tick_sample_length = (SAMPLE_RATE * SECONDS_PER_MINUTE) / new_tempo / 4.0
   end
@@ -176,34 +182,22 @@ private
     end
 
     song_definition = downcase_hash_keys(song_definition)
+    
+    # Process each pattern
     song_definition.keys.each{|key|
-      if(key == "song")
-        song_data = downcase_hash_keys(song_definition[key])
-        self.tempo = song_data["tempo"]
-
-        pattern_list = song_data["structure"]
-        structure = []
-        pattern_list.each{|pattern_item|
-          pattern_name = pattern_item[pattern_item.keys.first]
-          pattern_name.slice!(0)
-
-          multiples = pattern_name.to_i
-          multiples.times { structure << pattern_item.keys.first.downcase.to_sym }
-        }
-
-        @structure = structure
-      else
+      if(key != "song")
         new_pattern = self.pattern key.to_sym
 
         track_list = song_definition[key]
         track_list.each{|track_definition|
-          begin
-            track_name = track_definition.keys.first
-            @kit.add(track_name, track_name)
-            new_pattern.track track_name, [], track_definition[track_name]
-          rescue => detail
-            raise StandardError, detail.message
+          track_name = track_definition.keys.first
+          
+          if(!File.exists? track_name)
+            raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
           end
+
+          @kit.add(track_name, track_name)
+          new_pattern.track track_name, [], track_definition[track_name]
         }
       end
     }
@@ -213,5 +207,34 @@ private
         t.wave_data = @kit.get_sample_data(t.name)
       }
     }
+    
+    # Process song header
+    song_data = downcase_hash_keys(song_definition["song"])
+    self.tempo = song_data["tempo"]
+
+    pattern_list = song_data["structure"]
+    structure = []
+    pattern_list.each{|pattern_item|
+      pattern_name = pattern_item.keys.first
+      pattern_name_sym = pattern_name.downcase.to_sym
+      
+      if(!@patterns.has_key?(pattern_name_sym))
+        raise SongParseError, "Song structure includes non-existant pattern: #{pattern_name}."
+      end
+      
+      multiples_str = pattern_item[pattern_name]
+      multiples_str.slice!(0)
+      multiples = multiples_str.to_i
+      
+      if(multiples_str.match(/[^0-9]/) != nil)
+        raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
+      elsif(multiples < 0)
+        raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
+      end
+      
+      multiples.times { structure << pattern_name_sym }
+    }
+
+    @structure = structure
   end
 end
