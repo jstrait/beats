@@ -21,10 +21,15 @@ class Kit
   
   def get_sample_data(name)
     w = @sounds[name]
-    w.num_channels = @num_channels
-    w.bits_per_sample = @bits_per_sample
+    
+    if w == nil
+      raise StandardError, "Kit doesn't contain sound '#{name}'."
+    else
+      w.num_channels = @num_channels
+      w.bits_per_sample = @bits_per_sample
 
-    return w.sample_data
+      return w.sample_data
+    end
   end
   
   def size
