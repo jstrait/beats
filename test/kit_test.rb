@@ -1,8 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/unit'
-require 'kit'
-require 'wavefile'
+require 'test/includes'
 
 class SongTest < Test::Unit::TestCase
   MIN_SAMPLE_8BIT = 0

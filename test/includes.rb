@@ -1,0 +1,7 @@
+require 'test/unit'
+require 'yaml'
+require 'song'
+require 'pattern'
+require 'track'
+require 'kit'
+require 'wavefile'

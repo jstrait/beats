@@ -1,30 +1,34 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/unit'
-require 'pattern'
-require 'track'
+require 'test/includes'
 
 class PatternTest < Test::Unit::TestCase
   SAMPLE_RATE = 44100
   SECONDS_IN_MINUTE = 60.0
 
   def generate_test_data
+    kit = Kit.new()
+    kit.add("bass.wav",      "sounds/bass.wav")
+    kit.add("snare.wav",     "sounds/snare.wav")
+    kit.add("hh_closed.wav", "sounds/hh_closed.wav")
+    kit.add("hh_open.wav",   "sounds/hh_open.wav")
+    
     test_patterns = []
     
     p1 = Pattern.new :blank
     test_patterns << p1
-
+    
     p2 = Pattern.new :verse
-    p2.track "bass.wav",   "X...X...X...XX..X...X...XX..X..."
-    p2.track "snare.wav",  "..X...X...X...X.X...X...X...X..."
-    p2.track "hihat.wav",  "X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X."
-    p2.track "cymbal.wav", "X...............X..............X"
+    p2.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X...X...X...XX..X...X...XX..X..."
+    p2.track "snare.wav",     kit.get_sample_data("snare.wav"),     "..X...X...X...X.X...X...X...X..."
+    p2.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X."
+    p2.track "hh_open.wav",   kit.get_sample_data("hh_open.wav"),   "X...............X..............X"
     test_patterns << p2
-
+    
     p3 = Pattern.new :staircase
-    p3.track "bass.wav",   "X..."
-    p3.track "snare.wav",  "X.."
-    p3.track "hihat.wav",  "X."
+    p3.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X..."
+    p3.track "snare.wav",     kit.get_sample_data("snare.wav"),     "X.."
+    p3.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X."
     test_patterns << p3
     
     return test_patterns

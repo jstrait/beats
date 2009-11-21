@@ -1,9 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/unit'
-require 'song'
-require 'pattern'
-require 'track'
+require 'test/includes'
 
 class MockSong < Song
   attr_reader :patterns
@@ -13,25 +10,31 @@ class SongTest < Test::Unit::TestCase
   DEFAULT_TEMPO = 120
   
   def generate_test_data
+    kit = Kit.new()
+    kit.add("bass.wav",      "sounds/bass.wav")
+    kit.add("snare.wav",     "sounds/snare.wav")
+    kit.add("hh_closed.wav", "sounds/hh_closed.wav")
+    kit.add("ride.wav",      "sounds/ride.wav")
+    
     test_songs = {}
     
     test_songs[:blank] = MockSong.new
     
     test_songs[:no_structure] = MockSong.new
     verse = test_songs[:no_structure].pattern :verse
-    verse.track "bass.wav",  "X.......X......."
-    verse.track "snare.wav", "....X.......X..."
-    verse.track "hihat.wav", "X.X.X.X.X.X.X.X."
+    verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
+    verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
+    verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
     
     test_songs[:from_code] = MockSong.new
     verse = test_songs[:from_code].pattern :verse
-    verse.track "bass.wav",  "X.......X......."
-    verse.track "snare.wav", "....X.......X..."
-    verse.track "hihat.wav", "X.X.X.X.X.X.X.X."
+    verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
+    verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
+    verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
     chorus = test_songs[:from_code].pattern :chorus
-    chorus.track "bass.wav",  "X......."
-    chorus.track "snare.wav", "....X..X"
-    chorus.track "ride.wav",  "X.....X."
+    chorus.track "bass.wav",  kit.get_sample_data("bass.wav"),  "X......."
+    chorus.track "snare.wav", kit.get_sample_data("snare.wav"), "....X..X"
+    chorus.track "ride.wav",  kit.get_sample_data("ride.wav"),  "X.....X."
     test_songs[:from_code].structure = [:verse, :chorus, :verse, :chorus, :chorus]
     
     yaml_string = "# An example song
@@ -47,22 +50,23 @@ Song:
     - Chorus: x4
 
 Verse:
-  bass.wav:    X...X...X...XX..X...X...XX..X...
-  snare.wav:   ..X...X...X...X.X...X...X...X...
+  - sounds/bass.wav:      X...X...X...XX..X...X...XX..X...
+  - sounds/snare.wav:     ..X...X...X...X.X...X...X...X...
 # Here is a comment
-  hihat.wav:   X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
-  cymbal.wav:  X...............X..............X
+  - sounds/hh_closed.wav: X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+  - sounds/hh_open.wav:   X...............X..............X
 # Here is another comment
 Chorus:
-  bass.wav:    X...X...XXXXXXXXX...X...X...X...
-  snare.wav:   ...................X...X...X...X
-  hihat.wav:   X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
-  cymbal.wav:  ........X.......X.......X.......
-  sine.wav:    ....X...................X.......
+  - sounds/bass.wav:      X...X...XXXXXXXXX...X...X...X...
+  - sounds/snare.wav:     ...................X...X...X...X
+  - sounds/hh_closed.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
+  - sounds/hh_open.wav:   ........X.......X.......X.......
+  - sounds/ride.wav:      ....X...................X.......
 
 
 Bridge:
-  hihat.wav:   XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
+  - sounds/hh_closed.wav: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
+  
     test_songs[:from_yaml_string] = MockSong.new(yaml_string)
     
     return test_songs
