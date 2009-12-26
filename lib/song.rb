@@ -46,15 +46,19 @@ class Song
     if(pattern_name == "")
       puts "Total samples: #{sample_length()}"
       
-      return split ? sample_data_split_all_patterns() : sample_data_combined_all_patterns()
+      if(split)
+        return sample_data_split_all_patterns(fill_value, num_tracks_in_song)
+      else
+        return sample_data_combined_all_patterns(fill_value, num_tracks_in_song)
+      end
     else
       pattern = @patterns[pattern_name.downcase.to_sym]
       primary_sample_length = pattern.sample_length(@tick_sample_length)
       
       if(split)
-        return sample_data_split_single_pattern(pattern, primary_sample_length)
+        return sample_data_split_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
       else
-        return sample_data_combined_single_pattern(pattern, primary_sample_length)
+        return sample_data_combined_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
       end
     end
   end
@@ -65,7 +69,7 @@ class Song
 
   def tempo=(new_tempo)
     if(new_tempo.class != Fixnum || new_tempo <= 0)
-      raise StandardError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
+      raise SongParseError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
     end
     
     @tempo = new_tempo
@@ -185,7 +189,7 @@ private
     return kit
   end
   
-  def sample_data_split_all_patterns()
+  def sample_data_split_all_patterns(fill_value, num_tracks_in_song)
     output_data = {}
     
     offset = 0
@@ -219,7 +223,7 @@ private
     return output_data
   end
   
-  def sample_data_split_single_pattern(pattern, primary_sample_length)
+  def sample_data_split_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
     output_data = {}
     
     pattern_sample_length = pattern.sample_length(@tick_sample_length)
@@ -236,7 +240,7 @@ private
     return output_data
   end
   
-  def sample_data_combined_all_patterns()
+  def sample_data_combined_all_patterns(fill_value, num_tracks_in_song)
     output_data = [].fill(fill_value, 0, self.sample_length_with_overflow)
 
     offset = 0
@@ -255,7 +259,7 @@ private
     return output_data
   end
   
-  def sample_data_combined_single_pattern(pattern, primary_sample_length)
+  def sample_data_combined_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
     output_data = [].fill(fill_value, 0, pattern.sample_length_with_overflow(@tick_sample_length))
     sample_data = pattern.sample_data(tick_sample_length, @kit.num_channels, num_tracks_in_song, {}, false)
     output_data[0...primary_sample_length] = sample_data[:primary]
