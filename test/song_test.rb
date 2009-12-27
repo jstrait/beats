@@ -124,6 +124,15 @@ Bridge:
     assert_raise(SongParseError) { song = MockSong.new(invalid_repeats_yaml_string) }
   end
   
+  def test_total_tracks
+    test_songs = generate_test_data()
+    
+    assert_equal(test_songs[:blank].total_tracks, 0)
+    assert_equal(test_songs[:no_structure].total_tracks, 3)
+    assert_equal(test_songs[:from_code].total_tracks, 3)
+    assert_equal(test_songs[:from_valid_yaml_string].total_tracks, 5)
+  end
+  
   def test_sample_length
     test_songs = generate_test_data()
 
