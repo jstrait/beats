@@ -3,7 +3,7 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 require 'test/includes'
 
 class MockSong < Song
-  attr_reader :patterns
+  attr_reader :patterns, :kit
 end
 
 class SongTest < Test::Unit::TestCase
@@ -141,17 +141,26 @@ Bridge:
     assert_equal(test_songs[:from_code].sample_length,
                             (test_songs[:from_code].tick_sample_length * 16 * 2) +
                             (test_songs[:from_code].tick_sample_length * 8 * 3))
-   
-    assert_equal(test_songs[:blank].sample_length, 0)
-    assert_equal(test_songs[:no_structure].sample_length, 0)
     assert_equal(test_songs[:from_code].sample_length,
                             ((test_songs[:from_code].tick_sample_length * 16).floor * 2) +
                             ((test_songs[:from_code].tick_sample_length * 8).floor * 3))
+    assert_equal(test_songs[:from_code].sample_length,
+                            ((test_songs[:from_code].tick_sample_length * 16).floor * 2) +
+                            ((test_songs[:from_code].tick_sample_length * 8).floor * 3))
+  end
+  
+  def test_sample_length_with_overflow
+    test_songs = generate_test_data()
     
-    assert_equal(test_songs[:blank].sample_length, 0)
-    assert_equal(test_songs[:no_structure].sample_length, 0)
-    assert_equal(test_songs[:from_code].sample_length,
-                            ((test_songs[:from_code].tick_sample_length * 16).floor * 2) +
-                            ((test_songs[:from_code].tick_sample_length * 8).floor * 3))
+    assert_equal(test_songs[:blank].sample_length_with_overflow, 0)
+    assert_equal(test_songs[:no_structure].sample_length_with_overflow, 0)
+    #snare_overflow =
+    #  (test_songs[:from_code].kit.get_sample_data("snare.wav").length -
+    #   test_songs[:from_code].tick_sample_length).ceil
+    #assert_equal(test_songs[:from_code].sample_length_with_overflow, test_songs[:from_code].sample_length + snare_overflow)
+    snare_overflow =
+      (test_songs[:from_valid_yaml_string].kit.get_sample_data("sounds/snare.wav").length -
+       test_songs[:from_valid_yaml_string].tick_sample_length).ceil
+    assert_equal(test_songs[:from_valid_yaml_string].sample_length_with_overflow, test_songs[:from_valid_yaml_string].sample_length + snare_overflow)
   end
 end

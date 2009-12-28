@@ -27,6 +27,10 @@ class Song
   end
 
   def sample_length_with_overflow()
+    if(@structure.length == 0)
+      return 0
+    end
+    
     full_sample_length = self.sample_length
     last_pattern_sample_length = @patterns[@structure.last].sample_length(@tick_sample_length)
     last_pattern_overflow_length = @patterns[@structure.last].sample_length_with_overflow(@tick_sample_length)
