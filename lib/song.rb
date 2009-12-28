@@ -63,6 +63,14 @@ class Song
     end
   end
 
+  def num_channels()
+    return @kit.num_channels
+  end
+  
+  def bits_per_sample()
+    return @kit.bits_per_sample
+  end
+
   def tempo()
     return @tempo
   end
@@ -76,7 +84,7 @@ class Song
     @tick_sample_length = (SAMPLE_RATE * SECONDS_PER_MINUTE) / new_tempo / 4.0
   end
 
-  attr_reader :tick_sample_length, :kit
+  attr_reader :tick_sample_length
   attr_accessor :structure
 
 private
@@ -176,7 +184,7 @@ private
         track_list = song_definition[key]
         track_list.each{|track_definition|
           track_name = track_definition.keys.first
-        
+          
           if(!File.exists? track_name)
             raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
           end
