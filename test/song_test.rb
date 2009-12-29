@@ -3,7 +3,8 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 require 'test/includes'
 
 class MockSong < Song
-  attr_reader :patterns, :kit
+  attr_reader :patterns
+  attr_accessor :kit
 end
 
 class SongTest < Test::Unit::TestCase
@@ -36,6 +37,7 @@ class SongTest < Test::Unit::TestCase
     chorus.track "snare.wav", kit.get_sample_data("snare.wav"), "....X..X"
     chorus.track "ride.wav",  kit.get_sample_data("ride.wav"),  "X.....X."
     test_songs[:from_code].structure = [:verse, :chorus, :verse, :chorus, :chorus]
+    test_songs[:from_code].kit = kit
     
     valid_yaml_string = "# An example song
 
@@ -154,13 +156,29 @@ Bridge:
     
     assert_equal(test_songs[:blank].sample_length_with_overflow, 0)
     assert_equal(test_songs[:no_structure].sample_length_with_overflow, 0)
-    #snare_overflow =
-    #  (test_songs[:from_code].kit.get_sample_data("snare.wav").length -
-    #   test_songs[:from_code].tick_sample_length).ceil
-    #assert_equal(test_songs[:from_code].sample_length_with_overflow, test_songs[:from_code].sample_length + snare_overflow)
+    snare_overflow =
+      (test_songs[:from_code].kit.get_sample_data("snare.wav").length -
+       test_songs[:from_code].tick_sample_length).ceil
+    assert_equal(test_songs[:from_code].sample_length_with_overflow, test_songs[:from_code].sample_length + snare_overflow)
     snare_overflow =
       (test_songs[:from_valid_yaml_string].kit.get_sample_data("sounds/snare.wav").length -
        test_songs[:from_valid_yaml_string].tick_sample_length).ceil
     assert_equal(test_songs[:from_valid_yaml_string].sample_length_with_overflow, test_songs[:from_valid_yaml_string].sample_length + snare_overflow)
+  end
+  
+  def test_sample_data
+    test_songs = generate_test_data()
+    
+    test_songs.values.each {|song|
+      sample_data = song.sample_data("", false)
+      assert_equal(sample_data.class, Array)
+      assert_equal(sample_data.length, song.sample_length_with_overflow)
+      sample_data = song.sample_data("", true)
+      assert_equal(sample_data.class, Hash)
+    }
+    assert_equal(test_songs[:from_code].sample_data("verse", false).class, Array)
+    assert_equal(test_songs[:from_code].sample_data("verse", true).class, Hash)
+    assert_equal(test_songs[:from_valid_yaml_string].sample_data("verse", false).class, Array)
+    assert_equal(test_songs[:from_valid_yaml_string].sample_data("verse", true).class, Hash)
   end
 end
