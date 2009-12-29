@@ -128,63 +128,57 @@ class TrackTest < Test::Unit::TestCase
     sample_data = track.sample_data(tick_sample_length)
     
     assert_equal(sample_data.class, Hash)
-    assert_equal(sample_data.keys.sort, [:overflow, :primary])
+    #assert_equal(sample_data.keys.sort, [:overflow, :primary])
+    assert_equal(sample_data[:primary].length, expected_primary.length)
+    assert_equal(sample_data[:overflow].length, expected_overflow.length)
     assert_equal(sample_data[:primary], expected_primary)
     assert_equal(sample_data[:overflow], expected_overflow)
   end
   
   def test_sample_data
-    normalized_sample_data = W.normalized_sample_data
+    sample_data = W.sample_data
     
-    tick_sample_length = W.sample_data.length   # 13860.0
+    tick_sample_length = W.sample_data.length   # 6179.0
     test_tracks = generate_test_data()
-    
     assert_equal(test_tracks[0].sample_data(tick_sample_length), {:primary => [], :overflow => []})
-    #helper_test_sample_data(test_tracks[1], tick_sample_length, normalized_sample_data[0...tick_sample_length], [])
-    #helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + normalized_sample_data, [])
-    #helper_test_sample_data(test_tracks[3], tick_sample_length, (normalized_sample_data + zeroes(tick_sample_length)) * 4, [])
-    #helper_test_sample_data(test_tracks[4], tick_sample_length, zeroes(tick_sample_length * 4), [])
+    helper_test_sample_data(test_tracks[1], tick_sample_length, sample_data[0...tick_sample_length], [])
+    helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + sample_data, [])
+    helper_test_sample_data(test_tracks[3], tick_sample_length, (sample_data + zeroes(tick_sample_length)) * 4, [])
+    helper_test_sample_data(test_tracks[4], tick_sample_length, zeroes(tick_sample_length * 4), [])
     # Track 6 is complicated. Will add test later...
 
 
-    #tick_sample_length = (W.sample_rate * 60.0) / 99 / 4   # 6681.81818181818
-    #test_tracks = generate_test_data()
-    #puts "tick_sample_length = #{tick_sample_length}"
-
-    #assert_equal(test_tracks[0].sample_data(tick_sample_length), {:primary => [], :overflow => []})
-    #helper_test_sample_data(test_tracks[1], tick_sample_length, normalized_sample_data[0...tick_sample_length.floor], normalized_sample_data[tick_sample_length.floor...normalized_sample_data.length])
-    
-=begin
-    #helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + normalized_sample_data[0..tick_sample_length.floor], normalized_sample_data[tick_sample_length.floor..normalized_sample_data.length])
-    #assert_equal(test_tracks[2].sample_data(tick_sample_length),
-    #             zeroes(tick_sample_length * 3) + normalized_sample_data)
-    #assert_equal(test_tracks[3].sample_data(tick_sample_length),
-    #             normalized_sample_data[0...(tick_sample_length * 2)] +
-    #             normalized_sample_data[0..(tick_sample_length * 2)] +
-    #            normalized_sample_data[0...(tick_sample_length * 2)] +
-    #            normalized_sample_data[0..(tick_sample_length * 2)])
-    #assert_equal(test_tracks[4].sample_data(tick_sample_length), zeroes(tick_sample_length * 4))
-
-    tick_sample_length = (W.sample_rate * 60.0) / 41 / 4   # 16134.1463414634
+    tick_sample_length = (W.sample_rate * 60.0) / 220 / 4   # 3006.818181818181818
     test_tracks = generate_test_data()
-    puts "tick_sample_length = #{tick_sample_length}"
-    
-    assert_equal(T1.sample_data(tick_sample_length), [])
-    assert_equal(T2.sample_data(tick_sample_length), normalized_sample_data[0...tick_sample_length] + zeroes(tick_sample_length - W.sample_data.length))
-    assert_equal(T3.sample_data(tick_sample_length),
-                 zeroes(tick_sample_length * 3) + normalized_sample_data[0...tick_sample_length] + zeroes(tick_sample_length - W.sample_data.length))
-    assert_equal(T4.sample_data(tick_sample_length),
-                 normalized_sample_data[0...(tick_sample_length * 2)] + zeroes(tick_sample_length * 2 - W.sample_data.length) +
-                 normalized_sample_data[0..(tick_sample_length * 2)] + zeroes(tick_sample_length * 2 - W.sample_data.length) +
-                 normalized_sample_data[0...(tick_sample_length * 2)] + zeroes(tick_sample_length * 2 - W.sample_data.length) +
-                 normalized_sample_data[0..(tick_sample_length * 2)] + zeroes(tick_sample_length * 2 - W.sample_data.length) + [0.0])
-    assert_equal(T5.sample_data(tick_sample_length), zeroes(tick_sample_length * 4))
-=end
+    assert_equal(test_tracks[0].sample_data(tick_sample_length), {:primary => [], :overflow => []})
+    helper_test_sample_data(test_tracks[1], tick_sample_length, sample_data[0...tick_sample_length.floor], sample_data[tick_sample_length.floor...sample_data.length])
+    #helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + sample_data[0..tick_sample_length.floor], sample_data[(tick_sample_length.floor)...sample_data.length])
+    #helper_test_sample_data(test_tracks[3], tick_sample_length,
+    #                        sample_data[0...(tick_sample_length * 2)] +
+    #                        sample_data[0..(tick_sample_length * 2)] +
+    #                        sample_data[0...(tick_sample_length * 2)] +
+    #                        sample_data[0..(tick_sample_length * 2)],
+    #                        sample_data[(tick_sample_length * 2)..sample_data.length])
+    helper_test_sample_data(test_tracks[4], tick_sample_length, zeroes(tick_sample_length * 4), [])
+
+
+    tick_sample_length = (W.sample_rate * 60.0) / 99 / 4   # 6681.818181818181818
+    test_tracks = generate_test_data()    
+    assert_equal(test_tracks[0].sample_data(tick_sample_length), {:primary => [], :overflow => []})
+    helper_test_sample_data(test_tracks[1], tick_sample_length, sample_data + zeroes(tick_sample_length - W.sample_data.length), [])
+    helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + sample_data + zeroes(tick_sample_length - sample_data.length + 1), [])
+    helper_test_sample_data(test_tracks[3], tick_sample_length,
+                            sample_data + zeroes((tick_sample_length * 2) - sample_data.length) +
+                            sample_data + zeroes((tick_sample_length * 2) - sample_data.length + 1) +
+                            sample_data + zeroes((tick_sample_length * 2) - sample_data.length) +
+                            sample_data + zeroes((tick_sample_length * 2) - sample_data.length + 1),
+                            [])
+    helper_test_sample_data(test_tracks[4], tick_sample_length, zeroes(tick_sample_length * 4), [])
   end
   
 private
 
   def zeroes(length)
-    return [].fill(0.0, 0, length)
+    return [].fill(0, 0, length)
   end
 end
