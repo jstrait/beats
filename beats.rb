@@ -61,6 +61,12 @@ begin
     save_wave_file(output_file, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data)
   end
   puts "Time to write wave file(s): #{Time.now - wave_write_start}"
+rescue ArgumentError => detail
+  puts ""
+  puts "Song file #{input_file} has an error:"
+  puts "  Syntax error in YAML file:"
+  puts "  #{detail}"
+  puts ""
 rescue SongParseError => detail
   puts ""
   puts "Song file #{input_file} has an error:"
