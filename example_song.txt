@@ -1,33 +1,22 @@
 # An example song
 
 Song:
-  Tempo: 100
+  Tempo: 120
   Structure:
-    - Verse:  x1
-    - Chorus: x1
-    - Verse:  x1
-    - Chorus: x1
-    - Bridge: x1
-    - Chorus: x1
-
-Verse2:
-  - sounds/bass.wav:      ................................
-  - sounds/snare.wav:     X................XXXXXX
-  - sounds/hh_closed.wav: ................................
-  - sounds/ride.wav:      X.........
+    - Verse:   x4
+    - Chorus:  x2
+    - Verse:   x4
+    - Chorus:  x2
 
 Verse:
-  - sounds/bass.wav:      X...X...X...XX..X...X...XX..X...
-  - sounds/snare.wav:     ..X...X...X...X.X...X...X...X...
-  - sounds/hh_closed.wav: X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
-  - sounds/hh_open.wav:   ................X..............X
+  - sounds/bass.wav:      X.......X.......
+  - sounds/snare.wav:     ....X.......X...
+  - sounds/hh_closed.wav: X.X.X.X.X.X.X...
+  - sounds/hh_open.wav:   ..............X.
+  - sounds/ride.wav:      X...............
 
 Chorus:
-  - sounds/bass.wav:      X...X...XXXXXXXXX...X...X...X...
-  - sounds/snare.wav:     ....X..X...........X...X...X...X
-  - sounds/hh_closed.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX.
-  - sounds/hh_open.wav:   X.......X.......X.......X......X
-  - sounds/ride.wav:      ....X...................X.......
-
-Bridge:
-  - sounds/hh_closed.wav: X.XX.X.X..X..X..X....XXXX..X..XX
+  - sounds/bass.wav:      X...X...XX..X.XXX...X...X...X...
+  - sounds/snare.wav:     ....X.......X.......X......X.XXX
+  - sounds/hh_closed.wav: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  - sounds/ride.wav:      ........X.......X.......X......X
