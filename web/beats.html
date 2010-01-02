@@ -23,17 +23,17 @@
     - Chorus:  x2
 
 Verse:
-  - bass.wav:     X.......X.......
-  - snare.wav:    ....X.......X...
-  - hhclosed.wav: X.X.X.X.X.X.X.X.
-  - hhopen.wav:   .......X.......X
-  - cymbal.wav:   X...............
+  - bass.wav:      X.......X.......
+  - snare.wav:     ....X.......X...
+  - hh_closed.wav: X.X.X.X.X.X.X...
+  - hh_open.wav:   ..............X.
+  - ride.wav:      X...............
 
 Chorus:
-  - bass.wav:     X...X...XXXXXXXXX...X...X...X...
-  - snare.wav:    ...................X...X...X...X
-  - hhclosed.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX.
-  - cymbal.wav:   ........X.......X.......X......X</pre></code></p>
+  - bass.wav:      X...X...XX..X.XXX...X...X...X...
+  - snare.wav:     ....X.......X.......X......X.XXX
+  - hh_closed.wav: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  - ride.wav:      ........X.......X.......X......X</pre></code></p>
 
 		<p class="last">And here is what it sounds like after getting the Beats treatment: <a href="#">beat.wav</a></p>
 	</div>
@@ -49,18 +49,18 @@ Chorus:
 		<p><pre><code>Song:
   Tempo: 120
   Structure:
-    - Verse
-    - Chorus: x2
-    - Verse:  x3
-    - Chorus: x4
-    - Verse:  x2</code></pre></p>
+    - Verse:   x4
+    - Chorus:  x2
+    - Bridge:  x1
+    - Verse:   x4
+    - Chorus:  x2</code></pre></p>
 		<p>One or more patterns should follow the header. (If there are no patterns, there is nothing to play!) Each pattern definition starts with the pattern name, followed by the rhythm for each track on separate lines.</p>
 		<p><pre><code>Verse:
-  - bass.wav:     X.......X.......
-  - snare.wav:    ....X.......X...
-  - hhclosed.wav: X.X.X.X.X.X.X.X.
-  - hhopen.wav:   .......X.......X
-  - cymbal.wav:   X...............</code></pre></p>
+  - bass.wav:      X.......X.......
+  - snare.wav:     ....X.......X...
+  - hh_closed.wav: X.X.X.X.X.X.X...
+  - hh_open.wav:   ..............X.
+  - ride.wav:      X...............</code></pre></p>
 		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). If the Wave file you want to use is not in the current working directory, be sure to include the full path. Track lines must be indented properly and start with a dash.</p>
 		<p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a "rest" between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
 		<p>As a final note, patterns and the song header can come in any order. If you want to include the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
@@ -70,7 +70,7 @@ Chorus:
 		<p>Here are some links! To do!</p>
 	</div>
 	<div id="about" class="content-box">
-		<p>Copyright &copy; 2009 <a href="#">Joel Strait</a></p>
+		<p>Copyright &copy; 2010 <a href="#">Joel Strait</a></p>
 	</div>
 </body>
 </html>
