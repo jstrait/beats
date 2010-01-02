@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
-require 'yaml'
-require 'wavefile'
-require 'lib/song.rb'
-require 'lib/kit.rb'
-require 'lib/pattern.rb'
-require 'lib/track.rb'
+require File.dirname(__FILE__) + "/../lib/song"
+require File.dirname(__FILE__) + "/../lib/kit"
+require File.dirname(__FILE__) + "/../lib/pattern"
+require File.dirname(__FILE__) + "/../lib/track"
+require "rubygems"
+require "optparse"
+require "yaml"
+require "wavefile"
 
 def parse_options
   options = {:split => false, :pattern => ""}
