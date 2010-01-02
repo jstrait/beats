@@ -33,7 +33,7 @@ end
 
 def save_wave_file(file_name, num_channels, bits_per_sample, sample_data)
   output = WaveFile.new(num_channels, 44100, bits_per_sample)
-  output.sample_data = sample_data  
+  output.sample_data = sample_data
   output.save(file_name)
 end
 
@@ -45,12 +45,11 @@ output_file = ARGV[1]
 
 begin
   parse_start_time = Time.now
-  song_from_file = Song.new(YAML.load_file(input_file))
-  puts "Song parse time: #{Time.now - parse_start_time}"
+  song_from_file = Song.new(File.dirname(input_file), YAML.load_file(input_file))
   
   generate_samples_start = Time.now
   sample_data = song_from_file.sample_data(options[:pattern], options[:split])
-  puts "Time to generate sample data: #{Time.now - generate_samples_start}"
+  #puts "Time to generate sample data: #{Time.now - generate_samples_start}"
   
   wave_write_start = Time.now
   if(options[:split])
@@ -63,7 +62,7 @@ begin
   else
     save_wave_file(output_file, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data)
   end
-  puts "Time to write wave file(s): #{Time.now - wave_write_start}"
+  #puts "Time to write wave file(s): #{Time.now - wave_write_start}"
 rescue ArgumentError => detail
   puts ""
   puts "Song file #{input_file} has an error:"
@@ -77,4 +76,4 @@ rescue SongParseError => detail
   puts ""
 end
 
-#puts "Total run time: #{Time.now - start}"
+puts "  #{sample_data.length} samples of precision-milled rhythm produced in #{Time.now - start} seconds."

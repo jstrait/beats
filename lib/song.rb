@@ -3,9 +3,11 @@ class SongParseError < RuntimeError; end
 class Song
   SAMPLE_RATE = 44100
   SECONDS_PER_MINUTE = 60.0
+  PATH_SEPARATOR = File.const_get("SEPARATOR")
 
-  def initialize(definition = nil)
+  def initialize(input_path, definition = nil)
     self.tempo = 120
+    @input_path = input_path
     @kit = Kit.new()
     @patterns = {}
     @structure = []
@@ -47,9 +49,7 @@ class Song
     num_tracks_in_song = self.total_tracks()
     fill_value = (@kit.num_channels == 1) ? 0 : [].fill(0, 0, @kit.num_channels)
 
-    if(pattern_name == "")
-      puts "Total samples: #{sample_length()}"
-      
+    if(pattern_name == "")      
       if(split)
         return sample_data_split_all_patterns(fill_value, num_tracks_in_song)
       else
@@ -88,7 +88,7 @@ class Song
     @tick_sample_length = (SAMPLE_RATE * SECONDS_PER_MINUTE) / new_tempo / 4.0
   end
 
-  attr_reader :tick_sample_length
+  attr_reader :input_path, :tick_sample_length
   attr_accessor :structure
 
 private
@@ -188,12 +188,16 @@ private
         track_list = song_definition[key]
         track_list.each{|track_definition|
           track_name = track_definition.keys.first
+          track_path = track_name
+          if(track_path[0] != PATH_SEPARATOR)
+            track_path = @input_path + PATH_SEPARATOR + track_path
+          end
           
-          if(!File.exists? track_name)
+          if(!File.exists? track_path)
             raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
           end
           
-          kit.add(track_name, track_name)
+          kit.add(track_name, track_path)
         }
       end
     }

@@ -19,15 +19,15 @@ class SongTest < Test::Unit::TestCase
     
     test_songs = {}
     
-    test_songs[:blank] = MockSong.new
+    test_songs[:blank] = MockSong.new(File.dirname(__FILE__) + "/..")
     
-    test_songs[:no_structure] = MockSong.new
+    test_songs[:no_structure] = MockSong.new(File.dirname(__FILE__) + "/..")
     verse = test_songs[:no_structure].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
     verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
     
-    test_songs[:from_code] = MockSong.new
+    test_songs[:from_code] = MockSong.new(File.dirname(__FILE__) + "/..")
     verse = test_songs[:from_code].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
@@ -68,8 +68,8 @@ Chorus:
 
 Bridge:
   - sounds/hh_closed.wav: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
-  
-    test_songs[:from_valid_yaml_string] = MockSong.new(valid_yaml_string)
+    
+    test_songs[:from_valid_yaml_string] = MockSong.new(File.dirname(__FILE__) + "/..", valid_yaml_string)
     
     return test_songs
   end
@@ -102,7 +102,7 @@ Bridge:
 
     Verse:
       - sounds/bass.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = MockSong.new(invalid_tempo_yaml_string) }
+    assert_raise(SongParseError) { song = MockSong.new(File.dirname(__FILE__) + "/..", invalid_tempo_yaml_string) }
     
     invalid_structure_yaml_string = "# Invalid structure song
     Song:
@@ -113,7 +113,7 @@ Bridge:
 
     Verse:
       - sounds/bass.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = MockSong.new(invalid_structure_yaml_string) }
+    assert_raise(SongParseError) { song = MockSong.new(File.dirname(__FILE__) + "/..", invalid_structure_yaml_string) }
     
     invalid_repeats_yaml_string = "    # Invalid structure song
     Song:
@@ -123,7 +123,7 @@ Bridge:
 
     Verse:
       - sounds/bass.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = MockSong.new(invalid_repeats_yaml_string) }
+    assert_raise(SongParseError) { song = MockSong.new(File.dirname(__FILE__) + "/..", invalid_repeats_yaml_string) }
   end
   
   def test_total_tracks
