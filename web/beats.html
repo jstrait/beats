@@ -13,7 +13,7 @@
 <body>
 	<div class="content-box">
 		<h1>BEATS</h1>
-		<p>is a drum machine written in pure Ruby. Feed it a song notated in YAML, and it will generate a Wave file possessing impeccable timing and feel. Here is an example song:</p>
+		<p>is a drum machine written in pure Ruby. Feed it a song notated in YAML, and it will produce a Wave file possessing impeccable timing and feel. Here is an example song:</p>
 		<p><pre><code>Song:
   Tempo: 120
   Structure:
@@ -61,7 +61,7 @@ Chorus:
   - hh_closed.wav: X.X.X.X.X.X.X...
   - hh_open.wav:   ..............X.
   - ride.wav:      X...............</code></pre></p>
-		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). If the Wave file you want to use is not in the current working directory, be sure to include the full path. Track lines must be indented properly and start with a dash.</p>
+		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). You can either use a relative or absolute path. Relative paths are from the path of the song file. Track lines must be indented properly and start with a dash.</p>
 		<p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a "rest" between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
 		<p>As a final note, patterns and the song header can come in any order. If you want to include the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
 	</div>

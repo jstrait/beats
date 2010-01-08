@@ -23,6 +23,16 @@ body
 	line-height: 72px;
 	margin: 0px;
 	color: #00b12e;
+	
+	background: url(logo.png) center left no-repeat;
+	text-indent: -5000px;
+	height: 72px;
+	outline: 0px;
+	
+	/* Following added to fix IE bug with text-indent property */
+	font-size: 0px;
+	display: block;
+	line-height: 0px;
 }
 
 .content-box h2
