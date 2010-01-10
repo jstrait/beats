@@ -74,6 +74,11 @@ code
 	font-weight: bold;
 }
 
+li
+{
+	list-style-type: square;
+}
+
 div#about
 {
 	text-align: center;
