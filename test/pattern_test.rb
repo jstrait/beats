@@ -112,28 +112,40 @@ class PatternTest < Test::Unit::TestCase
       assert_equal(primary[name].length, test_patterns[1].sample_length(tick_sample_length))
     }
     overflow = track_samples[:overflow]
+    longest_overflow = find_longest_overflow(overflow)
     overflow.keys.each{|name|
       assert_equal(overflow[name].class, Array)
-      # Change to verify that longest overflow == full_sample_length - primary_sample_length
-      #assert_equal(overflow[name].length, test_patterns[1].sample_length_with_overflow(tick_sample_length) - test_patterns[1].sample_length(tick_sample_length))
+      #assert_lessthan(overflow[name].length, test_patterns[1].sample_length_with_overflow(tick_sample_length) - test_patterns[1].sample_length(tick_sample_length))
     }
+    assert_equal(overflow[longest_overflow].length, test_patterns[1].sample_length_with_overflow(tick_sample_length) - test_patterns[1].sample_length(tick_sample_length))
 
     track_samples = test_patterns[2].sample_data(tick_sample_length, 1, 3, {}, true)
     assert_equal(track_samples.class, Hash)
     #assert_equal(track_samples.keys.sort, ["bass", "hihat", "snare"])
     primary = track_samples[:primary]
     primary.keys.each{|name|
-      #assert_equal(primary[name].length, test_patterns[2].sample_length(tick_sample_length))
+      assert_equal(primary[name].length, test_patterns[2].sample_length(tick_sample_length))
     }
     overflow = track_samples[:overflow]
+    longest_overflow = find_longest_overflow(overflow)
     overflow.keys.each{|name|
       assert_equal(overflow[name].class, Array)
-      # Change to verify that longest overflow == full_sample_length - primary_sample_length
-      #assert_equal(overflow[name].length, test_patterns[2].sample_length_with_overflow(tick_sample_length) - test_patterns[1].sample_length(tick_sample_length))
     }
-    track_samples.keys.each{|name|
-      #assert_equal(track_samples[name].length, (tick_sample_length * 4).floor)
-      #assert_equal(track_samples[name].length, test_patterns[2].sample_length(tick_sample_length))
+    assert_equal(overflow[longest_overflow].length, test_patterns[2].sample_length_with_overflow(tick_sample_length) - test_patterns[2].sample_length(tick_sample_length))
+    primary.keys.each{|name|
+      assert_equal(primary[name].length, (tick_sample_length * 4).floor)
+      assert_equal(primary[name].length, test_patterns[2].sample_length(tick_sample_length))
     }
+  end
+  
+  def find_longest_overflow(overflow)
+    longest_overflow = overflow.keys.first
+    overflow.keys.each {|name|
+      if(overflow[name].length > overflow[longest_overflow].length)
+        longest_overflow = name
+      end
+    }
+    
+    return longest_overflow
   end
 end
