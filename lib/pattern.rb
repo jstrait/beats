@@ -6,13 +6,24 @@ class Pattern
   end
   
   def track(name, wave_data, pattern)
-    #begin
-      new_track = Track.new(name, wave_data, pattern)    
-    #rescue => detail
-    #  raise StandardError, "Error in pattern #{@name}: #{detail.message}"
-    #end
-    
+    new_track = Track.new(name, wave_data, pattern)        
     @tracks[new_track.name] = new_track
+    
+    # If the new track is longer than any of the previously added tracks,
+    # pad the other tracks with trailing . to make them all the same length.
+    # Necessary to prevent incorrect overflow calculations for tracks.
+    longest_track_length = 0
+    @tracks.values.each {|track|
+      if(track.pattern.length > longest_track_length)
+        longest_track_length = track.pattern.length
+      end
+    }
+    @tracks.values.each {|track|
+      if(track.pattern.length < longest_track_length)
+        track.pattern += "." * (longest_track_length - track.pattern.length)
+      end
+    }
+    
     return new_track
   end
   

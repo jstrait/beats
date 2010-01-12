@@ -5,31 +5,9 @@ class Track
   def initialize(name, wave_data, pattern)
     @wave_data = wave_data
     @name = name
-    @pattern = pattern
     @sample_data = nil
     @overflow = nil
-    
-    beats = []
-    
-    beat_length = 0
-    #pattern.each_char{|ch|
-    pattern.each_byte{|ch|
-      ch = ch.chr
-      if ch == BEAT
-        beats << beat_length
-        beat_length = 1
-      else
-        beat_length += 1
-      end
-    }
-    
-    if(beat_length > 0)
-      beats << beat_length
-    end
-    if(beats == [])
-      beats = [0]
-    end
-    @beats = beats
+    self.pattern = pattern
   end
   
   def sample_length(tick_sample_length)
@@ -106,5 +84,33 @@ class Track
     return {:primary => primary_sample_data, :overflow => @overflow}
   end
   
-  attr_accessor :name, :wave_data, :pattern
+  attr_accessor :name, :wave_data
+  attr_reader :pattern
+  
+private
+
+  def pattern=(pattern)
+    @pattern = pattern
+    beats = []
+    
+    beat_length = 0
+    #pattern.each_char{|ch|
+    pattern.each_byte{|ch|
+      ch = ch.chr
+      if ch == BEAT
+        beats << beat_length
+        beat_length = 1
+      else
+        beat_length += 1
+      end
+    }
+    
+    if(beat_length > 0)
+      beats << beat_length
+    end
+    if(beats == [])
+      beats = [0]
+    end
+    @beats = beats
+  end
 end
