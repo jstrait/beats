@@ -9,6 +9,8 @@ require "optparse"
 require "yaml"
 require "wavefile"
 
+SAMPLE_RATE = 44100
+
 def parse_options
   options = {:split => false, :pattern => ""}
 
@@ -32,7 +34,7 @@ def parse_options
 end
 
 def save_wave_file(file_name, num_channels, bits_per_sample, sample_data)
-  output = WaveFile.new(num_channels, 44100, bits_per_sample)
+  output = WaveFile.new(num_channels, SAMPLE_RATE, bits_per_sample)
   output.sample_data = sample_data
   output.save(file_name)
 end
@@ -42,6 +44,10 @@ start = Time.now
 options = parse_options
 input_file = ARGV[0]
 output_file = ARGV[1]
+
+if(output_file == nil)
+  output_file = File.basename(input_file, File.extname(input_file)) + ".wav"
+end
 
 begin
   parse_start_time = Time.now
