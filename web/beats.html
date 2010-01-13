@@ -30,22 +30,29 @@ Verse:
   - ride.wav:      X...............
 
 Chorus:
-  - bass.wav:      X...X...XX..X.XXX...X...X...X...
-  - snare.wav:     ....X.......X.......X......X.XXX
-  - hh_closed.wav: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  - ride.wav:      ........X.......X.......X......X</pre></code></p>
+  - bass.wav:      X...X...XX..X.XX
+  - snare.wav:     ....X.......X...
+  - hh_closed.wav: XXXXXXXXXXXXXXXX
+  - ride.wav:      ........X.......</pre></code></p>
 
 		<p class="last">And here is what it sounds like after getting the Beats treatment: <a href="#">beat.wav</a>. What a glorious groove!</p>
 	</div>
 	<div class="content-box">
-		<h2>Installation and Usage</h2>
+		<h2>Installation</h2>
+		<p>BEATS is packaged as a Ruby gem, hosted at <a href="http://gemcutter.org">gemcutter.org</a>. To install BEATS, run the following command:
+		<p><code><pre class="single-line">sudo gem install beats</pre></code></p>
+		<p>The BEATS source code is hosted at GitHub: <a href="http://github.com/jstrait/beats">http://github.com/jstrait/beats</a></p>
+	</div>
+	<div class="content-box">
+		<h2>How to Run</h2>
 		<p>BEATS runs from the command-line. The syntax:</p>
-		<p><code><pre>beats [options] INPUT [OUTPUT]</pre></code></p>
+		<p><code><pre class="single-line">beats [options] INPUT [OUTPUT]</pre></code></p>
 		<p><code>INPUT</code> should be the YAML file for your song. <code>OUTPUT</code> should be the <code>*.wav</code> file where BEATS will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>
 		<p>BEATS supports two command-line options, which can be used together or separately:</p>
 		<p><code><pre>-s, --split
     Save each track to a separate Wave file,
     instead of combining them into one.
+
 
 -p, --pattern
     Only generate a single pattern (such as a

@@ -67,6 +67,11 @@ pre
 	letter-spacing: 0.45em;
 }
 
+pre.single-line
+{
+	line-height: 36px;
+}
+
 code
 {
 	margin: 0px;
