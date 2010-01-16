@@ -128,7 +128,7 @@ class TrackTest < Test::Unit::TestCase
     sample_data = track.sample_data(tick_sample_length)
     
     assert_equal(sample_data.class, Hash)
-    #assert_equal(sample_data.keys.sort, [:overflow, :primary])
+    assert_equal(sample_data.keys.map{|key| key.to_s}.sort, ["overflow", "primary"])
     assert_equal(sample_data[:primary].length, expected_primary.length)
     assert_equal(sample_data[:overflow].length, expected_overflow.length)
     assert_equal(sample_data[:primary], expected_primary)

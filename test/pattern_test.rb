@@ -72,7 +72,7 @@ class PatternTest < Test::Unit::TestCase
   def test_sample_data
     tick_sample_lengths = [
       13860.0,
-      (SAMPLE_RATE * SECONDS_IN_MINUTE) / 200 / 4,   # 3006.81818181818
+      (SAMPLE_RATE * SECONDS_IN_MINUTE) / 200 / 4,   # 3307.50
       (SAMPLE_RATE * SECONDS_IN_MINUTE) / 99 / 4     # 6681.81818181818
     ]
 
@@ -87,7 +87,7 @@ class PatternTest < Test::Unit::TestCase
     test_patterns.each{|test_pattern|
       sample_data = test_pattern.sample_data(tick_sample_length, 1, test_pattern.tracks.length, {})
       assert_equal(sample_data.class, Hash)
-      #assert_equal(sample_data.keys.sort, [:overflow, :primary])
+      assert_equal(sample_data.keys.map{|key| key.to_s}.sort, ["overflow", "primary"])
       
       primary_sample_length = test_pattern.sample_length(tick_sample_length)
       full_sample_length = test_pattern.sample_length_with_overflow(tick_sample_length)
@@ -96,17 +96,18 @@ class PatternTest < Test::Unit::TestCase
       sample_data[:overflow].values.each {|track_overflow|
         assert_equal(track_overflow.class, Array)
       }
-      # Add test to verify that longest overflow == full_sample_length - primary_sample_length
+      # To do: add test to verify that longest overflow == full_sample_length - primary_sample_length
     }
 
     #Split
     track_samples = test_patterns[0].sample_data(tick_sample_length, 1, 0, {}, true)
     assert_equal(track_samples.class, Hash)
-    #assert_equal(track_samples.keys.sort, [:overflow, :primary])
+    assert_equal(track_samples.keys.map{|key| key.to_s}.sort, ["overflow", "primary"])
 
     track_samples = test_patterns[1].sample_data(tick_sample_length, 1, 4, {}, true)
     assert_equal(track_samples.class, Hash)
-    #assert_equal(track_samples.keys.sort, ["bass", "cymbal", "hihat", "snare"])
+    assert_equal(track_samples[:primary].keys.map{|key| key.to_s}.sort,
+                 ["bass.wav", "hh_closed.wav", "hh_open.wav", "snare.wav"])
     primary = track_samples[:primary]
     primary.keys.each{|name|
       assert_equal(primary[name].length, test_patterns[1].sample_length(tick_sample_length))
@@ -121,7 +122,8 @@ class PatternTest < Test::Unit::TestCase
 
     track_samples = test_patterns[2].sample_data(tick_sample_length, 1, 3, {}, true)
     assert_equal(track_samples.class, Hash)
-    #assert_equal(track_samples.keys.sort, ["bass", "hihat", "snare"])
+    assert_equal(track_samples[:primary].keys.map{|key| key.to_s}.sort,
+                 ["bass.wav", "hh_closed.wav", "snare.wav"])
     primary = track_samples[:primary]
     primary.keys.each{|name|
       assert_equal(primary[name].length, test_patterns[2].sample_length(tick_sample_length))

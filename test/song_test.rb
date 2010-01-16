@@ -87,7 +87,7 @@ Bridge:
     assert_equal(test_songs[:from_valid_yaml_string].structure, [:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus, :chorus, :chorus, :bridge, :chorus, :chorus, :chorus, :chorus])
     assert_equal(test_songs[:from_valid_yaml_string].tempo, 99)
     assert_equal(test_songs[:from_valid_yaml_string].tick_sample_length, (Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / 99 / 4.0)
-    #assert_equal(test_songs[:from_valid_yaml_string].patterns.keys.sort, [:bridge, :chorus, :verse])
+    assert_equal(test_songs[:from_valid_yaml_string].patterns.keys.map{|key| key.to_s}.sort, ["bridge", "chorus", "verse"])
     assert_equal(test_songs[:from_valid_yaml_string].patterns[:verse].tracks.length, 4)
     assert_equal(test_songs[:from_valid_yaml_string].patterns[:chorus].tracks.length, 5)
     assert_equal(test_songs[:from_valid_yaml_string].patterns[:bridge].tracks.length, 1)
