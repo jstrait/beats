@@ -39,15 +39,16 @@ Chorus:
 	</div>
 	<div class="content-box">
 		<h2>Installation</h2>
-		<p>BEATS is packaged as a Ruby gem, hosted at <a href="http://gemcutter.org">gemcutter.org</a>. To install BEATS, run the following command:
+		<p>BEATS is packaged as a Ruby gem, and hosted at <a href="http://gemcutter.org">gemcutter.org</a>. To install BEATS, run the following command:
 		<p><code><pre class="single-line">sudo gem install beats</pre></code></p>
 		<p>The BEATS source code is hosted at GitHub: <a href="http://github.com/jstrait/beats">http://github.com/jstrait/beats</a></p>
+		<p>BEATS is not terribly useful unless you have drum sounds to use with it. Check out the section <a href="#">Where To Find Drum Sounds</a> at the end of this page for a zip file containing free sounds, as well as links to  other sites that have free sounds for download.</p>
 	</div>
 	<div class="content-box">
 		<h2>How to Run</h2>
 		<p>BEATS runs from the command-line. The syntax:</p>
 		<p><code><pre class="single-line">beats [options] INPUT [OUTPUT]</pre></code></p>
-		<p><code>INPUT</code> should be the YAML file for your song. <code>OUTPUT</code> should be the <code>*.wav</code> file where BEATS will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>
+		<p><code>INPUT</code> is the YAML file for your song. <code>OUTPUT</code> is the <code>*.wav</code> file where BEATS will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>
 		<p>BEATS supports two command-line options, which can be used together or separately:</p>
 		<p><code><pre>-s, --split
     Save each track to a separate Wave file,
@@ -57,13 +58,14 @@ Chorus:
 -p, --pattern
     Only generate a single pattern (such as a
     verse or chorus), instead of the entire song.</pre></code></p>
-	<p>Now read on for more about the BEATS file format.</p>
+	<p>Pretty fancy!</p>
 	</div>
 	<div class="content-box">
 		<h2>Creating Songs</h2>
 		<p>Songs are notated using <a href="#">YAML</a>, so each song file is just a plain text file you can edit in TextEdit, NotePad, or whatever. The extension doesn't matter.</p>
 		<p>Each song is divided into one or more patterns. A pattern represents a section of the song, such as a verse, chorus, or bridge. Each pattern in turn has one or more tracks. Each track represents an individual sound, such as a bass drum, snare, or hi-hat.</p>
-		<p>Songs should start with a header indicating the tempo and the order that the patterns should be played. Patterns can optionally be repeated one or more times. For example, adding "x2" after the pattern name means to play it twice. Since this is YAML, lines must be indented correctly. Also, each pattern in the structure should be preceded by a dash. Here is an example header:</p>
+		<p>Songs should start with a header indicating the tempo, and the structure of the song. Should the verse be played four times followed by the chorus two times then a bridge? YOU decide.</p>
+		<p>Here's an example header. Since this is YAML, lines must be indented correctly. Also, each pattern in the structure should be preceded by a dash.</p>
 		<p><pre><code>Song:
   Tempo: 120
   Structure:
@@ -79,13 +81,14 @@ Chorus:
   - hh_closed.wav: X.X.X.X.X.X.X...
   - hh_open.wav:   ..............X.
   - ride.wav:      X...............</code></pre></p>
-		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). You can either use a relative or absolute path. Relative paths are from the path of the song file. Track lines must be indented properly and start with a dash.</p>
+		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). You can either use a relative or absolute path; relative paths are relative from the path of the song file. Track lines must be indented properly and start with a dash (once again, due to this being YAML).</p>
 		<p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a "rest" between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
-		<p>As a final note, patterns and the song header can come in any order. If you want to include the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
+		<p>As a final note, patterns and the song header can come in any order. If you want to put the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
 	</div>
 	<div class="content-box">
 		<h2>Where To Find Drum Sounds</h2>
-		<p>BEATS comes with 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a Casio SA-20 keyboard that the author got when he was 8 years old.</p>
+		<p>Looking for some drum sounds? Well, here are 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a Casio SA-20 keyboard that the author got when he was 8 years old. Free of charge, as a public service.</p>
+		<p><a href="casio_sa20_drum_sounds.zip">casio_sa20_drum_sounds.zip</a></p>
 		<p>In case that's not enough, here are some sites that have free drum samples available for download:</p>
 		<ul>
 			<li><a href="#">Link #1</a></li>
