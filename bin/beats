@@ -24,7 +24,7 @@ def parse_options
       options[:split] = true
     end
 
-    opts.on('-p', '--pattern NAME', "Output a single pattern instead of the whole song" ) do|p|
+    opts.on('-p', '--pattern PATTERN_NAME', "Output a single pattern instead of the whole song" ) do|p|
       options[:pattern] = p
     end
   end
@@ -44,6 +44,11 @@ start = Time.now
 options = parse_options
 input_file = ARGV[0]
 output_file = ARGV[1]
+
+if(input_file == nil)
+  ARGV[0] = '-h'
+  parse_options()
+end
 
 if(output_file == nil)
   output_file = File.basename(input_file, File.extname(input_file)) + ".wav"
@@ -69,17 +74,21 @@ begin
     save_wave_file(output_file, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data)
   end
   #puts "Time to write wave file(s): #{Time.now - wave_write_start}"
+  
+  puts "  #{sample_data.length} samples of precision-milled rhythm produced in #{Time.now - start} seconds."
+rescue Errno::ENOENT => detail
+  puts ""
+  puts "Song file '#{input_file}' not found."
+  puts ""
 rescue ArgumentError => detail
   puts ""
-  puts "Song file #{input_file} has an error:"
+  puts "Song file '#{input_file}' has an error:"
   puts "  Syntax error in YAML file:"
   puts "  #{detail}"
   puts ""
 rescue SongParseError => detail
   puts ""
-  puts "Song file #{input_file} has an error:"
+  puts "Song file '#{input_file}' has an error:"
   puts "  #{detail}"
   puts ""
 end
-
-puts "  #{sample_data.length} samples of precision-milled rhythm produced in #{Time.now - start} seconds."
