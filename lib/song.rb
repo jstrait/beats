@@ -157,6 +157,10 @@ private
     pattern_list = header_data["structure"]
     structure = []
     pattern_list.each{|pattern_item|
+      if(pattern_item.class == String)
+        pattern_item = {pattern_item => "x1"}
+      end
+      
       pattern_name = pattern_item.keys.first
       pattern_name_sym = pattern_name.downcase.to_sym
       

@@ -27,6 +27,16 @@ class SongTest < Test::Unit::TestCase
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
     verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
     
+    repeats_not_specified_yaml = "
+Song:
+  Tempo: 100
+  Structure:
+    - Verse
+    
+Verse:
+  - sounds/bass.wav: X"
+    test_songs[:repeats_not_specified] = MockSong.new(File.dirname(__FILE__) + "/..", repeats_not_specified_yaml)
+    
     test_songs[:from_code] = MockSong.new(File.dirname(__FILE__) + "/..")
     verse = test_songs[:from_code].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
@@ -132,6 +142,7 @@ Bridge:
     assert_equal(test_songs[:blank].total_tracks, 0)
     assert_equal(test_songs[:no_structure].total_tracks, 3)
     assert_equal(test_songs[:from_code].total_tracks, 3)
+    assert_equal(test_songs[:repeats_not_specified].total_tracks, 1)
     assert_equal(test_songs[:from_valid_yaml_string].total_tracks, 5)
   end
   
@@ -149,6 +160,8 @@ Bridge:
     assert_equal(test_songs[:from_code].sample_length,
                             ((test_songs[:from_code].tick_sample_length * 16).floor * 2) +
                             ((test_songs[:from_code].tick_sample_length * 8).floor * 3))
+    assert_equal(test_songs[:repeats_not_specified].sample_length,
+                            test_songs[:repeats_not_specified].tick_sample_length)
   end
   
   def test_sample_length_with_overflow
@@ -159,7 +172,9 @@ Bridge:
     snare_overflow =
       (test_songs[:from_code].kit.get_sample_data("snare.wav").length -
        test_songs[:from_code].tick_sample_length).ceil
-    assert_equal(test_songs[:from_code].sample_length_with_overflow, test_songs[:from_code].sample_length + snare_overflow)
+    assert_equal(test_songs[:from_code].sample_length_with_overflow, test_songs[:from_code].sample_length + snare_overflow)    
+    assert_equal(test_songs[:repeats_not_specified].sample_length_with_overflow,
+                 test_songs[:repeats_not_specified].tick_sample_length)
     snare_overflow =
       (test_songs[:from_valid_yaml_string].kit.get_sample_data("sounds/snare.wav").length -
        test_songs[:from_valid_yaml_string].tick_sample_length).ceil
@@ -178,6 +193,8 @@ Bridge:
     }
     assert_equal(test_songs[:from_code].sample_data("verse", false).class, Array)
     assert_equal(test_songs[:from_code].sample_data("verse", true).class, Hash)
+    assert_equal(test_songs[:repeats_not_specified].sample_data("verse", false).class, Array)
+    assert_equal(test_songs[:repeats_not_specified].sample_data("verse", true).class, Hash)
     assert_equal(test_songs[:from_valid_yaml_string].sample_data("verse", false).class, Array)
     assert_equal(test_songs[:from_valid_yaml_string].sample_data("verse", true).class, Hash)
   end
