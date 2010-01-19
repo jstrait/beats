@@ -17,23 +17,23 @@
 		<p><pre><code>Song:
   Tempo: 120
   Structure:
-    - Verse:   x4
-    - Chorus:  x2
-    - Verse:   x4
-    - Chorus:  x2
+    - Verse:   x2
+    - Chorus:  x4
+    - Verse:   x2
+    - Chorus:  x4
 
 Verse:
-  - bass.wav:      X.......X.......
-  - snare.wav:     ....X.......X...
-  - hh_closed.wav: X.X.X.X.X.X.X...
-  - hh_open.wav:   ..............X.
-  - ride.wav:      X...............
+  - bass.wav:       X...X...X...X...
+  - snare.wav:      ..............X.
+  - hh_closed.wav:  X.XXX.XXX.X.X.X.
+  - agogo_high.wav: ..............XX
 
 Chorus:
-  - bass.wav:      X...X...XX..X.XX
-  - snare.wav:     ....X.......X...
-  - hh_closed.wav: XXXXXXXXXXXXXXXX
-  - ride.wav:      ........X.......</pre></code></p>
+  - bass.wav:       X...X...X...X...
+  - snare.wav:      ....X.......X...
+  - hh_closed.wav:  X.XXX.XXX.XX..X.
+  - tom4.wav:       ...........X....
+  - tom2.wav:       ..............X.</pre></code></p>
 
 		<p class="last">And here is what it sounds like after getting the BEATS treatment: <a href="#">beat.wav</a>. What a glorious groove!</p>
 	</div>
@@ -42,7 +42,7 @@ Chorus:
 		<p>BEATS is packaged as a Ruby gem, and hosted at <a href="http://gemcutter.org/gems/wavefile/">gemcutter.org</a>. To install BEATS, run the following command:
 		<p><code><pre class="single-line">sudo gem install beats</pre></code></p>
 		<p>The BEATS source code is hosted at GitHub: <a href="http://github.com/jstrait/beats">http://github.com/jstrait/beats</a></p>
-		<p>BEATS is not terribly useful unless you have drum sounds to use with it. Check out the section <a href="#">Free Drum Sounds</a> at the end of this page for a zip file containing free sounds. There are also various sites on the Internet that have free sounds for download.</p>
+		<p>BEATS is not terribly useful unless you have drum sounds to use with it. Check out the section <a href="#free_drum_sounds">Free Drum Sounds</a> at the end of this page for a zip file containing some free sounds. There are also various sites on the Internet that have free sounds for download.</p>
 	</div>
 	<div class="content-box">
 		<h2>How to Run</h2>
@@ -58,11 +58,11 @@ Chorus:
 -p, --pattern PATTERN_NAME
     Only generate a single pattern (such as a
     verse or chorus), instead of the entire song.</pre></code></p>
-	<p>Finally, a note about Ruby 1.8 vs. 1.9. BEATS runs on both versions, but is more than 2x faster on 1.9. Therefore, it's highly recommended that you use 1.9 if possible. BEATS will run using whichever <code>ruby</code> command is in your environment.</p>
+	<p>Finally, a note about Ruby 1.8 vs. 1.9. BEATS runs on both versions, but is more than 2x faster on 1.9. Therefore, it's highly recommended that you use 1.9 if possible. BEATS will run using whichever <code>ruby</code> command <code>/usr/bin/env</code> points to.</p>
 	</div>
 	<div class="content-box">
 		<h2>Creating Songs</h2>
-		<p>Songs are notated using <a href="#">YAML</a>, so each song file is just a plain text file you can edit in TextEdit, NotePad, or whatever. The extension doesn't matter.</p>
+		<p>Songs are notated using <a href="http://en.wikipedia.org/wiki/YAML">YAML</a>, so each song file is just a plain text file you can edit in TextEdit, NotePad, or whatever. The extension doesn't matter.</p>
 		<p>Each song is divided into one or more patterns. A pattern represents a section of the song, such as a verse, chorus, or bridge. Each pattern in turn has one or more tracks. Each track represents an individual sound, such as a bass drum, snare, or hi-hat.</p>
 		<p>Songs should start with a header indicating the tempo, and the structure of the song. Should the verse be played four times followed by the chorus two times then a bridge? YOU decide.</p>
 		<p>Here's an example header. Since this is YAML, lines must be indented correctly. Also, each pattern in the structure should be preceded by a dash.</p>
@@ -86,7 +86,7 @@ Chorus:
 		<p>As a final note, patterns and the song header can come in any order. If you want to put the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
 	</div>
 	<div class="content-box">
-		<h2>Free Drum Sounds</h2>
+		<h2 id="free_drum_sounds">Free Drum Sounds</h2>
 		<p>Looking for some drum sounds? Well, here are 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a Casio SA-20 keyboard that the author got when he was 8 years old. Free of charge, as a public service.</p>
 		<p><a href="casio_sa20_drum_sounds.zip">casio_sa20_drum_sounds.zip</a></p>
 	</div>
