@@ -37,6 +37,7 @@ def save_wave_file(file_name, num_channels, bits_per_sample, sample_data)
   output = WaveFile.new(num_channels, SAMPLE_RATE, bits_per_sample)
   output.sample_data = sample_data
   output.save(file_name)
+  return output.duration
 end
 
 start = Time.now
@@ -68,14 +69,16 @@ begin
       extension = File.extname(output_file)
       file_name = File.basename(output_file, extension) + "-" + File.basename(track_name.to_s, extension) + extension
       
-      save_wave_file(file_name, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data[track_name])
+      duration = save_wave_file(file_name,
+                                song_from_file.num_channels,
+                                song_from_file.bits_per_sample,
+                                sample_data[track_name])
     }
   else
-    save_wave_file(output_file, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data)
+    duration = save_wave_file(output_file, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data)
   end
-  #puts "Time to write wave file(s): #{Time.now - wave_write_start}"
   
-  puts "  #{sample_data.length} samples of precision-milled rhythm produced in #{Time.now - start} seconds."
+  puts "  #{duration[:minutes]}:#{duration[:seconds]} of audio produced in #{Time.now - start} seconds."
 rescue Errno::ENOENT => detail
   puts ""
   puts "Song file '#{input_file}' not found."
