@@ -3,20 +3,20 @@
 Song:
   Tempo: 120
   Structure:
-    - Verse:   x4
-    - Chorus:  x2
-    - Verse:   x4
-    - Chorus:  x2
+    - Verse:   x2
+    - Chorus:  x4
+    - Verse:   x2
+    - Chorus:  x4
 
 Verse:
-  - sounds/bass.wav:      X.......X.......
-  - sounds/snare.wav:     ....X.......X...
-  - sounds/hh_closed.wav: X.X.X.X.X.X.X...
-  - sounds/hh_open.wav:   ..............X.
-  - sounds/ride.wav:      X...............
+  - sounds/bass.wav:       X...X...X...X...
+  - sounds/snare.wav:      ..............X.
+  - sounds/hh_closed.wav:  X.XXX.XXX.X.X.X.
+  - sounds/agogo_high.wav: ..............XX
 
 Chorus:
-  - sounds/bass.wav:      X...X...XX..X.XXX...X...X...X...
-  - sounds/snare.wav:     ....X.......X.......X......X.XXX
-  - sounds/hh_closed.wav: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  - sounds/ride.wav:      ........X.......X.......X......X
+  - sounds/bass.wav:      X...X...X...X...
+  - sounds/snare.wav:     ....X.......X...
+  - sounds/hh_closed.wav: X.XXX.XXX.XX..X.
+  - sounds/tom4.wav:      ...........X....
+  - sounds/tom2.wav:      ..............X.
