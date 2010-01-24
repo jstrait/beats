@@ -3,7 +3,7 @@ body
 	background: #fff url('dot.png');
 	margin: 0px;
 	font-size: 24px;
-	line-height: 36px;
+	line-height: 1.5em;
 	font-family: eurostile, "helvetica neue", arial, sans-serif;
 	color: #535353;
 }
@@ -61,9 +61,9 @@ body
 
 pre
 {
-	margin: 0px;
+	margin: 0.0em 0.0em 3.0em 0.0em;
 	font-size: 12px;
-	line-height: 18px;
+	line-height: 1.5em;
 	letter-spacing: 0.45em;
 }
 
@@ -72,11 +72,17 @@ pre.single-line
 	line-height: 36px;
 }
 
+pre code
+{
+	line-height: 16px;
+}
+
 code
 {
 	margin: 0px;
 	font-family: menlo, consolas, monaco, courier, monospace;
-	font-weight: bold;
+	font-weight: normal;
+	line-height: 16px;
 }
 
 li
