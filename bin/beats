@@ -62,7 +62,7 @@ begin
   generate_samples_start = Time.now
   sample_data = song_from_file.sample_data(options[:pattern], options[:split])
   #puts "Time to generate sample data: #{Time.now - generate_samples_start}"
-  
+
   wave_write_start = Time.now
   if(options[:split])
     sample_data.keys.each {|track_name|
@@ -78,7 +78,7 @@ begin
     duration = save_wave_file(output_file, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data)
   end
   
-  puts "  #{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio produced in #{Time.now - start} seconds."
+  puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio produced in #{Time.now - start} seconds."
 rescue Errno::ENOENT => detail
   puts ""
   puts "Song file '#{input_file}' not found."
