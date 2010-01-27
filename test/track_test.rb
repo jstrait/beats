@@ -124,15 +124,23 @@ class TrackTest < Test::Unit::TestCase
     assert_equal(test_tracks[5].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
   end
   
-  def helper_test_sample_data(track, tick_sample_length, expected_primary, expected_overflow)
-    sample_data = track.sample_data(tick_sample_length)
+  def test_sample_data_overflow
+    track = generate_test_data()[2]
+    tick_sample_length = W.sample_data.length   # 6179.0
     
-    assert_equal(sample_data.class, Hash)
-    assert_equal(sample_data.keys.map{|key| key.to_s}.sort, ["overflow", "primary"])
-    assert_equal(sample_data[:primary].length, expected_primary.length)
-    assert_equal(sample_data[:overflow].length, expected_overflow.length)
-    assert_equal(sample_data[:primary], expected_primary)
-    assert_equal(sample_data[:overflow], expected_overflow)
+    overflow = W.sample_data[(W.sample_data.length / 2)..W.sample_data.length]
+    expected_sample_data = zeroes(tick_sample_length * 3) + W.sample_data
+    expected_sample_data[0...overflow.length] = overflow
+    actual_sample_data = track.sample_data(tick_sample_length, overflow)
+    assert_equal(actual_sample_data[:primary], expected_sample_data)
+
+    # Call sample_data() again with different overflow, to verify that cached
+    # sample data only contains the primary sample data.
+    overflow = W.sample_data[0..(W.sample_data.length / 2)]
+    expected_sample_data = zeroes(tick_sample_length * 3) + W.sample_data
+    expected_sample_data[0...overflow.length] = overflow
+    actual_sample_data = track.sample_data(tick_sample_length, overflow)
+    assert_equal(actual_sample_data[:primary], expected_sample_data)
   end
   
   def test_sample_data
@@ -174,6 +182,17 @@ class TrackTest < Test::Unit::TestCase
                             sample_data + zeroes((tick_sample_length * 2) - sample_data.length + 1),
                             [])
     helper_test_sample_data(test_tracks[4], tick_sample_length, zeroes(tick_sample_length * 4), [])
+  end
+  
+  def helper_test_sample_data(track, tick_sample_length, expected_primary, expected_overflow)
+    sample_data = track.sample_data(tick_sample_length)
+    
+    assert_equal(sample_data.class, Hash)
+    assert_equal(sample_data.keys.map{|key| key.to_s}.sort, ["overflow", "primary"])
+    assert_equal(sample_data[:primary].length, expected_primary.length)
+    assert_equal(sample_data[:overflow].length, expected_overflow.length)
+    assert_equal(sample_data[:primary], expected_primary)
+    assert_equal(sample_data[:overflow], expected_overflow)
   end
   
 private
