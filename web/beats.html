@@ -38,10 +38,11 @@ Chorus:
 	</div>
 	<div class="content-box">
 		<h2>Installation</h2>
-		<p>BEATS is packaged as a Ruby gem, and hosted at <a href="http://gemcutter.org/gems/wavefile/">gemcutter.org</a>. To install BEATS, run the following command:
-		<p><code><pre class="single-line">sudo gem install beats</pre></code></p>
-		<p>BEATS is not terribly useful unless you have drum sounds to use with it. Check out the section <a href="#free_drum_sounds">Free Drum Sounds</a> at the end of this page for a zip file containing some free sounds. There are also various sites on the Internet that have free sounds for download.</p>
-		<p>The BEATS source code is hosted at GitHub: <a href="http://github.com/jstrait/beats">http://github.com/jstrait/beats</a></p>
+		<p>The plan is that BEATS will soon be packaged as a Ruby gem and hosted at <a href="http://gemcutter.org/">gemcutter.org</a>. Until then, you can run it by <a href="http://github.com/jstrait/beats">downloading the code from GitHub</a>.</p>
+		<p>Beforehand though, you'll need to install the <a href="http://github.com/jstrait/wavefile">WaveFile gem</a>:</p>
+		<p><code><pre class="single-line">sudo gem install wavefile</pre></code></p>
+		<p>BEATS is not terribly useful unless you have drum sounds to use with it. As a public service, here are 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a <a href="http://images.gittigidiyor.com/1882/Casio-SA-20-Tone-Bank-Elektronik-Klavye__18821134_0.jpg">Casio SA-20 keyboard</a> that the author got when he was 8 years old. Free of charge.</p>
+		<p><a href="casio_sa20_drum_sounds.zip">casio_sa20_drum_sounds.zip</a></p>
 	</div>
 	<div class="content-box">
 		<h2>How to Run</h2>
@@ -83,11 +84,6 @@ Chorus:
 		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). You can either use a relative or absolute path; relative paths are relative from the path of the song file. Track lines must be indented properly and start with a dash (once again, due to this being YAML).</p>
 		<p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a &#8220;rest&#8221; between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
 		<p>As a final note, patterns and the song header can come in any order. If you want to put the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
-	</div>
-	<div class="content-box">
-		<h2 id="free_drum_sounds">Free Drum Sounds</h2>
-		<p>Looking for some drum sounds? Well, here are 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a <a href="http://images.gittigidiyor.com/1882/Casio-SA-20-Tone-Bank-Elektronik-Klavye__18821134_0.jpg">Casio SA-20 keyboard</a> that the author got when he was 8 years old. Free of charge, as a public service.</p>
-		<p><a href="casio_sa20_drum_sounds.zip">casio_sa20_drum_sounds.zip</a></p>
 	</div>
 	<div id="about" class="content-box">
 		<p>Copyright &copy; 2010 <a href="http://www.joelstrait.com">Joel Strait</a></p>
