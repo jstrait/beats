@@ -20,7 +20,7 @@ def parse_options
       exit
     end
 
-    opts.on('-s', '--split', "Save an individual wave file for each track") do
+    opts.on('-s', '--split', "Save each track to an individual wave file") do
       options[:split] = true
     end
 
