@@ -95,4 +95,9 @@ rescue SongParseError => detail
   puts "Song file '#{input_file}' has an error:"
   puts "  #{detail}"
   puts ""
+rescue StandardError => detail
+  puts ""
+  puts "An error occured while generating sound for '#{input_file}':"
+  puts "  #{detail}"
+  puts ""
 end

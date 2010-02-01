@@ -57,12 +57,17 @@ class Song
       end
     else
       pattern = @patterns[pattern_name.downcase.to_sym]
-      primary_sample_length = pattern.sample_length(@tick_sample_length)
       
-      if(split)
-        return sample_data_split_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
+      if(pattern == nil)
+        raise StandardError, "Pattern '#{pattern_name}' not found in song."
       else
-        return sample_data_combined_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
+        primary_sample_length = pattern.sample_length(@tick_sample_length)
+      
+        if(split)
+          return sample_data_split_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
+        else
+          return sample_data_combined_single_pattern(fill_value, num_tracks_in_song, pattern, primary_sample_length)
+        end
       end
     end
   end
@@ -275,7 +280,6 @@ private
     
     # Handle overflow from final pattern
     output_data[offset...output_data.length] = merge_overflow(overflow, num_tracks_in_song)
-
     return output_data
   end
   
