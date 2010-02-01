@@ -65,6 +65,7 @@ begin
 
   wave_write_start = Time.now
   if(options[:split])
+    duration = nil
     sample_data.keys.each {|track_name|
       extension = File.extname(output_file)
       file_name = File.basename(output_file, extension) + "-" + File.basename(track_name.to_s, extension) + extension
