@@ -9,7 +9,7 @@ require "optparse"
 require "yaml"
 require "wavefile"
 
-VERSION = "1.0.0-beta"
+BEATS_VERSION = "1.0.0-beta"
 SAMPLE_RATE = 44100
 
 def parse_options
@@ -25,7 +25,7 @@ def parse_options
     end
     
     opts.on('-v', '--version', "Display version number and exit") do
-      puts "BEATS v#{VERSION}"
+      puts "BEATS v#{BEATS_VERSION}"
       exit
     end
     
