@@ -9,23 +9,29 @@ require "optparse"
 require "yaml"
 require "wavefile"
 
+VERSION = "1.0.0-beta"
 SAMPLE_RATE = 44100
 
 def parse_options
   options = {:split => false, :pattern => ""}
 
   optparse = OptionParser.new do |opts|
-    opts.on( '-h', '--help', 'Display this screen' ) do
-      puts opts
-      exit
-    end
-
     opts.on('-s', '--split', "Save each track to an individual wave file") do
       options[:split] = true
     end
 
-    opts.on('-p', '--pattern PATTERN_NAME', "Output a single pattern instead of the whole song" ) do|p|
+    opts.on('-p', '--pattern PATTERN_NAME', "Output a single pattern instead of the whole song" ) do |p|
       options[:pattern] = p
+    end
+    
+    opts.on('-v', '--version', "Display version number and exit") do
+      puts "BEATS v#{VERSION}"
+      exit
+    end
+    
+    opts.on( '-h', '--help', "Display this screen and exit" ) do
+      puts opts
+      exit
     end
   end
   optparse.parse!
