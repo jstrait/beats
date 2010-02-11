@@ -8,10 +8,10 @@ class PatternTest < Test::Unit::TestCase
 
   def generate_test_data
     kit = Kit.new()
-    kit.add("bass.wav",      "sounds/bass.wav")
-    kit.add("snare.wav",     "sounds/snare.wav")
-    kit.add("hh_closed.wav", "sounds/hh_closed.wav")
-    kit.add("hh_open.wav",   "sounds/hh_open.wav")
+    kit.add("bass.wav",      "test/sounds/bass_mono_8.wav")
+    kit.add("snare.wav",     "test/sounds/snare_mono_8.wav")
+    kit.add("hh_closed.wav", "test/sounds/hh_closed_mono_8.wav")
+    kit.add("hh_open.wav",   "test/sounds/hh_open_mono_8.wav")
     
     test_patterns = []
     

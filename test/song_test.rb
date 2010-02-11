@@ -12,10 +12,10 @@ class SongTest < Test::Unit::TestCase
   
   def generate_test_data
     kit = Kit.new()
-    kit.add("bass.wav",      "sounds/bass.wav")
-    kit.add("snare.wav",     "sounds/snare.wav")
-    kit.add("hh_closed.wav", "sounds/hh_closed.wav")
-    kit.add("ride.wav",      "sounds/ride.wav")
+    kit.add("bass.wav",      "test/sounds/bass_mono_8.wav")
+    kit.add("snare.wav",     "test/sounds/snare_mono_8.wav")
+    kit.add("hh_closed.wav", "test/sounds/hh_closed_mono_8.wav")
+    kit.add("ride.wav",      "test/sounds/ride_mono_8.wav")
     
     test_songs = {}
     
@@ -34,7 +34,7 @@ Song:
     - Verse
     
 Verse:
-  - sounds/bass.wav: X"
+  - test/sounds/bass_mono_8.wav: X"
     test_songs[:repeats_not_specified] = MockSong.new(File.dirname(__FILE__) + "/..", repeats_not_specified_yaml)
     
     overflow_yaml = "
@@ -44,7 +44,7 @@ Song:
     - Verse: x2
 
 Verse:
-  - sounds/snare.wav: ...X"
+  - test/sounds/snare_mono_8.wav: ...X"
     test_songs[:overflow] = MockSong.new(File.dirname(__FILE__) + "/..", overflow_yaml)
     
     test_songs[:from_code] = MockSong.new(File.dirname(__FILE__) + "/..")
@@ -72,22 +72,22 @@ Song:
     - Chorus: x4
 
 Verse:
-  - sounds/bass.wav:      X...X...X...XX..X...X...XX..X...
-  - sounds/snare.wav:     ..X...X...X...X.X...X...X...X...
+  - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X...
+  - test/sounds/snare_mono_8.wav:     ..X...X...X...X.X...X...X...X...
 # Here is a comment
-  - sounds/hh_closed.wav: X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
-  - sounds/hh_open.wav:   X...............X..............X
+  - test/sounds/hh_closed_mono_8.wav: X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+  - test/sounds/hh_open_mono_8.wav:   X...............X..............X
 # Here is another comment
 Chorus:
-  - sounds/bass.wav:      X...X...XXXXXXXXX...X...X...X...
-  - sounds/snare.wav:     ...................X...X...X...X
-  - sounds/hh_closed.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
-  - sounds/hh_open.wav:   ........X.......X.......X.......
-  - sounds/ride.wav:      ....X...................X.......
+  - test/sounds/bass_mono_8.wav:      X...X...XXXXXXXXX...X...X...X...
+  - test/sounds/snare_mono_8.wav:     ...................X...X...X...X
+  - test/sounds/hh_closed_mono_8.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
+  - test/sounds/hh_open_mono_8.wav:   ........X.......X.......X.......
+  - test/sounds/ride_mono_8.wav:      ....X...................X.......
 
 
 Bridge:
-  - sounds/hh_closed.wav: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
+  - test/sounds/hh_closed_mono_8.wav: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
     
     test_songs[:from_valid_yaml_string] = MockSong.new(File.dirname(__FILE__) + "/..", valid_yaml_string)
     
@@ -121,7 +121,7 @@ Bridge:
         - Verse:  x2
 
     Verse:
-      - sounds/bass.wav:      X...X...X...XX..X...X...XX..X..."
+      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
     assert_raise(SongParseError) { song = MockSong.new(File.dirname(__FILE__) + "/..", invalid_tempo_yaml_string) }
     
     invalid_structure_yaml_string = "# Invalid structure song
@@ -132,7 +132,7 @@ Bridge:
         - Chorus: x1
 
     Verse:
-      - sounds/bass.wav:      X...X...X...XX..X...X...XX..X..."
+      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
     assert_raise(SongParseError) { song = MockSong.new(File.dirname(__FILE__) + "/..", invalid_structure_yaml_string) }
     
     invalid_repeats_yaml_string = "    # Invalid structure song
@@ -142,7 +142,7 @@ Bridge:
         - Verse:  x2a
 
     Verse:
-      - sounds/bass.wav:      X...X...X...XX..X...X...XX..X..."
+      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
     assert_raise(SongParseError) { song = MockSong.new(File.dirname(__FILE__) + "/..", invalid_repeats_yaml_string) }
   end
   
@@ -188,13 +188,13 @@ Bridge:
                  test_songs[:repeats_not_specified].tick_sample_length)
     
     snare_overflow =
-      (test_songs[:overflow].kit.get_sample_data("sounds/snare.wav").length -
+      (test_songs[:overflow].kit.get_sample_data("test/sounds/snare_mono_8.wav").length -
        test_songs[:overflow].tick_sample_length).ceil
     assert_equal(test_songs[:overflow].sample_length_with_overflow,
                  (test_songs[:overflow].tick_sample_length * 8) + snare_overflow)
     
     snare_overflow =
-      (test_songs[:from_valid_yaml_string].kit.get_sample_data("sounds/snare.wav").length -
+      (test_songs[:from_valid_yaml_string].kit.get_sample_data("test/sounds/snare_mono_8.wav").length -
        test_songs[:from_valid_yaml_string].tick_sample_length).ceil
     assert_equal(test_songs[:from_valid_yaml_string].sample_length_with_overflow, test_songs[:from_valid_yaml_string].sample_length + snare_overflow)
   end
@@ -215,7 +215,7 @@ Bridge:
       assert_equal(test_songs[key].sample_data("verse", true).class, Hash)
     }
     
-    snare_sample_data = test_songs[:overflow].kit.get_sample_data("sounds/snare.wav")
+    snare_sample_data = test_songs[:overflow].kit.get_sample_data("test/sounds/snare_mono_8.wav")
     expected = [].fill(0, 0, test_songs[:overflow].tick_sample_length * 4)
     expected[0...(snare_sample_data.length)] = snare_sample_data
     expected += snare_sample_data
