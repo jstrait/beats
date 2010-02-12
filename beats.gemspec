@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://beatsdrummachine.com/"
   s.platform = Gem::Platform::RUBY
   s.executables = "beats"
-  s.summary = "A drum machine written in pure Ruby. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel."
+  s.summary = "A drum machine written in pure Ruby. Takes a YAML file, and produces a Wave file."
   s.description = <<-EOF
 BEATS
 -----
@@ -39,5 +39,5 @@ EOF
   s.files = ["LICENSE", "README.markdown"] + Dir['lib/**/*.rb'] + Dir['bin/*'] + Dir['test/**/*']
   s.test_files = Dir['test/**/*']
   s.require_path = "lib"
-  s.add_dependency("wavefile", ">= 0.3.0")
+  s.add_dependency("wavefile", "= 0.3.0")
 end
