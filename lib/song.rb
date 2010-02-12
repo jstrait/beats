@@ -198,7 +198,7 @@ private
         track_list.each{|track_definition|
           track_name = track_definition.keys.first
           track_path = track_name
-          if(track_path.start_with?(PATH_SEPARATOR))
+          if(!track_path.start_with?(PATH_SEPARATOR))
             track_path = @input_path + PATH_SEPARATOR + track_path
           end
           
