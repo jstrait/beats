@@ -1,12 +1,12 @@
 Gem::Specification.new do |s| 
   s.name = "beats"
-  s.version = "1.0.0rc1"
+  s.version = "1.0.0"
   s.author = "Joel Strait"
   s.email = ""
   s.homepage = "http://beatsdrummachine.com/"
   s.platform = Gem::Platform::RUBY
   s.executables = "beats"
-  s.summary = "A drum machine written in pure Ruby. Takes a YAML file, and produces a Wave file."
+  s.summary = "A drum machine that uses text files, written in Ruby. Feed it a YAML file, and it will produce a Wave file."
   s.description = <<-EOF
 BEATS
 -----
