@@ -1,20 +1,12 @@
-class SongParseError < RuntimeError; end
-
 class Song
   SAMPLE_RATE = 44100
   SECONDS_PER_MINUTE = 60.0
-  PATH_SEPARATOR = File.const_get("SEPARATOR")
 
-  def initialize(input_path, definition = nil)
+  def initialize()
     self.tempo = 120
-    @input_path = input_path
     @kit = Kit.new()
     @patterns = {}
     @structure = []
-
-    if(definition != nil)
-      parse(definition)
-    end
   end
 
   def pattern(name)
@@ -84,17 +76,13 @@ class Song
     return @tempo
   end
 
-  def tempo=(new_tempo)
-    if(new_tempo.class != Fixnum || new_tempo <= 0)
-      raise SongParseError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
-    end
-    
+  def tempo=(new_tempo)    
     @tempo = new_tempo
     @tick_sample_length = (SAMPLE_RATE * SECONDS_PER_MINUTE) / new_tempo / 4.0
   end
 
-  attr_reader :input_path, :tick_sample_length
-  attr_accessor :structure
+  attr_reader :tick_sample_length, :patterns
+  attr_accessor :structure, :kit
 
 private
 
@@ -116,102 +104,6 @@ private
     end
 
     return merged_sample_data
-  end
-
-  # Converts all hash keys to be lowercase
-  def downcase_hash_keys(hash)
-    return hash.inject({}) {|new_hash, pair|
-        new_hash[pair.first.downcase] = pair.last
-        new_hash
-    }
-  end
-
-  def parse(definition)
-    if(definition.class == String)
-      song_definition = YAML.load(definition)
-    elsif(definition.class == Hash)
-      song_definition = definition
-    else
-      raise StandardError, "Invalid song input"
-    end
-
-    @kit = build_kit(song_definition)
-
-    song_definition = downcase_hash_keys(song_definition)
-    
-    # Process each pattern
-    song_definition.keys.each{|key|
-      if(key != "song")
-        new_pattern = self.pattern key.to_sym
-
-        track_list = song_definition[key]
-        track_list.each{|track_definition|
-          track_name = track_definition.keys.first
-          new_pattern.track track_name, @kit.get_sample_data(track_name), track_definition[track_name]
-        }
-      end
-    }
-    
-    # Process song header
-    parse_song_header(downcase_hash_keys(song_definition["song"]))
-  end
-  
-  def parse_song_header(header_data)
-    self.tempo = header_data["tempo"]
-
-    pattern_list = header_data["structure"]
-    structure = []
-    pattern_list.each{|pattern_item|
-      if(pattern_item.class == String)
-        pattern_item = {pattern_item => "x1"}
-      end
-      
-      pattern_name = pattern_item.keys.first
-      pattern_name_sym = pattern_name.downcase.to_sym
-      
-      if(!@patterns.has_key?(pattern_name_sym))
-        raise SongParseError, "Song structure includes non-existant pattern: #{pattern_name}."
-      end
-      
-      multiples_str = pattern_item[pattern_name]
-      multiples_str.slice!(0)
-      multiples = multiples_str.to_i
-      
-      if(multiples_str.match(/[^0-9]/) != nil)
-        raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
-      elsif(multiples < 0)
-        raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
-      end
-      
-      multiples.times { structure << pattern_name_sym }
-    }
-
-    @structure = structure
-  end
-  
-  def build_kit(song_definition)
-    kit = Kit.new()
-    
-    song_definition.keys.each{|key|
-      if(key.downcase != "song")
-        track_list = song_definition[key]
-        track_list.each{|track_definition|
-          track_name = track_definition.keys.first
-          track_path = track_name
-          if(!track_path.start_with?(PATH_SEPARATOR))
-            track_path = @input_path + PATH_SEPARATOR + track_path
-          end
-          
-          if(!File.exists? track_path)
-            raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
-          end
-          
-          kit.add(track_name, track_path)
-        }
-      end
-    }
-    
-    return kit
   end
   
   def sample_data_split_all_patterns(fill_value, num_tracks_in_song)

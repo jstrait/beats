@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require File.dirname(__FILE__) + "/../lib/song"
+require File.dirname(__FILE__) + "/../lib/songparser"
 require File.dirname(__FILE__) + "/../lib/kit"
 require File.dirname(__FILE__) + "/../lib/pattern"
 require File.dirname(__FILE__) + "/../lib/track"
@@ -63,7 +64,8 @@ end
 
 begin
   parse_start_time = Time.now
-  song_from_file = Song.new(File.dirname(input_file), YAML.load_file(input_file))
+  song_parser = SongParser.new()
+  song_from_file = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
   
   generate_samples_start = Time.now
   sample_data = song_from_file.sample_data(options[:pattern], options[:split])
@@ -89,12 +91,6 @@ begin
 rescue Errno::ENOENT => detail
   puts ""
   puts "Song file '#{input_file}' not found."
-  puts ""
-rescue ArgumentError => detail
-  puts ""
-  puts "Song file '#{input_file}' has an error:"
-  puts "  Syntax error in YAML file:"
-  puts "  #{detail}"
   puts ""
 rescue SongParseError => detail
   puts ""

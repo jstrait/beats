@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'yaml'
 require 'song'
+require 'songparser'
 require 'pattern'
 require 'track'
 require 'kit'
