@@ -1,6 +1,6 @@
 Gem::Specification.new do |s| 
   s.name = "beats"
-  s.version = "1.0.0"
+  s.version = "1.0.0a"
   s.author = "Joel Strait"
   s.email = ""
   s.homepage = "http://beatsdrummachine.com/"
