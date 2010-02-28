@@ -79,6 +79,16 @@ Bridge:
   end
   
   def test_invalid_initialize
+    sound_doesnt_exist_yaml_string = "# Song with non-existant sound
+    Song:
+      Tempo: 100
+      Structure:
+        - Verse: x1
+        
+    Verse:
+      - test/sounds/i_do_not_exist.wav: X...X..."
+    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", sound_doesnt_exist_yaml_string) }
+    
     invalid_tempo_yaml_string = "# Invalid tempo song
     Song:
       Tempo: 100a

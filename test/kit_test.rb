@@ -6,7 +6,7 @@ class SongTest < Test::Unit::TestCase
   MIN_SAMPLE_8BIT = 0
   MAX_SAMPLE_8BIT = 255
   
-  def test_add
+  def test_valid_add
     # Test adding sounds with progressively higher bits per sample and num channels.
     # Verify that kit.bits_per_sample and kit.num_channels is ratcheted up.
     kit = Kit.new("test/sounds")
@@ -42,6 +42,11 @@ class SongTest < Test::Unit::TestCase
     assert_equal(kit.num_channels, 2)
   end
   
+  def test_invalid_add
+    kit = Kit.new("test/sounds")
+    assert_raise(SoundNotFoundError) { kit.add("i_do_not_exist", "i_do_not_exist.wav") }
+  end
+
   def test_get_sample_data
     kit = Kit.new("test/sounds")
     
