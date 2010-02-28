@@ -9,47 +9,47 @@ class SongTest < Test::Unit::TestCase
   def test_add
     # Test adding sounds with progressively higher bits per sample and num channels.
     # Verify that kit.bits_per_sample and kit.num_channels is ratcheted up.
-    kit = Kit.new()
+    kit = Kit.new("test/sounds")
     assert_equal(kit.bits_per_sample, 0)
     assert_equal(kit.num_channels, 0)
     assert_equal(kit.size, 0)
-    kit.add("mono8", "test/sounds/bass_mono_8.wav")
+    kit.add("mono8", "bass_mono_8.wav")
     assert_equal(kit.bits_per_sample, 8)
     assert_equal(kit.num_channels, 1)
     assert_equal(kit.size, 1)
-    kit.add("mono16", "test/sounds/bass_mono_16.wav")
+    kit.add("mono16", "bass_mono_16.wav")
     assert_equal(kit.bits_per_sample, 16)
     assert_equal(kit.num_channels, 1)
     assert_equal(kit.size, 2)
-    kit.add("stereo16", "test/sounds/bass_stereo_16.wav")
+    kit.add("stereo16", "bass_stereo_16.wav")
     assert_equal(kit.bits_per_sample, 16)
     assert_equal(kit.num_channels, 2)
     assert_equal(kit.size, 3)
     
     # Test adding sounds with progressively lower bits per sample and num channels.
     # Verify that kit.bits_per_sample and kit.num_channels doesn't change.
-    kit = Kit.new()
+    kit = Kit.new("test/sounds")
     assert_equal(kit.bits_per_sample, 0)
     assert_equal(kit.num_channels, 0)
-    kit.add("stereo16", "test/sounds/bass_stereo_16.wav")
+    kit.add("stereo16", "bass_stereo_16.wav")
     assert_equal(kit.bits_per_sample, 16)
     assert_equal(kit.num_channels, 2)
-    kit.add("mono16", "test/sounds/bass_mono_16.wav")
+    kit.add("mono16", "bass_mono_16.wav")
     assert_equal(kit.bits_per_sample, 16)
     assert_equal(kit.num_channels, 2)
-    kit.add("mono8", "test/sounds/bass_mono_8.wav")
+    kit.add("mono8", "bass_mono_8.wav")
     assert_equal(kit.bits_per_sample, 16)
     assert_equal(kit.num_channels, 2)
   end
   
   def test_get_sample_data
-    kit = Kit.new()
+    kit = Kit.new("test/sounds")
     
     assert_raise(StandardError) { kit.get_sample_data("nonexistant") }
     
     # Test adding sounds with progressively higher bits per sample and num channels.
     # Verify that sample data bits per sample and num channels is ratcheted up.
-    kit.add("mono8", "test/sounds/bass_mono_8.wav")
+    kit.add("mono8", "bass_mono_8.wav")
     sample_data = kit.get_sample_data("mono8")
     assert(sample_data.max <= MAX_SAMPLE_8BIT)
     assert(sample_data.min >= MIN_SAMPLE_8BIT)
@@ -59,7 +59,7 @@ class SongTest < Test::Unit::TestCase
     }
     assert(all_are_fixnums)
     
-    kit.add("mono16", "test/sounds/bass_mono_16.wav")
+    kit.add("mono16", "bass_mono_16.wav")
     sample_data = kit.get_sample_data("mono8")
     assert(sample_data.max > MAX_SAMPLE_8BIT)
     assert(sample_data.min < MIN_SAMPLE_8BIT)
@@ -69,7 +69,7 @@ class SongTest < Test::Unit::TestCase
     }
     assert(all_are_fixnums)
     
-    kit.add("stereo16", "test/sounds/bass_stereo_16.wav")
+    kit.add("stereo16", "bass_stereo_16.wav")
     sample_data = kit.get_sample_data("stereo16")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
@@ -83,9 +83,9 @@ class SongTest < Test::Unit::TestCase
     
     # Test adding sounds with progressively lower bits per sample and num channels.
     # Verify that sample data bits per sample and num channels doesn't go down.
-    kit = Kit.new()
+    kit = Kit.new("test/sounds")
     
-    kit.add("stereo16", "test/sounds/bass_stereo_16.wav")
+    kit.add("stereo16", "bass_stereo_16.wav")
     sample_data = kit.get_sample_data("stereo16")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
@@ -96,7 +96,7 @@ class SongTest < Test::Unit::TestCase
     assert(all_are_arrays)
     assert(sample_data.first.length == 2)
     
-    kit.add("mono16", "test/sounds/bass_mono_16.wav")
+    kit.add("mono16", "bass_mono_16.wav")
     sample_data = kit.get_sample_data("mono16")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
@@ -107,7 +107,7 @@ class SongTest < Test::Unit::TestCase
     assert(all_are_arrays)
     assert(sample_data.first.length == 2)
     
-    kit.add("mono8", "test/sounds/bass_mono_8.wav")
+    kit.add("mono8", "bass_mono_8.wav")
     sample_data = kit.get_sample_data("mono8")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)

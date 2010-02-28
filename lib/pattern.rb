@@ -52,7 +52,7 @@ private
     primary_sample_data = []
     overflow_sample_data = {}
     actual_sample_length = sample_length(tick_sample_length)
-  
+
     if(track_names.length > 0)
       primary_sample_data = [].fill(fill_value, 0, actual_sample_length)
 
@@ -68,7 +68,7 @@ private
                                       primary_sample_data[i][1] + track_samples[i][1]]
           }
         end
-      
+
         overflow_sample_data[track_name] = temp[:overflow]
       }
     end
@@ -86,7 +86,8 @@ private
       end
     }
     
-    if(num_channels == 1)  
+    # Mix down the tracks into one
+    if(num_channels == 1)
       primary_sample_data = primary_sample_data.map {|sample| (sample / num_tracks_in_song).round }
     else
       primary_sample_data = primary_sample_data.map {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round] }

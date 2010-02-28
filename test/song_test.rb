@@ -6,17 +6,17 @@ class SongTest < Test::Unit::TestCase
   DEFAULT_TEMPO = 120
   
   def generate_test_data
-    kit = Kit.new()
-    kit.add("bass.wav",      "test/sounds/bass_mono_8.wav")
-    kit.add("snare.wav",     "test/sounds/snare_mono_8.wav")
-    kit.add("hh_closed.wav", "test/sounds/hh_closed_mono_8.wav")
-    kit.add("ride.wav",      "test/sounds/ride_mono_8.wav")
+    kit = Kit.new("test/sounds")
+    kit.add("bass.wav",      "bass_mono_8.wav")
+    kit.add("snare.wav",     "snare_mono_8.wav")
+    kit.add("hh_closed.wav", "hh_closed_mono_8.wav")
+    kit.add("ride.wav",      "ride_mono_8.wav")
     
     test_songs = SongParserTest.generate_test_data()
     
-    test_songs[:blank] = Song.new()
+    test_songs[:blank] = Song.new("test/sounds")
     
-    test_songs[:no_structure] = Song.new()
+    test_songs[:no_structure] = Song.new("test/sounds")
     verse = test_songs[:no_structure].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
@@ -32,7 +32,7 @@ Verse:
   - test/sounds/snare_mono_8.wav: ...X"
     test_songs[:overflow] = SongParser.new().parse(File.dirname(__FILE__) + "/..", overflow_yaml)
     
-    test_songs[:from_code] = Song.new()
+    test_songs[:from_code] = Song.new("test/sounds")
     verse = test_songs[:from_code].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."

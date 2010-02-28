@@ -1,5 +1,10 @@
+class SoundNotFoundError < RuntimeError; end
+
 class Kit
-  def initialize()
+  PATH_SEPARATOR = File.const_get("SEPARATOR")
+  
+  def initialize(base_path)
+    @base_path = base_path
     @sounds = {}
     @num_channels = 0
     @bits_per_sample = 0
@@ -7,28 +12,37 @@ class Kit
   
   def add(name, path)
     if(!@sounds.has_key? name)
-      w = WaveFile.open(path)
-      @sounds[name] = w
-    
-      if w.num_channels > @num_channels
-        @num_channels = w.num_channels
+      if(!path.start_with?(PATH_SEPARATOR))
+        path = @base_path + PATH_SEPARATOR + path
       end
-      if w.bits_per_sample > @bits_per_sample
-        @bits_per_sample = w.bits_per_sample
+      
+      begin
+        wavefile = WaveFile.open(path)
+      rescue
+        raise SoundNotFoundError, "Sound file #{name} not found."
+      end
+      
+      @sounds[name] = wavefile
+    
+      if wavefile.num_channels > @num_channels
+        @num_channels = wavefile.num_channels
+      end
+      if wavefile.bits_per_sample > @bits_per_sample
+        @bits_per_sample = wavefile.bits_per_sample
       end
     end
   end
   
   def get_sample_data(name)
-    w = @sounds[name]
+    wavefile = @sounds[name]
     
-    if w == nil
+    if wavefile == nil
       raise StandardError, "Kit doesn't contain sound '#{name}'."
     else
-      w.num_channels = @num_channels
-      w.bits_per_sample = @bits_per_sample
+      wavefile.num_channels = @num_channels
+      wavefile.bits_per_sample = @bits_per_sample
 
-      return w.sample_data
+      return wavefile.sample_data
     end
   end
   
@@ -36,5 +50,5 @@ class Kit
     return @sounds.length
   end
   
-  attr_reader :bits_per_sample, :num_channels
+  attr_reader :base_path, :bits_per_sample, :num_channels
 end

@@ -1,12 +1,11 @@
 class SongParseError < RuntimeError; end
 
 class SongParser
-  PATH_SEPARATOR = File.const_get("SEPARATOR")
   
   def initialize()
   end
     
-  def parse(input_path, definition = nil)
+  def parse(base_path, definition = nil)
     if(definition.class == String)
       begin
         raw_song_definition = YAML.load(definition)
@@ -20,8 +19,13 @@ class SongParser
     end
     raw_song_definition = downcase_hash_keys(raw_song_definition)
     
-    kit = build_kit(input_path, raw_song_definition)
-    song = Song.new()
+    begin
+      kit = build_kit(base_path, raw_song_definition)
+    rescue SoundNotFoundError => detail
+      raise SongParseError, "#{detail}"
+    end
+    
+    song = Song.new(base_path)
     song.kit = kit
     
     # Process each pattern
@@ -84,8 +88,8 @@ private
     return song
   end
   
-  def build_kit(input_path, song_definition)
-    kit = Kit.new()
+  def build_kit(base_path, song_definition)
+    kit = Kit.new(base_path)
     
     song_definition.keys.each{|key|
       if(key != "song")
@@ -93,14 +97,10 @@ private
         track_list.each{|track_definition|
           track_name = track_definition.keys.first
           track_path = track_name
-          if(!track_path.start_with?(PATH_SEPARATOR))
-            track_path = input_path + PATH_SEPARATOR + track_path
-          end
           
-          if(!File.exists? track_path)
-            raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
-          end
-          
+          #if(!File.exists? track_path)
+          #  raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
+          #end
           kit.add(track_name, track_path)
         }
       end

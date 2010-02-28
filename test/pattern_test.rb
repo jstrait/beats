@@ -7,11 +7,11 @@ class PatternTest < Test::Unit::TestCase
   SECONDS_IN_MINUTE = 60.0
 
   def generate_test_data
-    kit = Kit.new()
-    kit.add("bass.wav",      "test/sounds/bass_mono_8.wav")
-    kit.add("snare.wav",     "test/sounds/snare_mono_8.wav")
-    kit.add("hh_closed.wav", "test/sounds/hh_closed_mono_8.wav")
-    kit.add("hh_open.wav",   "test/sounds/hh_open_mono_8.wav")
+    kit = Kit.new("test/sounds")
+    kit.add("bass.wav",      "bass_mono_8.wav")
+    kit.add("snare.wav",     "snare_mono_8.wav")
+    kit.add("hh_closed.wav", "hh_closed_mono_8.wav")
+    kit.add("hh_open.wav",   "hh_open_mono_8.wav")
     
     test_patterns = []
     

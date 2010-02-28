@@ -2,9 +2,9 @@ class Song
   SAMPLE_RATE = 44100
   SECONDS_PER_MINUTE = 60.0
 
-  def initialize()
+  def initialize(base_path)
     self.tempo = 120
-    @kit = Kit.new()
+    @kit = Kit.new(base_path)
     @patterns = {}
     @structure = []
   end
