@@ -1,7 +1,6 @@
 class SongParseError < RuntimeError; end
 
-class SongParser
-  
+class SongParser  
   def initialize()
   end
     
@@ -17,49 +16,46 @@ class SongParser
     else
       raise SongParseError, "Invalid song input"
     end
-    raw_song_definition = downcase_hash_keys(raw_song_definition)
     
+    raw_song_definition = downcase_hash_keys(raw_song_definition)
+    raw_song_header = downcase_hash_keys(raw_song_definition["song"])
+    raw_tempo = raw_song_header["tempo"]
+    raw_kit = raw_song_header["kit"]
+    raw_structure = raw_song_header["structure"]
+    raw_patterns = raw_song_definition.reject {|k, v| k == "song"}
+    
+    song = Song.new(base_path)
+    
+    # 1.) Set tempo
+    if(raw_tempo.class == Fixnum && raw_tempo > 0)
+      song.tempo = raw_tempo
+    else
+      # TODO Add this error check to Song, check for Song exception and wrap in SongParseError
+      raise SongParseError, "Invalid tempo: '#{raw_tempo}'. Tempo must be a number greater than 0."
+    end
+    
+    # 2.) Build kit
     begin
-      kit = build_kit(base_path, raw_song_definition)
+      kit = build_kit(base_path, raw_kit, raw_patterns)
     rescue SoundNotFoundError => detail
       raise SongParseError, "#{detail}"
     end
-    
-    song = Song.new(base_path)
     song.kit = kit
     
-    # Process each pattern
-    raw_song_definition.keys.each{|key|
-      if(key != "song")
-        new_pattern = song.pattern key.to_sym
+    # 3.) Load patterns
+    raw_patterns.keys.each{|key|
+      new_pattern = song.pattern key.to_sym
 
-        track_list = raw_song_definition[key]
-        track_list.each{|track_definition|
-          track_name = track_definition.keys.first
-          new_pattern.track track_name, kit.get_sample_data(track_name), track_definition[track_name]
-        }
-      end
+      track_list = raw_patterns[key]
+      track_list.each{|track_definition|
+        track_name = track_definition.keys.first
+        new_pattern.track track_name, kit.get_sample_data(track_name), track_definition[track_name]
+      }
     }
     
-    # Process song header
-    song = parse_song_header(song, downcase_hash_keys(raw_song_definition["song"]))
-    
-    return song
-  end
-  
-private
-  
-  def parse_song_header(song, header_data)
-    new_tempo = header_data["tempo"]
-    if(new_tempo.class == Fixnum && new_tempo > 0)
-      song.tempo = new_tempo
-    else
-      raise SongParseError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
-    end
-
-    pattern_list = header_data["structure"]
+    # 4.) Set structure
     structure = []
-    pattern_list.each{|pattern_item|
+    raw_structure.each{|pattern_item|
       if(pattern_item.class == String)
         pattern_item = {pattern_item => "x1"}
       end
@@ -83,11 +79,39 @@ private
       
       multiples.times { structure << pattern_name_sym }
     }
-
     song.structure = structure
+    
     return song
   end
   
+private
+    
+  def build_kit(base_path, raw_kit, raw_patterns)
+    kit = Kit.new(base_path)
+    
+    # Add sounds defined in the Kit section of the song header
+    if(raw_kit != nil)
+      raw_kit.each {|kit_item|
+        kit.add(kit_item.keys.first, kit_item.values.first)
+      }
+    end
+    
+    # TODO Investigate detecting duplicate keys already defined in the Kit section
+    # Add sounds not defined in Kit section, but used in individual tracks
+    raw_patterns.keys.each{|key|
+      track_list = raw_patterns[key]
+      track_list.each{|track_definition|
+        track_name = track_definition.keys.first
+        track_path = track_name
+        
+        kit.add(track_name, track_path)
+      }
+    }
+    
+    return kit
+  end
+    
+=begin    
   def build_kit(base_path, song_definition)
     kit = Kit.new(base_path)
     
@@ -108,6 +132,7 @@ private
     
     return kit
   end
+=end
   
   # Converts all hash keys to be lowercase
   def downcase_hash_keys(hash)
