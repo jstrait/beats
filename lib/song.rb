@@ -1,6 +1,9 @@
+class InvalidTempoError < RuntimeError; end
+
 class Song
   SAMPLE_RATE = 44100
   SECONDS_PER_MINUTE = 60.0
+  SAMPLES_PER_MINUTE = SAMPLE_RATE * SECONDS_PER_MINUTE
 
   def initialize(base_path)
     self.tempo = 120
@@ -76,9 +79,13 @@ class Song
     return @tempo
   end
 
-  def tempo=(new_tempo)    
+  def tempo=(new_tempo)
+    if(new_tempo.class != Fixnum || new_tempo <= 0)
+      raise InvalidTempoError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
+    end
+    
     @tempo = new_tempo
-    @tick_sample_length = (SAMPLE_RATE * SECONDS_PER_MINUTE) / new_tempo / 4.0
+    @tick_sample_length = SAMPLES_PER_MINUTE / new_tempo / 4.0
   end
 
   attr_reader :tick_sample_length, :patterns

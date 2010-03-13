@@ -27,11 +27,10 @@ class SongParser
     song = Song.new(base_path)
     
     # 1.) Set tempo
-    if(raw_tempo.class == Fixnum && raw_tempo > 0)
+    begin
       song.tempo = raw_tempo
-    else
-      # TODO Add this error check to Song, check for Song exception and wrap in SongParseError
-      raise SongParseError, "Invalid tempo: '#{raw_tempo}'. Tempo must be a number greater than 0."
+    rescue InvalidTempoError => detail
+      raise SongParseError, "#{detail}"
     end
     
     # 2.) Build kit
