@@ -58,6 +58,33 @@ private
   
     return raw_song_components
   end
+      
+  def build_kit(base_path, raw_kit, raw_patterns)
+    kit = Kit.new(base_path)
+    
+    # Add sounds defined in the Kit section of the song header
+    if(raw_kit != nil)
+      raw_kit.each {|kit_item|
+        kit.add(kit_item.keys.first, kit_item.values.first)
+      }
+    end
+    
+    # Add sounds not defined in Kit section, but used in individual tracks
+    # TODO Investigate detecting duplicate keys already defined in the Kit section, as this could possibly
+    # result in a performance improvement when the sound has to be converted to a different bit rate/num channels,
+    # as well as use less memory.
+    raw_patterns.keys.each{|key|
+      track_list = raw_patterns[key]
+      track_list.each{|track_definition|
+        track_name = track_definition.keys.first
+        track_path = track_name
+        
+        kit.add(track_name, track_path)
+      }
+    }
+    
+    return kit
+  end
   
   def add_patterns_to_song(song, raw_patterns)
     raw_patterns.keys.each{|key|
@@ -99,33 +126,6 @@ private
       multiples.times { structure << pattern_name_sym }
     }
     song.structure = structure
-  end
-    
-  def build_kit(base_path, raw_kit, raw_patterns)
-    kit = Kit.new(base_path)
-    
-    # Add sounds defined in the Kit section of the song header
-    if(raw_kit != nil)
-      raw_kit.each {|kit_item|
-        kit.add(kit_item.keys.first, kit_item.values.first)
-      }
-    end
-    
-    # Add sounds not defined in Kit section, but used in individual tracks
-    # TODO Investigate detecting duplicate keys already defined in the Kit section, as this could possibly
-    # result in a performance improvement when the sound has to be converted to a different bit rate/num channels,
-    # as well as use less memory.
-    raw_patterns.keys.each{|key|
-      track_list = raw_patterns[key]
-      track_list.each{|track_definition|
-        track_name = track_definition.keys.first
-        track_path = track_name
-        
-        kit.add(track_name, track_path)
-      }
-    }
-    
-    return kit
   end
     
   # Converts all hash keys to be lowercase
