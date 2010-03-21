@@ -27,7 +27,7 @@ class SongParser
       raise SongParseError, "#{detail}"
     end
     
-    # 2.) Build kit
+    # 2.) Build the kit
     begin
       kit = build_kit(base_path, raw_song_components[:kit], raw_song_components[:patterns])
     rescue SoundNotFoundError => detail
@@ -39,8 +39,41 @@ class SongParser
     add_patterns_to_song(song, raw_song_components[:patterns])
     
     # 4.) Set structure
+    set_song_structure(song, raw_song_components[:structure])
+    
+    return song
+  end
+  
+private
+
+  def split_raw_yaml_into_components(raw_song_definition)
+    raw_song_components = {}
+  
+    raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
+    raw_song_components[:header]          = downcase_hash_keys(raw_song_components[:full_definition]["song"])
+    raw_song_components[:tempo]           = raw_song_components[:header]["tempo"]
+    raw_song_components[:kit]             = raw_song_components[:header]["kit"]
+    raw_song_components[:structure]       = raw_song_components[:header]["structure"]
+    raw_song_components[:patterns]        = raw_song_components[:full_definition].reject {|k, v| k == "song"}
+  
+    return raw_song_components
+  end
+  
+  def add_patterns_to_song(song, raw_patterns)
+    raw_patterns.keys.each{|key|
+      new_pattern = song.pattern key.to_sym
+
+      track_list = raw_patterns[key]
+      track_list.each{|track_definition|
+        track_name = track_definition.keys.first
+       new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
+      }
+    }
+  end
+  
+  def set_song_structure(song, raw_structure)
     structure = []
-    raw_song_components[:structure].each{|pattern_item|
+    raw_structure.each{|pattern_item|
       if(pattern_item.class == String)
         pattern_item = {pattern_item => "x1"}
       end
@@ -66,34 +99,6 @@ class SongParser
       multiples.times { structure << pattern_name_sym }
     }
     song.structure = structure
-    
-    return song
-  end
-  
-private
-  def split_raw_yaml_into_components(raw_song_definition)
-    raw_song_components = {}
-  
-    raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
-    raw_song_components[:header]          = downcase_hash_keys(raw_song_components[:full_definition]["song"])
-    raw_song_components[:tempo]           = raw_song_components[:header]["tempo"]
-    raw_song_components[:kit]             = raw_song_components[:header]["kit"]
-    raw_song_components[:structure]       = raw_song_components[:header]["structure"]
-    raw_song_components[:patterns]        = raw_song_components[:full_definition].reject {|k, v| k == "song"}
-  
-    return raw_song_components
-  end
-  
-  def add_patterns_to_song(song, raw_patterns)
-    raw_patterns.keys.each{|key|
-      new_pattern = song.pattern key.to_sym
-
-      track_list = raw_patterns[key]
-      track_list.each{|track_definition|
-        track_name = track_definition.keys.first
-       new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
-      }
-    }
   end
     
   def build_kit(base_path, raw_kit, raw_patterns)
