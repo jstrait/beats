@@ -3,7 +3,7 @@ class SongParseError < RuntimeError; end
 class SongParser  
   def initialize()
   end
-      
+        
   def parse(base_path, definition = nil)
     if(definition.class == String)
       begin
@@ -36,15 +36,7 @@ class SongParser
     song.kit = kit
     
     # 3.) Load patterns
-    raw_song_components[:patterns].keys.each{|key|
-      new_pattern = song.pattern key.to_sym
-
-      track_list = raw_song_components[:patterns][key]
-      track_list.each{|track_definition|
-        track_name = track_definition.keys.first
-        new_pattern.track track_name, kit.get_sample_data(track_name), track_definition[track_name]
-      }
-    }
+    add_patterns_to_song(song, raw_song_components[:patterns])
     
     # 4.) Set structure
     structure = []
@@ -90,6 +82,18 @@ private
     raw_song_components[:patterns]        = raw_song_components[:full_definition].reject {|k, v| k == "song"}
   
     return raw_song_components
+  end
+  
+  def add_patterns_to_song(song, raw_patterns)
+    raw_patterns.keys.each{|key|
+      new_pattern = song.pattern key.to_sym
+
+      track_list = raw_patterns[key]
+      track_list.each{|track_definition|
+        track_name = track_definition.keys.first
+       new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
+      }
+    }
   end
     
   def build_kit(base_path, raw_kit, raw_patterns)
