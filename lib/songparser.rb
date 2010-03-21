@@ -3,7 +3,7 @@ class SongParseError < RuntimeError; end
 class SongParser  
   def initialize()
   end
-    
+      
   def parse(base_path, definition = nil)
     if(definition.class == String)
       begin
@@ -16,36 +16,30 @@ class SongParser
     else
       raise SongParseError, "Invalid song input"
     end
-    
-    raw_song_definition = downcase_hash_keys(raw_song_definition)
-    raw_song_header = downcase_hash_keys(raw_song_definition["song"])
-    raw_tempo = raw_song_header["tempo"]
-    raw_kit = raw_song_header["kit"]
-    raw_structure = raw_song_header["structure"]
-    raw_patterns = raw_song_definition.reject {|k, v| k == "song"}
+    raw_song_components = split_raw_yaml_into_components(raw_song_definition)
     
     song = Song.new(base_path)
     
     # 1.) Set tempo
     begin
-      song.tempo = raw_tempo
+      song.tempo = raw_song_components[:tempo]
     rescue InvalidTempoError => detail
       raise SongParseError, "#{detail}"
     end
     
     # 2.) Build kit
     begin
-      kit = build_kit(base_path, raw_kit, raw_patterns)
+      kit = build_kit(base_path, raw_song_components[:kit], raw_song_components[:patterns])
     rescue SoundNotFoundError => detail
       raise SongParseError, "#{detail}"
     end
     song.kit = kit
     
     # 3.) Load patterns
-    raw_patterns.keys.each{|key|
+    raw_song_components[:patterns].keys.each{|key|
       new_pattern = song.pattern key.to_sym
 
-      track_list = raw_patterns[key]
+      track_list = raw_song_components[:patterns][key]
       track_list.each{|track_definition|
         track_name = track_definition.keys.first
         new_pattern.track track_name, kit.get_sample_data(track_name), track_definition[track_name]
@@ -54,7 +48,7 @@ class SongParser
     
     # 4.) Set structure
     structure = []
-    raw_structure.each{|pattern_item|
+    raw_song_components[:structure].each{|pattern_item|
       if(pattern_item.class == String)
         pattern_item = {pattern_item => "x1"}
       end
@@ -66,6 +60,7 @@ class SongParser
         raise SongParseError, "Song structure includes non-existant pattern: #{pattern_name}."
       end
       
+      # Convert the number of repeats from a String such as "x4" into an integer such as 4.
       multiples_str = pattern_item[pattern_name]
       multiples_str.slice!(0)
       multiples = multiples_str.to_i
@@ -84,6 +79,18 @@ class SongParser
   end
   
 private
+  def split_raw_yaml_into_components(raw_song_definition)
+    raw_song_components = {}
+  
+    raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
+    raw_song_components[:header]          = downcase_hash_keys(raw_song_components[:full_definition]["song"])
+    raw_song_components[:tempo]           = raw_song_components[:header]["tempo"]
+    raw_song_components[:kit]             = raw_song_components[:header]["kit"]
+    raw_song_components[:structure]       = raw_song_components[:header]["structure"]
+    raw_song_components[:patterns]        = raw_song_components[:full_definition].reject {|k, v| k == "song"}
+  
+    return raw_song_components
+  end
     
   def build_kit(base_path, raw_kit, raw_patterns)
     kit = Kit.new(base_path)
@@ -110,29 +117,6 @@ private
     return kit
   end
     
-=begin    
-  def build_kit(base_path, song_definition)
-    kit = Kit.new(base_path)
-    
-    song_definition.keys.each{|key|
-      if(key != "song")
-        track_list = song_definition[key]
-        track_list.each{|track_definition|
-          track_name = track_definition.keys.first
-          track_path = track_name
-          
-          #if(!File.exists? track_path)
-          #  raise SongParseError, "File '#{track_name}' not found for pattern '#{key}'"
-          #end
-          kit.add(track_name, track_path)
-        }
-      end
-    }
-    
-    return kit
-  end
-=end
-  
   # Converts all hash keys to be lowercase
   def downcase_hash_keys(hash)
     return hash.inject({}) {|new_hash, pair|
