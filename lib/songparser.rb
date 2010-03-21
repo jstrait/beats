@@ -5,17 +5,7 @@ class SongParser
   end
         
   def parse(base_path, definition = nil)
-    if(definition.class == String)
-      begin
-        raw_song_definition = YAML.load(definition)
-      rescue ArgumentError => detail
-        raise SongParseError, "Syntax error in YAML file"
-      end
-    elsif(definition.class == Hash)
-      raw_song_definition = definition
-    else
-      raise SongParseError, "Invalid song input"
-    end
+    raw_song_definition = canonicalize_definition(definition)
     raw_song_components = split_raw_yaml_into_components(raw_song_definition)
     
     song = Song.new(base_path)
@@ -45,6 +35,24 @@ class SongParser
   end
   
 private
+
+  # This is basically a factory. Don't see a benefit to extracting to a full class.
+  # Also, is "canonicalize" a word?
+  def canonicalize_definition(definition)
+    if(definition.class == String)
+      begin
+        raw_song_definition = YAML.load(definition)
+      rescue ArgumentError => detail
+        raise SongParseError, "Syntax error in YAML file"
+      end
+    elsif(definition.class == Hash)
+      raw_song_definition = definition
+    else
+      raise SongParseError, "Invalid song input"
+    end
+    
+    return raw_song_definition
+  end
 
   def split_raw_yaml_into_components(raw_song_definition)
     raw_song_components = {}
