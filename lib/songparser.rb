@@ -116,10 +116,6 @@ private
       pattern_name = pattern_item.keys.first
       pattern_name_sym = pattern_name.downcase.to_sym
       
-      if(!song.patterns.has_key?(pattern_name_sym))
-        raise SongParseError, "Song structure includes non-existant pattern: #{pattern_name}."
-      end
-      
       # Convert the number of repeats from a String such as "x4" into an integer such as 4.
       multiples_str = pattern_item[pattern_name]
       multiples_str.slice!(0)
@@ -127,8 +123,15 @@ private
       
       if(multiples_str.match(/[^0-9]/) != nil)
         raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
-      elsif(multiples < 0)
-        raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
+      else
+        if(multiples < 0)
+          raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
+        elsif(multiples > 0 && !song.patterns.has_key?(pattern_name_sym))
+          # This test is purposefully designed to only throw an error if the number of repeats is greater
+          # than 0. This allows you to specify an undefined pattern in the structure with "x0" repeats.
+          # This can be convenient for defining the structure before all patterns have been added to the song file.
+          raise SongParseError, "Song structure includes non-existent pattern: #{pattern_name}."
+        end
       end
       
       multiples.times { structure << pattern_name_sym }

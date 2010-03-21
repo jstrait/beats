@@ -38,12 +38,13 @@ Verse:
 Song:
   Tempo: 99
   Structure:
-    - Verse:  x2
-    - Chorus: x2
-    - Verse:  x2
-    - Chorus: x4
-    - Bridge: x1
-    - Chorus: x4
+    - Verse:     x2
+    - Chorus:    x2
+    - Verse:     x2
+    - Chorus:    x4
+    - Bridge:    x1
+    - Undefined: x0  # This is legal as long as num repeats is 0.
+    - Chorus:    x4
 
 Verse:
   - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X...
@@ -66,37 +67,38 @@ Bridge:
 
     valid_yaml_string_with_kit = "# An example song
 
-    Song:
-      Tempo: 99
-      Kit:
-        - bass:     test/sounds/bass_mono_8.wav
-        - snare:    test/sounds/snare_mono_8.wav
-        - hhclosed: test/sounds/hh_closed_mono_8.wav
-        - hhopen:   test/sounds/hh_open_mono_8.wav
-      Structure:
-        - Verse:  x2
-        - Chorus: x2
-        - Verse:  x2
-        - Chorus: x4
-        - Bridge: x1
-        - Chorus: x4
+Song:
+  Tempo: 99
+  Kit:
+    - bass:     test/sounds/bass_mono_8.wav
+    - snare:    test/sounds/snare_mono_8.wav
+    - hhclosed: test/sounds/hh_closed_mono_8.wav
+    - hhopen:   test/sounds/hh_open_mono_8.wav
+  Structure:
+    - Verse:  x2
+    - Chorus: x2
+    - Verse:  x2
+    - Chorus: x4
+    - Bridge: x1
+    - Undefined: x0  # This is legal as long as num repeats is 0.
+    - Chorus: x4
 
-    Verse:
-      - base:      X...X...X...XX..X...X...XX..X...
-      - snare:     ..X...X...X...X.X...X...X...X...
-    # Here is a comment
-      - hhclosed:  X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
-      - hhopen:    X...............X..............X
-    # Here is another comment
-    Chorus:
-      - bass:      X...X...XXXXXXXXX...X...X...X...
-      - snare:     ...................X...X...X...X
-      - test/sounds/hh_closed_mono_8.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
-      - hhopen:    ........X.......X.......X.......
-      - test/sounds/ride_mono_8.wav:      ....X...................X.......
+Verse:
+  - base:      X...X...X...XX..X...X...XX..X...
+  - snare:     ..X...X...X...X.X...X...X...X...
+# Here is a comment
+  - hhclosed:  X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+  - hhopen:    X...............X..............X
+# Here is another comment
+Chorus:
+  - bass:      X...X...XXXXXXXXX...X...X...X...
+  - snare:     ...................X...X...X...X
+  - test/sounds/hh_closed_mono_8.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
+  - hhopen:    ........X.......X.......X.......
+  - test/sounds/ride_mono_8.wav:      ....X...................X.......
 
-    Bridge:
-      - hhclosed: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
+Bridge:
+  - hhclosed: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
     test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, valid_yaml_string)
 
     return test_songs
@@ -120,7 +122,7 @@ Bridge:
   end
   
   def test_invalid_initialize
-    sound_doesnt_exist_yaml_string = "# Song with non-existant sound
+    sound_doesnt_exist_yaml_string = "# Song with non-existent sound
     Song:
       Tempo: 100
       Structure:
@@ -130,7 +132,7 @@ Bridge:
       - test/sounds/i_do_not_exist.wav: X...X..."
     assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", sound_doesnt_exist_yaml_string) }
     
-    invalid_tempo_yaml_string = "# Invalid tempo song
+    invalid_tempo_yaml_string = "# Song with invalid tempo
     Song:
       Tempo: 100a
       Structure:
@@ -140,7 +142,7 @@ Bridge:
       - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
     assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", invalid_tempo_yaml_string) }
 
-    invalid_structure_yaml_string = "# Invalid structure song
+    invalid_structure_yaml_string = "# Song whose structure references non-existent pattern
     Song:
       Tempo: 100
       Structure:
@@ -151,7 +153,7 @@ Bridge:
       - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
     assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", invalid_structure_yaml_string) }
     
-    invalid_repeats_yaml_string = "# Invalid structure song
+    invalid_repeats_yaml_string = "# Song with invalid number of repeats for pattern
     Song:
       Tempo: 100
       Structure:
