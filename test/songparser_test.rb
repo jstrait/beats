@@ -11,6 +11,7 @@ class SongParserTest < Test::Unit::TestCase
     kit.add("ride.wav",      "ride_mono_8.wav")
 
     test_songs = {}
+    base_path = File.dirname(__FILE__) + "/.."
 
     repeats_not_specified_yaml = "
 Song:
@@ -20,7 +21,7 @@ Song:
 
 Verse:
   - test/sounds/bass_mono_8.wav: X"
-    test_songs[:repeats_not_specified] = SongParser.new().parse(File.dirname(__FILE__) + "/..", repeats_not_specified_yaml)
+    test_songs[:repeats_not_specified] = SongParser.new().parse(base_path, repeats_not_specified_yaml)
 
     overflow_yaml = "
 Song:
@@ -30,9 +31,9 @@ Song:
 
 Verse:
   - test/sounds/snare_mono_8.wav: ...X"
-    test_songs[:overflow] = SongParser.new().parse(File.dirname(__FILE__) + "/..", overflow_yaml)
+    test_songs[:overflow] = SongParser.new().parse(base_path, overflow_yaml)
 
-  valid_yaml_string = "# An example song
+    valid_yaml_string = "# An example song
   
 Song:
   Tempo: 99
@@ -61,21 +62,61 @@ Chorus:
 
 Bridge:
   - test/sounds/hh_closed_mono_8.wav: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
-      test_songs[:from_valid_yaml_string] = SongParser.new().parse(File.dirname(__FILE__) + "/..", valid_yaml_string)
+    test_songs[:from_valid_yaml_string] = SongParser.new().parse(base_path, valid_yaml_string)
 
-      return test_songs
+    valid_yaml_string_with_kit = "# An example song
+
+    Song:
+      Tempo: 99
+      Kit:
+        - bass:     test/sounds/bass_mono_8.wav
+        - snare:    test/sounds/snare_mono_8.wav
+        - hhclosed: test/sounds/hh_closed_mono_8.wav
+        - hhopen:   test/sounds/hh_open_mono_8.wav
+      Structure:
+        - Verse:  x2
+        - Chorus: x2
+        - Verse:  x2
+        - Chorus: x4
+        - Bridge: x1
+        - Chorus: x4
+
+    Verse:
+      - base:      X...X...X...XX..X...X...XX..X...
+      - snare:     ..X...X...X...X.X...X...X...X...
+    # Here is a comment
+      - hhclosed:  X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+      - hhopen:    X...............X..............X
+    # Here is another comment
+    Chorus:
+      - bass:      X...X...XXXXXXXXX...X...X...X...
+      - snare:     ...................X...X...X...X
+      - test/sounds/hh_closed_mono_8.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
+      - hhopen:    ........X.......X.......X.......
+      - test/sounds/ride_mono_8.wav:      ....X...................X.......
+
+    Bridge:
+      - hhclosed: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
+    test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, valid_yaml_string)
+
+    return test_songs
   end
 
   def test_valid_initialize
     test_songs = SongParserTest.generate_test_data()
     
-    assert_equal(test_songs[:from_valid_yaml_string].structure, [:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus, :chorus, :chorus, :bridge, :chorus, :chorus, :chorus, :chorus])
-    assert_equal(test_songs[:from_valid_yaml_string].tempo, 99)
-    assert_equal(test_songs[:from_valid_yaml_string].tick_sample_length, (Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / 99 / 4.0)
-    assert_equal(test_songs[:from_valid_yaml_string].patterns.keys.map{|key| key.to_s}.sort, ["bridge", "chorus", "verse"])
-    assert_equal(test_songs[:from_valid_yaml_string].patterns[:verse].tracks.length, 4)
-    assert_equal(test_songs[:from_valid_yaml_string].patterns[:chorus].tracks.length, 5)
-    assert_equal(test_songs[:from_valid_yaml_string].patterns[:bridge].tracks.length, 1)
+    # These two songs should be the same, except that one uses a kit in the song header
+    # and the other doesn't.
+    [:from_valid_yaml_string, :from_valid_yaml_string_with_kit].each {|song_key|
+      song = test_songs[song_key]
+      assert_equal(song.structure, [:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus, :chorus, :chorus, :bridge, :chorus, :chorus, :chorus, :chorus])
+      assert_equal(song.tempo, 99)
+      assert_equal(song.tick_sample_length, (Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / 99 / 4.0)
+      assert_equal(song.patterns.keys.map{|key| key.to_s}.sort, ["bridge", "chorus", "verse"])
+      assert_equal(song.patterns[:verse].tracks.length, 4)
+      assert_equal(song.patterns[:chorus].tracks.length, 5)
+      assert_equal(song.patterns[:bridge].tracks.length, 1)
+    }
   end
   
   def test_invalid_initialize
@@ -110,7 +151,7 @@ Bridge:
       - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
     assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", invalid_structure_yaml_string) }
     
-    invalid_repeats_yaml_string = "    # Invalid structure song
+    invalid_repeats_yaml_string = "# Invalid structure song
     Song:
       Tempo: 100
       Structure:
