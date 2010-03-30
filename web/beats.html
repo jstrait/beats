@@ -41,6 +41,9 @@ Chorus:
 		<p>Run the following command to install BEATS:</p>
 		<p><code><pre class="single-line">sudo gem install beats</pre></code></p>
 		<p>This will add a <code>beats</code> command to your path.</p>
+		<p>The current version of BEATS is 1.1.0. If you have version 1.0.0, you can update with this command:</p>
+		<p><code><pre class="single-line">sudo gem update beats</pre></code></p>
+		<p>(You can run <code>beats -v</code> to determine your version.)</p>
 		<p>BEATS is not terribly useful unless you have drum sounds to use with it. Here are 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a <a href="http://images.gittigidiyor.com/1882/Casio-SA-20-Tone-Bank-Elektronik-Klavye__18821134_0.jpg">Casio SA-20 keyboard</a> that the author got when he was 8 years old. Free of charge: <a href="casio_sa20_drum_sounds.zip">casio_sa20_drum_sounds.zip</a></p>
 		<p>The BEATS source code is <a href="http://github.com/jstrait/beats">hosted at GitHub</a>.</p>
 	</div>
@@ -64,8 +67,7 @@ Chorus:
 		<h2>Creating Songs</h2>
 		<p>Songs are notated using <a href="http://en.wikipedia.org/wiki/YAML">YAML</a>, so each song file is just a plain text file you can edit in TextEdit, NotePad, VIM, or whatever. The file extension doesn&#8217;t matter.</p>
 		<p>Each song is divided into one or more patterns. A pattern represents a section of the song, such as a verse, chorus, or bridge. Each pattern in turn has one or more tracks. Each track represents an individual sound, such as a bass drum, snare, or hi-hat.</p>
-		<p>Songs should start with a header indicating the tempo, the structure of the song, and shortcuts to any commonly used sounds. Should the verse be played four times followed by the chorus two times then a bridge? YOU decide.</p>
-		<p>Here&#8217;s an example header. Since this is YAML, lines must be indented correctly. Also, each pattern in the structure should be preceded by a dash.</p>
+		<p>Songs should start with a header indicating the tempo, the structure of the song, and aliases for commonly used sounds. Here&#8217;s an example below. Since this is YAML, lines must be indented correctly. Also, each pattern in the structure should be preceded by a dash.</p>
 		<p><pre><code>Song:
   Tempo: 120
   Structure:
@@ -75,10 +77,10 @@ Chorus:
     - Verse:   x4
     - Chorus:  x2
   Kit:
-    - bass:      sounds/deep_bass.wav
+    - bass:      sounds/808bass.wav
     - hh_closed: sounds/hihat.wav
     - hh_open:   sounds/hh_open.wav</code></pre></p>
-		<p>(The Kit section is optional).</p>
+		<p>The Kit section is optional, but Tempo and Structure are required.</p>
 		<p>One or more patterns should follow the header. (If there are no patterns, there is nothing to play!) Each pattern definition starts with the pattern name, followed by the rhythm for each track on separate lines.</p>
 		<p><pre><code>Verse:
   - bass:             X.......X.......
@@ -86,7 +88,7 @@ Chorus:
   - hh_closed:        X.X.X.X.X.X.X...
   - hh_open:          ..............X.
   - sounds/ride.wav:  X...............</code></pre></p>
-		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). You can either use a sound defined in the Kit section of the header, or alternately use a specific file name. File paths can be relative or absolute; relative paths are relative from the path of the song file. Track lines must be indented properly and start with a dash (once again, due to this being YAML).</p>
+		<p>Each track line starts with the sound file to use (only 8 or 16-bit Wave files are supported). You can either use a sound defined in the Kit section of the header, or alternately use a specific file name. (The example above mixes and matches). File paths can be relative or absolute; relative paths are relative from the path of the song file. Track lines must be indented properly and start with a dash (once again, due to this being YAML).</p>
 		<p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a &#8220;rest&#8221; between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
 		<p>As a final note, patterns and the song header can come in any order. If you want to put the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
 	</div>
