@@ -4,9 +4,10 @@ class Song
   SAMPLE_RATE = 44100
   SECONDS_PER_MINUTE = 60.0
   SAMPLES_PER_MINUTE = SAMPLE_RATE * SECONDS_PER_MINUTE
+  DEFAULT_TEMPO = 120
 
   def initialize(base_path)
-    self.tempo = 120
+    self.tempo = DEFAULT_TEMPO
     @kit = Kit.new(base_path)
     @patterns = {}
     @structure = []

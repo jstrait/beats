@@ -12,7 +12,9 @@ class SongParser
     
     # 1.) Set tempo
     begin
-      song.tempo = raw_song_components[:tempo]
+      if raw_song_components[:tempo] != nil
+        song.tempo = raw_song_components[:tempo]
+      end
     rescue InvalidTempoError => detail
       raise SongParseError, "#{detail}"
     end

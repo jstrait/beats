@@ -13,6 +13,15 @@ class SongParserTest < Test::Unit::TestCase
     test_songs = {}
     base_path = File.dirname(__FILE__) + "/.."
 
+    no_tempo_yaml = "
+Song:
+  Structure:
+    - Verse: x1
+
+Verse:
+  - test/sounds/bass_mono_8.wav: X"
+    test_songs[:no_tempo] = SongParser.new().parse(base_path, no_tempo_yaml)
+
     repeats_not_specified_yaml = "
 Song:
   Tempo: 100
@@ -106,6 +115,12 @@ Bridge:
 
   def test_valid_initialize
     test_songs = SongParserTest.generate_test_data()
+    
+    assert_equal(test_songs[:no_tempo].tempo, 120)
+    assert_equal(test_songs[:no_tempo].structure, [:verse])
+    
+    assert_equal(test_songs[:repeats_not_specified].tempo, 100)
+    assert_equal(test_songs[:repeats_not_specified].structure, [:verse])
     
     # These two songs should be the same, except that one uses a kit in the song header
     # and the other doesn't.
