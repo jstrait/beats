@@ -147,6 +147,19 @@ Bridge:
       - test/sounds/i_do_not_exist.wav: X...X..."
     assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", sound_doesnt_exist_yaml_string) }
     
+    
+    sound_doesnt_exist_in_kit_yaml_string = "# Song with non-existent sound in Kit
+    Song:
+      Tempo: 100
+      Structure:
+        - Verse: x1
+      Kit:
+        - bad: test/sounds/i_do_not_exist.wav
+      
+    Verse:
+      - bad: X...X..."
+    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", sound_doesnt_exist_in_kit_yaml_string) }
+    
     invalid_tempo_yaml_string = "# Song with invalid tempo
     Song:
       Tempo: 100a
@@ -167,6 +180,14 @@ Bridge:
     Verse:
       - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
     assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", invalid_structure_yaml_string) }
+    
+    no_structure_yaml_string = "# Song without a structure section in the header
+    Song:
+      Tempo: 100
+
+    Verse:
+      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
+    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", no_structure_yaml_string) }
     
     invalid_repeats_yaml_string = "# Song with invalid number of repeats for pattern
     Song:

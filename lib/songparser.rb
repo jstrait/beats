@@ -31,7 +31,11 @@ class SongParser
     add_patterns_to_song(song, raw_song_components[:patterns])
     
     # 4.) Set structure
-    set_song_structure(song, raw_song_components[:structure])
+    if(raw_song_components[:structure] == nil)
+      raise SongParseError, "Song must have a Structure section in the header."
+    else
+      set_song_structure(song, raw_song_components[:structure])
+    end
     
     return song
   end
@@ -110,6 +114,7 @@ private
   
   def set_song_structure(song, raw_structure)
     structure = []
+
     raw_structure.each{|pattern_item|
       if(pattern_item.class == String)
         pattern_item = {pattern_item => "x1"}
