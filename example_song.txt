@@ -1,17 +1,16 @@
 # An example song
 
 Song:
-  Tempo: 120
-  Kit:
-    - bass:       sounds/bass.wav
-    - snare:      sounds/snare.wav
-    - hh_closed:  sounds/hh_closed.wav
-    - agogo:      sounds/agogo_high.wav
   Structure:
     - Verse:   x2
     - Chorus:  x4
     - Verse:   x2
     - Chorus:  x4
+  Kit:
+    - bass:       sounds/bass.wav
+    - snare:      sounds/snare.wav
+    - hh_closed:  sounds/hh_closed.wav
+    - agogo:      sounds/agogo_high.wav
 
 Verse:
   - bass:             X...X...X...X...
