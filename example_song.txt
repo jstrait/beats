@@ -1,6 +1,7 @@
 # An example song
 
 Song:
+  Tempo: 120
   Structure:
     - Verse:   x2
     - Chorus:  x4
