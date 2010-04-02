@@ -71,8 +71,8 @@ private
           (0...track_samples.length).each {|i| primary_sample_data[i] += track_samples[i] }
         else
           (0...track_samples.length).each {|i|
-            primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
-                                      primary_sample_data[i][1] + track_samples[i][1]]
+            primary_sample_data[i][0] += track_samples[i][0]
+            primary_sample_data[i][1] += track_samples[i][1]
           }
         end
 
