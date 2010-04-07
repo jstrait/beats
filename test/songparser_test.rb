@@ -137,6 +137,11 @@ Bridge:
   end
   
   def test_invalid_initialize
+    no_header_yaml_string = "# Song with no header
+    Verse:
+      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
+    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", no_header_yaml_string) }
+    
     sound_doesnt_exist_yaml_string = "# Song with non-existent sound
     Song:
       Tempo: 100

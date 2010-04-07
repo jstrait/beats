@@ -1,9 +1,18 @@
 class SongParseError < RuntimeError; end
 
-class SongParser  
+class SongParser
+  NO_SONG_HEADER_ERROR_MSG =
+"Song must have a header. Here's an example:
+
+  Song:
+    Tempo: 120
+    Structure:
+      - Verse: x2
+      - Chorus: x2"
+  
   def initialize()
   end
-        
+  
   def parse(base_path, definition = nil)
     raw_song_definition = canonicalize_definition(definition)
     raw_song_components = split_raw_yaml_into_components(raw_song_definition)
@@ -62,13 +71,17 @@ private
 
   def split_raw_yaml_into_components(raw_song_definition)
     raw_song_components = {}
-  
     raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
-    raw_song_components[:header]          = downcase_hash_keys(raw_song_components[:full_definition]["song"])
-    raw_song_components[:tempo]           = raw_song_components[:header]["tempo"]
-    raw_song_components[:kit]             = raw_song_components[:header]["kit"]
-    raw_song_components[:structure]       = raw_song_components[:header]["structure"]
-    raw_song_components[:patterns]        = raw_song_components[:full_definition].reject {|k, v| k == "song"}
+    
+    if(raw_song_components[:full_definition]["song"] != nil)
+      raw_song_components[:header] = downcase_hash_keys(raw_song_components[:full_definition]["song"])
+    else
+      raise SongParseError, NO_SONG_HEADER_ERROR_MSG
+    end
+    raw_song_components[:tempo]     = raw_song_components[:header]["tempo"]
+    raw_song_components[:kit]       = raw_song_components[:header]["kit"]
+    raw_song_components[:structure] = raw_song_components[:header]["structure"]
+    raw_song_components[:patterns]  = raw_song_components[:full_definition].reject {|k, v| k == "song"}
   
     return raw_song_components
   end
