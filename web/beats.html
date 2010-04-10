@@ -21,19 +21,26 @@
     - Chorus:  x4
     - Verse:   x2
     - Chorus:  x4
+  Kit:
+    - bass:       sounds/bass.wav
+    - snare:      sounds/snare.wav
+    - hh_closed:  sounds/hh_closed.wav
+    - agogo:      sounds/agogo_high.wav
+    - tom_high:   sounds/tom4.wav
+    - tom_low:    sounds/tom2.wav
 
 Verse:
-  - bass.wav:       X...X...X...X...
-  - snare.wav:      ..............X.
-  - hh_closed.wav:  X.XXX.XXX.X.X.X.
-  - agogo_high.wav: ..............XX
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+  - hh_closed:  X.XXX.XXX.X.X.X.
+  - agogo:      ..............XX
 
 Chorus:
-  - bass.wav:       X...X...X...X...
-  - snare.wav:      ....X.......X...
-  - hh_closed.wav:  X.XXX.XXX.XX..X.
-  - tom4.wav:       ...........X....
-  - tom2.wav:       ..............X.</pre></code></p>
+  - bass:       X...X...X...X...
+  - snare:      ....X.......X...
+  - hh_closed:  X.XXX.XXX.XX..X.
+  - tom_high:   ...........X....
+  - tom_low:    ..............X.</pre></code></p>
 		<p class="last">And <a href="beat.mp3">here is what it sounds like</a> after getting the BEATS treatment. What a glorious groove!</p>
 	</div>
 	<div class="content-box">
@@ -44,7 +51,7 @@ Chorus:
 		<p>The current version of BEATS is 1.1.0. If you have version 1.0.0, you can update with this command:</p>
 		<p><code><pre class="single-line">sudo gem update beats</pre></code></p>
 		<p>(You can run <code>beats -v</code> to determine your version.)</p>
-		<p>BEATS is not terribly useful unless you have drum sounds to use with it. Here are 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a <a href="http://images.gittigidiyor.com/1882/Casio-SA-20-Tone-Bank-Elektronik-Klavye__18821134_0.jpg">Casio SA-20 keyboard</a> that the author got when he was 8 years old. Free of charge: <a href="casio_sa20_drum_sounds.zip">casio_sa20_drum_sounds.zip</a></p>
+		<p>BEATS is not terribly useful unless you have drum sounds to use with it. Here are 20 <span style="text-decoration: line-through">high-quality</span> drum sounds sampled from a <a href="http://images.gittigidiyor.com/1882/Casio-SA-20-Tone-Bank-Elektronik-Klavye__18821134_0.jpg">Casio SA-20 keyboard</a> that the author got when he was 8 years old: <a href="casio_sa20_drum_sounds.zip">casio_sa20_drum_sounds.zip</a></p>
 		<p>The BEATS source code is <a href="http://github.com/jstrait/beats">hosted at GitHub</a>.</p>
 	</div>
 	<div class="content-box">
@@ -61,13 +68,13 @@ Chorus:
 -p, --pattern PATTERN_NAME
     Only generate the pattern PATTERN_NAME,
     instead of the entire song.</pre></code></p>
-	<p>Finally, a note about Ruby 1.8 vs. 1.9. BEATS runs on both versions, but is more than 2x faster on 1.9. Therefore, it&#8217;s highly recommended that you use 1.9 if possible. BEATS will run using whichever <code>ruby</code> command <code>/usr/bin/env</code> points to.</p>
+	<p>Finally, a note about Ruby 1.8 vs. 1.9. BEATS runs fine on both versions, but is more than 2x faster on 1.9. Therefore, it&#8217;s highly recommended that you use 1.9 if possible. BEATS will run using whichever <code>ruby</code> command <code>/usr/bin/env</code> points to.</p>
 	</div>
 	<div class="content-box">
 		<h2>Creating Songs</h2>
-		<p>Songs are notated using <a href="http://en.wikipedia.org/wiki/YAML">YAML</a>, so each song file is just a plain text file you can edit in TextEdit, NotePad, VIM, or whatever. The file extension doesn&#8217;t matter.</p>
+		<p>Songs are notated using <a href="http://en.wikipedia.org/wiki/YAML">YAML</a>, so each song file is just a plain text file you can edit in TextEdit, VIM, or whatever. The file extension doesn&#8217;t matter.</p>
 		<p>Each song is divided into one or more patterns. A pattern represents a section of the song, such as a verse, chorus, or bridge. Each pattern in turn has one or more tracks. Each track represents an individual sound, such as a bass drum, snare, or hi-hat.</p>
-		<p>Songs should start with a header indicating the tempo, the structure of the song, and aliases for commonly used sounds. Here&#8217;s an example below. Since this is YAML, lines must be indented correctly. Also, each pattern in the structure should be preceded by a dash.</p>
+		<p>Songs should start with a header indicating the tempo, the structure of the song, and aliases for commonly used sounds (aka the Kit). Here&#8217;s an example below. Since this is YAML, lines must be indented correctly. Also, each row in the Structure or Kit should be preceded by a dash.</p>
 		<p><pre><code>Song:
   Tempo: 120
   Structure:
@@ -78,7 +85,7 @@ Chorus:
     - Chorus:  x2
   Kit:
     - bass:      sounds/808bass.wav
-    - hh_closed: sounds/hihat.wav
+    - hh_closed: sounds/your_hihatness.wav
     - hh_open:   sounds/hh_open.wav</code></pre></p>
 		<p>The Kit section is optional, but the Structure is required.</p>
 		<p>One or more patterns should follow the header. (If there are no patterns, there is nothing to play!) Each pattern definition starts with the pattern name, followed by the rhythm for each track on separate lines.</p>
