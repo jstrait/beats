@@ -10,7 +10,7 @@ require "optparse"
 require "yaml"
 require "wavefile"
 
-BEATS_VERSION = "1.1.0a"
+BEATS_VERSION = "1.1.0"
 SAMPLE_RATE = 44100
 
 def parse_options
