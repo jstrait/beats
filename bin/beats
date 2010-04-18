@@ -1,7 +1,8 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby19
 
 require File.dirname(__FILE__) + "/../lib/song"
 require File.dirname(__FILE__) + "/../lib/songparser"
+require File.dirname(__FILE__) + "/../lib/songoptimizer"
 require File.dirname(__FILE__) + "/../lib/kit"
 require File.dirname(__FILE__) + "/../lib/pattern"
 require File.dirname(__FILE__) + "/../lib/track"
@@ -12,6 +13,7 @@ require "wavefile"
 
 BEATS_VERSION = "1.1.1a"
 SAMPLE_RATE = 44100
+OPTIMIZED_PATTERN_LENGTH = 4
 
 def parse_options
   options = {:split => false, :pattern => nil}
@@ -64,8 +66,12 @@ end
 
 begin
   parse_start_time = Time.now
+  
   song_parser = SongParser.new()
   song_from_file = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
+  
+  song_optimizer = SongOptimizer.new()
+  song_from_file = song_optimizer.optimize(song_from_file, OPTIMIZED_PATTERN_LENGTH)
   
   generate_samples_start = Time.now
   sample_data = song_from_file.sample_data(options[:split], options[:pattern])
