@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby19
+#!/usr/bin/env ruby
 
 require File.dirname(__FILE__) + "/../lib/song"
 require File.dirname(__FILE__) + "/../lib/songparser"
@@ -65,13 +65,13 @@ if(output_file == nil)
 end
 
 begin
-  parse_start_time = Time.now
-  
   song_parser = SongParser.new()
   song_from_file = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
   
-  song_optimizer = SongOptimizer.new()
-  song_from_file = song_optimizer.optimize(song_from_file, OPTIMIZED_PATTERN_LENGTH)
+  if(options[:combined])
+    song_optimizer = SongOptimizer.new()
+    song_from_file = song_optimizer.optimize(song_from_file, OPTIMIZED_PATTERN_LENGTH)
+  end
   
   generate_samples_start = Time.now
   sample_data = song_from_file.sample_data(options[:split], options[:pattern])
