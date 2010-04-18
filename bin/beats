@@ -68,7 +68,7 @@ begin
   song_parser = SongParser.new()
   song_from_file = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
   
-  if(options[:combined])
+  if(!options[:split])
     song_optimizer = SongOptimizer.new()
     song_from_file = song_optimizer.optimize(song_from_file, OPTIMIZED_PATTERN_LENGTH)
   end
