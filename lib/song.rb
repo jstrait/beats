@@ -13,17 +13,24 @@ class Song
     @structure = []
   end
 
+  # Adds a new pattern to the song, with the specified name.
   def pattern(name)
     @patterns[name] = Pattern.new(name)
     return @patterns[name]
   end
 
+  # Returns the number of samples required for the entire song at the current tempo.
+  # (Assumes a sample rate of 44100). Does NOT include samples required for sound
+  # overflow from the last pattern.
   def sample_length()
     @structure.inject(0) {|sum, pattern_name|
       sum + @patterns[pattern_name].sample_length(@tick_sample_length)
     }
   end
 
+  # Returns the number of samples required for the entire song at the current tempo.
+  # (Assumes a sample rate of 44100). Includes samples required for sound overflow
+  # from the last pattern.
   def sample_length_with_overflow()
     if(@structure.length == 0)
       return 0
@@ -37,15 +44,17 @@ class Song
     return sample_length + overflow
   end
   
+  # The number of tracks that the pattern with the greatest number of tracks has.
   def total_tracks()
     @patterns.keys.collect {|pattern_name| @patterns[pattern_name].tracks.length }.max || 0
   end
 
-  def sample_data(pattern_name, split)
+  # Returns the sample data for the song.
+  def sample_data(split, pattern_name = nil)
     num_tracks_in_song = self.total_tracks()
     fill_value = (@kit.num_channels == 1) ? 0 : [].fill(0, 0, @kit.num_channels)
 
-    if(pattern_name == "")      
+    if(pattern_name == nil)      
       if(split)
         return sample_data_split_all_patterns(fill_value, num_tracks_in_song)
       else

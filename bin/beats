@@ -10,11 +10,11 @@ require "optparse"
 require "yaml"
 require "wavefile"
 
-BEATS_VERSION = "1.1.0"
+BEATS_VERSION = "1.1.1a"
 SAMPLE_RATE = 44100
 
 def parse_options
-  options = {:split => false, :pattern => ""}
+  options = {:split => false, :pattern => nil}
 
   optparse = OptionParser.new do |opts|
     opts.on('-s', '--split', "Save each track to an individual wave file") do
@@ -68,7 +68,7 @@ begin
   song_from_file = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
   
   generate_samples_start = Time.now
-  sample_data = song_from_file.sample_data(options[:pattern], options[:split])
+  sample_data = song_from_file.sample_data(options[:split], options[:pattern])
   #puts "Time to generate sample data: #{Time.now - generate_samples_start}"
 
   wave_write_start = Time.now

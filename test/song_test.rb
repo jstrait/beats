@@ -117,23 +117,25 @@ Verse:
     test_songs = generate_test_data()
     
     test_songs.values.each {|song|
-      sample_data = song.sample_data("", false)
+      sample_data = song.sample_data(false)
       assert_equal(sample_data.class, Array)
       assert_equal(sample_data.length, song.sample_length_with_overflow)
-      sample_data = song.sample_data("", true)
+      sample_data = song.sample_data(true)
       assert_equal(sample_data.class, Hash)
     }
     
     [:from_code, :repeats_not_specified, :overflow, :from_valid_yaml_string].each {|key|
-      assert_equal(test_songs[key].sample_data("verse", false).class, Array)
-      assert_equal(test_songs[key].sample_data("verse", true).class, Hash)
+      assert_equal(test_songs[key].sample_data(false, "verse").class, Array)
+      assert_equal(test_songs[key].sample_data(true, "verse").class, Hash)
     }
+    
+    assert_raise(StandardError) { test_songs[:from_valid_yaml_string].sample_data(true, "") }
     
     snare_sample_data = test_songs[:overflow].kit.get_sample_data("test/sounds/snare_mono_8.wav")
     expected = [].fill(0, 0, test_songs[:overflow].tick_sample_length * 4)
     expected[0...(snare_sample_data.length)] = snare_sample_data
     expected += snare_sample_data
     expected = [].fill(0, 0, test_songs[:overflow].tick_sample_length * 3) + expected
-    assert_equal(test_songs[:overflow].sample_data("", false)[0], expected[0])
+    assert_equal(test_songs[:overflow].sample_data(false)[0], expected[0])
   end
 end
