@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
 
-require File.dirname(__FILE__) + "/../lib/song"
-require File.dirname(__FILE__) + "/../lib/songparser"
-require File.dirname(__FILE__) + "/../lib/songoptimizer"
-require File.dirname(__FILE__) + "/../lib/kit"
-require File.dirname(__FILE__) + "/../lib/pattern"
-require File.dirname(__FILE__) + "/../lib/track"
+$:.unshift File.dirname(__FILE__)
+require "lib/song"
+require "lib/songparser"
+require "lib/songoptimizer"
+require "lib/kit"
+require "lib/pattern"
+require "lib/track"
 require "rubygems"
 require "optparse"
 require "yaml"
