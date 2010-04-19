@@ -5,6 +5,7 @@ class Pattern
     @tracks = {}
   end
   
+  # Adds a new track to the pattern.
   def track(name, wave_data, pattern)
     new_track = Track.new(name, wave_data, pattern)        
     @tracks[new_track.name] = new_track
@@ -27,10 +28,14 @@ class Pattern
     return new_track
   end
   
+  # The number of samples required for the pattern at the given tempo. DOES NOT include samples
+  # necessary for sound that overflows past the last tick of the pattern.
   def sample_length(tick_sample_length)
     @tracks.keys.collect {|track_name| @tracks[track_name].sample_length(tick_sample_length) }.max || 0
   end
   
+  # The number of samples required for the pattern at the given tempo. Include sound overflow
+  # past the last tick of the pattern.
   def sample_length_with_overflow(tick_sample_length)
     @tracks.keys.collect {|track_name| @tracks[track_name].sample_length_with_overflow(tick_sample_length) }.max || 0
   end
@@ -84,6 +89,7 @@ private
     # contained in current pattern.
     incoming_overflow.keys.each {|track_name|
       if(!track_names.member?(track_name) && incoming_overflow[track_name].length > 0)
+        # TODO: Fix bug when incoming overflow for track is longer than primary_sample_data.length
         if(num_channels == 1)
           (0...incoming_overflow[track_name].length).each {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
         else
