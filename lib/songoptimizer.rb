@@ -39,8 +39,8 @@ class SongOptimizer
 
     return optimized_song
   end
-  
-private
+
+protected
 
   def clone_song_ignoring_patterns_and_structure(original_song)
     cloned_song = Song.new(original_song.kit.base_path)
