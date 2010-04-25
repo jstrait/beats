@@ -111,14 +111,14 @@ Chorus:
     assert_equal(pattern.tracks["hh_closed"].pattern, "..X.")
     assert_equal(pattern.tracks["sounds/tom2.wav"].pattern, "..X.")
     
-    assert_equal(optimized_song.structure, [:verse0, :verse4, :verse8, :verse12,
-                                            :verse0, :verse4, :verse8, :verse12,
+    assert_equal(optimized_song.structure, [:chorus0, :chorus0, :verse8, :verse12,
+                                            :chorus0, :chorus0, :verse8, :verse12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :verse0, :verse4, :verse8, :verse12,
-                                            :verse0, :verse4, :verse8, :verse12,
+                                            :chorus0, :chorus0, :verse8, :verse12,
+                                            :chorus0, :chorus0, :verse8, :verse12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
