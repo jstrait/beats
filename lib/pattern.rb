@@ -48,6 +48,23 @@ class Pattern
     end
   end
   
+  # TODO: Better name for this?
+  def same_as(other_pattern)
+    self_track_names = @tracks.keys.sort
+    self_pattern_serialized = self_track_names.inject("") do |str, track_name|
+      track = @tracks[track_name]
+      str += track.name + track.pattern
+    end
+    
+    other_track_names = other_pattern.tracks.keys.sort
+    other_pattern_serialized = other_track_names.inject("") do |str, track_name|
+      track = other_pattern.tracks[track_name]
+      str += track.name + track.pattern
+    end
+    
+    return self_pattern_serialized == other_pattern_serialized
+  end
+  
   attr_accessor :tracks, :name
 
 private

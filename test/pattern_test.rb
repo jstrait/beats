@@ -69,6 +69,42 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(test_patterns[2].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
   end
 
+  def test_same_as
+    left_pattern = Pattern.new("left")
+    left_pattern.track("bass",      nil, "X...X...")
+    left_pattern.track("snare",     nil, "..X...X.")
+    left_pattern.track("hh_closed", nil, "X.X.X.X.")
+    
+    right_pattern = Pattern.new("right")
+    right_pattern.track("bass",      nil, "X...X...")
+    right_pattern.track("snare",     nil, "..X...X.")
+    right_pattern.track("hh_closed", nil, "X.X.X.X.")
+    assert(left_pattern.same_as(right_pattern))
+    assert(right_pattern.same_as(left_pattern))
+    
+    # Now switch up the order. Left and right should still be equal
+    right_pattern = Pattern.new("right")
+    right_pattern.track("snare",     nil, "..X...X.")
+    right_pattern.track("hh_closed", nil, "X.X.X.X.")
+    right_pattern.track("bass",      nil, "X...X...")
+    assert(left_pattern.same_as(right_pattern))
+    assert(right_pattern.same_as(left_pattern))
+    
+    different_names_pattern = Pattern.new("different_names")
+    different_names_pattern.track("tom",     nil, "X...X...")
+    different_names_pattern.track("cymbal",  nil, "..X...X.")
+    different_names_pattern.track("hh_open", nil, "X...X...")
+    assert_equal(false, left_pattern.same_as(different_names_pattern))
+    assert_equal(false, different_names_pattern.same_as(left_pattern))
+    
+    different_beats_pattern = Pattern.new("different_beats")
+    different_beats_pattern.track("bass",      nil, "X...X...")
+    different_beats_pattern.track("snare",     nil, "..X...X.")
+    different_beats_pattern.track("hh_closed", nil, "X.XXX.X.")
+    assert_equal(false, left_pattern.same_as(different_beats_pattern))
+    assert_equal(false, different_beats_pattern.same_as(left_pattern))
+  end
+
   def test_sample_data
     tick_sample_lengths = [
       13860.0,
