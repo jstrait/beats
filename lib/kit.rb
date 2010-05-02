@@ -19,7 +19,7 @@ class Kit
       begin
         wavefile = WaveFile.open(path)
       rescue
-        raise SoundNotFoundError, "Sound file #{name} not found."
+        raise SoundNotFoundError, "Sound file #{path} not found."
       end
       
       @sounds[name] = wavefile
@@ -33,6 +33,8 @@ class Kit
     end
   end
   
+  # Returns the sample data for a sound contained in the Kit.
+  # Raises an error if the sound doesn't exist in the Kit.
   def get_sample_data(name)
     wavefile = @sounds[name]
     
