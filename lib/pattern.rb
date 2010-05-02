@@ -6,8 +6,8 @@ class Pattern
   end
   
   # Adds a new track to the pattern.
-  def track(name, wave_data, pattern)
-    new_track = Track.new(name, wave_data, pattern)        
+  def track(name, wave_data, rhythm)
+    new_track = Track.new(name, wave_data, rhythm)        
     @tracks[new_track.name] = new_track
     
     # If the new track is longer than any of the previously added tracks,
@@ -15,13 +15,13 @@ class Pattern
     # Necessary to prevent incorrect overflow calculations for tracks.
     longest_track_length = 0
     @tracks.values.each {|track|
-      if(track.pattern.length > longest_track_length)
-        longest_track_length = track.pattern.length
+      if(track.rhythm.length > longest_track_length)
+        longest_track_length = track.rhythm.length
       end
     }
     @tracks.values.each {|track|
-      if(track.pattern.length < longest_track_length)
-        track.pattern += "." * (longest_track_length - track.pattern.length)
+      if(track.rhythm.length < longest_track_length)
+        track.rhythm += "." * (longest_track_length - track.rhythm.length)
       end
     }
     
@@ -53,13 +53,13 @@ class Pattern
     self_track_names = @tracks.keys.sort
     self_pattern_serialized = self_track_names.inject("") do |str, track_name|
       track = @tracks[track_name]
-      str += track.name + track.pattern
+      str += track.name + track.rhythm
     end
     
     other_track_names = other_pattern.tracks.keys.sort
     other_pattern_serialized = other_track_names.inject("") do |str, track_name|
       track = other_pattern.tracks[track_name]
-      str += track.name + track.pattern
+      str += track.name + track.rhythm
     end
     
     return self_pattern_serialized == other_pattern_serialized
@@ -70,7 +70,7 @@ class Pattern
 private
 
   def combined_sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
-    # If we've already encountered this pattern with the same incoming overflow before,
+    # If we've already generated this pattern with the same incoming overflow before,
     # return the pre-mixed down version from the cache.
     if(@cache.member?(incoming_overflow))
       return @cache[incoming_overflow]

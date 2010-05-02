@@ -67,49 +67,49 @@ Chorus:
     
     pattern = optimized_song.patterns[:verse0]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
-    assert_equal(pattern.tracks["bass"].pattern, "X...")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "X.XX")
+    assert_equal(pattern.tracks["bass"].rhythm, "X...")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
     
     pattern = optimized_song.patterns[:verse4]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
-    assert_equal(pattern.tracks["bass"].pattern, "X...")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "X.XX")
+    assert_equal(pattern.tracks["bass"].rhythm, "X...")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
     
     pattern = optimized_song.patterns[:verse8]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
-    assert_equal(pattern.tracks["bass"].pattern, "X...")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "X.X.")
+    assert_equal(pattern.tracks["bass"].rhythm, "X...")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.X.")
     
     pattern = optimized_song.patterns[:verse12]
     assert_equal(pattern.tracks.keys.sort, ["agogo", "bass", "hh_closed", "snare"])
-    assert_equal(pattern.tracks["bass"].pattern, "X...")
-    assert_equal(pattern.tracks["snare"].pattern, "..X.")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "X.X.")
-    assert_equal(pattern.tracks["agogo"].pattern, "..XX")
+    assert_equal(pattern.tracks["bass"].rhythm, "X...")
+    assert_equal(pattern.tracks["snare"].rhythm, "..X.")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.X.")
+    assert_equal(pattern.tracks["agogo"].rhythm, "..XX")
     
     pattern = optimized_song.patterns[:chorus0]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
-    assert_equal(pattern.tracks["bass"].pattern, "X...")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "X.XX")
+    assert_equal(pattern.tracks["bass"].rhythm, "X...")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
     
     pattern = optimized_song.patterns[:chorus4]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "snare"])
-    assert_equal(pattern.tracks["bass"].pattern, "X...")
-    assert_equal(pattern.tracks["snare"].pattern, "X...")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "X.XX")
+    assert_equal(pattern.tracks["bass"].rhythm, "X...")
+    assert_equal(pattern.tracks["snare"].rhythm, "X...")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
     
     pattern = optimized_song.patterns[:chorus8]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "sounds/tom4.wav"])
-    assert_equal(pattern.tracks["bass"].pattern, "XX..")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "X.XX")
-    assert_equal(pattern.tracks["sounds/tom4.wav"].pattern, "...X")
+    assert_equal(pattern.tracks["bass"].rhythm, "XX..")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
+    assert_equal(pattern.tracks["sounds/tom4.wav"].rhythm, "...X")
     
     pattern = optimized_song.patterns[:chorus12]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "snare", "sounds/tom2.wav"])
-    assert_equal(pattern.tracks["bass"].pattern, "X...")
-    assert_equal(pattern.tracks["snare"].pattern, "X...")
-    assert_equal(pattern.tracks["hh_closed"].pattern, "..X.")
-    assert_equal(pattern.tracks["sounds/tom2.wav"].pattern, "..X.")
+    assert_equal(pattern.tracks["bass"].rhythm, "X...")
+    assert_equal(pattern.tracks["snare"].rhythm, "X...")
+    assert_equal(pattern.tracks["hh_closed"].rhythm, "..X.")
+    assert_equal(pattern.tracks["sounds/tom2.wav"].rhythm, "..X.")
     
     assert_equal(optimized_song.structure, [:chorus0, :chorus0, :verse8, :verse12,
                                             :chorus0, :chorus0, :verse8, :verse12,

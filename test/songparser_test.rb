@@ -150,8 +150,8 @@ Verse:
     song = test_songs[:from_valid_yaml_string_with_empty_track]
     assert_equal(1, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
-    assert_equal("........", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].pattern)
-    assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/snare_mono_8.wav"].pattern)
+    assert_equal("........", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
+    assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/snare_mono_8.wav"].rhythm)
   end
   
   def test_invalid_parse

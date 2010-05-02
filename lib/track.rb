@@ -2,21 +2,21 @@ class Track
   REST = "."
   BEAT = "X"
   
-  def initialize(name, wave_data, pattern)
+  def initialize(name, wave_data, rhythm)
     @wave_data = wave_data
     @name = name
     @sample_data = nil
     @overflow = nil
-    self.pattern = pattern
+    self.rhythm = rhythm
   end
   
-  def pattern=(pattern)
-    @pattern = pattern
+  def rhythm=(rhythm)
+    @rhythm = rhythm
     beats = []
     
     beat_length = 0
-    #pattern.each_char{|ch|
-    pattern.each_byte{|ch|
+    #rhythm.each_char{|ch|
+    rhythm.each_byte{|ch|
       ch = ch.chr
       if ch == BEAT
         beats << beat_length
@@ -114,5 +114,5 @@ class Track
   end
   
   attr_accessor :name, :wave_data
-  attr_reader :pattern
+  attr_reader :rhythm
 end

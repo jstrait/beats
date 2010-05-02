@@ -101,9 +101,9 @@ class Song
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
   # using the SongParser class. This lets you save a Song to disk, to be re-loaded later.
   def to_yaml()
-    # This implementation purposefully manually builds up a YAML string instead of using YAML::dump().
-    # Ruby 1.8 makes it difficult to ensure a consistent order of hash keys, which makes the output ugly
-    # and also difficult to test.
+    # This implementation intentionally builds up a YAML string manually instead of using YAML::dump().
+    # Ruby 1.8 makes it difficult to ensure a consistent ordering of hash keys, which makes the output ugly
+    # and also hard to test.
     
     yaml_output = "Song:\n"
     yaml_output += "  Tempo: #{@tempo}\n"
@@ -116,7 +116,7 @@ class Song
       yaml_output += "\n#{pattern_name.capitalize}:\n"
       pattern = @patterns[pattern_name.to_sym]
       pattern.tracks.keys.sort.each do |track_name|
-        yaml_output += "  - #{track_name}: #{pattern.tracks[track_name].pattern}\n"
+        yaml_output += "  - #{track_name}: #{pattern.tracks[track_name].rhythm}\n"
       end
     end
     

@@ -36,11 +36,11 @@ protected
       tick_index = 0
       optimized_structure[pattern.name] = []
       
-      while(pattern.tracks.values.first.pattern[tick_index] != nil) do
+      while(pattern.tracks.values.first.rhythm[tick_index] != nil) do
         new_pattern = optimized_song.pattern("#{pattern.name}#{tick_index}".to_sym)
         optimized_structure[pattern.name] << new_pattern.name
         pattern.tracks.values.each do |track|
-          sub_track_pattern = track.pattern[tick_index...(tick_index + max_pattern_length)]
+          sub_track_pattern = track.rhythm[tick_index...(tick_index + max_pattern_length)]
           
           if(sub_track_pattern != blank_track_pattern)
             new_pattern.track(track.name,
