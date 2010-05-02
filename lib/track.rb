@@ -16,7 +16,7 @@ class Track
     
     beat_length = 0
     #rhythm.each_char{|ch|
-    rhythm.each_byte{|ch|
+    rhythm.each_byte do |ch|
       ch = ch.chr
       if ch == BEAT
         beats << beat_length
@@ -24,7 +24,7 @@ class Track
       else
         beat_length += 1
       end
-    }
+    end
     
     if(beat_length > 0)
       beats << beat_length
@@ -70,7 +70,7 @@ class Track
         offset = @beats[0] * tick_sample_length
         remainder += (@beats[0] * tick_sample_length) - (@beats[0] * tick_sample_length).floor
 
-        @beats[1...(@beats.length)].each {|beat_length|
+        @beats[1...(@beats.length)].each do |beat_length|
           beat_sample_length = beat_length * tick_sample_length
 
           remainder += beat_sample_length - beat_sample_length.floor
@@ -81,7 +81,7 @@ class Track
 
           output_data[offset...(offset + wave_data.length)] = wave_data
           offset += beat_sample_length.floor
-        }
+        end
       
         if(full_sample_length > actual_sample_length)
           @sample_data = output_data[0...offset]

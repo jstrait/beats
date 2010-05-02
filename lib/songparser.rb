@@ -90,42 +90,42 @@ private
     
     # Add sounds defined in the Kit section of the song header
     if(raw_kit != nil)
-      raw_kit.each {|kit_item|
+      raw_kit.each do |kit_item|
         kit.add(kit_item.keys.first, kit_item.values.first)
-      }
+      end
     end
     
     # Add sounds not defined in Kit section, but used in individual tracks
     # TODO Investigate detecting duplicate keys already defined in the Kit section, as this could possibly
     # result in a performance improvement when the sound has to be converted to a different bit rate/num channels,
     # as well as use less memory.
-    raw_patterns.keys.each{|key|
+    raw_patterns.keys.each do |key|
       track_list = raw_patterns[key]
-      track_list.each{|track_definition|
+      track_list.each do |track_definition|
         track_name = track_definition.keys.first
         track_path = track_name
         
         kit.add(track_name, track_path)
-      }
-    }
+      end
+    end
     
     return kit
   end
   
   def add_patterns_to_song(song, raw_patterns)
-    raw_patterns.keys.each{|key|
+    raw_patterns.keys.each do |key|
       new_pattern = song.pattern key.to_sym
 
       track_list = raw_patterns[key]
-      track_list.each{|track_definition|
+      track_list.each do |track_definition|
         track_name = track_definition.keys.first
         
         # Handle case where no track pattern is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
         track_definition[track_name] ||= ""
         
         new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
-      }
-    }
+      end
+    end
   end
   
   def set_song_structure(song, raw_structure)
@@ -164,9 +164,9 @@ private
     
   # Converts all hash keys to be lowercase
   def downcase_hash_keys(hash)
-    return hash.inject({}) {|new_hash, pair|
+    return hash.inject({}) do |new_hash, pair|
         new_hash[pair.first.downcase] = pair.last
         new_hash
-    }
+    end
   end
 end

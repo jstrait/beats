@@ -117,18 +117,18 @@ Verse:
   def test_sample_data
     test_songs = generate_test_data()
     
-    test_songs.values.each {|song|
+    test_songs.values.each do |song|
       sample_data = song.sample_data(false)
       assert_equal(sample_data.class, Array)
       assert_equal(sample_data.length, song.sample_length_with_overflow)
       sample_data = song.sample_data(true)
       assert_equal(sample_data.class, Hash)
-    }
+    end
     
-    [:from_code, :repeats_not_specified, :overflow, :from_valid_yaml_string].each {|key|
+    [:from_code, :repeats_not_specified, :overflow, :from_valid_yaml_string].each do |key|
       assert_equal(test_songs[key].sample_data(false, "verse").class, Array)
       assert_equal(test_songs[key].sample_data(true, "verse").class, Hash)
-    }
+    end
     
     #assert_raise(ArgumentError) { test_songs[:from_valid_yaml_string].sample_data(true, "") }
     

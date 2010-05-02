@@ -14,16 +14,16 @@ class Pattern
     # pad the other tracks with trailing . to make them all the same length.
     # Necessary to prevent incorrect overflow calculations for tracks.
     longest_track_length = 0
-    @tracks.values.each {|track|
+    @tracks.values.each do |track|
       if(track.rhythm.length > longest_track_length)
         longest_track_length = track.rhythm.length
       end
-    }
-    @tracks.values.each {|track|
+    end
+    @tracks.values.each do |track|
       if(track.rhythm.length < longest_track_length)
         track.rhythm += "." * (longest_track_length - track.rhythm.length)
       end
-    }
+    end
     
     return new_track
   end
@@ -85,26 +85,26 @@ private
     if(track_names.length > 0)
       primary_sample_data = [].fill(fill_value, 0, actual_sample_length)
 
-      track_names.each {|track_name|
+      track_names.each do |track_name|
         temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
 
         track_samples = temp[:primary]
         if(num_channels == 1)
           (0...track_samples.length).each {|i| primary_sample_data[i] += track_samples[i] }
         else
-          (0...track_samples.length).each {|i|
+          (0...track_samples.length).each do |i|
             primary_sample_data[i][0] += track_samples[i][0]
             primary_sample_data[i][1] += track_samples[i][1]
-          }
+          end
         end
 
         overflow_sample_data[track_name] = temp[:overflow]
-      }
+      end
     end
     
     # Add samples for tracks with overflow from previous pattern, but not
     # contained in current pattern.
-    incoming_overflow.keys.each {|track_name|
+    incoming_overflow.keys.each do |track_name|
       if(!track_names.member?(track_name) && incoming_overflow[track_name].length > 0)
         # TODO: Fix bug when incoming overflow for track is longer than primary_sample_data.length
         if(num_channels == 1)
@@ -114,7 +114,7 @@ private
                                                                primary_sample_data[i][1] += incoming_overflow[track_name][i][1]}
         end
       end
-    }
+    end
     
     # Mix down the pattern's tracks into one single track
     if(num_channels == 1)
@@ -135,13 +135,13 @@ private
     primary_sample_data = {}
     overflow_sample_data = {}
     
-    @tracks.keys.each {|track_name|
+    @tracks.keys.each do |track_name|
       temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
       primary_sample_data[track_name] = temp[:primary]
       overflow_sample_data[track_name] = temp[:overflow]
-    }
+    end
     
-    incoming_overflow.keys.each {|track_name|
+    incoming_overflow.keys.each do |track_name|
       if(@tracks[track_name] == nil)
         # TO DO: Add check for when incoming overflow is longer than
         # track full length to prevent track from lengthening.
@@ -149,7 +149,7 @@ private
         primary_sample_data[track_name][0...incoming_overflow[track_name].length] = incoming_overflow[track_name]
         overflow_sample_data[track_name] = []
       end
-    }
+    end
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end

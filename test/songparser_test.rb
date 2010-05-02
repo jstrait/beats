@@ -136,7 +136,7 @@ Verse:
     
     # These two songs should be the same, except that one uses a kit in the song header
     # and the other doesn't.
-    [:from_valid_yaml_string, :from_valid_yaml_string_with_kit].each {|song_key|
+    [:from_valid_yaml_string, :from_valid_yaml_string_with_kit].each do |song_key|
       song = test_songs[song_key]
       assert_equal(song.structure, [:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus, :chorus, :chorus, :bridge, :chorus, :chorus, :chorus, :chorus])
       assert_equal(song.tempo, 99)
@@ -145,7 +145,7 @@ Verse:
       assert_equal(song.patterns[:verse].tracks.length, 4)
       assert_equal(song.patterns[:chorus].tracks.length, 5)
       assert_equal(song.patterns[:bridge].tracks.length, 1)
-    }
+    end
     
     song = test_songs[:from_valid_yaml_string_with_empty_track]
     assert_equal(1, song.patterns.length)

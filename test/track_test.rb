@@ -46,7 +46,7 @@ class TrackTest < Test::Unit::TestCase
       (W.sample_rate * SECONDS_IN_MINUTE) / 41 / 4    # 16134.1463414634
     ]
 
-    tick_sample_lengths.each { |tick_sample_length| helper_test_sample_length(tick_sample_length) }
+    tick_sample_lengths.each {|tick_sample_length| helper_test_sample_length(tick_sample_length) }
   end
 
   def helper_test_sample_length(tick_sample_length)

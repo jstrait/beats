@@ -59,9 +59,9 @@ class SongTest < Test::Unit::TestCase
     assert(sample_data.max <= MAX_SAMPLE_8BIT)
     assert(sample_data.min >= MIN_SAMPLE_8BIT)
     all_are_fixnums = true
-    sample_data.each {|sample|
+    sample_data.each do |sample|
       all_are_fixnums &&= sample.class == Fixnum
-    }
+    end
     assert(all_are_fixnums)
     
     kit.add("mono16", "bass_mono_16.wav")
@@ -69,9 +69,9 @@ class SongTest < Test::Unit::TestCase
     assert(sample_data.max > MAX_SAMPLE_8BIT)
     assert(sample_data.min < MIN_SAMPLE_8BIT)
     all_are_fixnums = true
-    sample_data.each {|sample|
+    sample_data.each do |sample|
       all_are_fixnums &&= sample.class == Fixnum
-    }
+    end
     assert(all_are_fixnums)
     
     kit.add("stereo16", "bass_stereo_16.wav")
@@ -79,9 +79,9 @@ class SongTest < Test::Unit::TestCase
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
     all_are_arrays = true
-    sample_data.each {|sample|
+    sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
-    }
+    end
     assert(all_are_arrays)
     assert(sample_data.first.length == 2)
     
@@ -95,9 +95,9 @@ class SongTest < Test::Unit::TestCase
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
     all_are_arrays = true
-    sample_data.each {|sample|
+    sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
-    }
+    end
     assert(all_are_arrays)
     assert(sample_data.first.length == 2)
     
@@ -106,9 +106,9 @@ class SongTest < Test::Unit::TestCase
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
     all_are_arrays = true
-    sample_data.each {|sample|
+    sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
-    }
+    end
     assert(all_are_arrays)
     assert(sample_data.first.length == 2)
     
@@ -117,9 +117,9 @@ class SongTest < Test::Unit::TestCase
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
     assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
     all_are_arrays = true
-    sample_data.each {|sample|
+    sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
-    }
+    end
     assert(all_are_arrays)
     assert(sample_data.first.length == 2)
   end

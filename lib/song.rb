@@ -23,9 +23,9 @@ class Song
   # (Assumes a sample rate of 44100). Does NOT include samples required for sound
   # overflow from the last pattern.
   def sample_length()
-    @structure.inject(0) {|sum, pattern_name|
+    @structure.inject(0) do |sum, pattern_name|
       sum + @patterns[pattern_name].sample_length(@tick_sample_length)
-    }
+    end
   end
 
   # Returns the number of samples required for the entire song at the current tempo.
@@ -132,7 +132,7 @@ private
     yaml_output = "  Structure:\n"
     previous = nil
     count = 0
-    @structure.each {|pattern_name|
+    @structure.each do |pattern_name|
       if(pattern_name == previous || previous == nil)
         count += 1
       else
@@ -140,7 +140,7 @@ private
         count = 1
       end
       previous = pattern_name
-    }
+    end
     yaml_output += "    - #{previous.to_s.capitalize}: x#{count}\n"
     
     return yaml_output
@@ -164,11 +164,11 @@ private
 
     if(overflow != {})
       longest_overflow = overflow[overflow.keys.first]
-      overflow.keys.each {|track_name|
+      overflow.keys.each do |track_name|
         if(overflow[track_name].length > longest_overflow.length)
           longest_overflow = overflow[track_name]
         end
-      }
+      end
 
       final_overflow_pattern = Pattern.new(:overflow)
       final_overflow_pattern.track "", [], "."
@@ -184,31 +184,31 @@ private
     
     offset = 0
     overflow = {}
-    @structure.each {|pattern_name|
+    @structure.each do |pattern_name|
       pattern_sample_length = @patterns[pattern_name].sample_length(@tick_sample_length)
       pattern_sample_data = @patterns[pattern_name].sample_data(@tick_sample_length, @kit.num_channels, num_tracks_in_song, overflow, true)
       
-      pattern_sample_data[:primary].keys.each {|track_name|
+      pattern_sample_data[:primary].keys.each do |track_name|
         if(output_data[track_name] == nil)
           output_data[track_name] = [].fill(fill_value, 0, self.sample_length_with_overflow())
         end
 
         output_data[track_name][offset...(offset + pattern_sample_length)] = pattern_sample_data[:primary][track_name]
-      }
+      end
       
-      overflow.keys.each {|track_name|
+      overflow.keys.each do |track_name|
         if(pattern_sample_data[:primary][track_name] == nil)
           output_data[track_name][offset...overflow[track_name].length] = overflow[track_name]
         end
-      }
+      end
       
       overflow = pattern_sample_data[:overflow]
       offset += pattern_sample_length
-    }
+    end
 
-    overflow.keys.each {|track_name|
+    overflow.keys.each do |track_name|
       output_data[track_name][offset...overflow[track_name].length] = overflow[track_name]
-    }
+    end
 
     return output_data
   end
@@ -219,13 +219,13 @@ private
     pattern_sample_length = pattern.sample_length(@tick_sample_length)
     pattern_sample_data = pattern.sample_data(@tick_sample_length, @kit.num_channels, num_tracks_in_song, {}, true)
     
-    pattern_sample_data[:primary].keys.each {|track_name|
+    pattern_sample_data[:primary].keys.each do |track_name|
       overflow_sample_length = pattern_sample_data[:overflow][track_name].length
       full_sample_length = pattern_sample_length + overflow_sample_length
       output_data[track_name] = [].fill(fill_value, 0, full_sample_length)
       output_data[track_name][0...pattern_sample_length] = pattern_sample_data[:primary][track_name]
       output_data[track_name][pattern_sample_length...full_sample_length] = pattern_sample_data[:overflow][track_name]
-    }
+    end
     
     return output_data
   end
@@ -235,13 +235,13 @@ private
 
     offset = 0
     overflow = {}
-    @structure.each {|pattern_name|
+    @structure.each do |pattern_name|
       pattern_sample_length = @patterns[pattern_name].sample_length(@tick_sample_length)
       pattern_sample_data = @patterns[pattern_name].sample_data(@tick_sample_length, @kit.num_channels, num_tracks_in_song, overflow)
       output_data[offset...offset + pattern_sample_length] = pattern_sample_data[:primary]
       overflow = pattern_sample_data[:overflow]
       offset += pattern_sample_length
-    }
+    end
     
     # Handle overflow from final pattern
     output_data[offset...output_data.length] = merge_overflow(overflow, num_tracks_in_song)
