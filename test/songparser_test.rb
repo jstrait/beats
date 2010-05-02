@@ -110,10 +110,22 @@ Bridge:
   - hhclosed: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
     test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, valid_yaml_string_with_kit)
 
+    valid_yaml_string_with_empty_track = "# An song which has a track with no rhythm
+  
+Song:
+  Tempo: 99
+  Structure:
+    - Verse:     x1
+
+Verse:
+  - test/sounds/bass_mono_8.wav:
+  - test/sounds/snare_mono_8.wav: X...X..."
+    test_songs[:from_valid_yaml_string_with_empty_track] = SongParser.new().parse(base_path, valid_yaml_string_with_empty_track)
+
     return test_songs
   end
 
-  def test_valid_initialize
+  def test_valid_parse
     test_songs = SongParserTest.generate_test_data()
     
     assert_equal(test_songs[:no_tempo].tempo, 120)
@@ -134,9 +146,15 @@ Bridge:
       assert_equal(song.patterns[:chorus].tracks.length, 5)
       assert_equal(song.patterns[:bridge].tracks.length, 1)
     }
+    
+    song = test_songs[:from_valid_yaml_string_with_empty_track]
+    assert_equal(1, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("........", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].pattern)
+    assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/snare_mono_8.wav"].pattern)
   end
   
-  def test_invalid_initialize
+  def test_invalid_parse
     no_header_yaml_string = "# Song with no header
     Verse:
       - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."

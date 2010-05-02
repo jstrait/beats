@@ -51,8 +51,7 @@ class SongParser
   
 private
 
-  # This is basically a factory. Don't see a benefit to extracting to a full class.
-  # Also, is "canonicalize" a word?
+  # Is "canonicalize" a word?
   def canonicalize_definition(definition)
     if(definition.class == String)
       begin
@@ -120,7 +119,11 @@ private
       track_list = raw_patterns[key]
       track_list.each{|track_definition|
         track_name = track_definition.keys.first
-       new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
+        
+        # Handle case where no track pattern is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
+        track_definition[track_name] ||= ""
+        
+        new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
       }
     }
   end
