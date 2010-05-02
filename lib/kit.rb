@@ -5,6 +5,7 @@ class Kit
   
   def initialize(base_path)
     @base_path = base_path
+    @label_mappings = {}
     @sounds = {}
     @num_channels = 0
     @bits_per_sample = 0
@@ -13,16 +14,19 @@ class Kit
   def add(name, path)
     if(!@sounds.has_key? name)
       if(!path.start_with?(PATH_SEPARATOR))
-        path = @base_path + PATH_SEPARATOR + path
+        full_path = @base_path + PATH_SEPARATOR + path
       end
       
       begin
-        wavefile = WaveFile.open(path)
+        wavefile = WaveFile.open(full_path)
       rescue
-        raise SoundNotFoundError, "Sound file #{path} not found."
+        raise SoundNotFoundError, "Sound file #{full_path} not found."
       end
       
       @sounds[name] = wavefile
+      if(name != path)
+        @label_mappings[name] = path
+      end
     
       if wavefile.num_channels > @num_channels
         @num_channels = wavefile.num_channels
@@ -52,5 +56,5 @@ class Kit
     return @sounds.length
   end
   
-  attr_reader :base_path, :bits_per_sample, :num_channels
+  attr_reader :base_path, :label_mappings, :bits_per_sample, :num_channels
 end

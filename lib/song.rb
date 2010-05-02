@@ -98,10 +98,66 @@ class Song
     @tick_sample_length = SAMPLES_PER_MINUTE / new_tempo / 4.0
   end
 
+  # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
+  # using the SongParser class. This lets you save a Song to disk, to be re-loaded later.
+  def to_yaml()
+    # This implementation purposefully manually builds up a YAML string instead of using YAML::dump().
+    # Ruby 1.8 makes it difficult to ensure a consistent order of hash keys, which makes the output ugly
+    # and also difficult to test.
+    
+    yaml_output = "Song:\n"
+    yaml_output += "  Tempo: #{@tempo}\n"
+    yaml_output += structure_to_yaml()
+    yaml_output += kit_to_yaml()
+    
+    # Sort to ensure a consistent order, to make testing easier
+    pattern_names = @patterns.keys.map {|key| key.to_s}  # Ruby 1.8 can't sort symbols...
+    pattern_names.sort.each do |pattern_name|
+      yaml_output += "\n#{pattern_name.capitalize}:\n"
+      pattern = @patterns[pattern_name.to_sym]
+      pattern.tracks.keys.sort.each do |track_name|
+        yaml_output += "  - #{track_name}: #{pattern.tracks[track_name].pattern}\n"
+      end
+    end
+    
+    return yaml_output
+  end
+
   attr_reader :tick_sample_length, :patterns
   attr_accessor :structure, :kit
 
 private
+
+  def structure_to_yaml()
+    yaml_output = "  Structure:\n"
+    previous = nil
+    count = 0
+    @structure.each {|pattern_name|
+      if(pattern_name == previous || previous == nil)
+        count += 1
+      else
+        yaml_output += "    - #{previous.to_s.capitalize}: x#{count}\n"
+        count = 1
+      end
+      previous = pattern_name
+    }
+    yaml_output += "    - #{previous.to_s.capitalize}: x#{count}\n"
+    
+    return yaml_output
+  end
+
+  def kit_to_yaml()
+    yaml_output = ""
+
+    if(@kit.label_mappings.length > 0)
+      yaml_output += "  Kit:\n"
+      @kit.label_mappings.sort.each do |label, path|
+        yaml_output += "    - #{label}: #{path}\n"
+      end
+    end
+    
+    return yaml_output
+  end
 
   def merge_overflow(overflow, num_tracks_in_song)
     merged_sample_data = []

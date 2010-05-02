@@ -93,7 +93,7 @@ Song:
     - Chorus: x4
 
 Verse:
-  - base:      X...X...X...XX..X...X...XX..X...
+  - bass:      X...X...X...XX..X...X...XX..X...
   - snare:     ..X...X...X...X.X...X...X...X...
 # Here is a comment
   - hhclosed:  X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
@@ -108,7 +108,7 @@ Chorus:
 
 Bridge:
   - hhclosed: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X"
-    test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, valid_yaml_string)
+    test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, valid_yaml_string_with_kit)
 
     return test_songs
   end

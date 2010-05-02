@@ -1,6 +1,7 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/includes'
+require 'test/songparser_test'
 
 class SongTest < Test::Unit::TestCase
   DEFAULT_TEMPO = 120
@@ -137,5 +138,44 @@ Verse:
     expected += snare_sample_data
     expected = [].fill(0, 0, test_songs[:overflow].tick_sample_length * 3) + expected
     assert_equal(test_songs[:overflow].sample_data(false)[0], expected[0])
+  end
+  
+  def test_to_yaml
+    test_songs = generate_test_data()
+    result = test_songs[:from_valid_yaml_string_with_kit].to_yaml
+    
+    assert_equal(
+"Song:
+  Tempo: 99
+  Structure:
+    - Verse: x2
+    - Chorus: x2
+    - Verse: x2
+    - Chorus: x4
+    - Bridge: x1
+    - Chorus: x4
+  Kit:
+    - bass: test/sounds/bass_mono_8.wav
+    - hhclosed: test/sounds/hh_closed_mono_8.wav
+    - hhopen: test/sounds/hh_open_mono_8.wav
+    - snare: test/sounds/snare_mono_8.wav
+
+Bridge:
+  - hhclosed: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X
+
+Chorus:
+  - bass: X...X...XXXXXXXXX...X...X...X...
+  - hhopen: ........X.......X.......X.......
+  - snare: ...................X...X...X...X
+  - test/sounds/hh_closed_mono_8.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX.
+  - test/sounds/ride_mono_8.wav: ....X...................X.......
+
+Verse:
+  - bass: X...X...X...XX..X...X...XX..X...
+  - hhclosed: X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+  - hhopen: X...............X..............X
+  - snare: ..X...X...X...X.X...X...X...X...
+",
+      result)
   end
 end
