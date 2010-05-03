@@ -82,7 +82,7 @@ class PatternTest < Test::Unit::TestCase
     assert(left_pattern.same_as(right_pattern))
     assert(right_pattern.same_as(left_pattern))
     
-    # Now switch up the order. Left and right should still be equal
+    # Now switch up the order. Left and right should still be equal.
     right_pattern = Pattern.new("right")
     right_pattern.track("snare",     nil, "..X...X.")
     right_pattern.track("hh_closed", nil, "X.X.X.X.")
@@ -90,13 +90,15 @@ class PatternTest < Test::Unit::TestCase
     assert(left_pattern.same_as(right_pattern))
     assert(right_pattern.same_as(left_pattern))
     
+    # Now compare the pattern with same rhythms but different track names. Should not be equal.
     different_names_pattern = Pattern.new("different_names")
     different_names_pattern.track("tom",     nil, "X...X...")
     different_names_pattern.track("cymbal",  nil, "..X...X.")
-    different_names_pattern.track("hh_open", nil, "X...X...")
+    different_names_pattern.track("hh_open", nil, "X.X.X.X.")
     assert_equal(false, left_pattern.same_as(different_names_pattern))
     assert_equal(false, different_names_pattern.same_as(left_pattern))
     
+    # Now compare the pattern with same track names but different rhythms. Should not be equal.
     different_beats_pattern = Pattern.new("different_beats")
     different_beats_pattern.track("bass",      nil, "X...X...")
     different_beats_pattern.track("snare",     nil, "..X...X.")
@@ -104,7 +106,7 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(false, left_pattern.same_as(different_beats_pattern))
     assert_equal(false, different_beats_pattern.same_as(left_pattern))
   end
-
+  
   def test_sample_data
     tick_sample_lengths = [
       13860.0,
@@ -185,5 +187,38 @@ class PatternTest < Test::Unit::TestCase
     end
     
     return longest_overflow
+  end
+  
+  # Test scenario where incoming overflow for a track not in the pattern is longer than the pattern itself.
+  # In this situation, the the overflow should continue into the outgoing overflow so it is handled in the
+  # next pattern.
+  def test_sample_data_incoming_overflow_longer_than_pattern_length
+    # bass.wav sample length:   6179
+    # snare.wav sample length: 14700
+    kit = Kit.new("test/sounds")
+    kit.add("bass",  "bass_mono_8.wav")
+    kit.add("snare", "snare_mono_8.wav")
+    bass_sample_data = kit.get_sample_data("bass")
+    snare_sample_data = kit.get_sample_data("snare")
+    tick_sample_length = bass_sample_data.length.to_f
+    
+    # Construct expected
+    expected_primary_sample_data = Array.new(bass_sample_data.length)
+    bass_sample_data.length.times do |i|
+      expected_primary_sample_data[i] = ((bass_sample_data[i] + snare_sample_data[i]) / 2).round
+    end
+    expected_overflow_sample_data = snare_sample_data[bass_sample_data.length...snare_sample_data.length]
+    
+    # Get actual
+    pattern = Pattern.new :verse
+    pattern.track "bass", bass_sample_data, "X"
+    actual_sample_data = pattern.sample_data(tick_sample_length, 1, 2, {"snare" => snare_sample_data})
+    
+    assert_equal(Hash, actual_sample_data.class)
+    assert_equal(["overflow", "primary"], actual_sample_data.keys.map{|key| key.to_s}.sort)
+    assert_equal(expected_primary_sample_data, actual_sample_data[:primary])
+    assert_equal(["bass", "snare"], actual_sample_data[:overflow].keys.sort)
+    assert_equal([], actual_sample_data[:overflow]["bass"])
+    assert_equal(expected_overflow_sample_data, actual_sample_data[:overflow]["snare"])
   end
 end

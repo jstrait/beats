@@ -106,12 +106,22 @@ private
     # contained in current pattern.
     incoming_overflow.keys.each do |track_name|
       if(!track_names.member?(track_name) && incoming_overflow[track_name].length > 0)
-        # TODO: Fix bug when incoming overflow for track is longer than primary_sample_data.length
+        # If incoming overflow for track is longer than the pattern length, only add the first part of
+        # the overflow to the pattern, and add the remainder to overflow_sample_data so that it gets
+        # handled by the next pattern to be generated.
+        num_incoming_overflow_samples = incoming_overflow[track_name].length
+        if(num_incoming_overflow_samples > primary_sample_data.length)
+          overflow_sample_data[track_name] = (incoming_overflow[track_name])[primary_sample_data.length...num_incoming_overflow_samples]
+          num_incoming_overflow_samples = primary_sample_data.length
+        end
+        
         if(num_channels == 1)
-          (0...incoming_overflow[track_name].length).each {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
+          (0...num_incoming_overflow_samples).each {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
         else
-          (0...incoming_overflow[track_name].length).each {|i| primary_sample_data[i][0] += incoming_overflow[track_name][i][0]
-                                                               primary_sample_data[i][1] += incoming_overflow[track_name][i][1]}
+          (0...num_incoming_overflow_samples).each do |i|
+            primary_sample_data[i][0] += incoming_overflow[track_name][i][0]
+            primary_sample_data[i][1] += incoming_overflow[track_name][i][1]
+          end
         end
       end
     end
