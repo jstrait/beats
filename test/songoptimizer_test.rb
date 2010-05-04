@@ -35,6 +35,19 @@ Chorus:
   - hh_closed:        X.XXX.XXX.XX..X.
   - sounds/tom4.wav:  ...........X....
   - sounds/tom2.wav:  ..............X."
+  
+  EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN = "
+Song:
+  Tempo: 135
+  Structure:
+    - Verse:   x1
+  Kit:
+    - bass:   sounds/bass.wav
+    - snare:  sounds/snare.wav
+
+Verse:
+  - bass:   X.......X...
+  - snare:  ..........X."
 
   def test_clone_song_ignoring_patterns_and_structure
     mock_song_optimizer = MockSongOptimizer.new()
@@ -123,5 +136,28 @@ Chorus:
                                             :chorus0, :chorus4, :chorus8, :chorus12,
                                             :chorus0, :chorus4, :chorus8, :chorus12,
                                             :chorus0, :chorus4, :chorus8, :chorus12])
+  end
+  
+  def test_optimize_song_containing_empty_pattern()
+    parser = SongParser.new()
+    original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    
+    optimizer = SongOptimizer.new()
+    optimized_song = optimizer.optimize(original_song, 4)
+    
+    pattern = optimized_song.patterns[:verse0]
+    assert_equal(["bass"], pattern.tracks.keys.sort)
+    assert_equal("X...", pattern.tracks["bass"].rhythm)
+    
+    pattern = optimized_song.patterns[:verse4]
+    assert_equal(["placeholder"], pattern.tracks.keys.sort)
+    assert_equal("....", pattern.tracks["placeholder"].rhythm)
+    
+    pattern = optimized_song.patterns[:verse8]
+    assert_equal(["bass", "snare"], pattern.tracks.keys.sort)
+    assert_equal("X...", pattern.tracks["bass"].rhythm)
+    assert_equal("..X.", pattern.tracks["snare"].rhythm)
+    
+    assert_equal([:verse0, :verse4, :verse8], optimized_song.structure)
   end
 end

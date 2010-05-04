@@ -49,6 +49,13 @@ protected
           end
         end
         
+        # If no track has a trigger during this step pattern, add a blank track.
+        # Otherwise, this pattern will have no ticks, and no sound will be generated.
+        # This will cause the pattern to be "compacted away".
+        if(new_pattern.tracks.empty?)
+          new_pattern.track("placeholder", [], blank_track_pattern)
+        end
+        
         tick_index += max_pattern_length
       end
     end
