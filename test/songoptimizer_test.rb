@@ -138,6 +138,25 @@ Verse:
                                             :chorus0, :chorus4, :chorus8, :chorus12])
   end
   
+  def test_optimize_song_nondivisible_max_pattern_length()
+    parser = SongParser.new()
+    original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    
+    optimizer = SongOptimizer.new()
+    optimized_song = optimizer.optimize(original_song, 7)
+    
+    pattern = optimized_song.patterns[:verse0]
+    assert_equal(["bass"], pattern.tracks.keys.sort)
+    assert_equal("X......", pattern.tracks["bass"].rhythm)
+    
+    pattern = optimized_song.patterns[:verse7]
+    assert_equal(["bass", "snare"], pattern.tracks.keys.sort)
+    assert_equal(".X...", pattern.tracks["bass"].rhythm)
+    assert_equal("...X.", pattern.tracks["snare"].rhythm)
+    
+    assert_equal([:verse0, :verse7], optimized_song.structure)
+  end
+  
   def test_optimize_song_containing_empty_pattern()
     parser = SongParser.new()
     original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
