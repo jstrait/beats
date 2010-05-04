@@ -105,6 +105,15 @@ class PatternTest < Test::Unit::TestCase
     different_beats_pattern.track("hh_closed", nil, "X.XXX.X.")
     assert_equal(false, left_pattern.same_as(different_beats_pattern))
     assert_equal(false, different_beats_pattern.same_as(left_pattern))
+    
+    # Now compare a pattern with the same tracks, but with one extra one as well. Should not be equal.
+    something_extra = Pattern.new("something_extra")
+    something_extra.track("bass",      nil, "X...X...")
+    something_extra.track("snare",     nil, "..X...X.")
+    something_extra.track("hh_closed", nil, "X.X.X.X.")
+    something_extra.track("extra",     nil, "X..X..X.")
+    assert_equal(false, left_pattern.same_as(something_extra))
+    assert_equal(false, something_extra.same_as(left_pattern))
   end
   
   def test_sample_data

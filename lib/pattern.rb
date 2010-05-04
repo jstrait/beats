@@ -48,21 +48,16 @@ class Pattern
     end
   end
   
-  # TODO: Better name for this?
+  # TODO: Better name for this? It's not quite the same as eql?().
   def same_as(other_pattern)
-    self_track_names = @tracks.keys.sort
-    self_pattern_serialized = self_track_names.inject("") do |str, track_name|
-      track = @tracks[track_name]
-      str += track.name + track.rhythm
-    end
+    @tracks.keys.each{|track_name|
+      other_pattern_track = other_pattern.tracks[track_name]
+      if(other_pattern_track == nil || @tracks[track_name].rhythm != other_pattern_track.rhythm)
+        return false
+      end
+    }
     
-    other_track_names = other_pattern.tracks.keys.sort
-    other_pattern_serialized = other_track_names.inject("") do |str, track_name|
-      track = other_pattern.tracks[track_name]
-      str += track.name + track.rhythm
-    end
-    
-    return self_pattern_serialized == other_pattern_serialized
+    return @tracks.length == other_pattern.tracks.length
   end
   
   attr_accessor :tracks, :name
