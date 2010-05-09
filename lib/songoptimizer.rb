@@ -82,7 +82,7 @@ protected
       pattern = song.patterns[pattern_name]
       found_duplicate = false
       seen_patterns.each do |seen_pattern|
-        if(!found_duplicate && pattern.same_as(seen_pattern))
+        if(!found_duplicate && pattern.same_tracks_as(seen_pattern))
           replacements[pattern.name.to_sym] = seen_pattern.name.to_sym
           found_duplicate = true
         end
