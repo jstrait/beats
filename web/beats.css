@@ -8,6 +8,35 @@ body
 	color: #535353;
 }
 
+.menubar
+{
+	background: #fff;
+	width: 576px;
+	margin: 1.5em auto;
+	padding: 0px 36px 0px 36px;
+}
+
+.menubar ul
+{
+	margin: 0px;
+	padding: 0px;
+	overflow: auto;
+}
+
+.menubar li
+{
+	list-style: none;
+	float: left;
+	width: 144px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.menubar li a
+{
+	color: #00b12e;
+}
+
 .content-box
 {
 	background: #fff;
