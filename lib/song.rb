@@ -77,6 +77,39 @@ class Song
     end
   end
 
+  def write_to_file(output_file_name, pattern_name)
+    num_tracks_in_song = self.total_tracks()
+    
+    if(pattern_name == nil)
+      structure = @structure
+      sample_length = sample_length_with_overflow()
+    else
+      normalized_pattern_name = pattern_name.downcase.to_sym
+      structure = [normalized_pattern_name]
+      sample_length = patterns[normalized_pattern_name].sample_length(@tick_sample_length)
+    end
+    
+    wave_file = WaveFileExtended.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
+    file = wave_file.open_for_appending(output_file_name, sample_length)
+    
+    incoming_overflow = {}
+    structure.each do |pattern_name|
+      sample_data = @patterns[pattern_name].sample_data(@tick_sample_length,
+                                                        @kit.num_channels,
+                                                        num_tracks_in_song,
+                                                        incoming_overflow,
+                                                        false)
+                                                        
+      wave_file.write_snippet(file, sample_data[:primary])
+      incoming_overflow = sample_data[:overflow]
+    end
+    
+    wave_file.write_snippet(file, merge_overflow(incoming_overflow, num_tracks_in_song))
+    file.close()
+    
+    return wave_file.duration()
+  end
+
   def num_channels()
     return @kit.num_channels
   end

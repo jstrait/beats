@@ -68,31 +68,28 @@ end
 
 begin
   song_parser = SongParser.new()
-  song_from_file = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
+  song = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
   
-  if(!options[:split])
+  if(!options[:split] && options[:pattern] == nil)
     song_optimizer = SongOptimizer.new()
-    song_from_file = song_optimizer.optimize(song_from_file, OPTIMIZED_PATTERN_LENGTH)
+    song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
   end
   
-  generate_samples_start = Time.now
-  sample_data = song_from_file.sample_data(options[:split], options[:pattern])
-  #puts "Time to generate sample data: #{Time.now - generate_samples_start}"
-
-  wave_write_start = Time.now
   if(options[:split])
+    sample_data = song.sample_data(options[:split], options[:pattern])
+    
     duration = nil
     sample_data.keys.each {|track_name|
       extension = File.extname(output_file)
       file_name = File.basename(output_file, extension) + "-" + File.basename(track_name.to_s, extension) + extension
       
       duration = save_wave_file(file_name,
-                                song_from_file.num_channels,
-                                song_from_file.bits_per_sample,
+                                song.num_channels,
+                                song.bits_per_sample,
                                 sample_data[track_name])
     }
   else
-    duration = save_wave_file(output_file, song_from_file.num_channels, song_from_file.bits_per_sample, sample_data)
+    duration = song.write_to_file(output_file, options[:pattern])
   end
   
   puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio produced in #{Time.now - start} seconds."

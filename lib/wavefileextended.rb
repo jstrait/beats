@@ -23,4 +23,18 @@ class WaveFileExtended < WaveFile
     
     return file
   end
+  
+  def write_snippet(file, sample_data)
+    if @bits_per_sample == 8
+      pack_code = "C*"
+    elsif @bits_per_sample == 16
+      pack_code = "s*"
+    end
+    
+    if @num_channels == 1
+      file.syswrite(sample_data.pack(pack_code))
+    else
+      file.syswrite(sample_data.flatten.pack(pack_code))
+    end
+  end
 end
