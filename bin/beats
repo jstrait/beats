@@ -13,7 +13,7 @@ require "lib/pattern"
 require "lib/track"
 require "lib/wavefileextended"
 
-BEATS_VERSION = "1.1.1a"
+BEATS_VERSION = "1.2.0a"
 SAMPLE_RATE = 44100
 OPTIMIZED_PATTERN_LENGTH = 4
 
