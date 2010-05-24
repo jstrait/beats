@@ -1,16 +1,17 @@
 #!/usr/bin/env ruby
 
 $:.unshift File.dirname(__FILE__)
+require "rubygems"
+require "optparse"
+require "yaml"
+require "wavefile"
 require "lib/song"
 require "lib/songparser"
 require "lib/songoptimizer"
 require "lib/kit"
 require "lib/pattern"
 require "lib/track"
-require "rubygems"
-require "optparse"
-require "yaml"
-require "wavefile"
+require "lib/wavefileextended"
 
 BEATS_VERSION = "1.1.1a"
 SAMPLE_RATE = 44100
@@ -44,7 +45,7 @@ def parse_options
 end
 
 def save_wave_file(file_name, num_channels, bits_per_sample, sample_data)
-  output = WaveFile.new(num_channels, SAMPLE_RATE, bits_per_sample)
+  output = WaveFileExtended.new(num_channels, SAMPLE_RATE, bits_per_sample)
   output.sample_data = sample_data
   output.save(file_name)
   return output.duration
