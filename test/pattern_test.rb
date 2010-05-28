@@ -69,6 +69,14 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(test_patterns[2].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
   end
 
+  def test_tick_count
+    test_patterns = generate_test_data()
+    
+    assert_equal(0,  test_patterns[0].tick_count())
+    assert_equal(32, test_patterns[1].tick_count())
+    assert_equal(4,  test_patterns[2].tick_count())
+  end
+
   def test_same_tracks_as
     left_pattern = Pattern.new("left")
     left_pattern.track("bass",      nil, "X...X...")

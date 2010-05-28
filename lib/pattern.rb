@@ -13,12 +13,7 @@ class Pattern
     # If the new track is longer than any of the previously added tracks,
     # pad the other tracks with trailing . to make them all the same length.
     # Necessary to prevent incorrect overflow calculations for tracks.
-    longest_track_length = 0
-    @tracks.values.each do |track|
-      if(track.rhythm.length > longest_track_length)
-        longest_track_length = track.rhythm.length
-      end
-    end
+    longest_track_length = tick_count()
     @tracks.values.each do |track|
       if(track.rhythm.length < longest_track_length)
         track.rhythm += "." * (longest_track_length - track.rhythm.length)
@@ -38,6 +33,10 @@ class Pattern
   # past the last tick of the pattern.
   def sample_length_with_overflow(tick_sample_length)
     @tracks.keys.collect {|track_name| @tracks[track_name].sample_length_with_overflow(tick_sample_length) }.max || 0
+  end
+  
+  def tick_count()
+    return @tracks.values.collect {|track| track.rhythm.length }.max || 0
   end
   
   def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow, split = false)
