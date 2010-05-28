@@ -3,6 +3,8 @@ class Track
   BEAT = "X"
   
   def initialize(name, wave_data, rhythm)
+    # TODO: Add validation for input parameters
+    
     @wave_data = wave_data
     @name = name
     @sample_data = nil
@@ -55,6 +57,10 @@ class Track
     end
     
     return temp_sample_length.floor
+  end
+  
+  def tick_count()
+    return @rhythm.length
   end
   
   def sample_data(tick_sample_length, incoming_overflow = nil)

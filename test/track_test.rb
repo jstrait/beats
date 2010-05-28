@@ -39,6 +39,17 @@ class TrackTest < Test::Unit::TestCase
     assert_equal(test_tracks[5].beats, [2, 4, 4, 4, 2, 4, 4, 4, 4])
   end
   
+  def test_tick_count
+    test_tracks = generate_test_data()
+    
+    assert_equal(0,  test_tracks[0].tick_count())
+    assert_equal(1,  test_tracks[1].tick_count())
+    assert_equal(4,  test_tracks[2].tick_count())
+    assert_equal(8,  test_tracks[3].tick_count())
+    assert_equal(4,  test_tracks[4].tick_count())
+    assert_equal(32, test_tracks[5].tick_count())
+  end
+
   def test_sample_length
     tick_sample_lengths = [
       W.sample_data.length,                           # 13860.0
