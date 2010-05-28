@@ -2,6 +2,8 @@ class SongOptimizer
   def initialize()
   end
   
+  # Returns a Song that will produce the same output as original_song, but should be
+  # generated faster.
   def optimize(original_song, max_pattern_length)
     # 1.) Create a new song, cloned from the original
     optimized_song = clone_song_ignoring_patterns_and_structure(original_song)
@@ -27,6 +29,30 @@ protected
     return cloned_song
   end
   
+  
+  # Splits the patterns of a Song into smaller patterns, each one with at most
+  # max_pattern_length steps. For example, if max_pattern_length is 4, then
+  # the following pattern:
+  #
+  # track1: X...X...X.
+  # track2: ..X.....X.
+  # track3: X.X.X.X.X.
+  #
+  # will be converted into the following 3 patterns:
+  #
+  # track1: X...
+  # track2: ..X.
+  # track3: X.X.
+  #
+  # track1: X...
+  # track3: X.X.
+  #
+  # track1: X.
+  # track2: X.
+  # track3: X.
+  #
+  # Note that if a track in a sub-divided pattern has no triggers (such as track2 in the
+  # 2nd pattern above), it will be removed from the new pattern.
   def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
     blank_track_pattern = '.' * max_pattern_length
     
@@ -59,16 +85,27 @@ protected
         tick_index += max_pattern_length
       end
     end
-
-    # 3.) Replace structure
+    
+    # 3.) Replace the Song's structure to reference the new sub-divided patterns
+    # instead of the old patterns.
     optimized_structure = original_song.structure.map do |original_pattern|
       optimized_structure[original_pattern]
     end
     optimized_song.structure = optimized_structure.flatten
-    
-    return optimized_song
+
+    return optimized_song    
   end
   
+  
+  # Replaces any Patterns that are duplicates (i.e., each track uses the same sound and has
+  # the same rhythm) with a single canonical pattern.
+  #
+  # The benefit of this is that it allows more effective caching. For example, suppose Pattern A
+  # and Pattern B are equivalent. If Pattern A gets generated first, it will be cached. When
+  # Pattern B gets generated, it will be generated from scratch instead of using Pattern A's
+  # cached data. Consolidating duplicates into one prevents this from happening.
+  #
+  # Duplicate Patterns are more likely to occur after calling subdivide_song_patterns().
   def prune_duplicate_patterns(song)
     seen_patterns = []
     replacements = {}
