@@ -139,6 +139,15 @@ class Song
     @tempo = new_tempo
     @tick_sample_length = SAMPLES_PER_MINUTE / new_tempo / 4.0
   end
+  
+  # Returns a new Song that is identical but with no patterns or structure.
+  def copy_ignoring_patterns_and_structure()
+    copy = Song.new(@kit.base_path)
+    copy.tempo = @tempo
+    copy.kit = @kit
+    
+    return copy
+  end
 
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
   # using the SongParser class. This lets you save a Song to disk, to be re-loaded later.

@@ -49,21 +49,6 @@ Verse:
   - bass:   X.......X...
   - snare:  ..........X."
 
-  def test_clone_song_ignoring_patterns_and_structure
-    mock_song_optimizer = MockSongOptimizer.new()
-    parser = SongParser.new()
-    original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)
-    cloned_song = mock_song_optimizer.clone_song_ignoring_patterns_and_structure(original_song)
-    
-    assert_not_equal(cloned_song, original_song)
-    assert_equal(cloned_song.tempo, original_song.tempo)
-    assert_equal(cloned_song.kit, original_song.kit)
-    assert_equal(cloned_song.tick_sample_length, original_song.tick_sample_length)
-    assert_not_equal([:verse, :chorus, :verse, :chorus], original_song.structure)
-    assert_equal([], cloned_song.structure)
-    assert_equal({}, cloned_song.patterns)
-  end
-
   def test_optimize
     parser = SongParser.new()
     original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)

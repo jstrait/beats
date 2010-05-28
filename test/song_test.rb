@@ -156,6 +156,19 @@ Verse:
     assert_equal(test_songs[:overflow].sample_data(false)[0], expected[0])
   end
   
+  def test_copy_ignoring_patterns_and_structure
+    test_songs = generate_test_data()
+    original_song = test_songs[:from_valid_yaml_string]
+    cloned_song = original_song.copy_ignoring_patterns_and_structure()
+    
+    assert_not_equal(cloned_song, original_song)
+    assert_equal(cloned_song.tempo, original_song.tempo)
+    assert_equal(cloned_song.kit, original_song.kit)
+    assert_equal(cloned_song.tick_sample_length, original_song.tick_sample_length)
+    assert_equal([], cloned_song.structure)
+    assert_equal({}, cloned_song.patterns)
+  end
+  
   def test_to_yaml
     test_songs = generate_test_data()
     result = test_songs[:from_valid_yaml_string_with_kit].to_yaml

@@ -6,7 +6,7 @@ class SongOptimizer
   # generated faster.
   def optimize(original_song, max_pattern_length)
     # 1.) Create a new song, cloned from the original
-    optimized_song = clone_song_ignoring_patterns_and_structure(original_song)
+    optimized_song = original_song.copy_ignoring_patterns_and_structure()
     
     # 2.) Subdivide patterns
     optimized_song = subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
@@ -17,18 +17,7 @@ class SongOptimizer
     return optimized_song
   end
 
-protected
-
-  # Takes a Song, and returns a new Song that is identical to the original, but with no patterns
-  # or structure.
-  def clone_song_ignoring_patterns_and_structure(original_song)
-    cloned_song = Song.new(original_song.kit.base_path)
-    cloned_song.tempo = original_song.tempo
-    cloned_song.kit = original_song.kit
-    
-    return cloned_song
-  end
-  
+protected  
   
   # Splits the patterns of a Song into smaller patterns, each one with at most
   # max_pattern_length steps. For example, if max_pattern_length is 4, then
@@ -52,7 +41,7 @@ protected
   # track3: X.
   #
   # Note that if a track in a sub-divided pattern has no triggers (such as track2 in the
-  # 2nd pattern above), it will be removed from the new pattern.
+  # 2nd pattern above), it will not be included in the new pattern.
   def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
     blank_track_pattern = '.' * max_pattern_length
     
