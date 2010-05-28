@@ -54,21 +54,21 @@ end
 start = Time.now
 
 options = parse_options
-input_file = ARGV[0]
-output_file = ARGV[1]
+input_file_name = ARGV[0]
+output_file_name = ARGV[1]
 
-if(input_file == nil)
+if(input_file_name == nil)
   ARGV[0] = '-h'
   parse_options()
 end
 
-if(output_file == nil)
-  output_file = File.basename(input_file, File.extname(input_file)) + ".wav"
+if(output_file_name == nil)
+  output_file_name = File.basename(input_file_name, File.extname(input_file_name)) + ".wav"
 end
 
 begin
   song_parser = SongParser.new()
-  song = song_parser.parse(File.dirname(input_file), YAML.load_file(input_file))
+  song = song_parser.parse(File.dirname(input_file_name), YAML.load_file(input_file_name))
   
   if(!options[:split] && options[:pattern] == nil)
     song_optimizer = SongOptimizer.new()
@@ -80,8 +80,8 @@ begin
     
     duration = nil
     sample_data.keys.each {|track_name|
-      extension = File.extname(output_file)
-      file_name = File.basename(output_file, extension) + "-" + File.basename(track_name.to_s, extension) + extension
+      extension = File.extname(output_file_name)
+      file_name = File.basename(output_file_name, extension) + "-" + File.basename(track_name.to_s, extension) + extension
       
       duration = save_wave_file(file_name,
                                 song.num_channels,
@@ -89,22 +89,22 @@ begin
                                 sample_data[track_name])
     }
   else
-    duration = song.write_to_file(output_file, options[:pattern])
+    duration = song.write_to_file(output_file_name, options[:pattern])
   end
   
-  puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{output_file} in #{Time.now - start} seconds."
+  puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{output_file_name} in #{Time.now - start} seconds."
 rescue Errno::ENOENT => detail
   puts ""
-  puts "Song file '#{input_file}' not found."
+  puts "Song file '#{input_file_name}' not found."
   puts ""
 rescue SongParseError => detail
   puts ""
-  puts "Song file '#{input_file}' has an error:"
+  puts "Song file '#{input_file_name}' has an error:"
   puts "  #{detail}"
   puts ""
 rescue StandardError => detail
   puts ""
-  puts "An error occured while generating sound for '#{input_file}':"
+  puts "An error occured while generating sound for '#{input_file_name}':"
   puts "  #{detail}"
   puts ""
 end
