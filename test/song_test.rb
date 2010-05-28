@@ -72,6 +72,22 @@ Verse:
     assert_equal(test_songs[:from_valid_yaml_string].total_tracks, 5)
   end
   
+  def test_track_names
+    test_songs = generate_test_data()
+    
+    assert_equal([], test_songs[:blank].track_names)
+    assert_equal(["bass.wav", "hh_closed.wav", "snare.wav"], test_songs[:no_structure].track_names)
+    assert_equal(["bass.wav", "hh_closed.wav", "ride.wav", "snare.wav"], test_songs[:from_code].track_names)
+    assert_equal(["test/sounds/bass_mono_8.wav"], test_songs[:repeats_not_specified].track_names)
+    assert_equal(["test/sounds/snare_mono_8.wav"], test_songs[:overflow].track_names)
+    assert_equal(["test/sounds/bass_mono_8.wav",
+                  "test/sounds/hh_closed_mono_8.wav",
+                  "test/sounds/hh_open_mono_8.wav",
+                  "test/sounds/ride_mono_8.wav",
+                  "test/sounds/snare_mono_8.wav"],
+                  test_songs[:from_valid_yaml_string].track_names)
+  end
+  
   def test_sample_length
     test_songs = generate_test_data()
 

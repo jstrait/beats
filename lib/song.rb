@@ -48,6 +48,15 @@ class Song
   def total_tracks()
     @patterns.keys.collect {|pattern_name| @patterns[pattern_name].tracks.length }.max || 0
   end
+  
+  def track_names()
+    track_names = {}
+    @patterns.values.each do |pattern|
+      pattern.tracks.values.each {|track| track_names[track.name] = nil}
+    end
+    
+    return track_names.keys.sort
+  end
 
   # Returns the sample data for the song.
   def sample_data(split, pattern_name = nil)
