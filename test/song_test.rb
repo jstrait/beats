@@ -169,6 +169,19 @@ Verse:
     assert_equal({}, cloned_song.patterns)
   end
   
+  def test_remove_unused_patterns
+    test_songs = generate_test_data()
+    
+    assert_equal(1, test_songs[:no_structure].patterns.length)
+    test_songs[:no_structure].remove_unused_patterns()
+    assert_equal({}, test_songs[:no_structure].patterns)
+    
+    assert_equal(3, test_songs[:from_valid_yaml_string].patterns.length)
+    test_songs[:from_valid_yaml_string].remove_unused_patterns()
+    assert_equal(3, test_songs[:from_valid_yaml_string].patterns.length)
+    assert_equal(Hash, test_songs[:from_valid_yaml_string].patterns.class)
+  end
+  
   def test_to_yaml
     test_songs = generate_test_data()
     result = test_songs[:from_valid_yaml_string_with_kit].to_yaml

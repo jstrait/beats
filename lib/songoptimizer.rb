@@ -126,8 +126,13 @@ protected
         (pattern_name == duplicate) ? replacement : pattern_name
       end
     end
-    
     song.structure = new_structure
+    
+    # Remove unused Patterns. Not strictly necessary, but makes resulting songs
+    # easier to read for debugging purposes, since having lots of unused Patterns
+    # is just noise.
+    song.remove_unused_patterns()
+
     return song
   end
 end

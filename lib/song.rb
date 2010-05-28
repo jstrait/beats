@@ -148,6 +148,12 @@ class Song
     
     return copy
   end
+  
+  # Removes any patterns that aren't referenced in the structure.
+  def remove_unused_patterns()
+    # Using reject() here, because for some reason select() returns an Array not a Hash.
+    @patterns = @patterns.reject {|k, pattern| !@structure.member?(pattern.name) }
+  end
 
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
   # using the SongParser class. This lets you save a Song to disk, to be re-loaded later.

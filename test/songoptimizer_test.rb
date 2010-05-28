@@ -63,16 +63,10 @@ Verse:
     assert_equal(original_song.sample_length_with_overflow, optimized_song.sample_length_with_overflow)
     #assert_equal(original_song.sample_data(false), optimized_song.sample_data(false))
     
-    pattern = optimized_song.patterns[:verse0]
-    assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
-    assert_equal(pattern.tracks["bass"].rhythm, "X...")
-    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
-    
-    pattern = optimized_song.patterns[:verse4]
-    assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
-    assert_equal(pattern.tracks["bass"].rhythm, "X...")
-    assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
-    
+    # Patterns :verse0 and :verse4 should be removed since they are identical to :chorus0
+    assert_equal([:chorus0, :chorus12, :chorus4, :chorus8, :verse12, :verse8],
+                 optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
+        
     pattern = optimized_song.patterns[:verse8]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
     assert_equal(pattern.tracks["bass"].rhythm, "X...")
