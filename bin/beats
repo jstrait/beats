@@ -8,6 +8,7 @@ require "wavefile"
 require "lib/song"
 require "lib/songparser"
 require "lib/songoptimizer"
+require "lib/songsplitter"
 require "lib/kit"
 require "lib/pattern"
 require "lib/track"
@@ -69,30 +70,47 @@ end
 begin
   song_parser = SongParser.new()
   song = song_parser.parse(File.dirname(input_file_name), YAML.load_file(input_file_name))
-  
-  if(!options[:split] && options[:pattern] == nil)
-    song_optimizer = SongOptimizer.new()
-    song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-  end
-  
+  song_optimizer = SongOptimizer.new()
+
   if(options[:split])
-    sample_data = song.sample_data(options[:split], options[:pattern])
-    
-    duration = nil
-    sample_data.keys.each {|track_name|
-      extension = File.extname(output_file_name)
-      file_name = File.basename(output_file_name, extension) + "-" + File.basename(track_name.to_s, extension) + extension
-      
-      duration = save_wave_file(file_name,
-                                song.num_channels,
-                                song.bits_per_sample,
-                                sample_data[track_name])
-    }
+    if(true)
+      puts "A"
+      song_splitter = SongSplitter.new()
+      split_songs = song_splitter.split(song)
+      split_songs.each do |split_song|
+        if(options[:pattern] == nil)
+          split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
+        end
+
+        puts "#{split_song.to_yaml()}"
+        puts "\n\n\n\n\n"
+        duration = split_song.write_to_file(output_file_name, options[:pattern])
+      end
+    else
+      puts "B"
+      sample_data = song.sample_data(options[:split], options[:pattern])
+
+      duration = nil
+      sample_data.keys.each {|track_name|
+        extension = File.extname(output_file_name)
+        file_name = File.basename(output_file_name, extension) + "-" + File.basename(track_name.to_s, extension) + extension
+
+        duration = save_wave_file(file_name,
+                                  song.num_channels,
+                                  song.bits_per_sample,
+                                  sample_data[track_name])
+      }
+    end
   else
+    if(options[:pattern] == nil)
+      song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
+    end
+
     duration = song.write_to_file(output_file_name, options[:pattern])
   end
-  
-  puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{output_file_name} in #{Time.now - start} seconds."
+
+  puts "Done! Time to run: #{Time.now - start}"
+  #puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{output_file_name} in #{Time.now - start} seconds."
 rescue Errno::ENOENT => detail
   puts ""
   puts "Song file '#{input_file_name}' not found."
