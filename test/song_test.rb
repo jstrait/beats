@@ -51,25 +51,28 @@ Verse:
   def test_initialize
     test_songs = generate_test_data()
     
-    assert_equal(test_songs[:blank].structure, [])
-    assert_equal(test_songs[:blank].tick_sample_length, (Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0)
+    assert_equal([], test_songs[:blank].structure)
+    assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
+                 test_songs[:blank].tick_sample_length)
     
-    assert_equal(test_songs[:no_structure].structure, [])
-    assert_equal(test_songs[:no_structure].tick_sample_length, (Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0)
+    assert_equal([], test_songs[:no_structure].structure)
+    assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
+                 test_songs[:no_structure].tick_sample_length)
     
-    assert_equal(test_songs[:from_code].structure, [:verse, :chorus, :verse, :chorus, :chorus])
-    assert_equal(test_songs[:from_code].tick_sample_length, (Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0)
+    assert_equal([:verse, :chorus, :verse, :chorus, :chorus], test_songs[:from_code].structure)
+    assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
+                 test_songs[:from_code].tick_sample_length)
   end
   
   def test_total_tracks
     test_songs = generate_test_data()
     
-    assert_equal(test_songs[:blank].total_tracks, 0)
-    assert_equal(test_songs[:no_structure].total_tracks, 3)
-    assert_equal(test_songs[:from_code].total_tracks, 3)
-    assert_equal(test_songs[:repeats_not_specified].total_tracks, 1)
-    assert_equal(test_songs[:overflow].total_tracks, 1)
-    assert_equal(test_songs[:from_valid_yaml_string].total_tracks, 5)
+    assert_equal(0, test_songs[:blank].total_tracks)
+    assert_equal(3, test_songs[:no_structure].total_tracks)
+    assert_equal(3, test_songs[:from_code].total_tracks)
+    assert_equal(1, test_songs[:repeats_not_specified].total_tracks)
+    assert_equal(1, test_songs[:overflow].total_tracks)
+    assert_equal(5, test_songs[:from_valid_yaml_string].total_tracks)
   end
   
   def test_track_names
@@ -91,43 +94,44 @@ Verse:
   def test_sample_length
     test_songs = generate_test_data()
 
-    assert_equal(test_songs[:blank].sample_length, 0)
-    assert_equal(test_songs[:no_structure].sample_length, 0)
+    assert_equal(0, test_songs[:blank].sample_length)
+    assert_equal(0, test_songs[:no_structure].sample_length)
     
-    assert_equal(test_songs[:from_code].sample_length,
-                            (test_songs[:from_code].tick_sample_length * 16 * 2) +
-                            (test_songs[:from_code].tick_sample_length * 8 * 3))
+    assert_equal((test_songs[:from_code].tick_sample_length * 16 * 2) +
+                     (test_songs[:from_code].tick_sample_length * 8 * 3),
+                 test_songs[:from_code].sample_length)
                             
-    assert_equal(test_songs[:repeats_not_specified].sample_length,
-                            test_songs[:repeats_not_specified].tick_sample_length)
+    assert_equal(test_songs[:repeats_not_specified].tick_sample_length,
+                 test_songs[:repeats_not_specified].sample_length)
                             
-    assert_equal(test_songs[:overflow].sample_length, test_songs[:overflow].tick_sample_length * 8)
+    assert_equal(test_songs[:overflow].tick_sample_length * 8, test_songs[:overflow].sample_length)
   end
   
   def test_sample_length_with_overflow
     test_songs = generate_test_data()
     
-    assert_equal(test_songs[:blank].sample_length_with_overflow, 0)
-    assert_equal(test_songs[:no_structure].sample_length_with_overflow, 0)
+    assert_equal(0, test_songs[:blank].sample_length_with_overflow)
+    assert_equal(0, test_songs[:no_structure].sample_length_with_overflow)
     
     snare_overflow =
       (test_songs[:from_code].kit.get_sample_data("snare.wav").length -
        test_songs[:from_code].tick_sample_length).ceil   
-    assert_equal(test_songs[:from_code].sample_length_with_overflow, test_songs[:from_code].sample_length + snare_overflow)    
+    assert_equal(test_songs[:from_code].sample_length + snare_overflow, test_songs[:from_code].sample_length_with_overflow)    
     
-    assert_equal(test_songs[:repeats_not_specified].sample_length_with_overflow,
-                 test_songs[:repeats_not_specified].tick_sample_length)
+    assert_equal(test_songs[:repeats_not_specified].tick_sample_length,
+                 test_songs[:repeats_not_specified].sample_length_with_overflow)
     
     snare_overflow =
       (test_songs[:overflow].kit.get_sample_data("test/sounds/snare_mono_8.wav").length -
        test_songs[:overflow].tick_sample_length).ceil
-    assert_equal(test_songs[:overflow].sample_length_with_overflow,
-                 (test_songs[:overflow].tick_sample_length * 8) + snare_overflow)
+    assert_equal((test_songs[:overflow].tick_sample_length * 8) + snare_overflow,
+                 test_songs[:overflow].sample_length_with_overflow)
     
     snare_overflow =
       (test_songs[:from_valid_yaml_string].kit.get_sample_data("test/sounds/snare_mono_8.wav").length -
        test_songs[:from_valid_yaml_string].tick_sample_length).ceil
-    assert_equal(test_songs[:from_valid_yaml_string].sample_length_with_overflow, test_songs[:from_valid_yaml_string].sample_length + snare_overflow)
+    assert_equal(test_songs[:from_valid_yaml_string].sample_length + snare_overflow,
+                 test_songs[:from_valid_yaml_string].sample_length_with_overflow)
   end
   
   def test_sample_data
@@ -135,15 +139,15 @@ Verse:
     
     test_songs.values.each do |song|
       sample_data = song.sample_data(false)
-      assert_equal(sample_data.class, Array)
-      assert_equal(sample_data.length, song.sample_length_with_overflow)
+      assert_equal(Array, sample_data.class)
+      assert_equal(song.sample_length_with_overflow, sample_data.length)
       sample_data = song.sample_data(true)
-      assert_equal(sample_data.class, Hash)
+      assert_equal(Hash, sample_data.class)
     end
     
     [:from_code, :repeats_not_specified, :overflow, :from_valid_yaml_string].each do |key|
-      assert_equal(test_songs[key].sample_data(false, "verse").class, Array)
-      assert_equal(test_songs[key].sample_data(true, "verse").class, Hash)
+      assert_equal(Array, test_songs[key].sample_data(false, "verse").class)
+      assert_equal(Hash, test_songs[key].sample_data(true, "verse").class)
     end
     
     #assert_raise(ArgumentError) { test_songs[:from_valid_yaml_string].sample_data(true, "") }
@@ -153,7 +157,7 @@ Verse:
     expected[0...(snare_sample_data.length)] = snare_sample_data
     expected += snare_sample_data
     expected = [].fill(0, 0, test_songs[:overflow].tick_sample_length * 3) + expected
-    assert_equal(test_songs[:overflow].sample_data(false)[0], expected[0])
+    assert_equal(expected[0], test_songs[:overflow].sample_data(false)[0])
   end
   
   def test_copy_ignoring_patterns_and_structure
