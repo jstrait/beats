@@ -1,0 +1,10 @@
+# The pattern Verse in the structure doesn't specify how many times it should repeat.
+# This is valid, it causes it to default to 1 repeat.
+
+Song:
+  Tempo: 100
+  Structure:
+    - Verse
+
+Verse:
+  - test/sounds/bass_mono_8.wav: X

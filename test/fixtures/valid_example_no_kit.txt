@@ -1,0 +1,30 @@
+# An example song, with no Kit section in the header.
+
+Song:
+  Tempo: 99
+  Structure:
+    - Verse:     x2
+    - Chorus:    x2
+    - Verse:     x2
+    - Chorus:    x4
+    - Bridge:    x1
+    - Undefined: x0  # Legal to reference undefined pattern as long as num repeats is 0.
+    - Chorus:    x4
+
+Verse:
+  - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X...
+  - test/sounds/snare_mono_8.wav:     ..X...X...X...X.X...X...X...X...
+  # Here is a comment
+  - test/sounds/hh_closed_mono_8.wav: X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
+  - test/sounds/hh_open_mono_8.wav:   X...............X..............X
+  # Here is another comment
+Chorus:
+  - test/sounds/bass_mono_8.wav:      X...X...XXXXXXXXX...X...X...X...
+  - test/sounds/snare_mono_8.wav:     ...................X...X...X...X
+  - test/sounds/hh_closed_mono_8.wav: X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX. # It's comment time
+  - test/sounds/hh_open_mono_8.wav:   ........X.......X.......X.......
+  - test/sounds/ride_mono_8.wav:      ....X...................X.......
+
+
+Bridge:
+  - test/sounds/hh_closed_mono_8.wav: XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X
