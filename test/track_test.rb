@@ -27,16 +27,16 @@ class TrackTest < Test::Unit::TestCase
   def test_initialize
     test_tracks = generate_test_data()
     
-    assert_equal(test_tracks[0].beats, [0])
-    assert_equal(test_tracks[0].name, "bass")
+    assert_equal([0], test_tracks[0].beats)
+    assert_equal("bass", test_tracks[0].name)
     
-    assert_equal(test_tracks[1].beats, [0, 1])
-    assert_equal(test_tracks[1].name, "bass")
+    assert_equal([0, 1], test_tracks[1].beats)
+    assert_equal("bass", test_tracks[1].name)
     
-    assert_equal(test_tracks[2].beats, [3, 1])
-    assert_equal(test_tracks[3].beats, [0, 2, 2, 2, 2])
-    assert_equal(test_tracks[4].beats, [4])
-    assert_equal(test_tracks[5].beats, [2, 4, 4, 4, 2, 4, 4, 4, 4])
+    assert_equal([3, 1], test_tracks[2].beats)
+    assert_equal([0, 2, 2, 2, 2], test_tracks[3].beats)
+    assert_equal([4], test_tracks[4].beats)
+    assert_equal([2, 4, 4, 4, 2, 4, 4, 4, 4], test_tracks[5].beats)
   end
   
   def test_tick_count
@@ -63,23 +63,23 @@ class TrackTest < Test::Unit::TestCase
   def helper_test_sample_length(tick_sample_length)
     test_tracks = generate_test_data()
     
-    assert_equal(test_tracks[0].sample_length(tick_sample_length), 0)
-    assert_equal(test_tracks[0].sample_length(tick_sample_length), test_tracks[0].sample_data(tick_sample_length)[:primary].length)
+    assert_equal(0, test_tracks[0].sample_length(tick_sample_length))
+    assert_equal(test_tracks[0].sample_data(tick_sample_length)[:primary].length, test_tracks[0].sample_length(tick_sample_length))
     
-    assert_equal(test_tracks[1].sample_length(tick_sample_length), tick_sample_length.floor)
-    assert_equal(test_tracks[1].sample_length(tick_sample_length), test_tracks[1].sample_data(tick_sample_length)[:primary].length)
+    assert_equal(tick_sample_length.floor, test_tracks[1].sample_length(tick_sample_length))
+    assert_equal(test_tracks[1].sample_data(tick_sample_length)[:primary].length, test_tracks[1].sample_length(tick_sample_length))
     
-    assert_equal(test_tracks[2].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
-    assert_equal(test_tracks[2].sample_length(tick_sample_length), test_tracks[2].sample_data(tick_sample_length)[:primary].length)
+    assert_equal((tick_sample_length * 4).floor, test_tracks[2].sample_length(tick_sample_length))
+    assert_equal(test_tracks[2].sample_data(tick_sample_length)[:primary].length, test_tracks[2].sample_length(tick_sample_length))
     
-    assert_equal(test_tracks[3].sample_length(tick_sample_length), (tick_sample_length * 8).floor)
-    assert_equal(test_tracks[3].sample_length(tick_sample_length), test_tracks[3].sample_data(tick_sample_length)[:primary].length)
+    assert_equal((tick_sample_length * 8).floor, test_tracks[3].sample_length(tick_sample_length))
+    assert_equal(test_tracks[3].sample_data(tick_sample_length)[:primary].length, test_tracks[3].sample_length(tick_sample_length))
     
-    assert_equal(test_tracks[4].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
-    assert_equal(test_tracks[4].sample_length(tick_sample_length), test_tracks[4].sample_data(tick_sample_length)[:primary].length)
+    assert_equal((tick_sample_length * 4).floor, test_tracks[4].sample_length(tick_sample_length))
+    assert_equal(test_tracks[4].sample_data(tick_sample_length)[:primary].length, test_tracks[4].sample_length(tick_sample_length))
     
-    assert_equal(test_tracks[5].sample_length(tick_sample_length), (tick_sample_length * 32).floor)
-    assert_equal(test_tracks[5].sample_length(tick_sample_length), test_tracks[5].sample_data(tick_sample_length)[:primary].length)
+    assert_equal((tick_sample_length * 32).floor, test_tracks[5].sample_length(tick_sample_length))
+    assert_equal(test_tracks[5].sample_data(tick_sample_length)[:primary].length, test_tracks[5].sample_length(tick_sample_length))
   end
   
   def test_sample_length_with_overflow
@@ -97,42 +97,42 @@ class TrackTest < Test::Unit::TestCase
     test_tracks = generate_test_data()
     
     sample_data = test_tracks[0].sample_data(tick_sample_length)
-    assert_equal(test_tracks[0].sample_length_with_overflow(tick_sample_length), 0)
-    assert_equal(test_tracks[0].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+    assert_equal(0, test_tracks[0].sample_length_with_overflow(tick_sample_length))
+    assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[0].sample_length_with_overflow(tick_sample_length))
     
     sample_data = test_tracks[1].sample_data(tick_sample_length)
     if(wave_sample_length > tick_sample_length * test_tracks[1].beats.last)
-      assert_equal(test_tracks[1].sample_length_with_overflow(tick_sample_length), wave_sample_length)
+      assert_equal(wave_sample_length, test_tracks[1].sample_length_with_overflow(tick_sample_length))
     else
-      assert_equal(test_tracks[1].sample_length_with_overflow(tick_sample_length), tick_sample_length.floor)
-      assert_equal(test_tracks[1].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+      assert_equal(tick_sample_length.floor, test_tracks[1].sample_length_with_overflow(tick_sample_length))
+      assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[1].sample_length_with_overflow(tick_sample_length))
     end
     
     sample_data = test_tracks[2].sample_data(tick_sample_length)
     if(wave_sample_length > tick_sample_length * test_tracks[2].beats.last)
-      assert_equal(test_tracks[2].sample_length_with_overflow(tick_sample_length), (tick_sample_length * 4).floor + (wave_sample_length - tick_sample_length.floor))
-      assert_equal(test_tracks[2].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+      assert_equal((tick_sample_length * 4).floor + (wave_sample_length - tick_sample_length.floor), test_tracks[2].sample_length_with_overflow(tick_sample_length))
+      assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[2].sample_length_with_overflow(tick_sample_length))
     else
-      assert_equal(test_tracks[2].sample_length_with_overflow(tick_sample_length), (tick_sample_length * 4).floor)
-      assert_equal(test_tracks[2].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+      assert_equal((tick_sample_length * 4).floor, test_tracks[2].sample_length_with_overflow(tick_sample_length))
+      assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[2].sample_length_with_overflow(tick_sample_length))
     end
     
     sample_data = test_tracks[3].sample_data(tick_sample_length)
     if(wave_sample_length > tick_sample_length * test_tracks[3].beats.last)
-      assert_equal(test_tracks[3].sample_length_with_overflow(tick_sample_length), (tick_sample_length * 8).floor + (wave_sample_length - (tick_sample_length * 2).floor))
-      assert_equal(test_tracks[3].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+      assert_equal((tick_sample_length * 8).floor + (wave_sample_length - (tick_sample_length * 2).floor), test_tracks[3].sample_length_with_overflow(tick_sample_length))
+      assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[3].sample_length_with_overflow(tick_sample_length))
     else
-      assert_equal(test_tracks[3].sample_length_with_overflow(tick_sample_length), (tick_sample_length * 8).floor)
-      assert_equal(test_tracks[3].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+      assert_equal((tick_sample_length * 8).floor, test_tracks[3].sample_length_with_overflow(tick_sample_length))
+      assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[3].sample_length_with_overflow(tick_sample_length))
     end
     
     sample_data = test_tracks[4].sample_data(tick_sample_length)
-    assert_equal(test_tracks[4].sample_length_with_overflow(tick_sample_length), (tick_sample_length * 4).floor)
-    assert_equal(test_tracks[4].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+    assert_equal((tick_sample_length * 4).floor, test_tracks[4].sample_length_with_overflow(tick_sample_length))
+    assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[4].sample_length_with_overflow(tick_sample_length))
     
     sample_data = test_tracks[5].sample_data(tick_sample_length)
-    assert_equal(test_tracks[5].sample_length_with_overflow(tick_sample_length), (tick_sample_length * 32).floor)
-    assert_equal(test_tracks[5].sample_length_with_overflow(tick_sample_length), sample_data[:primary].length + sample_data[:overflow].length)
+    assert_equal((tick_sample_length * 32).floor, test_tracks[5].sample_length_with_overflow(tick_sample_length))
+    assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[5].sample_length_with_overflow(tick_sample_length))
   end
   
   def test_sample_data_overflow
@@ -143,7 +143,7 @@ class TrackTest < Test::Unit::TestCase
     expected_sample_data = zeroes(tick_sample_length * 3) + W.sample_data
     expected_sample_data[0...overflow.length] = overflow
     actual_sample_data = track.sample_data(tick_sample_length, overflow)
-    assert_equal(actual_sample_data[:primary], expected_sample_data)
+    assert_equal(expected_sample_data, actual_sample_data[:primary])
 
     # Call sample_data() again with different overflow, to verify that cached
     # sample data only contains the primary sample data.
@@ -151,7 +151,7 @@ class TrackTest < Test::Unit::TestCase
     expected_sample_data = zeroes(tick_sample_length * 3) + W.sample_data
     expected_sample_data[0...overflow.length] = overflow
     actual_sample_data = track.sample_data(tick_sample_length, overflow)
-    assert_equal(actual_sample_data[:primary], expected_sample_data)
+    assert_equal(expected_sample_data, actual_sample_data[:primary])
   end
   
   def test_sample_data
@@ -159,7 +159,7 @@ class TrackTest < Test::Unit::TestCase
     
     tick_sample_length = W.sample_data.length   # 6179.0
     test_tracks = generate_test_data()
-    assert_equal(test_tracks[0].sample_data(tick_sample_length), {:primary => [], :overflow => []})
+    assert_equal({:primary => [], :overflow => []}, test_tracks[0].sample_data(tick_sample_length))
     helper_test_sample_data(test_tracks[1], tick_sample_length, sample_data[0...tick_sample_length], [])
     helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + sample_data, [])
     helper_test_sample_data(test_tracks[3], tick_sample_length, (sample_data + zeroes(tick_sample_length)) * 4, [])
@@ -169,7 +169,7 @@ class TrackTest < Test::Unit::TestCase
 
     tick_sample_length = (W.sample_rate * 60.0) / 220 / 4   # 3006.818181818181818
     test_tracks = generate_test_data()
-    assert_equal(test_tracks[0].sample_data(tick_sample_length), {:primary => [], :overflow => []})
+    assert_equal({:primary => [], :overflow => []}, test_tracks[0].sample_data(tick_sample_length))
     helper_test_sample_data(test_tracks[1], tick_sample_length, sample_data[0...tick_sample_length.floor], sample_data[tick_sample_length.floor...sample_data.length])
     #helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + sample_data[0..tick_sample_length.floor], sample_data[(tick_sample_length.floor)...sample_data.length])
     #helper_test_sample_data(test_tracks[3], tick_sample_length,
@@ -183,7 +183,7 @@ class TrackTest < Test::Unit::TestCase
 
     tick_sample_length = (W.sample_rate * 60.0) / 99 / 4   # 6681.818181818181818
     test_tracks = generate_test_data()    
-    assert_equal(test_tracks[0].sample_data(tick_sample_length), {:primary => [], :overflow => []})
+    assert_equal({:primary => [], :overflow => []}, test_tracks[0].sample_data(tick_sample_length))
     helper_test_sample_data(test_tracks[1], tick_sample_length, sample_data + zeroes(tick_sample_length - W.sample_data.length), [])
     helper_test_sample_data(test_tracks[2], tick_sample_length, zeroes(tick_sample_length * 3) + sample_data + zeroes(tick_sample_length - sample_data.length + 1), [])
     helper_test_sample_data(test_tracks[3], tick_sample_length,
@@ -198,12 +198,12 @@ class TrackTest < Test::Unit::TestCase
   def helper_test_sample_data(track, tick_sample_length, expected_primary, expected_overflow)
     sample_data = track.sample_data(tick_sample_length)
     
-    assert_equal(sample_data.class, Hash)
-    assert_equal(sample_data.keys.map{|key| key.to_s}.sort, ["overflow", "primary"])
-    assert_equal(sample_data[:primary].length, expected_primary.length)
-    assert_equal(sample_data[:overflow].length, expected_overflow.length)
-    assert_equal(sample_data[:primary], expected_primary)
-    assert_equal(sample_data[:overflow], expected_overflow)
+    assert_equal(Hash,                      sample_data.class)
+    assert_equal(["overflow", "primary"],   sample_data.keys.map{|key| key.to_s}.sort)
+    assert_equal(expected_primary.length,   sample_data[:primary].length)
+    assert_equal(expected_overflow.length,  sample_data[:overflow].length)
+    assert_equal(expected_primary,          sample_data[:primary])
+    assert_equal(expected_overflow,         sample_data[:overflow])
   end
   
 private
