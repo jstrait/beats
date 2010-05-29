@@ -45,6 +45,10 @@ class Song
   end
   
   # The number of tracks that the pattern with the greatest number of tracks has.
+  # TODO: Is it a problem that an optimized song can have a different total_tracks() value than
+  # the original? Or is that actually a good thing?
+  # TODO: Investigate replacing this with a method max_sounds_playing_at_once() or something
+  # like that. Would look each pattern along with it's incoming overflow.
   def total_tracks()
     @patterns.keys.collect {|pattern_name| @patterns[pattern_name].tracks.length }.max || 0
   end
@@ -108,7 +112,7 @@ class Song
                                                         num_tracks_in_song,
                                                         incoming_overflow,
                                                         false)
-                                                        
+      
       wave_file.write_snippet(file, sample_data[:primary])
       incoming_overflow = sample_data[:overflow]
     end
