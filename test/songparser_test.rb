@@ -13,12 +13,12 @@ class SongParserTest < Test::Unit::TestCase
     test_songs = {}
     base_path = File.dirname(__FILE__) + "/.."
 
-    test_songs[:no_tempo] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/no_tempo.txt"))
-    test_songs[:repeats_not_specified] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/repeats_not_specified.txt"))
-    test_songs[:overflow] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/pattern_with_overflow.txt"))
-    test_songs[:from_valid_yaml_string] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid_example_no_kit.txt"))
-    test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid_example_with_kit.txt"))
-    test_songs[:from_valid_yaml_string_with_empty_track] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid_example_with_empty_track.txt"))
+    test_songs[:no_tempo] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/no_tempo.txt"))
+    test_songs[:repeats_not_specified] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/repeats_not_specified.txt"))
+    test_songs[:overflow] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/pattern_with_overflow.txt"))
+    test_songs[:from_valid_yaml_string] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_no_kit.txt"))
+    test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_kit.txt"))
+    test_songs[:from_valid_yaml_string_with_empty_track] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_empty_track.txt"))
 
     return test_songs
   end
@@ -53,71 +53,17 @@ class SongParserTest < Test::Unit::TestCase
   end
   
   def test_invalid_parse
-    no_header_yaml_string = "# Song with no header
-    Verse:
-      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", no_header_yaml_string) }
+    invalid_fixtures = ["no_header",
+                        "sound_in_track_not_found",
+                        "sound_in_kit_not_found",
+                        "bad_tempo",
+                        "bad_structure",
+                        "no_structure",
+                        "bad_repeat_count"]
     
-    sound_doesnt_exist_yaml_string = "# Song with non-existent sound
-    Song:
-      Tempo: 100
-      Structure:
-        - Verse: x1
-        
-    Verse:
-      - test/sounds/i_do_not_exist.wav: X...X..."
-    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", sound_doesnt_exist_yaml_string) }
-    
-    
-    sound_doesnt_exist_in_kit_yaml_string = "# Song with non-existent sound in Kit
-    Song:
-      Tempo: 100
-      Structure:
-        - Verse: x1
-      Kit:
-        - bad: test/sounds/i_do_not_exist.wav
-      
-    Verse:
-      - bad: X...X..."
-    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", sound_doesnt_exist_in_kit_yaml_string) }
-    
-    invalid_tempo_yaml_string = "# Song with invalid tempo
-    Song:
-      Tempo: 100a
-      Structure:
-        - Verse:  x2
-
-    Verse:
-      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", invalid_tempo_yaml_string) }
-
-    invalid_structure_yaml_string = "# Song whose structure references non-existent pattern
-    Song:
-      Tempo: 100
-      Structure:
-        - Verse:  x2
-        - Chorus: x1
-
-    Verse:
-      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", invalid_structure_yaml_string) }
-    
-    no_structure_yaml_string = "# Song without a structure section in the header
-    Song:
-      Tempo: 100
-
-    Verse:
-      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", no_structure_yaml_string) }
-    
-    invalid_repeats_yaml_string = "# Song with invalid number of repeats for pattern
-    Song:
-      Tempo: 100
-      Structure:
-        - Verse:  x2a
-
-    Verse:
-      - test/sounds/bass_mono_8.wav:      X...X...X...XX..X...X...XX..X..."
-    assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..", invalid_repeats_yaml_string) }
+    invalid_fixtures.each do |fixture|
+      assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..",
+                                                                   YAML.load_file("test/fixtures/invalid/" + fixture + ".txt")) }
+    end
   end
 end

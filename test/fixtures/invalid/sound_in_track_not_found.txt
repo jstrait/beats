@@ -1,0 +1,8 @@
+# Invalid song, since a track references a non-existent sound
+Song:
+  Tempo: 100
+  Structure:
+    - Verse: x1
+
+Verse:
+  - test/sounds/i_do_not_exist.wav: X...X...

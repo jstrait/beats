@@ -1,0 +1,10 @@
+# Invalid song, since the Kit references a non-existent sound
+Song:
+  Tempo: 100
+  Structure:
+    - Verse: x1
+  Kit:
+    - bad: test/sounds/i_do_not_exist.wav
+
+Verse:
+  - bad: X...X...
