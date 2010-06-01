@@ -1,8 +1,0 @@
-# Invalid song file, since it has no tempo
-
-Song:
-  Structure:
-    - Verse: x1
-
-Verse:
-  - test/sounds/bass_mono_8.wav: X

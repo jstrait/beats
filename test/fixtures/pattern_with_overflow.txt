@@ -1,9 +1,0 @@
-# Song with a pattern whose sound overflows past the end of it.
-
-Song:
-  Tempo: 100
-  Structure:
-    - Verse: x2
-
-Verse:
-  - test/sounds/snare_mono_8.wav: ...X
