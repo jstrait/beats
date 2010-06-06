@@ -11,6 +11,7 @@ class Beats
 
   def run()
     start_time = Time.now
+    output_message = ""
 
     if(@input_file_name == nil)
       ARGV[0] = '-h'
@@ -52,21 +53,23 @@ class Beats
         duration = song.write_to_file(@output_file_name)
       end
 
-      puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{@output_file_name} in #{Time.now - start_time} seconds."
+      output_message =  "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{@output_file_name} in #{Time.now - start_time} seconds."
     rescue Errno::ENOENT => detail
-      puts ""
-      puts "Song file '#{@input_file_name}' not found."
-      puts ""
+      output_message =  "\n"
+      output_message += "Song file '#{@input_file_name}' not found.\n"
+      output_message += "\n"
     rescue SongParseError => detail
-      puts ""
-      puts "Song file '#{@input_file_name}' has an error:"
-      puts "  #{detail}"
-      puts ""
+      output_message = "\n"
+      output_message += "Song file '#{@input_file_name}' has an error:\n"
+      output_message += "  #{detail}\n"
+      output_message += "\n"
     rescue StandardError => detail
-      puts ""
-      puts "An error occured while generating sound for '#{@input_file_name}':"
-      puts "  #{detail}"
-      puts ""
+      output_message =  "\n"
+      output_message += "An error occured while generating sound for '#{@input_file_name}':\n"
+      output_message += "  #{detail}\n"
+      output_message += "\n"
     end
+    
+    return output_message
   end
 end
