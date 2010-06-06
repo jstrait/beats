@@ -84,5 +84,23 @@ class Kit
     return @sounds.length
   end
   
+  def to_yaml(indent_space_count = 0)
+    yaml = ""
+    longest_label_mapping_length =
+      @label_mappings.keys.inject(0) do |max_length, name|
+        (name.to_s.length > max_length) ? name.to_s.length : max_length
+      end
+
+    if(@label_mappings.length > 0)
+      yaml += " " * indent_space_count + "Kit:\n"
+      ljust_amount = longest_label_mapping_length + 1  # The +1 is for the trailing ":"
+      @label_mappings.sort.each do |label, path|
+        yaml += " " * indent_space_count + "  - #{(label + ":").ljust(ljust_amount)}  #{path}\n"
+      end
+    end
+    
+    return yaml
+  end
+  
   attr_reader :base_path, :label_mappings, :bits_per_sample, :num_channels
 end

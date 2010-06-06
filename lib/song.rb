@@ -140,7 +140,7 @@ class Song
     yaml_output = "Song:\n"
     yaml_output += "  Tempo: #{@tempo}\n"
     yaml_output += structure_to_yaml()
-    yaml_output += kit_to_yaml()
+    yaml_output += @kit.to_yaml(2)
     yaml_output += patterns_to_yaml()
     
     return yaml_output
@@ -167,7 +167,7 @@ private
 
   def structure_to_yaml()
     yaml_output = "  Structure:\n"
-    ljust_amount = longest_length_in_array(@structure) + 1  # The + 1 is for the trailing :
+    ljust_amount = longest_length_in_array(@structure) + 1  # The +1 is for the trailing ":"
     previous = nil
     count = 0
     @structure.each do |pattern_name|
@@ -184,34 +184,13 @@ private
     return yaml_output
   end
 
-  def kit_to_yaml()
-    yaml_output = ""
-
-    if(@kit.label_mappings.length > 0)
-      yaml_output += "  Kit:\n"
-      ljust_amount = longest_length_in_array(@kit.label_mappings.keys) + 1  # The + 1 is for the trailing :
-      @kit.label_mappings.sort.each do |label, path|
-        yaml_output += "    - #{(label + ":").ljust(ljust_amount)}  #{path}\n"
-      end
-    end
-    
-    return yaml_output
-  end
-
   def patterns_to_yaml()
     yaml_output = ""
     
     # Sort to ensure a consistent order, to make testing easier
     pattern_names = @patterns.keys.map {|key| key.to_s}  # Ruby 1.8 can't sort symbols...
     pattern_names.sort.each do |pattern_name|
-      yaml_output += "\n#{pattern_name.capitalize}:\n"
-      pattern = @patterns[pattern_name.to_sym]
-      ljust_amount = longest_length_in_array(pattern.tracks.keys) + 7
-      
-      pattern.tracks.keys.sort.each do |track_name|
-        yaml_output += "  - #{track_name}:".ljust(ljust_amount)
-        yaml_output += "#{pattern.tracks[track_name].rhythm}\n"
-      end
+      yaml_output += "\n" + @patterns[pattern_name.to_sym].to_yaml()
     end
     
     return yaml_output
