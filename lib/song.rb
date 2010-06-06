@@ -84,10 +84,9 @@ class Song
       key = [pattern_name, incoming_overflow.hash]
       if(!cache.member?(key))
         sample_data = @patterns[pattern_name].sample_data(@tick_sample_length,
-                                                        @kit.num_channels,
-                                                        num_tracks_in_song,
-                                                        incoming_overflow,
-                                                        false)
+                                                          @kit.num_channels,
+                                                          num_tracks_in_song,
+                                                          incoming_overflow)
                                                         
         cache[key] = {:primary => sample_data[:primary].pack(pack_code), :overflow => sample_data[:overflow]}
       end
@@ -238,7 +237,7 @@ private
 
       final_overflow_pattern = Pattern.new(:overflow)
       final_overflow_pattern.track "", [], "."
-      final_overflow_sample_data = final_overflow_pattern.sample_data(longest_overflow.length, @kit.num_channels, num_tracks_in_song, overflow, false)
+      final_overflow_sample_data = final_overflow_pattern.sample_data(longest_overflow.length, @kit.num_channels, num_tracks_in_song, overflow)
       merged_sample_data = final_overflow_sample_data[:primary]
     end
 

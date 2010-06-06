@@ -38,30 +38,7 @@ class Pattern
     return @tracks.values.collect {|track| track.rhythm.length }.max || 0
   end
   
-  def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow, split = false)
-    if(split)
-      return split_sample_data(tick_sample_length, num_channels, incoming_overflow)
-    else
-      return combined_sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
-    end
-  end
-  
-  def same_tracks_as(other_pattern)
-    @tracks.keys.each{|track_name|
-      other_pattern_track = other_pattern.tracks[track_name]
-      if(other_pattern_track == nil || @tracks[track_name].rhythm != other_pattern_track.rhythm)
-        return false
-      end
-    }
-    
-    return @tracks.length == other_pattern.tracks.length
-  end
-  
-  attr_accessor :tracks, :name
-
-private
-
-  def combined_sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)    
+  def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
     fill_value = (num_channels == 1) ? 0 : [].fill(0, 0, num_channels)
     track_names = @tracks.keys
     primary_sample_data = []
@@ -121,28 +98,17 @@ private
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
-
-  def split_sample_data(tick_sample_length, num_channels, incoming_overflow)
-    fill_value = (num_channels == 1) ? 0 : [].fill(0, 0, num_channels)
-    primary_sample_data = {}
-    overflow_sample_data = {}
-    
-    @tracks.keys.each do |track_name|
-      temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
-      primary_sample_data[track_name] = temp[:primary]
-      overflow_sample_data[track_name] = temp[:overflow]
-    end
-    
-    incoming_overflow.keys.each do |track_name|
-      if(@tracks[track_name] == nil)
-        # TO DO: Add check for when incoming overflow is longer than
-        # track full length to prevent track from lengthening.
-        primary_sample_data[track_name] = [].fill(fill_value, 0, sample_length(tick_sample_length))
-        primary_sample_data[track_name][0...incoming_overflow[track_name].length] = incoming_overflow[track_name]
-        overflow_sample_data[track_name] = []
+  
+  def same_tracks_as(other_pattern)
+    @tracks.keys.each{|track_name|
+      other_pattern_track = other_pattern.tracks[track_name]
+      if(other_pattern_track == nil || @tracks[track_name].rhythm != other_pattern_track.rhythm)
+        return false
       end
-    end
+    }
     
-    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+    return @tracks.length == other_pattern.tracks.length
   end
+  
+  attr_accessor :tracks, :name
 end
