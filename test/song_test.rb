@@ -1,7 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/includes'
-require 'test/songparser_test'
 
 class SongTest < Test::Unit::TestCase
   DEFAULT_TEMPO = 120
@@ -13,27 +12,23 @@ class SongTest < Test::Unit::TestCase
     kit.add("hh_closed.wav", "hh_closed_mono_8.wav")
     kit.add("ride.wav",      "ride_mono_8.wav")
     
-    test_songs = SongParserTest.generate_test_data()
+    test_songs = {}
+    base_path = File.dirname(__FILE__) + "/.."
+
+    test_songs[:blank] = Song.new(base_path)
     
-    test_songs[:blank] = Song.new("test/sounds")
-    
-    test_songs[:no_structure] = Song.new("test/sounds")
+    test_songs[:no_structure] = Song.new(base_path)
     verse = test_songs[:no_structure].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
     verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
     
-    overflow_yaml = "
-Song:
-  Tempo: 100
-  Structure:
-    - Verse: x2
-
-Verse:
-  - test/sounds/snare_mono_8.wav: ...X"
-    test_songs[:overflow] = SongParser.new().parse(File.dirname(__FILE__) + "/..", overflow_yaml)
+    test_songs[:repeats_not_specified] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/repeats_not_specified.txt"))
+    test_songs[:overflow] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/pattern_with_overflow.txt"))
+    test_songs[:from_valid_yaml_string] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_no_kit.txt"))
+    test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_kit.txt"))
     
-    test_songs[:from_code] = Song.new("test/sounds")
+    test_songs[:from_code] = Song.new(base_path)
     verse = test_songs[:from_code].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
