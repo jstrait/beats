@@ -52,13 +52,6 @@ class Beats
     @options = options
   end
 
-  def save_wave_file(file_name, num_channels, bits_per_sample, sample_data)
-    output = WaveFileExtended.new(num_channels, SAMPLE_RATE, bits_per_sample)
-    output.sample_data = sample_data
-    output.save(file_name)
-    return output.duration
-  end
-
   def run()
     start_time = Time.now
 
