@@ -5,7 +5,7 @@ class SongSplitter
   def split(original_song)
     track_names = original_song.track_names()
     
-    split_songs = []
+    split_songs = {}
     track_names.each do |track_name|
       new_song = original_song.copy_ignoring_patterns_and_structure()
       
@@ -31,7 +31,7 @@ class SongSplitter
       
       new_song.structure = original_song.structure
       
-      split_songs << new_song
+      split_songs[track_name] = new_song
     end
     
     return split_songs

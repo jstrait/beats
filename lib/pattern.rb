@@ -1,7 +1,6 @@
 class Pattern
   def initialize(name)
     @name = name
-    @cache = {}
     @tracks = {}
   end
   
@@ -47,7 +46,6 @@ class Pattern
     end
   end
   
-  # TODO: Better name for this? It's not quite the same as eql?().
   def same_tracks_as(other_pattern)
     @tracks.keys.each{|track_name|
       other_pattern_track = other_pattern.tracks[track_name]
@@ -63,13 +61,7 @@ class Pattern
 
 private
 
-  def combined_sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
-    # If we've already generated this pattern with the same incoming overflow before,
-    # return the pre-mixed down version from the cache.
-    if(@cache.member?(incoming_overflow))
-      return @cache[incoming_overflow]
-    end
-    
+  def combined_sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)    
     fill_value = (num_channels == 1) ? 0 : [].fill(0, 0, num_channels)
     track_names = @tracks.keys
     primary_sample_data = []
@@ -127,11 +119,7 @@ private
       primary_sample_data = primary_sample_data.map {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round] }
     end
     
-    # Add the result to the cache so we don't have to go through all of this the next time...
-    mixdown_sample_data = {:primary => primary_sample_data, :overflow => overflow_sample_data}
-    @cache[incoming_overflow] = mixdown_sample_data
-    
-    return mixdown_sample_data
+    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
 
   def split_sample_data(tick_sample_length, num_channels, incoming_overflow)

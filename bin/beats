@@ -75,33 +75,16 @@ class Beats
       song_optimizer = SongOptimizer.new()
 
       if(options[:split])
-        if(true)
-          puts "A"
-          song_splitter = SongSplitter.new()
-          split_songs = song_splitter.split(song)
-          split_songs.each do |split_song|
-            if(options[:pattern] == nil)
-              split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
-            end
-
-            puts "#{split_song.to_yaml()}"
-            puts "\n\n\n\n\n"
-            duration = split_song.write_to_file(output_file_name, options[:pattern])
+        song_splitter = SongSplitter.new()
+        split_songs = song_splitter.split(song)
+        split_songs.each do |track_name, split_song|
+          if(options[:pattern] == nil)
+            split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
           end
-        else
-          puts "B"
-          sample_data = song.sample_data(options[:split], options[:pattern])
 
-          duration = nil
-          sample_data.keys.each {|track_name|
-            extension = File.extname(output_file_name)
-            file_name = File.basename(output_file_name, extension) + "-" + File.basename(track_name.to_s, extension) + extension
-
-            duration = save_wave_file(file_name,
-                                      song.num_channels,
-                                      song.bits_per_sample,
-                                      sample_data[track_name])
-          }
+          extension = File.extname(output_file_name)
+          file_name = File.basename(output_file_name, extension) + "-" + File.basename(track_name, extension) + extension
+          duration = split_song.write_to_file(file_name, options[:pattern])
         end
       else
         if(options[:pattern] == nil)

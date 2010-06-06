@@ -91,6 +91,8 @@ class Song
   end
 
   def write_to_file(output_file_name, pattern_name)
+    cache = {}
+    pack_code = pack_code()
     num_tracks_in_song = self.total_tracks()
     
     if(pattern_name == nil)
@@ -107,14 +109,19 @@ class Song
     
     incoming_overflow = {}
     structure.each do |pattern_name|
-      sample_data = @patterns[pattern_name].sample_data(@tick_sample_length,
+      key = [pattern_name, incoming_overflow.hash]
+      if(!cache.member?(key))
+        sample_data = @patterns[pattern_name].sample_data(@tick_sample_length,
                                                         @kit.num_channels,
                                                         num_tracks_in_song,
                                                         incoming_overflow,
                                                         false)
+                                                        
+        cache[key] = {:primary => sample_data[:primary].pack(pack_code), :overflow => sample_data[:overflow]}
+      end
       
-      wave_file.write_snippet(file, sample_data[:primary])
-      incoming_overflow = sample_data[:overflow]
+      file.syswrite(cache[key][:primary])
+      incoming_overflow = cache[key][:overflow]
     end
     
     wave_file.write_snippet(file, merge_overflow(incoming_overflow, num_tracks_in_song))
@@ -179,6 +186,16 @@ class Song
   attr_accessor :structure, :kit
 
 private
+
+  def pack_code()
+    if(@kit.bits_per_sample == 8)
+      return "C*"
+    elsif(@kit.bits_per_sample == 16)
+      return "s*"
+    else
+      raise StandardError, "Invalid bits per sample of #{@kit.bits_per_sample}"
+    end
+  end
 
   def longest_length_in_array(arr)
     return arr.inject(0) {|max_length, name| (name.to_s.length > max_length) ? name.to_s.length : max_length }
