@@ -90,7 +90,7 @@ class Song
     wave_file.write_snippet(file, merge_overflow(incoming_overflow, num_tracks_in_song))
     file.close()
     
-    return wave_file.duration()
+    return wave_file.calculate_duration(SAMPLE_RATE, sample_length)
   end
 
   def num_channels()

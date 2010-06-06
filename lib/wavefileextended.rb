@@ -37,4 +37,31 @@ class WaveFileExtended < WaveFile
       file.syswrite(sample_data.flatten.pack(pack_code))
     end
   end
+  
+  def calculate_duration(sample_rate, total_samples)
+    samples_per_millisecond = sample_rate / 1000.0
+    samples_per_second = sample_rate
+    samples_per_minute = samples_per_second * 60
+    samples_per_hour = samples_per_minute * 60
+    hours, minutes, seconds, milliseconds = 0, 0, 0, 0
+    
+    if(total_samples >= samples_per_hour)
+      hours = total_samples / samples_per_hour
+      total_samples -= samples_per_hour * hours
+    end
+    
+    if(total_samples >= samples_per_minute)
+      minutes = total_samples / samples_per_minute
+      total_samples -= samples_per_minute * minutes
+    end
+    
+    if(total_samples >= samples_per_second)
+      seconds = total_samples / samples_per_second
+      total_samples -= samples_per_second * seconds
+    end
+    
+    milliseconds = (total_samples / samples_per_millisecond).floor
+    
+    return { :hours => hours, :minutes => minutes, :seconds => seconds, :milliseconds => milliseconds }
+  end
 end

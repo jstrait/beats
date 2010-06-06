@@ -99,8 +99,7 @@ class Beats
         duration = song.write_to_file(output_file_name)
       end
 
-      puts "Done! Time to run: #{Time.now - start}"
-      #puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{output_file_name} in #{Time.now - start} seconds."
+      puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{output_file_name} in #{Time.now - start} seconds."
     rescue Errno::ENOENT => detail
       puts ""
       puts "Song file '#{input_file_name}' not found."
