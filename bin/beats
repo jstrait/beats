@@ -14,36 +14,42 @@ require "lib/pattern"
 require "lib/track"
 require "lib/wavefileextended"
 
+def parse_options
+  options = {:split => false, :pattern => nil}
+
+  optparse = OptionParser.new do |opts|
+    opts.on('-s', '--split', "Save each track to an individual wave file") do
+      options[:split] = true
+    end
+
+    opts.on('-p', '--pattern PATTERN_NAME', "Output a single pattern instead of the whole song" ) do |p|
+      options[:pattern] = p
+    end
+  
+    opts.on('-v', '--version', "Display version number and exit") do
+      puts "BEATS v#{BEATS_VERSION}"
+      exit
+    end
+  
+    opts.on( '-h', '--help', "Display this screen and exit" ) do
+      puts opts
+      exit
+    end
+  end
+  optparse.parse!
+
+  return options
+end
+
 class Beats
   BEATS_VERSION = "1.2.0a"
   SAMPLE_RATE = 44100
   OPTIMIZED_PATTERN_LENGTH = 4
 
-  def parse_options
-    options = {:split => false, :pattern => nil}
-
-    optparse = OptionParser.new do |opts|
-      opts.on('-s', '--split', "Save each track to an individual wave file") do
-        options[:split] = true
-      end
-
-      opts.on('-p', '--pattern PATTERN_NAME', "Output a single pattern instead of the whole song" ) do |p|
-        options[:pattern] = p
-      end
-    
-      opts.on('-v', '--version', "Display version number and exit") do
-        puts "BEATS v#{BEATS_VERSION}"
-        exit
-      end
-    
-      opts.on( '-h', '--help', "Display this screen and exit" ) do
-        puts opts
-        exit
-      end
-    end
-    optparse.parse!
-  
-    return options
+  def initialize(input_file_name, output_file_name, options)
+    @input_file_name =  input_file_name
+    @output_file_name = output_file_name
+    @options = options
   end
 
   def save_wave_file(file_name, num_channels, bits_per_sample, sample_data)
@@ -54,69 +60,70 @@ class Beats
   end
 
   def run()
-    start = Time.now
+    start_time = Time.now
 
-    options = parse_options
-    input_file_name = ARGV[0]
-    output_file_name = ARGV[1]
-
-    if(input_file_name == nil)
+    if(@input_file_name == nil)
       ARGV[0] = '-h'
       parse_options()
     end
 
-    if(output_file_name == nil)
-      output_file_name = File.basename(input_file_name, File.extname(input_file_name)) + ".wav"
+    if(@output_file_name == nil)
+      @output_file_name = File.basename(@input_file_name, File.extname(@input_file_name)) + ".wav"
     end
 
     begin
       song_parser = SongParser.new()
-      song = song_parser.parse(File.dirname(input_file_name), YAML.load_file(input_file_name))
+      song = song_parser.parse(File.dirname(@input_file_name), YAML.load_file(@input_file_name))
       song_optimizer = SongOptimizer.new()
 
-      if(options[:pattern] != nil)
-        pattern_name = options[:pattern].downcase.to_sym
+      if(@options[:pattern] != nil)
+        pattern_name = @options[:pattern].downcase.to_sym
         if(!song.patterns.member?(pattern_name))
-          raise StandardError, "The song does not include a pattern called #{options[:pattern]}"
+          raise StandardError, "The song does not include a pattern called #{@options[:pattern]}"
         end
         
         song.structure = [pattern_name]
         song.remove_unused_patterns()
       end
 
-      if(options[:split])
+      duration = nil
+      if(@options[:split])
         song_splitter = SongSplitter.new()
         split_songs = song_splitter.split(song)
         split_songs.each do |track_name, split_song|
           split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
 
-          extension = File.extname(output_file_name)
-          file_name = File.basename(output_file_name, extension) + "-" + File.basename(track_name, extension) + extension
+          extension = File.extname(@output_file_name)
+          file_name = File.basename(@output_file_name, extension) + "-" + File.basename(track_name, extension) + extension
           duration = split_song.write_to_file(file_name)
         end
       else
         song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-        duration = song.write_to_file(output_file_name)
+        duration = song.write_to_file(@output_file_name)
       end
 
-      puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{output_file_name} in #{Time.now - start} seconds."
+      puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio saved to #{@output_file_name} in #{Time.now - start_time} seconds."
     rescue Errno::ENOENT => detail
       puts ""
-      puts "Song file '#{input_file_name}' not found."
+      puts "Song file '#{@input_file_name}' not found."
       puts ""
     rescue SongParseError => detail
       puts ""
-      puts "Song file '#{input_file_name}' has an error:"
+      puts "Song file '#{@input_file_name}' has an error:"
       puts "  #{detail}"
       puts ""
     rescue StandardError => detail
       puts ""
-      puts "An error occured while generating sound for '#{input_file_name}':"
+      puts "An error occured while generating sound for '#{@input_file_name}':"
       puts "  #{detail}"
       puts ""
     end
   end
 end
 
-beats = Beats.new()
+options = parse_options
+input_file_name = ARGV[0]
+output_file_name = ARGV[1]
+
+beats = Beats.new(input_file_name, output_file_name, options)
 beats.run()
