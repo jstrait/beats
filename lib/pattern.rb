@@ -99,6 +99,9 @@ class Pattern
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
   
+  # Returns whether or not this pattern has the same number of tracks as other_pattern, and that
+  # each of the tracks has the same name and rhythm. Ordering of tracks does not matter; will
+  # return true if the two patterns have the same tracks but in a different ordering.
   def same_tracks_as(other_pattern)
     @tracks.keys.each{|track_name|
       other_pattern_track = other_pattern.tracks[track_name]
@@ -110,6 +113,7 @@ class Pattern
     return @tracks.length == other_pattern.tracks.length
   end
   
+  # Returns a YAML representation of the Pattern.
   def to_yaml()
     longest_track_name_length =
       @tracks.keys.inject(0) do |max_length, name|
