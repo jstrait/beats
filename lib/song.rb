@@ -79,7 +79,8 @@ class Song
                                                           @kit.num_channels,
                                                           num_tracks_in_song,
                                                           incoming_overflow)
-                                                        
+        
+        # TODO: Does this work for stereo?
         cache[key] = {:primary => sample_data[:primary].pack(pack_code), :overflow => sample_data[:overflow]}
       end
       
