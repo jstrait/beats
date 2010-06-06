@@ -1,4 +1,4 @@
-# Valid song file, despite not having a tempo. Tempo will be get to a default value.
+# Valid song file, despite not having a tempo. Tempo will be set to a default value.
 
 Song:
   Structure:
