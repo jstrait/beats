@@ -29,4 +29,26 @@ BEATS is a drum machine written in pure Ruby. Feed it a song notated in YAML, an
 	  - sounds/tom4.wav:  ...........X....
 	  - sounds/tom2.wav:  ..............X.
 
-For installation and usage instructions, visit the BEATS website at [http://beatsdrummachine.com](http://beatsdrummachine.com).
+
+Current Status
+--------------
+
+The latest stable version of BEATS is 1.1.0. Development is currently underway for version 1.2.0, and the code on the trunk is the latest progress. 1.2.0 will bring performance improvements, as well as significant architectural improvements. It will also feature a few bug fixes.
+
+
+Installation
+------------
+
+To install the latest stable version (1.1.0), run the following from the command line:
+
+    sudo gem install beats
+
+You can then run BEATS from the command-line using the `beats` command.
+
+BEATS is not very useful unless you have some sounds to use with it. You can download some example sounds from [http://beatsdrummachine.com](http://beatsdrummachine.com).
+
+
+Usage
+-----
+
+BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, see the user guide at [http://beatsdrummachine.com](http://beatsdrummachine.com)
