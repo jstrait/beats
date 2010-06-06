@@ -188,38 +188,6 @@ class SongTest < Test::Unit::TestCase
     test_songs = generate_test_data()
     result = test_songs[:from_valid_yaml_string_with_kit].to_yaml
     
-    assert_equal(
-"Song:
-  Tempo: 99
-  Structure:
-    - Verse:   x2
-    - Chorus:  x2
-    - Verse:   x2
-    - Chorus:  x4
-    - Bridge:  x1
-    - Chorus:  x4
-  Kit:
-    - bass:      test/sounds/bass_mono_8.wav
-    - hhclosed:  test/sounds/hh_closed_mono_8.wav
-    - hhopen:    test/sounds/hh_open_mono_8.wav
-    - snare:     test/sounds/snare_mono_8.wav
-
-Bridge:
-  - hhclosed:  XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X
-
-Chorus:
-  - bass:                              X...X...XXXXXXXXX...X...X...X...
-  - hhopen:                            ........X.......X.......X.......
-  - snare:                             ...................X...X...X...X
-  - test/sounds/hh_closed_mono_8.wav:  X.X.XXX.X.X.XXX.X.X.XXX.X.X.XXX.
-  - test/sounds/ride_mono_8.wav:       ....X...................X.......
-
-Verse:
-  - bass:      X...X...X...XX..X...X...XX..X...
-  - hhclosed:  X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.
-  - hhopen:    X...............X..............X
-  - snare:     ..X...X...X...X.X...X...X...X...
-",
-      result)
+    assert_equal(File.read("test/fixtures/yaml/song_yaml.txt"), result)
   end
 end
