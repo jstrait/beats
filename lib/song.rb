@@ -62,25 +62,17 @@ class Song
     return track_names.keys.sort
   end
 
-  def write_to_file(output_file_name, pattern_name)
+  def write_to_file(output_file_name)
     cache = {}
     pack_code = pack_code()
     num_tracks_in_song = self.total_tracks()
-    
-    if(pattern_name == nil)
-      structure = @structure
-      sample_length = sample_length_with_overflow()
-    else
-      normalized_pattern_name = pattern_name.downcase.to_sym
-      structure = [normalized_pattern_name]
-      sample_length = patterns[normalized_pattern_name].sample_length(@tick_sample_length)
-    end
+    sample_length = sample_length_with_overflow()
     
     wave_file = WaveFileExtended.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
     file = wave_file.open_for_appending(output_file_name, sample_length)
     
     incoming_overflow = {}
-    structure.each do |pattern_name|
+    @structure.each do |pattern_name|
       key = [pattern_name, incoming_overflow.hash]
       if(!cache.member?(key))
         sample_data = @patterns[pattern_name].sample_data(@tick_sample_length,

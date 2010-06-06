@@ -74,24 +74,29 @@ class Beats
       song = song_parser.parse(File.dirname(input_file_name), YAML.load_file(input_file_name))
       song_optimizer = SongOptimizer.new()
 
+      if(options[:pattern] != nil)
+        pattern_name = options[:pattern].downcase.to_sym
+        if(!song.patterns.member?(pattern_name))
+          raise StandardError, "The song does not include a pattern called #{options[:pattern]}"
+        end
+        
+        song.structure = [pattern_name]
+        song.remove_unused_patterns()
+      end
+
       if(options[:split])
         song_splitter = SongSplitter.new()
         split_songs = song_splitter.split(song)
         split_songs.each do |track_name, split_song|
-          if(options[:pattern] == nil)
-            split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
-          end
+          split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
 
           extension = File.extname(output_file_name)
           file_name = File.basename(output_file_name, extension) + "-" + File.basename(track_name, extension) + extension
-          duration = split_song.write_to_file(file_name, options[:pattern])
+          duration = split_song.write_to_file(file_name)
         end
       else
-        if(options[:pattern] == nil)
-          song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-        end
-
-        duration = song.write_to_file(output_file_name, options[:pattern])
+        song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
+        duration = song.write_to_file(output_file_name)
       end
 
       puts "Done! Time to run: #{Time.now - start}"
