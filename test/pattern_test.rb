@@ -13,23 +13,23 @@ class PatternTest < Test::Unit::TestCase
     kit.add("hh_closed.wav", "hh_closed_mono_8.wav")
     kit.add("hh_open.wav",   "hh_open_mono_8.wav")
     
-    test_patterns = []
+    test_patterns = {}
     
-    p1 = Pattern.new :blank
-    test_patterns << p1
+    pattern = Pattern.new :blank
+    test_patterns[:blank] = pattern
     
-    p2 = Pattern.new :verse
-    p2.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X...X...X...XX..X...X...XX..X..."
-    p2.track "snare.wav",     kit.get_sample_data("snare.wav"),     "..X...X...X...X.X...X...X...X..."
-    p2.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X."
-    p2.track "hh_open.wav",   kit.get_sample_data("hh_open.wav"),   "X...............X..............X"
-    test_patterns << p2
+    pattern = Pattern.new :verse
+    pattern.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X...X...X...XX..X...X...XX..X..."
+    pattern.track "snare.wav",     kit.get_sample_data("snare.wav"),     "..X...X...X...X.X...X...X...X..."
+    pattern.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X."
+    pattern.track "hh_open.wav",   kit.get_sample_data("hh_open.wav"),   "X...............X..............X"
+    test_patterns[:verse] = pattern
     
-    p3 = Pattern.new :staircase
-    p3.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X..."
-    p3.track "snare.wav",     kit.get_sample_data("snare.wav"),     "X.."
-    p3.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X."
-    test_patterns << p3
+    pattern = Pattern.new :staircase
+    pattern.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X..."
+    pattern.track "snare.wav",     kit.get_sample_data("snare.wav"),     "X.."
+    pattern.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X."
+    test_patterns[:staircase] = pattern
     
     return test_patterns
   end
@@ -37,15 +37,15 @@ class PatternTest < Test::Unit::TestCase
   def test_initialize
     test_patterns = generate_test_data()
     
-    pattern = test_patterns.shift()
+    pattern = test_patterns[:blank]
     assert_equal(pattern.name, :blank)
     assert_equal(pattern.tracks.length, 0)
 
-    pattern = test_patterns.shift()
+    pattern = test_patterns[:verse]
     assert_equal(pattern.name, :verse)
     assert_equal(pattern.tracks.length, 4)
 
-    pattern = test_patterns.shift()
+    pattern = test_patterns[:staircase]
     assert_equal(pattern.name, :staircase)
     assert_equal(pattern.tracks.length, 3)
   end
@@ -54,27 +54,27 @@ class PatternTest < Test::Unit::TestCase
     test_patterns = generate_test_data()
     
     tick_sample_length = 13860.0
-    assert_equal(test_patterns[0].sample_length(tick_sample_length), 0)
-    assert_equal(test_patterns[1].sample_length(tick_sample_length), tick_sample_length * 32)
-    assert_equal(test_patterns[2].sample_length(tick_sample_length), tick_sample_length * 4)
+    assert_equal(test_patterns[:blank].sample_length(tick_sample_length), 0)
+    assert_equal(test_patterns[:verse].sample_length(tick_sample_length), tick_sample_length * 32)
+    assert_equal(test_patterns[:staircase].sample_length(tick_sample_length), tick_sample_length * 4)
 
     tick_sample_length = 6681.81818181818
-    assert_equal(test_patterns[0].sample_length(tick_sample_length), 0)
-    assert_equal(test_patterns[1].sample_length(tick_sample_length), (tick_sample_length * 32).floor)
-    assert_equal(test_patterns[2].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
+    assert_equal(test_patterns[:blank].sample_length(tick_sample_length), 0)
+    assert_equal(test_patterns[:verse].sample_length(tick_sample_length), (tick_sample_length * 32).floor)
+    assert_equal(test_patterns[:staircase].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
 
     tick_sample_length = 16134.1463414634
-    assert_equal(test_patterns[0].sample_length(tick_sample_length), 0)
-    assert_equal(test_patterns[1].sample_length(tick_sample_length), (tick_sample_length * 32).floor)
-    assert_equal(test_patterns[2].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
+    assert_equal(test_patterns[:blank].sample_length(tick_sample_length), 0)
+    assert_equal(test_patterns[:verse].sample_length(tick_sample_length), (tick_sample_length * 32).floor)
+    assert_equal(test_patterns[:staircase].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
   end
 
   def test_tick_count
     test_patterns = generate_test_data()
     
-    assert_equal(0,  test_patterns[0].tick_count())
-    assert_equal(32, test_patterns[1].tick_count())
-    assert_equal(4,  test_patterns[2].tick_count())
+    assert_equal(0,  test_patterns[:blank].tick_count())
+    assert_equal(32, test_patterns[:verse].tick_count())
+    assert_equal(4,  test_patterns[:staircase].tick_count())
   end
 
   def test_same_tracks_as
@@ -139,7 +139,7 @@ class PatternTest < Test::Unit::TestCase
     test_patterns = generate_test_data()
     
     # Combined
-    test_patterns.each{|test_pattern|
+    test_patterns.each{|pattern_name, test_pattern|
       sample_data = test_pattern.sample_data(tick_sample_length, 1, test_pattern.tracks.length, {})
       assert_equal(sample_data.class, Hash)
       assert_equal(sample_data.keys.map{|key| key.to_s}.sort, ["overflow", "primary"])
