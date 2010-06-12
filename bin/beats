@@ -54,17 +54,17 @@ begin
   duration = output[:duration]
   puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio written in #{Time.now - start_time} seconds."
 rescue Errno::ENOENT => detail
-  output_message =  "\n"
-  output_message += "Song file '#{@input_file_name}' not found.\n"
-  output_message += "\n"
+  puts "\n"
+  puts "Song file '#{input_file_name}' not found.\n"
+  puts "\n"
 rescue SongParseError => detail
-  output_message = "\n"
-  output_message += "Song file '#{@input_file_name}' has an error:\n"
-  output_message += "  #{detail}\n"
-  output_message += "\n"
+  puts "\n"
+  puts "Song file '#{input_file_name}' has an error:\n"
+  puts "  #{detail}\n"
+  puts "\n"
 rescue StandardError => detail
-  output_message =  "\n"
-  output_message += "An error occured while generating sound for '#{@input_file_name}':\n"
-  output_message += "  #{detail}\n"
-  output_message += "\n"
+  puts "\n"
+  puts "An error occured while generating sound for '#{input_file_name}':\n"
+  puts "  #{detail}\n"
+  puts "\n"
 end
