@@ -1,10 +1,16 @@
+# Standard Ruby libraries
 require 'test/unit'
 require 'yaml'
+require 'rubygems'
+require 'wavefile'
+
+# BEATS classes
+require 'beats'
+require 'kit'
+require 'pattern'
 require 'song'
 require 'songparser'
 require 'songoptimizer'
-require 'pattern'
+require 'songsplitter'
 require 'track'
-require 'kit'
-require 'rubygems'
-require 'wavefile'
+require 'wavefileextended'
