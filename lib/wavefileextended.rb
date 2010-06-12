@@ -1,7 +1,7 @@
 class WaveFileExtended < WaveFile
   def open_for_appending(path, num_samples)
     bytes_per_sample = (@bits_per_sample / 8)
-    sample_data_size = num_samples * bytes_per_sample
+    sample_data_size = num_samples * bytes_per_sample * @num_channels
 
     # Write the header
     header = CHUNK_ID

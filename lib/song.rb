@@ -80,8 +80,8 @@ class Song
                                                           num_tracks_in_song,
                                                           incoming_overflow)
         
-        # TODO: Does this work for stereo?
-        cache[key] = {:primary => sample_data[:primary].pack(pack_code), :overflow => sample_data[:overflow]}
+        # TODO: Remove call to flatten() when kit is mono
+        cache[key] = {:primary => sample_data[:primary].flatten.pack(pack_code), :overflow => sample_data[:overflow]}
       end
       
       file.syswrite(cache[key][:primary])
