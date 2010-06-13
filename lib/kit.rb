@@ -31,8 +31,10 @@ class Kit
     @base_path = base_path
     @label_mappings = {}
     @sounds = {}
-    @num_channels = 0     # Set to 0 so the first sound added will ratchet it to a real value
-    @bits_per_sample = 0  # Set to 0 so the first sound added will ratchet it to a real value
+    @num_channels = 1
+    @bits_per_sample = 16  # Only use 16bit files as output. Supporting output in 8bit format
+                           # means extra complication for no real gain (who would explicitly want
+                           # 8bit output instead of 16bit?).
   end
   
   # Adds a new sound to the kit. 
@@ -57,9 +59,6 @@ class Kit
     
       if wavefile.num_channels > @num_channels
         @num_channels = wavefile.num_channels
-      end
-      if wavefile.bits_per_sample > @bits_per_sample
-        @bits_per_sample = wavefile.bits_per_sample
       end
     end
   end

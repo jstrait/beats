@@ -10,11 +10,11 @@ class SongTest < Test::Unit::TestCase
     # Test adding sounds with progressively higher bits per sample and num channels.
     # Verify that kit.bits_per_sample and kit.num_channels is ratcheted up.
     kit = Kit.new("test/sounds")
-    assert_equal(0,  kit.bits_per_sample)
-    assert_equal(0,  kit.num_channels)
+    assert_equal(16,  kit.bits_per_sample)
+    assert_equal(1,  kit.num_channels)
     assert_equal(0,  kit.size)
     kit.add("mono8", "bass_mono_8.wav")
-    assert_equal(8,  kit.bits_per_sample)
+    assert_equal(16,  kit.bits_per_sample)
     assert_equal(1,  kit.num_channels)
     assert_equal(1,  kit.size)
     kit.add("mono16", "bass_mono_16.wav")
@@ -29,8 +29,8 @@ class SongTest < Test::Unit::TestCase
     # Test adding sounds with progressively lower bits per sample and num channels.
     # Verify that kit.bits_per_sample and kit.num_channels doesn't change.
     kit = Kit.new("test/sounds")
-    assert_equal(0,  kit.bits_per_sample)
-    assert_equal(0,  kit.num_channels)
+    assert_equal(16,  kit.bits_per_sample)
+    assert_equal(1,  kit.num_channels)
     kit.add("stereo16", "bass_stereo_16.wav")
     assert_equal(16, kit.bits_per_sample)
     assert_equal(2,  kit.num_channels)
@@ -56,8 +56,8 @@ class SongTest < Test::Unit::TestCase
     # Verify that sample data bits per sample and num channels is ratcheted up.
     kit.add("mono8", "bass_mono_8.wav")
     sample_data = kit.get_sample_data("mono8")
-    assert(sample_data.max <= MAX_SAMPLE_8BIT)
-    assert(sample_data.min >= MIN_SAMPLE_8BIT)
+    assert(sample_data.max > MAX_SAMPLE_8BIT)
+    assert(sample_data.min < 0)
     all_are_fixnums = true
     sample_data.each do |sample|
       all_are_fixnums &&= sample.class == Fixnum
@@ -67,7 +67,7 @@ class SongTest < Test::Unit::TestCase
     kit.add("mono16", "bass_mono_16.wav")
     sample_data = kit.get_sample_data("mono8")
     assert(sample_data.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.min < MIN_SAMPLE_8BIT)
+    assert(sample_data.min < 0)
     all_are_fixnums = true
     sample_data.each do |sample|
       all_are_fixnums &&= sample.class == Fixnum
@@ -77,7 +77,7 @@ class SongTest < Test::Unit::TestCase
     kit.add("stereo16", "bass_stereo_16.wav")
     sample_data = kit.get_sample_data("stereo16")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
+    assert(sample_data.flatten.min < 0)
     all_are_arrays = true
     sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
@@ -93,7 +93,7 @@ class SongTest < Test::Unit::TestCase
     kit.add("stereo16", "bass_stereo_16.wav")
     sample_data = kit.get_sample_data("stereo16")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
+    assert(sample_data.flatten.min < 0)
     all_are_arrays = true
     sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
@@ -104,7 +104,7 @@ class SongTest < Test::Unit::TestCase
     kit.add("mono16", "bass_mono_16.wav")
     sample_data = kit.get_sample_data("mono16")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
+    assert(sample_data.flatten.min < 0)
     all_are_arrays = true
     sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
@@ -115,7 +115,7 @@ class SongTest < Test::Unit::TestCase
     kit.add("mono8", "bass_mono_8.wav")
     sample_data = kit.get_sample_data("mono8")
     assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < MIN_SAMPLE_8BIT)
+    assert(sample_data.flatten.min < 0)
     all_are_arrays = true
     sample_data.each do |sample|
       all_are_arrays &&= sample.class == Array
