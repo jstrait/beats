@@ -10,11 +10,14 @@ class SongParserTest < Test::Unit::TestCase
     # Make sure no output from previous tests is still around
     clean_output_folder()
     
-    #run_combined_test("mono",   16)
+    run_combined_test("mono",   8)
+    run_combined_test("mono",   16)
+    run_combined_test("stereo", 8)
     run_combined_test("stereo", 16)
   end
   
-  def run_combined_test(num_channels, bits_per_sample)  
+  def run_combined_test(num_channels, bits_per_sample)
+    # Make sure no output from previous tests is still around
     assert_equal([".", ".."], Dir.new(OUTPUT_FOLDER).entries)
     
     song_fixture         ="test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}.txt"

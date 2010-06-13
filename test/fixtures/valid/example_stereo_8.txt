@@ -1,0 +1,29 @@
+# An example song using stereo 8-bit sounds
+
+Song:
+  Tempo: 120
+  Structure:
+    - Verse:   x2
+    - Chorus:  x4
+    - Verse:   x2
+    - Chorus:  x4
+  Kit:
+    - bass:       ../../sounds/bass_stereo_8.wav
+    - snare:      ../../sounds/snare_stereo_8.wav
+    - hh_closed:  ../../sounds/hh_closed_stereo_8.wav
+    - agogo:      ../../sounds/agogo_high_stereo_8.wav
+    - tom_high:   ../../sounds/tom4_stereo_8.wav
+    - tom_low:    ../../sounds/tom2_stereo_8.wav
+
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+  - hh_closed:  X.XXX.XXX.X.X.X.
+  - agogo:      ..............XX
+
+Chorus:
+  - bass:       X...X...XX..X...
+  - snare:      ....X.......X...
+  - hh_closed:  X.XXX.XXX.XX..X.
+  - tom_high:   ...........X....
+  - tom_low:    ..............X.
