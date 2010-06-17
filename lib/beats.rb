@@ -40,8 +40,11 @@ class Beats
       split_songs.each do |track_name, split_song|
         split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
 
+        # TODO: Move building the output file name into its own method?
         extension = File.extname(@output_file_name)
-        file_name = File.basename(@output_file_name, extension) + "-" + File.basename(track_name, extension) + extension
+        file_name = File.dirname(@output_file_name) + "/" +
+                    File.basename(@output_file_name, extension) + "-" + File.basename(track_name, extension) +
+                    extension
         duration = split_song.write_to_file(file_name)
       end
     else
