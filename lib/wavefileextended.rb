@@ -1,4 +1,25 @@
+# Adds some functionality to the WaveFile gem that allows for improved performance. The 
+# combo of open_for_appending() and write_snippet() allow a wave file to be written to
+# disk in chunks, instead of all at once. This improves performance (and I would assume
+# memory usage) by eliminating the need to store the entire sample data for the song in
+# memory in a giant (i.e. millions of elements) array.
+#
+# I'm not sure these methods in their current form are suitable for the WaveFile gem.
+# That's a public API so I want to be careful adding to it, and these methods fall into the
+# category of "you should know what you're doing." In particular, open_for_appending() and
+# write_snippet() need to be used together, and if you don't use them right your saved wave
+# file will be messed up. There's probably a better API for doing this.
+#
+# If I figure out a better API I might add it to the WaveFile gem in the future, but until
+# then I'm just putting it here. Since BEATS is a stand-alone app and not a re-usable library,
+# I don't think this should be a problem.
 class WaveFileExtended < WaveFile
+  
+  # Writes the header for the wave file to path, and returns an open File object that
+  # can be used outside the method to append the sample data. WARNING: The header contains
+  # a field for the total number of samples in the file. This number of samples must be
+  # subsequently be written to the file using write_snippet() or it won't be valid and you
+  # won't be able to play it.
   def open_for_appending(path, num_samples)
     bytes_per_sample = (@bits_per_sample / 8)
     sample_data_size = num_samples * bytes_per_sample * @num_channels
@@ -24,6 +45,11 @@ class WaveFileExtended < WaveFile
     return file
   end
   
+  # Appending sample_data to file, which is assumed to be open. Should be used in
+  # conjunction with open_for_appending(). The File object returned by that method
+  # should be passed in here. WARNING: you are responsible for writing the correct
+  # number of samples to the file, with 1 or more calls to this method. The caller
+  # of this method is also responsible for closing the File object when finished.
   def write_snippet(file, sample_data)
     if @bits_per_sample == 8
       pack_code = "C*"
