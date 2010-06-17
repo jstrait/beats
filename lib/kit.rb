@@ -9,16 +9,18 @@ class SoundNotFoundError < RuntimeError; end
 # stereo/8-bit, and another that is stereo/16-bit, it can't mix them together
 # because they are in different formats. Kit however automatically handles the
 # details of converting them to a common format. If you add sounds to the kit
-# using add(), sounds that you get using get_sample_data() will be in a canonical
+# using add(), sounds that you get using get_sample_data() will be in a common
 # format.
 #
-# When choosing the canonical format, Kit uses the highest quality of the available
-# sounds. So if a mono/8-bit, stereo/8-bit, and stereo/16-bit sound are added,
-# when you retrieve each one using get_sample_data() they will be stereo/16-bit.
+# All sounds returned by get_sample_data() will be 16-bit. All sounds will be
+# either mono or stereo; if at least one added sound is stereo then all sounds
+# will be stereo. So for example if a mono/8-bit, stereo/8-bit, and stereo/16-bit
+# sound are added, when you retrieve each one using get_sample_data() they will
+# be stereo/16-bit.
 #
-# Note that this means that each time a new sound is added to the Kit, the canonical
-# format might change, if the incoming sound has a higher bits per sample or
-# number of channels than any of the existing sounds. Therefore, all of the sounds
+# Note that this means that each time a new sound is added to the Kit, the common
+# format might change, if the incoming sound has a greater number of channels than
+# any of the previously added sounds. Therefore, all of the sounds
 # used by a Song should be added to the Kit before generation begins. If you
 # create Song objects by using SongParser, this will be taken care of for you (as
 # long as you don't modify the Kit afterward).
@@ -32,9 +34,9 @@ class Kit
     @label_mappings = {}
     @sounds = {}
     @num_channels = 1
-    @bits_per_sample = 16  # Only use 16bit files as output. Supporting output in 8bit format
-                           # means extra complication for no real gain (who would explicitly want
-                           # 8bit output instead of 16bit?).
+    @bits_per_sample = 16  # Only use 16-bit files as output. Supporting 8-bit output
+                           # means extra complication for no real gain (I'm skeptical
+                           # anyone would explicitly want 8-bit output instead of 16-bit.
   end
   
   # Adds a new sound to the kit. 
