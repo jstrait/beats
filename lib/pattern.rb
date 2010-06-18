@@ -92,9 +92,9 @@ class Pattern
     # Mix down the pattern's tracks into one single track
     if(num_tracks_in_song > 1)
       if(num_channels == 1)
-        primary_sample_data = primary_sample_data.map {|sample| (sample / num_tracks_in_song).round }
+        primary_sample_data = primary_sample_data.map {|sample| sample / num_tracks_in_song }
       else
-        primary_sample_data = primary_sample_data.map {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round]}
+        primary_sample_data = primary_sample_data.map {|sample| [sample[0] / num_tracks_in_song, sample[1] / num_tracks_in_song]}
       end
     end
     
