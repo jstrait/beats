@@ -80,8 +80,12 @@ class Song
                                                           num_tracks_in_song,
                                                           incoming_overflow)
         
-        # TODO: Remove call to flatten() when kit is mono
-        cache[key] = {:primary => sample_data[:primary].flatten.pack(pack_code), :overflow => sample_data[:overflow]}
+        if(@kit.num_channels == 1)
+          # Don't flatten the sample data Array, since it is already flattened. That would be a waste of time, yo.
+          cache[key] = {:primary => sample_data[:primary].pack(pack_code), :overflow => sample_data[:overflow]}
+        else
+          cache[key] = {:primary => sample_data[:primary].flatten.pack(pack_code), :overflow => sample_data[:overflow]}
+        end
       end
       
       file.syswrite(cache[key][:primary])
