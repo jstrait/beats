@@ -58,9 +58,7 @@ protected
           sub_track_pattern = track.rhythm[tick_index...(tick_index + max_pattern_length)]
           
           if(sub_track_pattern != blank_track_pattern)
-            new_pattern.track(track.name,
-                              track.wave_data,
-                              sub_track_pattern)
+            new_pattern.track(track.name, track.wave_data, sub_track_pattern)
           end
         end
         
@@ -134,8 +132,7 @@ protected
     song.structure = new_structure
     
     # Remove unused Patterns. Not strictly necessary, but makes resulting songs
-    # easier to read for debugging purposes, since having lots of unused Patterns
-    # is just noise.
+    # easier to read for debugging purposes.
     song.remove_unused_patterns()
 
     return song
