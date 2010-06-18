@@ -93,9 +93,7 @@ class Pattern
     if(num_channels == 1)
       primary_sample_data = primary_sample_data.map {|sample| (sample / num_tracks_in_song).round }
     else
-      primary_sample_data = primary_sample_data.map do |sample_left, sample_right|
-        [(sample_left / num_tracks_in_song).round, (sample_right / num_tracks_in_song).round]
-      end
+      primary_sample_data = primary_sample_data.map {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round]}
     end
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
