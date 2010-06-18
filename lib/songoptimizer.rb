@@ -65,10 +65,15 @@ protected
         end
         
         # If no track has a trigger during this step pattern, add a blank track.
-        # Otherwise, this pattern will have no ticks, and no sound will be generated.
-        # This will cause the pattern to be "compacted away".
+        # Otherwise, this pattern will have no ticks, and no sound will be generated,
+        # causing the pattern to be "compacted away".
         if(new_pattern.tracks.empty?)
-          new_pattern.track("placeholder", [], blank_track_pattern)
+          # Track.sample_data() examines its sound's sample data to determine if it is
+          # mono or stereo. If the first item in the sample data Array is an Array,
+          # it decides stereo. That's what the [] vs. [[]] is about.
+          placeholder_wave_data = (optimized_song.kit.num_channels == 1) ? [] : [[]]          
+          
+          new_pattern.track("placeholder", placeholder_wave_data, blank_track_pattern)
         end
         
         tick_index += max_pattern_length
