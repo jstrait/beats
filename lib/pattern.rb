@@ -90,10 +90,12 @@ class Pattern
     end
     
     # Mix down the pattern's tracks into one single track
-    if(num_channels == 1)
-      primary_sample_data = primary_sample_data.map {|sample| (sample / num_tracks_in_song).round }
-    else
-      primary_sample_data = primary_sample_data.map {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round]}
+    if(num_tracks_in_song > 1)
+      if(num_channels == 1)
+        primary_sample_data = primary_sample_data.map {|sample| (sample / num_tracks_in_song).round }
+      else
+        primary_sample_data = primary_sample_data.map {|sample| [(sample[0] / num_tracks_in_song).round, (sample[1] / num_tracks_in_song).round]}
+      end
     end
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
