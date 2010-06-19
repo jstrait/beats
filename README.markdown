@@ -1,7 +1,7 @@
 BEATS
 -----
 
-BEATS is a drum machine written in pure Ruby. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel. Here's an example song:
+BEATS is a command-line drum machine written in pure Ruby. Feed it a song notated in YAML, and it will produce a precision-milled *.wav file of impeccable timing and feel. Here's an example song:
 
     Song:
       Tempo: 120
