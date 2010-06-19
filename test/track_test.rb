@@ -50,11 +50,23 @@ class TrackTest < Test::Unit::TestCase
     assert_equal(32, test_tracks[5].tick_count())
   end
 
+  def test_intro_sample_length
+    test_tracks = generate_test_data()
+
+    tick_sample_length = W.sample_data.length        # 6179.0
+    assert_equal(0,     test_tracks[0].intro_sample_length(tick_sample_length))
+    assert_equal(0,     test_tracks[1].intro_sample_length(tick_sample_length))
+    assert_equal(18537, test_tracks[2].intro_sample_length(tick_sample_length))
+    assert_equal(0,     test_tracks[3].intro_sample_length(tick_sample_length))
+    assert_equal(24716, test_tracks[4].intro_sample_length(tick_sample_length))
+    assert_equal(12358, test_tracks[5].intro_sample_length(tick_sample_length))
+  end
+
   def test_sample_length
     tick_sample_lengths = [
-      W.sample_data.length,                           # 13860.0
-      (W.sample_rate * SECONDS_IN_MINUTE) / 99 / 4,   # 6681.81818181818
-      (W.sample_rate * SECONDS_IN_MINUTE) / 41 / 4    # 16134.1463414634
+      W.sample_data.length,                           # 13860.0 - FIXME, not correct
+      (W.sample_rate * SECONDS_IN_MINUTE) / 99 / 4,   # 6681.81818181818 - FIXME, not correct
+      (W.sample_rate * SECONDS_IN_MINUTE) / 41 / 4    # 16134.1463414634 - FIXME, not correct
     ]
 
     tick_sample_lengths.each {|tick_sample_length| helper_test_sample_length(tick_sample_length) }

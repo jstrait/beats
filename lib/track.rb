@@ -41,6 +41,10 @@ class Track
     @overflow = nil
   end
   
+  def intro_sample_length(tick_sample_length)
+    return @beats[0] * tick_sample_length
+  end
+  
   def sample_length(tick_sample_length)
     total_ticks = @beats.inject(0) {|sum, n| sum + n}
     return (total_ticks * tick_sample_length).floor
