@@ -31,7 +31,7 @@ class SongParserTest < Test::Unit::TestCase
                       {:split => false, :pattern => nil})
     beats.run()
     assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
-    assert_equal(File.read(actual_output_file), File.read(expected_output_file))
+    assert_equal(File.read(expected_output_file), File.read(actual_output_file))
     
     # Clean up after ourselves
     File.delete(actual_output_file)
@@ -63,7 +63,7 @@ class SongParserTest < Test::Unit::TestCase
       actual_output_file = "#{actual_output_prefix}-#{track_name}.wav"
       expected_output_file = "#{expected_output_prefix}-#{track_name}.wav"
       assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
-      assert_equal(File.read(actual_output_file), File.read(expected_output_file))
+      assert_equal(File.read(expected_output_file), File.read(actual_output_file))
       
       # Clean up after ourselves
       File.delete(actual_output_file)
