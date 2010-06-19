@@ -46,22 +46,26 @@ class Pattern
     actual_sample_length = sample_length(tick_sample_length)
 
     if(track_names.length > 0)
-      primary_sample_data = [].fill(fill_value, 0, actual_sample_length)
-
       track_names.each do |track_name|
-        temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
-
-        track_samples = temp[:primary]
-        if(num_channels == 1)
-          (0...track_samples.length).each {|i| primary_sample_data[i] += track_samples[i] }
+        if(primary_sample_data == [])
+          temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
+          primary_sample_data = temp[:primary]
+          overflow_sample_data[track_name] = temp[:overflow]
         else
-          (0...track_samples.length).each do |i|
-            primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
-                                      primary_sample_data[i][1] + track_samples[i][1]]
-          end
-        end
+          temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
 
-        overflow_sample_data[track_name] = temp[:overflow]
+          track_samples = temp[:primary]
+          if(num_channels == 1)
+            track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
+          else
+            track_samples.length.times do |i|
+              primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
+                                        primary_sample_data[i][1] + track_samples[i][1]]
+            end
+          end
+
+          overflow_sample_data[track_name] = temp[:overflow]
+        end
       end
     end
     
@@ -79,11 +83,11 @@ class Pattern
         end
         
         if(num_channels == 1)
-          (0...num_incoming_overflow_samples).each {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
+          num_incoming_overflow_samples.times {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
         else
-          (0...num_incoming_overflow_samples).each do |i|
-            primary_sample_data[i][0] += incoming_overflow[track_name][i][0]
-            primary_sample_data[i][1] += incoming_overflow[track_name][i][1]
+          num_incoming_overflow_samples.times do |i|
+            primary_sample_data[i] = [primary_sample_data[i][0] + incoming_overflow[track_name][i][0],
+                                      primary_sample_data[i][1] + incoming_overflow[track_name][i][1]]
           end
         end
       end

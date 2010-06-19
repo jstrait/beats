@@ -211,8 +211,10 @@ private
         end
       end
 
+      # TODO: What happens if final overflow is really long, and extends past single '.' rhythm?
       final_overflow_pattern = Pattern.new(:overflow)
-      final_overflow_pattern.track "", [], "."
+      wave_data = @kit.num_channels == 1 ? [] : [[]]
+      final_overflow_pattern.track "", wave_data, "."
       final_overflow_sample_data = final_overflow_pattern.sample_data(longest_overflow.length, @kit.num_channels, num_tracks_in_song, overflow)
       merged_sample_data = final_overflow_sample_data[:primary]
     end
