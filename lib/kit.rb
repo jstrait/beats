@@ -85,6 +85,7 @@ class Kit
     return @sounds.length
   end
   
+  # Produces nicer looking output than the default version of to_yaml().
   def to_yaml(indent_space_count = 0)
     yaml = ""
     longest_label_mapping_length =

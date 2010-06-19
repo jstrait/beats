@@ -119,7 +119,8 @@ class Pattern
     return @tracks.length == other_pattern.tracks.length
   end
   
-  # Returns a YAML representation of the Pattern.
+  # Returns a YAML representation of the Pattern. Produces nicer looking output than the default
+  # version of to_yaml().
   def to_yaml()
     longest_track_name_length =
       @tracks.keys.inject(0) do |max_length, name|

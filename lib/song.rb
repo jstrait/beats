@@ -135,7 +135,8 @@ class Song
   end
 
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
-  # using the SongParser class. This lets you save a Song to disk, to be re-loaded later.
+  # using the SongParser class. This lets you save a Song to disk, to be re-loaded later. Produces nicer
+  #looking output than the default version of to_yaml().
   def to_yaml()
     # This implementation intentionally builds up a YAML string manually instead of using YAML::dump().
     # Ruby 1.8 makes it difficult to ensure a consistent ordering of hash keys, which makes the output ugly
