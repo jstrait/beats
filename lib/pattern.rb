@@ -45,7 +45,7 @@ class Pattern
     actual_sample_length = sample_length(tick_sample_length)
 
     track_names.each do |track_name|
-      temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
+      temp = @tracks[track_name].sample_data(tick_sample_length, nil)
       
       if(primary_sample_data == [])
         primary_sample_data = temp[:primary]
@@ -65,17 +65,27 @@ class Pattern
       end
     end
     
-    # Add samples for tracks with overflow from previous pattern, but not
-    # contained in current pattern.
+    # Add overflow from previous pattern
     incoming_overflow.keys.each do |track_name|
-      if(!track_names.member?(track_name) && incoming_overflow[track_name].length > 0)
-        # If incoming overflow for track is longer than the pattern length, only add the first part of
-        # the overflow to the pattern, and add the remainder to overflow_sample_data so that it gets
-        # handled by the next pattern to be generated.
-        num_incoming_overflow_samples = incoming_overflow[track_name].length
-        if(num_incoming_overflow_samples > primary_sample_data.length)
-          overflow_sample_data[track_name] = (incoming_overflow[track_name])[primary_sample_data.length...num_incoming_overflow_samples]
-          num_incoming_overflow_samples = primary_sample_data.length
+      num_incoming_overflow_samples = incoming_overflow[track_name].length
+      
+      if(num_incoming_overflow_samples > 0)
+        if(track_names.member?(track_name))
+          # TODO: Does this handle situations where track has a .... rhythm and overflow is
+          # longer than track length?
+          
+          intro_length = @tracks[track_name].intro_sample_length(tick_sample_length)
+          if(num_incoming_overflow_samples > intro_length)
+            num_incoming_overflow_samples = intro_length
+          end
+        else
+          # If incoming overflow for track is longer than the pattern length, only add the first part of
+          # the overflow to the pattern, and add the remainder to overflow_sample_data so that it gets
+          # handled by the next pattern to be generated.
+          if(num_incoming_overflow_samples > primary_sample_data.length)
+            overflow_sample_data[track_name] = (incoming_overflow[track_name])[primary_sample_data.length...num_incoming_overflow_samples]
+            num_incoming_overflow_samples = primary_sample_data.length
+          end
         end
         
         if(num_channels == 1)
