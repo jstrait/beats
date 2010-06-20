@@ -67,7 +67,7 @@ class Track
     return @rhythm.length
   end
   
-  def sample_data(tick_sample_length, incoming_overflow = nil)
+  def sample_data(tick_sample_length)
     actual_sample_length = sample_length(tick_sample_length)
     full_sample_length = sample_length_with_overflow(tick_sample_length)
 
@@ -107,18 +107,6 @@ class Track
     end
 
     primary_sample_data = @sample_data.dup
-    
-    if(incoming_overflow != nil && incoming_overflow != [])
-      # TO DO: Add check for when incoming overflow is longer than
-      # track full length to prevent track from lengthening.
-      intro_length = @beats.first * tick_sample_length.floor
-      
-      if(incoming_overflow.length <= intro_length)
-        primary_sample_data[0...incoming_overflow.length] = incoming_overflow
-      else
-        primary_sample_data[0...intro_length] = incoming_overflow[0...intro_length]
-      end
-    end
     
     return {:primary => primary_sample_data, :overflow => @overflow}
   end

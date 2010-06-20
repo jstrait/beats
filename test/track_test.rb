@@ -98,9 +98,9 @@ class TrackTest < Test::Unit::TestCase
   
   def test_sample_length_with_overflow
     tick_sample_lengths = [
-      W.sample_data.length,                           # 13860.0
-      (W.sample_rate * SECONDS_IN_MINUTE) / 99 / 4,   # 6681.81818181818
-      (W.sample_rate * SECONDS_IN_MINUTE) / 41 / 4    # 16134.1463414634
+      W.sample_data.length,                           # 13860.0 - FIXME, not correct
+      (W.sample_rate * SECONDS_IN_MINUTE) / 99 / 4,   # 6681.81818181818 - FIXME, not correct
+      (W.sample_rate * SECONDS_IN_MINUTE) / 41 / 4    # 16134.1463414634 - FIXME, not correct
     ]
 
     tick_sample_lengths.each { |tick_sample_length| helper_test_sample_length_with_overflow(tick_sample_length) }
@@ -148,26 +148,7 @@ class TrackTest < Test::Unit::TestCase
     assert_equal((tick_sample_length * 32).floor, test_tracks[5].sample_length_with_overflow(tick_sample_length))
     assert_equal(sample_data[:primary].length + sample_data[:overflow].length, test_tracks[5].sample_length_with_overflow(tick_sample_length))
   end
-  
-  def test_sample_data_overflow
-    track = generate_test_data()[2]
-    tick_sample_length = W.sample_data.length   # 6179.0
     
-    overflow = W.sample_data[(W.sample_data.length / 2)..W.sample_data.length]
-    expected_sample_data = zeroes(tick_sample_length * 3) + W.sample_data
-    expected_sample_data[0...overflow.length] = overflow
-    actual_sample_data = track.sample_data(tick_sample_length, overflow)
-    assert_equal(expected_sample_data, actual_sample_data[:primary])
-
-    # Call sample_data() again with different overflow, to verify that cached
-    # sample data only contains the primary sample data.
-    overflow = W.sample_data[0..(W.sample_data.length / 2)]
-    expected_sample_data = zeroes(tick_sample_length * 3) + W.sample_data
-    expected_sample_data[0...overflow.length] = overflow
-    actual_sample_data = track.sample_data(tick_sample_length, overflow)
-    assert_equal(expected_sample_data, actual_sample_data[:primary])
-  end
-  
   def test_sample_data
     sample_data = W.sample_data
     

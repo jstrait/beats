@@ -45,7 +45,7 @@ class Pattern
     actual_sample_length = sample_length(tick_sample_length)
 
     track_names.each do |track_name|
-      temp = @tracks[track_name].sample_data(tick_sample_length, nil)
+      temp = @tracks[track_name].sample_data(tick_sample_length)
       
       if(primary_sample_data == [])
         primary_sample_data = temp[:primary]
