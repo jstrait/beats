@@ -45,13 +45,12 @@ class Pattern
     actual_sample_length = sample_length(tick_sample_length)
 
     track_names.each do |track_name|
+      temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
+      
       if(primary_sample_data == [])
-        temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
         primary_sample_data = temp[:primary]
         overflow_sample_data[track_name] = temp[:overflow]
       else
-        temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
-
         track_samples = temp[:primary]
         if(num_channels == 1)
           track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
