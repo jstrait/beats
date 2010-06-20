@@ -51,6 +51,8 @@ class TrackTest < Test::Unit::TestCase
   end
 
   def test_intro_sample_length
+    # TODO: Add tests for when tick_sample_length has a non-zero remainder
+    
     test_tracks = generate_test_data()
 
     tick_sample_length = W.sample_data.length        # 6179.0
