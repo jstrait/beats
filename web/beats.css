@@ -27,9 +27,8 @@ body
 {
 	list-style: none;
 	float: left;
-	width: 144px;
+	width: 192px;
 	font-weight: bold;
-	text-align: center;
 }
 
 .menubar li a
