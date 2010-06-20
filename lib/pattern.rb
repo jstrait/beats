@@ -39,33 +39,30 @@ class Pattern
   end
   
   def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
-    fill_value = (num_channels == 1) ? 0 : [].fill(0, 0, num_channels)
     track_names = @tracks.keys
     primary_sample_data = []
     overflow_sample_data = {}
     actual_sample_length = sample_length(tick_sample_length)
 
-    if(track_names.length > 0)
-      track_names.each do |track_name|
-        if(primary_sample_data == [])
-          temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
-          primary_sample_data = temp[:primary]
-          overflow_sample_data[track_name] = temp[:overflow]
+    track_names.each do |track_name|
+      if(primary_sample_data == [])
+        temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
+        primary_sample_data = temp[:primary]
+        overflow_sample_data[track_name] = temp[:overflow]
+      else
+        temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
+
+        track_samples = temp[:primary]
+        if(num_channels == 1)
+          track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
         else
-          temp = @tracks[track_name].sample_data(tick_sample_length, incoming_overflow[track_name])
-
-          track_samples = temp[:primary]
-          if(num_channels == 1)
-            track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
-          else
-            track_samples.length.times do |i|
-              primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
-                                        primary_sample_data[i][1] + track_samples[i][1]]
-            end
+          track_samples.length.times do |i|
+            primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
+                                      primary_sample_data[i][1] + track_samples[i][1]]
           end
-
-          overflow_sample_data[track_name] = temp[:overflow]
         end
+
+        overflow_sample_data[track_name] = temp[:overflow]
       end
     end
     
