@@ -44,25 +44,32 @@ class Pattern
     overflow_sample_data = {}
     actual_sample_length = sample_length(tick_sample_length)
 
-    track_names.each do |track_name|
-      temp = @tracks[track_name].sample_data(tick_sample_length)
+    if(@intermediate_cache == nil)
+      track_names.each do |track_name|
+        temp = @tracks[track_name].sample_data(tick_sample_length)
       
-      if(primary_sample_data == [])
-        primary_sample_data = temp[:primary]
-        overflow_sample_data[track_name] = temp[:overflow]
-      else
-        track_samples = temp[:primary]
-        if(num_channels == 1)
-          track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
+        if(primary_sample_data == [])
+          primary_sample_data = temp[:primary]
+          overflow_sample_data[track_name] = temp[:overflow]
         else
-          track_samples.length.times do |i|
-            primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
-                                      primary_sample_data[i][1] + track_samples[i][1]]
+          track_samples = temp[:primary]
+          if(num_channels == 1)
+            track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
+          else
+            track_samples.length.times do |i|
+              primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
+                                        primary_sample_data[i][1] + track_samples[i][1]]
+            end
           end
-        end
 
-        overflow_sample_data[track_name] = temp[:overflow]
+          overflow_sample_data[track_name] = temp[:overflow]
+        end
       end
+      
+      @intermediate_cache = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
+    else
+      primary_sample_data = @intermediate_cache[:primary].dup
+      overflow_sample_data = @intermediate_cache[:overflow].dup
     end
     
     # Add overflow from previous pattern
