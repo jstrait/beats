@@ -129,35 +129,6 @@ class SongTest < Test::Unit::TestCase
                  test_songs[:from_valid_yaml_string].sample_length_with_overflow)
   end
   
-  # Since the sample_data() method is gone (replaced by write_to_file()), these tests no longer work.
-  # Keeping this code around though until it can be replaced by equivalent integration tests for
-  # write_to_file().
-  #def test_sample_data
-  #  test_songs = generate_test_data()
-  #  
-  # test_songs.values.each do |song|
-  #    sample_data = song.sample_data(false)
-  #    assert_equal(Array, sample_data.class)
-  #    assert_equal(song.sample_length_with_overflow, sample_data.length)
-  #    sample_data = song.sample_data(true)
-  #    assert_equal(Hash, sample_data.class)
-  #  end
-  #  
-  #  [:from_code, :repeats_not_specified, :overflow, :from_valid_yaml_string].each do |key|
-  #    assert_equal(Array, test_songs[key].sample_data(false, "verse").class)
-  #    assert_equal(Hash, test_songs[key].sample_data(true, "verse").class)
-  #  end
-  #  
-  #  #assert_raise(ArgumentError) { test_songs[:from_valid_yaml_string].sample_data(true, "") }
-  #  
-  #  snare_sample_data = test_songs[:overflow].kit.get_sample_data("test/sounds/snare_mono_8.wav")
-  #  expected = [].fill(0, 0, test_songs[:overflow].tick_sample_length * 4)
-  #  expected[0...(snare_sample_data.length)] = snare_sample_data
-  #  expected += snare_sample_data
-  #  expected = [].fill(0, 0, test_songs[:overflow].tick_sample_length * 3) + expected
-  #  assert_equal(expected[0], test_songs[:overflow].sample_data(false)[0])
-  #end
-  
   def test_copy_ignoring_patterns_and_structure
     test_songs = generate_test_data()
     original_song = test_songs[:from_valid_yaml_string]
