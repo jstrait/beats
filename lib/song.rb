@@ -68,7 +68,7 @@ class Song
     num_tracks_in_song = self.total_tracks()
     sample_length = sample_length_with_overflow()
     
-    wave_file = WaveFileExtended.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
+    wave_file = BeatsWaveFile.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
     file = wave_file.open_for_appending(output_file_name, sample_length)
     
     incoming_overflow = {}

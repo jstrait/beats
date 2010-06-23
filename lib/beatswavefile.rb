@@ -13,7 +13,7 @@
 # If I figure out a better API I might add it to the WaveFile gem in the future, but until
 # then I'm just putting it here. Since BEATS is a stand-alone app and not a re-usable library,
 # I don't think this should be a problem.
-class WaveFileExtended < WaveFile
+class BeatsWaveFile < WaveFile
   
   # Writes the header for the wave file to path, and returns an open File object that
   # can be used outside the method to append the sample data. WARNING: The header contains

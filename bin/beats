@@ -13,7 +13,7 @@ require "lib/songsplitter"
 require "lib/kit"
 require "lib/pattern"
 require "lib/track"
-require "lib/wavefileextended"
+require "lib/beatswavefile"
 
 def parse_options
   options = {:split => false, :pattern => nil}
