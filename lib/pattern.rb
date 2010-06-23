@@ -121,7 +121,7 @@ class Pattern
   # Returns whether or not this pattern has the same number of tracks as other_pattern, and that
   # each of the tracks has the same name and rhythm. Ordering of tracks does not matter; will
   # return true if the two patterns have the same tracks but in a different ordering.
-  def same_tracks_as(other_pattern)
+  def same_tracks_as?(other_pattern)
     @tracks.keys.each do |track_name|
       other_pattern_track = other_pattern.tracks[track_name]
       if other_pattern_track == nil || @tracks[track_name].rhythm != other_pattern_track.rhythm

@@ -77,7 +77,7 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(4,  test_patterns[:staircase].tick_count())
   end
 
-  def test_same_tracks_as
+  def test_same_tracks_as?
     left_pattern = Pattern.new("left")
     left_pattern.track("bass",      nil, "X...X...")
     left_pattern.track("snare",     nil, "..X...X.")
@@ -87,32 +87,32 @@ class PatternTest < Test::Unit::TestCase
     right_pattern.track("bass",      nil, "X...X...")
     right_pattern.track("snare",     nil, "..X...X.")
     right_pattern.track("hh_closed", nil, "X.X.X.X.")
-    assert(left_pattern.same_tracks_as(right_pattern))
-    assert(right_pattern.same_tracks_as(left_pattern))
+    assert(left_pattern.same_tracks_as?(right_pattern))
+    assert(right_pattern.same_tracks_as?(left_pattern))
     
     # Now switch up the order. Left and right should still be equal.
     right_pattern = Pattern.new("right")
     right_pattern.track("snare",     nil, "..X...X.")
     right_pattern.track("hh_closed", nil, "X.X.X.X.")
     right_pattern.track("bass",      nil, "X...X...")
-    assert(left_pattern.same_tracks_as(right_pattern))
-    assert(right_pattern.same_tracks_as(left_pattern))
+    assert(left_pattern.same_tracks_as?(right_pattern))
+    assert(right_pattern.same_tracks_as?(left_pattern))
     
     # Now compare the pattern with same rhythms but different track names. Should not be equal.
     different_names_pattern = Pattern.new("different_names")
     different_names_pattern.track("tom",     nil, "X...X...")
     different_names_pattern.track("cymbal",  nil, "..X...X.")
     different_names_pattern.track("hh_open", nil, "X.X.X.X.")
-    assert_equal(false, left_pattern.same_tracks_as(different_names_pattern))
-    assert_equal(false, different_names_pattern.same_tracks_as(left_pattern))
+    assert_equal(false, left_pattern.same_tracks_as?(different_names_pattern))
+    assert_equal(false, different_names_pattern.same_tracks_as?(left_pattern))
     
     # Now compare the pattern with same track names but different rhythms. Should not be equal.
     different_beats_pattern = Pattern.new("different_beats")
     different_beats_pattern.track("bass",      nil, "X...X...")
     different_beats_pattern.track("snare",     nil, "..X...X.")
     different_beats_pattern.track("hh_closed", nil, "X.XXX.X.")
-    assert_equal(false, left_pattern.same_tracks_as(different_beats_pattern))
-    assert_equal(false, different_beats_pattern.same_tracks_as(left_pattern))
+    assert_equal(false, left_pattern.same_tracks_as?(different_beats_pattern))
+    assert_equal(false, different_beats_pattern.same_tracks_as?(left_pattern))
     
     # Now compare a pattern with the same tracks, but with one extra one as well. Should not be equal.
     something_extra = Pattern.new("something_extra")
@@ -120,8 +120,8 @@ class PatternTest < Test::Unit::TestCase
     something_extra.track("snare",     nil, "..X...X.")
     something_extra.track("hh_closed", nil, "X.X.X.X.")
     something_extra.track("extra",     nil, "X..X..X.")
-    assert_equal(false, left_pattern.same_tracks_as(something_extra))
-    assert_equal(false, something_extra.same_tracks_as(left_pattern))
+    assert_equal(false, left_pattern.same_tracks_as?(something_extra))
+    assert_equal(false, something_extra.same_tracks_as?(left_pattern))
   end
   
   def test_sample_data
