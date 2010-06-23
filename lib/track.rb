@@ -28,10 +28,10 @@ class Track
       end
     end
     
-    if(beat_length > 0)
+    if beat_length > 0
       beats << beat_length
     end
-    if(beats == [])
+    if beats == []
       beats = [0]
     end
     @beats = beats
@@ -53,7 +53,7 @@ class Track
   def sample_length_with_overflow(tick_sample_length)
     temp_sample_length = sample_length(tick_sample_length)
     
-    if(@beats != [0])
+    unless @beats == [0]
       beat_sample_length = @beats.last * tick_sample_length
       if(@wave_data.length > beat_sample_length)
         temp_sample_length += @wave_data.length - beat_sample_length.floor
@@ -71,11 +71,11 @@ class Track
     actual_sample_length = sample_length(tick_sample_length)
     full_sample_length = sample_length_with_overflow(tick_sample_length)
 
-    if(@sample_data == nil)
+    if @sample_data == nil
       fill_value = (@wave_data.first.class == Array) ? [0, 0] : 0
       output_data = [].fill(fill_value, 0, full_sample_length)
     
-      if(full_sample_length > 0)
+      if full_sample_length > 0
         remainder = 0.0
         offset = @beats[0] * tick_sample_length
         remainder += (@beats[0] * tick_sample_length) - (@beats[0] * tick_sample_length).floor
@@ -84,7 +84,7 @@ class Track
           beat_sample_length = beat_length * tick_sample_length
 
           remainder += beat_sample_length - beat_sample_length.floor
-          if(remainder >= 1.0)
+          if remainder >= 1.0
             beat_sample_length += 1
             remainder -= 1.0
           end
@@ -93,7 +93,7 @@ class Track
           offset += beat_sample_length.floor
         end
       
-        if(full_sample_length > actual_sample_length)
+        if full_sample_length > actual_sample_length
           @sample_data = output_data[0...offset]
           @overflow = output_data[actual_sample_length...full_sample_length]
         else

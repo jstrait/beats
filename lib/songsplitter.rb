@@ -9,7 +9,7 @@ class SongSplitter
     track_names.each do |track_name|
       new_song = original_song.copy_ignoring_patterns_and_structure()
       
-      if(track_name == "placeholder")
+      if track_name == "placeholder"
         track_sample_data = []
       else
         track_sample_data = new_song.kit.get_sample_data(track_name)
@@ -18,7 +18,7 @@ class SongSplitter
       original_song.patterns.each do |name, original_pattern|
         new_pattern = new_song.pattern name
         
-        if(original_pattern.tracks.keys.member?(track_name))
+        if original_pattern.tracks.keys.member?(track_name)
           new_pattern.track track_name,
                             track_sample_data,
                             original_pattern.tracks[track_name].rhythm

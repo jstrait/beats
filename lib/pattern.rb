@@ -14,7 +14,7 @@ class Pattern
     # Necessary to prevent incorrect overflow calculations for tracks.
     longest_track_length = tick_count()
     @tracks.values.each do |track|
-      if(track.rhythm.length < longest_track_length)
+      if track.rhythm.length < longest_track_length
         track.rhythm += "." * (longest_track_length - track.rhythm.length)
       end
     end
@@ -44,16 +44,16 @@ class Pattern
     overflow_sample_data = {}
     actual_sample_length = sample_length(tick_sample_length)
 
-    if(@intermediate_cache == nil)
+    if @intermediate_cache == nil
       track_names.each do |track_name|
         temp = @tracks[track_name].sample_data(tick_sample_length)
       
-        if(primary_sample_data == [])
+        if primary_sample_data == []
           primary_sample_data = temp[:primary]
           overflow_sample_data[track_name] = temp[:overflow]
         else
           track_samples = temp[:primary]
-          if(num_channels == 1)
+          if num_channels == 1
             track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
           else
             track_samples.length.times do |i|
@@ -76,26 +76,26 @@ class Pattern
     incoming_overflow.keys.each do |track_name|
       num_incoming_overflow_samples = incoming_overflow[track_name].length
       
-      if(num_incoming_overflow_samples > 0)
-        if(track_names.member?(track_name))
+      if num_incoming_overflow_samples > 0
+        if track_names.member?(track_name)
           # TODO: Does this handle situations where track has a .... rhythm and overflow is
           # longer than track length?
           
           intro_length = @tracks[track_name].intro_sample_length(tick_sample_length)
-          if(num_incoming_overflow_samples > intro_length)
+          if num_incoming_overflow_samples > intro_length
             num_incoming_overflow_samples = intro_length
           end
         else
           # If incoming overflow for track is longer than the pattern length, only add the first part of
           # the overflow to the pattern, and add the remainder to overflow_sample_data so that it gets
           # handled by the next pattern to be generated.
-          if(num_incoming_overflow_samples > primary_sample_data.length)
+          if num_incoming_overflow_samples > primary_sample_data.length
             overflow_sample_data[track_name] = (incoming_overflow[track_name])[primary_sample_data.length...num_incoming_overflow_samples]
             num_incoming_overflow_samples = primary_sample_data.length
           end
         end
         
-        if(num_channels == 1)
+        if num_channels == 1
           num_incoming_overflow_samples.times {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
         else
           num_incoming_overflow_samples.times do |i|
@@ -107,8 +107,8 @@ class Pattern
     end
     
     # Mix down the pattern's tracks into one single track
-    if(num_tracks_in_song > 1)
-      if(num_channels == 1)
+    if num_tracks_in_song > 1
+      if num_channels == 1
         primary_sample_data = primary_sample_data.map {|sample| sample / num_tracks_in_song }
       else
         primary_sample_data = primary_sample_data.map {|sample| [sample[0] / num_tracks_in_song, sample[1] / num_tracks_in_song]}
@@ -122,12 +122,12 @@ class Pattern
   # each of the tracks has the same name and rhythm. Ordering of tracks does not matter; will
   # return true if the two patterns have the same tracks but in a different ordering.
   def same_tracks_as(other_pattern)
-    @tracks.keys.each{|track_name|
+    @tracks.keys.each do |track_name|
       other_pattern_track = other_pattern.tracks[track_name]
-      if(other_pattern_track == nil || @tracks[track_name].rhythm != other_pattern_track.rhythm)
+      if other_pattern_track == nil || @tracks[track_name].rhythm != other_pattern_track.rhythm
         return false
       end
-    }
+    end
     
     return @tracks.length == other_pattern.tracks.length
   end

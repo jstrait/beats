@@ -57,7 +57,7 @@ protected
         pattern.tracks.values.each do |track|
           sub_track_pattern = track.rhythm[tick_index...(tick_index + max_pattern_length)]
           
-          if(sub_track_pattern != blank_track_pattern)
+          if sub_track_pattern != blank_track_pattern
             new_pattern.track(track.name, track.wave_data, sub_track_pattern)
           end
         end
@@ -65,7 +65,7 @@ protected
         # If no track has a trigger during this step pattern, add a blank track.
         # Otherwise, this pattern will have no ticks, and no sound will be generated,
         # causing the pattern to be "compacted away".
-        if(new_pattern.tracks.empty?)
+        if new_pattern.tracks.empty?
           # Track.sample_data() examines its sound's sample data to determine if it is
           # mono or stereo. If the first item in the sample data Array is an Array,
           # it decides stereo. That's what the [] vs. [[]] is about.
@@ -111,13 +111,13 @@ protected
       pattern = song.patterns[pattern_name]
       found_duplicate = false
       seen_patterns.each do |seen_pattern|
-        if(!found_duplicate && pattern.same_tracks_as(seen_pattern))
+        if !found_duplicate && pattern.same_tracks_as(seen_pattern)
           replacements[pattern.name.to_sym] = seen_pattern.name.to_sym
           found_duplicate = true
         end
       end
       
-      if(!found_duplicate)
+      if !found_duplicate
         seen_patterns << pattern
       end
     end

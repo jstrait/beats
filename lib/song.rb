@@ -32,7 +32,7 @@ class Song
   # (Assumes a sample rate of 44100). Includes samples required for sound overflow
   # from the last pattern.
   def sample_length_with_overflow
-    if(@structure.length == 0)
+    if @structure.length == 0
       return 0
     end
     
@@ -74,13 +74,13 @@ class Song
     incoming_overflow = {}
     @structure.each do |pattern_name|
       key = [pattern_name, incoming_overflow.hash]
-      if(!cache.member?(key))
+      unless cache.member?(key)
         sample_data = @patterns[pattern_name].sample_data(@tick_sample_length,
                                                           @kit.num_channels,
                                                           num_tracks_in_song,
                                                           incoming_overflow)
         
-        if(@kit.num_channels == 1)
+        if @kit.num_channels == 1
           # Don't flatten the sample data Array, since it is already flattened. That would be a waste of time, yo.
           cache[key] = {:primary => sample_data[:primary].pack(pack_code), :overflow => sample_data[:overflow]}
         else
@@ -111,7 +111,7 @@ class Song
   end
 
   def tempo=(new_tempo)
-    if(new_tempo.class != Fixnum || new_tempo <= 0)
+    unless new_tempo.class == Fixnum && new_tempo > 0
       raise InvalidTempoError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
     end
     
@@ -157,9 +157,9 @@ class Song
 private
 
   def pack_code
-    if(@kit.bits_per_sample == 8)
+    if @kit.bits_per_sample == 8
       return "C*"
-    elsif(@kit.bits_per_sample == 16)
+    elsif @kit.bits_per_sample == 16
       return "s*"
     else
       raise StandardError, "Invalid bits per sample of #{@kit.bits_per_sample}"
@@ -176,7 +176,7 @@ private
     previous = nil
     count = 0
     @structure.each do |pattern_name|
-      if(pattern_name == previous || previous == nil)
+      if pattern_name == previous || previous == nil
         count += 1
       else
         yaml_output += "    - #{(previous.to_s.capitalize + ':').ljust(ljust_amount)}  x#{count}\n"
@@ -204,10 +204,10 @@ private
   def merge_overflow(overflow, num_tracks_in_song)
     merged_sample_data = []
 
-    if(overflow != {})
+    unless overflow == {}
       longest_overflow = overflow[overflow.keys.first]
       overflow.keys.each do |track_name|
-        if(overflow[track_name].length > longest_overflow.length)
+        if overflow[track_name].length > longest_overflow.length
           longest_overflow = overflow[track_name]
         end
       end

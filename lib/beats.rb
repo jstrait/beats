@@ -10,12 +10,12 @@ class Beats
   end
 
   def run
-    if(@input_file_name == nil)
+    if @input_file_name == nil
       ARGV[0] = '-h'
       parse_options()
     end
 
-    if(@output_file_name == nil)
+    if @output_file_name == nil
       @output_file_name = File.basename(@input_file_name, File.extname(@input_file_name)) + ".wav"
     end
 
@@ -23,9 +23,9 @@ class Beats
     song = song_parser.parse(File.dirname(@input_file_name), YAML.load_file(@input_file_name))
     song_optimizer = SongOptimizer.new()
 
-    if(@options[:pattern] != nil)
+    if @options[:pattern] != nil
       pattern_name = @options[:pattern].downcase.to_sym
-      if(!song.patterns.member?(pattern_name))
+      unless song.patterns.member?(pattern_name)
         raise StandardError, "The song does not include a pattern called #{@options[:pattern]}"
       end
       
@@ -34,7 +34,7 @@ class Beats
     end
 
     duration = nil
-    if(@options[:split])
+    if @options[:split]
       song_splitter = SongSplitter.new()
       split_songs = song_splitter.split(song)
       split_songs.each do |track_name, split_song|

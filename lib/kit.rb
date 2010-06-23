@@ -41,9 +41,9 @@ class Kit
   
   # Adds a new sound to the kit. 
   def add(name, path)
-    if(!@sounds.has_key? name)
+    unless @sounds.has_key? name
       path_is_relative = !path.start_with?(PATH_SEPARATOR)
-      if(path_is_relative)
+      if path_is_relative
         full_path = @base_path + PATH_SEPARATOR + path
       end
       
@@ -55,7 +55,7 @@ class Kit
       end
       
       @sounds[name] = wavefile
-      if(name != path)
+      if name != path
         @label_mappings[name] = path
       end
     
@@ -93,7 +93,7 @@ class Kit
         (name.to_s.length > max_length) ? name.to_s.length : max_length
       end
 
-    if(@label_mappings.length > 0)
+    if @label_mappings.length > 0
       yaml += " " * indent_space_count + "Kit:\n"
       ljust_amount = longest_label_mapping_length + 1  # The +1 is for the trailing ":"
       @label_mappings.sort.each do |label, path|

@@ -40,7 +40,7 @@ class SongParser
     add_patterns_to_song(song, raw_song_components[:patterns])
     
     # 4.) Set structure
-    if(raw_song_components[:structure] == nil)
+    if raw_song_components[:structure] == nil
       raise SongParseError, "Song must have a Structure section in the header."
     else
       set_song_structure(song, raw_song_components[:structure])
@@ -53,13 +53,13 @@ private
 
   # Is "canonicalize" a word?
   def canonicalize_definition(definition)
-    if(definition.class == String)
+    if definition.class == String
       begin
         raw_song_definition = YAML.load(definition)
       rescue ArgumentError => detail
         raise SongParseError, "Syntax error in YAML file"
       end
-    elsif(definition.class == Hash)
+    elsif definition.class == Hash
       raw_song_definition = definition
     else
       raise SongParseError, "Invalid song input"
@@ -72,7 +72,7 @@ private
     raw_song_components = {}
     raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
     
-    if(raw_song_components[:full_definition]["song"] != nil)
+    if raw_song_components[:full_definition]["song"] != nil
       raw_song_components[:header] = downcase_hash_keys(raw_song_components[:full_definition]["song"])
     else
       raise SongParseError, NO_SONG_HEADER_ERROR_MSG
@@ -89,7 +89,7 @@ private
     kit = Kit.new(base_path)
     
     # Add sounds defined in the Kit section of the song header
-    if(raw_kit != nil)
+    unless raw_kit == nil
       raw_kit.each do |kit_item|
         kit.add(kit_item.keys.first, kit_item.values.first)
       end
@@ -132,7 +132,7 @@ private
     structure = []
 
     raw_structure.each{|pattern_item|
-      if(pattern_item.class == String)
+      if pattern_item.class == String
         pattern_item = {pattern_item => "x1"}
       end
       
@@ -144,12 +144,12 @@ private
       multiples_str.slice!(0)
       multiples = multiples_str.to_i
       
-      if(multiples_str.match(/[^0-9]/) != nil)
+      unless multiples_str.match(/[^0-9]/) == nil
         raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
       else
-        if(multiples < 0)
+        if multiples < 0
           raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
-        elsif(multiples > 0 && !song.patterns.has_key?(pattern_name_sym))
+        elsif multiples > 0 && !song.patterns.has_key?(pattern_name_sym)
           # This test is purposefully designed to only throw an error if the number of repeats is greater
           # than 0. This allows you to specify an undefined pattern in the structure with "x0" repeats.
           # This can be convenient for defining the structure before all patterns have been added to the song file.
