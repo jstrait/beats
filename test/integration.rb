@@ -3,7 +3,7 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 require 'test/includes'
 
 class SongParserTest < Test::Unit::TestCase
-  TRACK_NAMES =  ["bass", "snare", "hh_closed", "agogo", "tom_high", "tom_low"]
+  TRACK_NAMES =  ["bass", "snare", "hh_closed", "agogo", "tom4", "tom2"]
   OUTPUT_FOLDER = "test/integration_output"
   
   def test_bad_song_errors
@@ -25,7 +25,6 @@ class SongParserTest < Test::Unit::TestCase
   end
   
   
-  # TODO: Update fixtures to also include a non-Kit sound in at least 1 track.
   # TODO: Add tests for the -p option
   # TODO: Add test verify that song generated with and without SongOptimizer are identical.
   
@@ -77,6 +76,9 @@ class SongParserTest < Test::Unit::TestCase
     beats = Beats.new(song_fixture, actual_output_prefix + ".wav", {:split => true, :pattern => nil})
     beats.run()
     TRACK_NAMES.each do |track_name|
+      if(track_name.start_with?("tom"))
+        track_name += "_#{num_channels}_#{bits_per_sample}"
+      end
       actual_output_file = "#{actual_output_prefix}-#{track_name}.wav"
       expected_output_file = "#{expected_output_prefix}-#{track_name}.wav"
       assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
