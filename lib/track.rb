@@ -63,7 +63,7 @@ class Track
     return temp_sample_length.floor
   end
   
-  def tick_count()
+  def tick_count
     return @rhythm.length
   end
   

@@ -9,7 +9,7 @@ class Beats
     @options = options
   end
 
-  def run()
+  def run
     if(@input_file_name == nil)
       ARGV[0] = '-h'
       parse_options()

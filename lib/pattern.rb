@@ -34,7 +34,7 @@ class Pattern
     @tracks.keys.collect {|track_name| @tracks[track_name].sample_length_with_overflow(tick_sample_length) }.max || 0
   end
   
-  def tick_count()
+  def tick_count
     return @tracks.values.collect {|track| track.rhythm.length }.max || 0
   end
   
@@ -134,7 +134,7 @@ class Pattern
   
   # Returns a YAML representation of the Pattern. Produces nicer looking output than the default
   # version of to_yaml().
-  def to_yaml()
+  def to_yaml
     longest_track_name_length =
       @tracks.keys.inject(0) do |max_length, name|
         (name.to_s.length > max_length) ? name.to_s.length : max_length

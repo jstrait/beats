@@ -10,7 +10,7 @@ class SongParser
       - Verse: x2
       - Chorus: x2"
   
-  def initialize()
+  def initialize
   end
   
   def parse(base_path, definition = nil)

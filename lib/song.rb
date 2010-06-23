@@ -22,7 +22,7 @@ class Song
   # Returns the number of samples required for the entire song at the current tempo.
   # (Assumes a sample rate of 44100). Does NOT include samples required for sound
   # overflow from the last pattern.
-  def sample_length()
+  def sample_length
     @structure.inject(0) do |sum, pattern_name|
       sum + @patterns[pattern_name].sample_length(@tick_sample_length)
     end
@@ -31,7 +31,7 @@ class Song
   # Returns the number of samples required for the entire song at the current tempo.
   # (Assumes a sample rate of 44100). Includes samples required for sound overflow
   # from the last pattern.
-  def sample_length_with_overflow()
+  def sample_length_with_overflow
     if(@structure.length == 0)
       return 0
     end
@@ -49,11 +49,11 @@ class Song
   # the original? Or is that actually a good thing?
   # TODO: Investigate replacing this with a method max_sounds_playing_at_once() or something
   # like that. Would look each pattern along with it's incoming overflow.
-  def total_tracks()
+  def total_tracks
     @patterns.keys.collect {|pattern_name| @patterns[pattern_name].tracks.length }.max || 0
   end
   
-  def track_names()
+  def track_names
     track_names = {}
     @patterns.values.each do |pattern|
       pattern.tracks.values.each {|track| track_names[track.name] = nil}
@@ -98,15 +98,15 @@ class Song
     return wave_file.calculate_duration(SAMPLE_RATE, sample_length)
   end
 
-  def num_channels()
+  def num_channels
     return @kit.num_channels
   end
   
-  def bits_per_sample()
+  def bits_per_sample
     return @kit.bits_per_sample
   end
 
-  def tempo()
+  def tempo
     return @tempo
   end
 
@@ -120,7 +120,7 @@ class Song
   end
   
   # Returns a new Song that is identical but with no patterns or structure.
-  def copy_ignoring_patterns_and_structure()
+  def copy_ignoring_patterns_and_structure
     copy = Song.new(@kit.base_path)
     copy.tempo = @tempo
     copy.kit = @kit
@@ -129,15 +129,15 @@ class Song
   end
   
   # Removes any patterns that aren't referenced in the structure.
-  def remove_unused_patterns()
+  def remove_unused_patterns
     # Using reject() here, because for some reason select() returns an Array not a Hash.
     @patterns = @patterns.reject {|k, pattern| !@structure.member?(pattern.name) }
   end
 
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
   # using the SongParser class. This lets you save a Song to disk, to be re-loaded later. Produces nicer
-  #looking output than the default version of to_yaml().
-  def to_yaml()
+  # looking output than the default version of to_yaml().
+  def to_yaml
     # This implementation intentionally builds up a YAML string manually instead of using YAML::dump().
     # Ruby 1.8 makes it difficult to ensure a consistent ordering of hash keys, which makes the output ugly
     # and also hard to test.
@@ -156,7 +156,7 @@ class Song
 
 private
 
-  def pack_code()
+  def pack_code
     if(@kit.bits_per_sample == 8)
       return "C*"
     elsif(@kit.bits_per_sample == 16)
@@ -170,7 +170,7 @@ private
     return arr.inject(0) {|max_length, name| (name.to_s.length > max_length) ? name.to_s.length : max_length }
   end
 
-  def structure_to_yaml()
+  def structure_to_yaml
     yaml_output = "  Structure:\n"
     ljust_amount = longest_length_in_array(@structure) + 1  # The +1 is for the trailing ":"
     previous = nil
@@ -189,7 +189,7 @@ private
     return yaml_output
   end
 
-  def patterns_to_yaml()
+  def patterns_to_yaml
     yaml_output = ""
     
     # Sort to ensure a consistent order, to make testing easier
