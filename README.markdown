@@ -1,5 +1,5 @@
-BEATS
------
+BEATS Drum Machine
+------------------
 
 BEATS is a command-line drum machine written in pure Ruby. Feed it a song notated in YAML, and it will produce a precision-milled *.wav file of impeccable timing and feel. Here's an example song:
 
@@ -29,11 +29,12 @@ BEATS is a command-line drum machine written in pure Ruby. Feed it a song notate
 	  - sounds/tom4.wav:  ...........X....
 	  - sounds/tom2.wav:  ..............X.
 
+And [here is what it sounds like](http://beatsdrummachine.com/beat.mp3) after getting the BEATS treatment. What a glorious groove!
 
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.1.0. Development is currently underway for version 1.2.0, and the code on the trunk is the latest progress. 1.2.0 will bring performance improvements, as well as significant architectural improvements. It will also feature a few bug fixes.
+The latest stable version of BEATS is 1.1.0. Development is currently underway for version 1.2.0, and the code on the trunk is the latest progress. 1.2.0 will bring significant performance and architectural improvements. It will also contain a few bug fixes.
 
 
 Installation
@@ -51,4 +52,4 @@ BEATS is not very useful unless you have some sounds to use with it. You can dow
 Usage
 -----
 
-BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, see the user guide at [http://beatsdrummachine.com](http://beatsdrummachine.com)
+BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, see the strategy guide at [http://beatsdrummachine.com](http://beatsdrummachine.com)
