@@ -7,14 +7,13 @@ class SongParserTest < Test::Unit::TestCase
   OUTPUT_FOLDER = "test/integration_output"
   
   def test_bad_song_errors
-    # TODO: Why doesn't sound_in_track_not_found.txt not throw a SongParseError?
-    
     invalid_fixtures = ["bad_tempo.txt",
                         "bad_repeat_count.txt",
                         "bad_structure.txt",
                         "no_header.txt",
                         "no_structure.txt",
-                        "sound_in_kit_not_found.txt"]
+                        "sound_in_kit_not_found.txt",
+                        "sound_in_track_not_found.txt"]
         
     invalid_fixtures.each do |fixture_name|
       assert_raise(SongParseError) do
