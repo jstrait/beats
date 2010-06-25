@@ -1,3 +1,5 @@
+class InvalidRhythmError < RuntimeError; end
+
 class Track
   REST = "."
   BEAT = "X"
@@ -23,8 +25,10 @@ class Track
       if ch == BEAT
         beats << beat_length
         beat_length = 1
-      else
+      elsif ch == REST
         beat_length += 1
+      else
+        raise InvalidRhythmError, "Track #{@name} has an invalid rhythm: '#{rhythm}'. Can only contain 'X' or '.'"
       end
     end
     

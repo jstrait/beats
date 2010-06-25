@@ -16,6 +16,7 @@ class SongParserTest < Test::Unit::TestCase
     test_songs[:no_tempo] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/no_tempo.txt"))
     test_songs[:repeats_not_specified] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/repeats_not_specified.txt"))
     test_songs[:overflow] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/pattern_with_overflow.txt"))
+    # TODO: Add fixture for track with no rhythm
     test_songs[:from_valid_yaml_string] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_no_kit.txt"))
     test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_kit.txt"))
     test_songs[:from_valid_yaml_string_with_empty_track] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_empty_track.txt"))
@@ -53,17 +54,24 @@ class SongParserTest < Test::Unit::TestCase
   end
   
   def test_invalid_parse
-    invalid_fixtures = ["no_header",
-                        "sound_in_track_not_found",
-                        "sound_in_kit_not_found",
-                        "bad_tempo",
+    invalid_fixtures = ["bad_repeat_count",
                         "bad_structure",
+                        "bad_tempo",
+                        "no_header",
                         "no_structure",
-                        "bad_repeat_count"]
+                        "sound_in_track_not_found",
+                        "sound_in_kit_not_found",]
     
     invalid_fixtures.each do |fixture|
-      assert_raise(SongParseError) { song = SongParser.new().parse(File.dirname(__FILE__) + "/..",
-                                                                   YAML.load_file("test/fixtures/invalid/" + fixture + ".txt")) }
+      assert_raise(SongParseError) do
+        song = SongParser.new().parse(File.dirname(__FILE__) + "/..",
+                                      YAML.load_file("test/fixtures/invalid/" + fixture + ".txt"))
+      end
+    end
+    
+    assert_raise(InvalidRhythmError) do
+      song = SongParser.new().parse(File.dirname(__FILE__) + "/..",
+                                    YAML.load_file("test/fixtures/invalid/bad_rhythm.txt"))
     end
   end
 end

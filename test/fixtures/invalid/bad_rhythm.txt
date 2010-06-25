@@ -1,0 +1,9 @@
+# Song with a track whose rhythm has an invalid character. (In this case, $).
+
+Song:
+  Tempo: 100
+  Structure:
+    - Verse: x1
+
+Verse:
+  - test/sounds/snare_mono_8.wav: ..$.X
