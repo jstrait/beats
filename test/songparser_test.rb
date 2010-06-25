@@ -59,6 +59,7 @@ class SongParserTest < Test::Unit::TestCase
                         "bad_tempo",
                         "no_header",
                         "no_structure",
+                        "pattern_with_no_tracks",
                         "sound_in_track_not_found",
                         "sound_in_kit_not_found",]
     

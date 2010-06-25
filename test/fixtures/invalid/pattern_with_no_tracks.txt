@@ -1,0 +1,12 @@
+# Invalid song, since it contains a pattern with no tracks
+
+Song:
+  Tempo: 100
+  Structure:
+    - Verse: x1
+    - Chorus: x1
+
+Verse:
+    
+Chorus:
+  - ../../../test/sounds/snare_mono_8.wav: X...X...

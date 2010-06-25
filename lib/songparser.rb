@@ -101,11 +101,14 @@ private
     # as well as use less memory.
     raw_patterns.keys.each do |key|
       track_list = raw_patterns[key]
-      track_list.each do |track_definition|
-        track_name = track_definition.keys.first
-        track_path = track_name
+      
+      unless track_list == nil
+        track_list.each do |track_definition|
+          track_name = track_definition.keys.first
+          track_path = track_name
         
-        kit.add(track_name, track_path)
+          kit.add(track_name, track_path)
+        end
       end
     end
     
@@ -117,6 +120,12 @@ private
       new_pattern = song.pattern key.to_sym
 
       track_list = raw_patterns[key]
+      if track_list == nil
+        # TODO: Use correct capitalization of pattern name in error message
+        # TODO: Possibly allow if pattern not referenced in the Structure, or has 0 repeats?
+        raise SongParseError, "Pattern '#{key}' has no tracks. It needs at least one."
+      end
+      
       track_list.each do |track_definition|
         track_name = track_definition.keys.first
         
