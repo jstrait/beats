@@ -42,8 +42,10 @@ class Kit
   # Adds a new sound to the kit. 
   def add(name, path)
     unless @sounds.has_key? name
-      path_is_relative = !path.start_with?(PATH_SEPARATOR)
-      if path_is_relative
+      path_is_absolute = path.start_with?(PATH_SEPARATOR)
+      if path_is_absolute
+        full_path = path
+      else
         full_path = @base_path + PATH_SEPARATOR + path
       end
       
