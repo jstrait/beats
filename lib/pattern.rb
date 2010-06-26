@@ -38,12 +38,12 @@ class Pattern
     return @tracks.values.collect {|track| track.rhythm.length }.max || 0
   end
   
-  def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
+  def generate_core(tick_sample_length, num_channels)
     track_names = @tracks.keys
     primary_sample_data = []
     overflow_sample_data = {}
     actual_sample_length = sample_length(tick_sample_length)
-
+    
     if @intermediate_cache == nil
       track_names.each do |track_name|
         temp = @tracks[track_name].sample_data(tick_sample_length)
@@ -71,6 +71,12 @@ class Pattern
       primary_sample_data = @intermediate_cache[:primary].dup
       overflow_sample_data = @intermediate_cache[:overflow].dup
     end
+    
+    return primary_sample_data, overflow_sample_data
+  end
+  
+  def handle_incoming_overflow(tick_sample_length, num_channels, incoming_overflow, primary_sample_data, overflow_sample_data)
+    track_names = @tracks.keys
     
     # Add overflow from previous pattern
     incoming_overflow.keys.each do |track_name|
@@ -106,6 +112,10 @@ class Pattern
       end
     end
     
+    return primary_sample_data, overflow_sample_data
+  end
+  
+  def mixdown(num_channels, num_tracks_in_song, primary_sample_data)
     # Mix down the pattern's tracks into one single track
     if num_tracks_in_song > 1
       if num_channels == 1
@@ -114,6 +124,18 @@ class Pattern
         primary_sample_data = primary_sample_data.map {|sample| [sample[0] / num_tracks_in_song, sample[1] / num_tracks_in_song]}
       end
     end
+    
+    return primary_sample_data
+  end
+  
+  def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
+    primary_sample_data, overflow_sample_data = generate_core(tick_sample_length, num_channels)
+    primary_sample_data, overflow_sample_data = handle_incoming_overflow(tick_sample_length,
+                                                                         num_channels,
+                                                                         incoming_overflow,
+                                                                         primary_sample_data,
+                                                                         overflow_sample_data)
+    primary_sample_data = mixdown(num_channels, num_tracks_in_song, primary_sample_data)
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
