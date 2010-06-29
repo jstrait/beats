@@ -21,14 +21,10 @@ class SongSplitter
       original_song.patterns.each do |name, original_pattern|
         new_pattern = new_song.pattern name
         
-        if original_pattern.tracks.keys.member?(track_name)
-          new_pattern.track track_name,
-                            track_sample_data,
-                            original_pattern.tracks[track_name].rhythm
+        if original_pattern.tracks.has_key?(track_name)
+          new_pattern.track track_name, track_sample_data, original_pattern.tracks[track_name].rhythm
         else
-          new_pattern.track track_name,
-                            track_sample_data,
-                            "." * original_pattern.tick_count()
+          new_pattern.track track_name, track_sample_data, "." * original_pattern.tick_count()
         end
       end
       
