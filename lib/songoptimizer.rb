@@ -1,3 +1,17 @@
+# This class is used to transform a Song object into an equivalent Song object that
+# will be generated faster by the sound engine.
+#
+# The primary method is optimize(). Currently, it performs two optimizations:
+#
+#   1.) Breaks patterns into shorter patterns. Generating one long Pattern is generally
+#       slower than generating several short Patterns with the same combined length.
+#   2.) Replaces Patterns which are equivalent (i.e. they have the same tracks with the
+#       same rhythms) into one canonical Pattern. This allows for better caching, by
+#       preventing the sound engine from generating sample data for a Pattern when the
+#       same sample data has already been generated for a different Pattern.
+#
+# Note that step #1 actually performs double duty, because breaking Patterns into smaller
+# pieces increases the likelihood there will be duplicates that can be combined.
 class SongOptimizer
   def initialize()
   end
