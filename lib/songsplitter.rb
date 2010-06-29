@@ -1,3 +1,6 @@
+# Used to split a Song object into multiple Song objects, where each resulting
+# object only has 1 track. For example, if a Song has 5 tracks, this will return
+# a hash of 5 songs, each with one of the original song's tracks.
 class SongSplitter
   def initialize()
   end
