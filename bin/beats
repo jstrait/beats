@@ -3,10 +3,8 @@
 start_time = Time.now
 
 $:.unshift File.dirname(__FILE__)
-require "rubygems" unless defined?(Gem)
 require "optparse"
 require "yaml"
-require "wavefile"
 require "lib/beats"
 require "lib/song"
 require "lib/songparser"
@@ -15,6 +13,7 @@ require "lib/songsplitter"
 require "lib/kit"
 require "lib/pattern"
 require "lib/track"
+require "lib/wavefile"
 require "lib/beatswavefile"
 
 def parse_options
