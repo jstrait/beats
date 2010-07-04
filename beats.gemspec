@@ -11,5 +11,4 @@ Gem::Specification.new do |s|
   s.files = ["LICENSE", "README.markdown"] + Dir['lib/**/*.rb'] + Dir['bin/*'] + Dir['test/**/*']
   s.test_files = Dir['test/**/*']
   s.require_path = "lib"
-  s.add_dependency("wavefile", "= 0.3.0")
 end
