@@ -2,7 +2,7 @@
 
 start_time = Time.now
 
-$:.unshift File.dirname(__FILE__)
+$:.unshift File.dirname(__FILE__) + "/.."
 require "optparse"
 require "yaml"
 require "lib/beats"
