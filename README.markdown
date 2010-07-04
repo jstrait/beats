@@ -52,4 +52,4 @@ BEATS is not very useful unless you have some sounds to use with it. You can dow
 Usage
 -----
 
-BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, see the strategy guide at [http://beatsdrummachine.com](http://beatsdrummachine.com)
+BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit [http://beatsdrummachine.com](http://beatsdrummachine.com)
