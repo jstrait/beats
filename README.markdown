@@ -36,7 +36,7 @@ Current Status
 
 The latest stable version of BEATS is 1.2.0. It was just released! It brings significant performance and architectural improvements. It also contains a few bug fixes.
 
-Since it was just released, I'm not sure just yet what will be coming in 1.3.0.
+Since 1.2.0 was just released, I'm not sure just yet what will be coming in 1.3.0.
 
 
 Installation
