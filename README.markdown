@@ -34,13 +34,15 @@ And [here is what it sounds like](http://beatsdrummachine.com/beat.mp3) after ge
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.1.0. Development is currently underway for version 1.2.0, and the code on the trunk is the latest progress. 1.2.0 will bring significant performance and architectural improvements. It will also contain a few bug fixes.
+The latest stable version of BEATS is 1.2.0. It was just released! It brings significant performance and architectural improvements. It also contains a few bug fixes.
+
+Since it was just released, I'm not sure just yet what will be coming in 1.3.0.
 
 
 Installation
 ------------
 
-To install the latest stable version (1.1.0), run the following from the command line:
+To install the latest stable version (1.2.0), run the following from the command line:
 
     sudo gem install beats
 
