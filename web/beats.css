@@ -6,6 +6,7 @@ body
 	line-height: 1.5em;
 	font-family: eurostile, "helvetica neue", arial, sans-serif;
 	color: #535353;
+	text-rendering: optimizeLegibility;
 }
 
 .menubar
