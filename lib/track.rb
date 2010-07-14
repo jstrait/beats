@@ -3,6 +3,7 @@ class InvalidRhythmError < RuntimeError; end
 class Track
   REST = "."
   BEAT = "X"
+  BARLINE = "|"
   
   def initialize(name, wave_data, rhythm)
     # TODO: Add validation for input parameters
@@ -15,12 +16,12 @@ class Track
   end
   
   def rhythm=(rhythm)
-    @rhythm = rhythm
+    @rhythm = rhythm.delete(BARLINE)
     beats = []
     
     beat_length = 0
     #rhythm.each_char{|ch|
-    rhythm.each_byte do |ch|
+    @rhythm.each_byte do |ch|
       ch = ch.chr
       if ch == BEAT
         beats << beat_length
