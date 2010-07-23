@@ -28,23 +28,29 @@ class SongParserTest < Test::Unit::TestCase
   def test_valid_parse
     test_songs = SongParserTest.generate_test_data()
     
-    assert_equal(test_songs[:no_tempo].tempo, 120)
-    assert_equal(test_songs[:no_tempo].structure, [:verse])
+    assert_equal(120, test_songs[:no_tempo].tempo)
+    assert_equal([:verse], test_songs[:no_tempo].structure)
     
-    assert_equal(test_songs[:repeats_not_specified].tempo, 100)
-    assert_equal(test_songs[:repeats_not_specified].structure, [:verse])
+    assert_equal(100, test_songs[:repeats_not_specified].tempo)
+    assert_equal([:verse], test_songs[:repeats_not_specified].structure)
     
     # These two songs should be the same, except that one uses a kit in the song header
     # and the other doesn't.
     [:from_valid_yaml_string, :from_valid_yaml_string_with_kit].each do |song_key|
       song = test_songs[song_key]
-      assert_equal(song.structure, [:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus, :chorus, :chorus, :bridge, :chorus, :chorus, :chorus, :chorus])
-      assert_equal(song.tempo, 99)
-      assert_equal(song.tick_sample_length, (Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / 99 / 4.0)
-      assert_equal(song.patterns.keys.map{|key| key.to_s}.sort, ["bridge", "chorus", "verse"])
-      assert_equal(song.patterns[:verse].tracks.length, 4)
-      assert_equal(song.patterns[:chorus].tracks.length, 5)
-      assert_equal(song.patterns[:bridge].tracks.length, 1)
+      assert_equal([:verse, :verse,
+                    :chorus, :chorus,
+                    :verse, :verse,
+                    :chorus, :chorus, :chorus, :chorus,
+                    :bridge,
+                    :chorus, :chorus, :chorus, :chorus],
+                   song.structure)
+      assert_equal(99, song.tempo)
+      assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / 99 / 4.0, song.tick_sample_length)
+      assert_equal(["bridge", "chorus", "verse"], song.patterns.keys.map{|key| key.to_s}.sort)
+      assert_equal(4, song.patterns[:verse].tracks.length)
+      assert_equal(5, song.patterns[:chorus].tracks.length)
+      assert_equal(1, song.patterns[:bridge].tracks.length)
     end
     
     song = test_songs[:from_valid_yaml_string_with_empty_track]
