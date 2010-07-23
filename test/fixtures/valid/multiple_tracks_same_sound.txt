@@ -1,0 +1,33 @@
+# A song in which a pattern has multiple tracks that use the same sound
+# The output should be the same as example_mono_16.txt
+# TODO: Add integration tests to verify correct output
+
+Song:
+  Tempo: 120
+  Structure:
+    - Verse:   x2
+    - Chorus:  x4
+    - Verse:   x2
+    - Chorus:  x4
+  Kit:
+    - bass:       test/sounds/bass_mono_16.wav
+    - snare:      test/sounds/snare_mono_16.wav
+    - hh_closed:  test/sounds/hh_closed_mono_16.wav
+    - agogo:      test/sounds/agogo_high_mono_16.wav
+
+Verse:
+  - bass:       X...............
+  - bass:       ....X...........
+  - bass:       ........X.......
+  - bass:       ............X...
+  - snare:      ..............X.
+  - hh_closed:  X.XXX.XXX.X.X.X.
+  - agogo:      ..............XX
+
+# Also including non-Kit sounds to test that they work as well:
+Chorus:
+  - bass:                     X...X...XX..X...
+  - snare:                    ....X.......X...
+  - hh_closed:                X.XXX.XXX.XX..X.
+  - test/sounds/tom4_mono_16.wav:  ...........X....
+  - test/sounds/tom2_mono_16.wav:  ..............X.

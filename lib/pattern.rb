@@ -6,9 +6,10 @@ class Pattern
   
   # Adds a new track to the pattern.
   def track(name, wave_data, rhythm)
+    track_key = unique_track_name(name)
     new_track = Track.new(name, wave_data, rhythm)        
-    @tracks[new_track.name] = new_track
-    
+    @tracks[track_key] = new_track
+
     # If the new track is longer than any of the previously added tracks,
     # pad the other tracks with trailing . to make them all the same length.
     # Necessary to prevent incorrect overflow calculations for tracks.
@@ -85,6 +86,20 @@ class Pattern
   attr_accessor :tracks, :name
   
 private
+
+  # Returns a unique track name that is not already in use by a track in
+  # this pattern. Used to help support having multiple tracks with the same
+  # sample in a track.
+  def unique_track_name(name)
+    i = 2
+    name_key = name
+    while @tracks.has_key? name_key
+      name_key = "#{name}#{i.to_s}"
+      i += 1
+    end
+    
+    return name_key
+  end
 
   def generate_main_sample_data(tick_sample_length, num_channels)
     track_names = @tracks.keys

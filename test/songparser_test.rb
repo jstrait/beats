@@ -13,13 +13,14 @@ class SongParserTest < Test::Unit::TestCase
     test_songs = {}
     base_path = File.dirname(__FILE__) + "/.."
 
+    # TODO: Add fixture for track with no rhythm
     test_songs[:no_tempo] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/no_tempo.txt"))
     test_songs[:repeats_not_specified] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/repeats_not_specified.txt"))
     test_songs[:overflow] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/pattern_with_overflow.txt"))
-    # TODO: Add fixture for track with no rhythm
     test_songs[:from_valid_yaml_string] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_no_kit.txt"))
     test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_kit.txt"))
     test_songs[:from_valid_yaml_string_with_empty_track] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_empty_track.txt"))
+    test_songs[:multiple_tracks_same_sound] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/multiple_tracks_same_sound.txt"))
 
     return test_songs
   end
@@ -51,6 +52,19 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal(2, song.patterns[:verse].tracks.length)
     assert_equal("........", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/snare_mono_8.wav"].rhythm)
+    
+    song = test_songs[:multiple_tracks_same_sound]
+    assert_equal(2, song.patterns.length)
+    assert_equal(7, song.patterns[:verse].tracks.length)
+    assert_equal(["agogo", "bass", "bass2", "bass3", "bass4", "hh_closed", "snare"],
+                 song.patterns[:verse].tracks.keys.sort)
+    assert_equal("X...............", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("....X...........", song.patterns[:verse].tracks["bass2"].rhythm)
+    assert_equal("........X.......", song.patterns[:verse].tracks["bass3"].rhythm)
+    assert_equal("............X...", song.patterns[:verse].tracks["bass4"].rhythm)
+    assert_equal("..............X.", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal("X.XXX.XXX.X.X.X.", song.patterns[:verse].tracks["hh_closed"].rhythm)
+    assert_equal("..............XX", song.patterns[:verse].tracks["agogo"].rhythm)
   end
   
   def test_invalid_parse
