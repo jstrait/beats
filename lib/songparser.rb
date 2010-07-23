@@ -89,6 +89,7 @@ private
     kit = Kit.new(base_path)
     
     # Add sounds defined in the Kit section of the song header
+    # TODO: Raise error is same name is defined more than once in the Kit
     unless raw_kit == nil
       raw_kit.each do |kit_item|
         kit.add(kit_item.keys.first, kit_item.values.first)
