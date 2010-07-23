@@ -2,7 +2,13 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/includes'
 
-class SongParserTest < Test::Unit::TestCase  
+class SongParserTest < Test::Unit::TestCase
+  FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
+  
+  def self.load_fixture(fixture_name)
+    return SongParser.new().parse(FIXTURE_BASE_PATH, YAML.load_file("test/fixtures/#{fixture_name}"))
+  end
+  
   def self.generate_test_data
     kit = Kit.new("test/sounds")
     kit.add("bass.wav",      "bass_mono_8.wav")
@@ -11,16 +17,15 @@ class SongParserTest < Test::Unit::TestCase
     kit.add("ride.wav",      "ride_mono_8.wav")
 
     test_songs = {}
-    base_path = File.dirname(__FILE__) + "/.."
-
+    
     # TODO: Add fixture for track with no rhythm
-    test_songs[:no_tempo] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/no_tempo.txt"))
-    test_songs[:repeats_not_specified] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/repeats_not_specified.txt"))
-    test_songs[:overflow] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/pattern_with_overflow.txt"))
-    test_songs[:from_valid_yaml_string] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_no_kit.txt"))
-    test_songs[:from_valid_yaml_string_with_kit] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_kit.txt"))
-    test_songs[:from_valid_yaml_string_with_empty_track] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/example_with_empty_track.txt"))
-    test_songs[:multiple_tracks_same_sound] = SongParser.new().parse(base_path, YAML.load_file("test/fixtures/valid/multiple_tracks_same_sound.txt"))
+    test_songs[:no_tempo] = load_fixture("valid/no_tempo.txt")
+    test_songs[:repeats_not_specified] = load_fixture("valid/repeats_not_specified.txt")
+    test_songs[:overflow] = load_fixture("valid/pattern_with_overflow.txt")
+    test_songs[:from_valid_yaml_string] = load_fixture("valid/example_no_kit.txt")
+    test_songs[:from_valid_yaml_string_with_kit] = load_fixture("valid/example_with_kit.txt")
+    test_songs[:from_valid_yaml_string_with_empty_track] = load_fixture("valid/example_with_empty_track.txt")
+    test_songs[:multiple_tracks_same_sound] = load_fixture("valid/multiple_tracks_same_sound.txt")
 
     return test_songs
   end
@@ -85,14 +90,12 @@ class SongParserTest < Test::Unit::TestCase
     
     invalid_fixtures.each do |fixture|
       assert_raise(SongParseError) do
-        song = SongParser.new().parse(File.dirname(__FILE__) + "/..",
-                                      YAML.load_file("test/fixtures/invalid/" + fixture + ".txt"))
+        song = SongParserTest.load_fixture("invalid/#{fixture}.txt")
       end
     end
     
     assert_raise(InvalidRhythmError) do
-      song = SongParser.new().parse(File.dirname(__FILE__) + "/..",
-                                    YAML.load_file("test/fixtures/invalid/bad_rhythm.txt"))
+      song = SongParserTest.load_fixture("invalid/bad_rhythm.txt")
     end
   end
 end
