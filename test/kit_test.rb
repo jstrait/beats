@@ -2,125 +2,67 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/includes'
 
-class SongTest < Test::Unit::TestCase
+class KitTest < Test::Unit::TestCase
   MIN_SAMPLE_8BIT = 0
   MAX_SAMPLE_8BIT = 255
   
-  def test_valid_add
-    # Test adding sounds with progressively higher bits per sample and num channels.
-    # Verify that kit.bits_per_sample and kit.num_channels is ratcheted up.
-    kit = Kit.new("test/sounds")
-    assert_equal(16,  kit.bits_per_sample)
-    assert_equal(1,  kit.num_channels)
-    assert_equal(0,  kit.size)
-    kit.add("mono8", "bass_mono_8.wav")
-    assert_equal(16,  kit.bits_per_sample)
-    assert_equal(1,  kit.num_channels)
-    assert_equal(1,  kit.size)
-    kit.add("mono16", "bass_mono_16.wav")
-    assert_equal(16, kit.bits_per_sample)
-    assert_equal(1,  kit.num_channels)
-    assert_equal(2,  kit.size)
-    kit.add("stereo16", "bass_stereo_16.wav")
-    assert_equal(16, kit.bits_per_sample)
-    assert_equal(2,  kit.num_channels)
-    assert_equal(3,  kit.size)
-    
-    # Test adding sounds with progressively lower bits per sample and num channels.
-    # Verify that kit.bits_per_sample and kit.num_channels doesn't change.
-    kit = Kit.new("test/sounds")
-    assert_equal(16,  kit.bits_per_sample)
-    assert_equal(1,  kit.num_channels)
-    kit.add("stereo16", "bass_stereo_16.wav")
-    assert_equal(16, kit.bits_per_sample)
-    assert_equal(2,  kit.num_channels)
-    kit.add("mono16", "bass_mono_16.wav")
-    assert_equal(16, kit.bits_per_sample)
-    assert_equal(2,  kit.num_channels)
-    kit.add("mono8", "bass_mono_8.wav")
-    assert_equal(16, kit.bits_per_sample)
-    assert_equal(2,  kit.num_channels)
+  def generate_test_data
+    kits = {}
+    kits[:mono8]    = Kit.new("test/sounds", {"mono8" => "bass_mono_8.wav"})
+    kits[:mono16]   = Kit.new("test/sounds", {"mono8"  => "bass_mono_8.wav",
+                                              "mono16" => "bass_mono_16.wav"})
+    kits[:stereo8]  = Kit.new("test/sounds", {"mono8"   => "bass_mono_8.wav",
+                                              "stereo8" => "bass_stereo_8.wav"})
+    kits[:stereo16] = Kit.new("test/sounds", {"mono8"    => "bass_mono_8.wav",
+                                              "mono16"   => "bass_mono_16.wav",
+                                              "stereo16" => "bass_stereo_16.wav"})
+    return kits
   end
   
-  def test_invalid_add
-    kit = Kit.new("test/sounds")
-    assert_raise(SoundNotFoundError) { kit.add("i_do_not_exist", "i_do_not_exist.wav") }
+  def test_valid_initialization
+    kits = generate_test_data()
+    
+    assert_equal(16, kits[:mono8].bits_per_sample)
+    assert_equal(1, kits[:mono8].num_channels)
+    
+    assert_equal(16, kits[:mono16].bits_per_sample)
+    assert_equal(1, kits[:mono16].num_channels)
+    
+    assert_equal(16, kits[:stereo8].bits_per_sample)
+    assert_equal(2, kits[:stereo8].num_channels)
+    
+    assert_equal(16, kits[:stereo16].bits_per_sample)
+    assert_equal(2, kits[:stereo16].num_channels)
   end
-
-  def test_get_sample_data
-    kit = Kit.new("test/sounds")
+  
+  def test_invalid_initialization
+    assert_raise(SoundNotFoundError) { Kit.new("test/sounds", {"i_do_not_exist" => "i_do_not_exist.wav"}) }
     
-    assert_raise(StandardError) { kit.get_sample_data("nonexistant") }
+    # TODO: Add test for invalid file format
+  end
+  
+  def get_sample_data
+    kits = generate_test_data()
     
-    # Test adding sounds with progressively higher bits per sample and num channels.
-    # Verify that sample data bits per sample and num channels is ratcheted up.
-    kit.add("mono8", "bass_mono_8.wav")
-    sample_data = kit.get_sample_data("mono8")
-    assert(sample_data.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.min < 0)
-    all_are_fixnums = true
-    sample_data.each do |sample|
-      all_are_fixnums &&= sample.class == Fixnum
+    # Should get an error when trying to get a non-existent sound
+    assert_raise(StandardError) { kits[:mono8].get_sample_data("nonexistant") }
+  
+    [:mono8, :mono16].each do |kit_name|
+      sample_data = kits[kit_name].get_sample_data("mono8")
+      # Assert sample data is 16-bit. If max and min samples are outside 0-255 bounds, then it is.
+      assert(sample_data.max > MAX_SAMPLE_8BIT)
+      assert(sample_data.min < MIN_SAMPLE_8BIT)
+      # Assert it has 1 channel. This is true if every item is a Fixnum.
+      assert_equal([], sample_data.select {|sample| sample.class != Fixnum})
     end
-    assert(all_are_fixnums)
     
-    kit.add("mono16", "bass_mono_16.wav")
-    sample_data = kit.get_sample_data("mono8")
-    assert(sample_data.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.min < 0)
-    all_are_fixnums = true
-    sample_data.each do |sample|
-      all_are_fixnums &&= sample.class == Fixnum
+    [:stereo8, :stereo16].each do |kit_name|
+      sample_data = kits[kit_name].get_sample_data("mono8")
+      # Assert sample data is 16-bit. If max and min samples are outside 0-255 bounds, then it is.
+      assert(sample_data.max > MAX_SAMPLE_8BIT)
+      assert(sample_data.min < MIN_SAMPLE_8BIT)
+      # Assert it has 2 channels. This is true if every item is an Array.
+      assert_equal([], sample_data.select {|sample| sample.class != Array})
     end
-    assert(all_are_fixnums)
-    
-    kit.add("stereo16", "bass_stereo_16.wav")
-    sample_data = kit.get_sample_data("stereo16")
-    assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < 0)
-    all_are_arrays = true
-    sample_data.each do |sample|
-      all_are_arrays &&= sample.class == Array
-    end
-    assert(all_are_arrays)
-    assert(sample_data.first.length == 2)
-    
-    
-    # Test adding sounds with progressively lower bits per sample and num channels.
-    # Verify that sample data bits per sample and num channels doesn't go down.
-    kit = Kit.new("test/sounds")
-    
-    kit.add("stereo16", "bass_stereo_16.wav")
-    sample_data = kit.get_sample_data("stereo16")
-    assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < 0)
-    all_are_arrays = true
-    sample_data.each do |sample|
-      all_are_arrays &&= sample.class == Array
-    end
-    assert(all_are_arrays)
-    assert(sample_data.first.length == 2)
-    
-    kit.add("mono16", "bass_mono_16.wav")
-    sample_data = kit.get_sample_data("mono16")
-    assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < 0)
-    all_are_arrays = true
-    sample_data.each do |sample|
-      all_are_arrays &&= sample.class == Array
-    end
-    assert(all_are_arrays)
-    assert(sample_data.first.length == 2)
-    
-    kit.add("mono8", "bass_mono_8.wav")
-    sample_data = kit.get_sample_data("mono8")
-    assert(sample_data.flatten.max > MAX_SAMPLE_8BIT)
-    assert(sample_data.flatten.min < 0)
-    all_are_arrays = true
-    sample_data.each do |sample|
-      all_are_arrays &&= sample.class == Array
-    end
-    assert(all_are_arrays)
-    assert(sample_data.first.length == 2)
   end
 end

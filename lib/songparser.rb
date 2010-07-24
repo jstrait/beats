@@ -85,7 +85,7 @@ private
     return raw_song_components
   end
       
-  def build_kit(base_path, raw_kit, raw_patterns)
+  def build_kit_old(base_path, raw_kit, raw_patterns)
     kit = Kit.new(base_path)
     
     # Add sounds defined in the Kit section of the song header
@@ -113,6 +113,40 @@ private
       end
     end
     
+    return kit
+  end
+      
+  def build_kit(base_path, raw_kit, raw_patterns)
+    kit_items = {}
+    
+    # Add sounds defined in the Kit section of the song header
+    # TODO: Raise error is same name is defined more than once in the Kit
+    unless raw_kit == nil
+      raw_kit.each do |kit_item|
+        kit_items[kit_item.keys.first] = kit_item.values.first
+      end
+    end
+    
+    # Add sounds not defined in Kit section, but used in individual tracks
+    # TODO Investigate detecting duplicate keys already defined in the Kit section, as this could possibly
+    # result in a performance improvement when the sound has to be converted to a different bit rate/num channels,
+    # as well as use less memory.
+    raw_patterns.keys.each do |key|
+      track_list = raw_patterns[key]
+      
+      unless track_list == nil
+        track_list.each do |track_definition|
+          track_name = track_definition.keys.first
+          track_path = track_name
+        
+          if track_name.end_with? ".wav"
+            kit_items[track_name] = track_path
+          end
+        end
+      end
+    end
+    
+    kit = Kit.new(base_path, kit_items)
     return kit
   end
   

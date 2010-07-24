@@ -4,87 +4,35 @@ class SoundNotFoundError < RuntimeError; end
 # This class keeps track of the sounds that are used in a song. It provides a
 # central place for storing sound data, and most usefully, handles converting
 # sounds in different formats to a standard format.
-# 
+#
 # For example, if a song requires a sound that is mono/8-bit, another that is
 # stereo/8-bit, and another that is stereo/16-bit, it can't mix them together
 # because they are in different formats. Kit however automatically handles the
-# details of converting them to a common format. If you add sounds to the kit
-# using add(), sounds that you get using get_sample_data() will be in a common
-# format.
+# details of converting them to a common format. Sounds that you get using
+# get_sample_data() will be in a common format.
 #
-# All sounds returned by get_sample_data() will be 16-bit. All sounds will be
-# either mono or stereo; if at least one added sound is stereo then all sounds
-# will be stereo. So for example if a mono/8-bit, stereo/8-bit, and stereo/16-bit
-# sound are added, when you retrieve each one using get_sample_data() they will
-# be stereo/16-bit.
-#
-# Note that this means that each time a new sound is added to the Kit, the common
-# format might change, if the incoming sound has a greater number of channels than
-# any of the previously added sounds. Therefore, all of the sounds
-# used by a Song should be added to the Kit before generation begins. If you
-# create Song objects by using SongParser, this will be taken care of for you (as
-# long as you don't modify the Kit afterward).
+# This class is immutable. Once a Kit is created, no new sounds can be added to it.
 class Kit
-  PATH_SEPARATOR = File.const_get("SEPARATOR")
-  
-  # Creates a new Kit object. base_path indicates the folder from which sound files
-  # with relative file paths will be loaded from.
-  def initialize(base_path)
+  def initialize(base_path, kit_items)
     @base_path = base_path
     @label_mappings = {}
-    @sounds = {}
+    @sound_bank = {}
     @num_channels = 1
     @bits_per_sample = 16  # Only use 16-bit files as output. Supporting 8-bit output
                            # means extra complication for no real gain (I'm skeptical
                            # anyone would explicitly want 8-bit output instead of 16-bit.
+                           
+    load_sounds(base_path, kit_items)
   end
   
-  # Adds a new sound to the kit. 
-  def add(name, path)
-    unless @sounds.has_key? name
-      path_is_absolute = path.start_with?(PATH_SEPARATOR)
-      if path_is_absolute
-        full_path = path
-      else
-        full_path = @base_path + PATH_SEPARATOR + path
-      end
-      
-      begin
-        wavefile = WaveFile.open(full_path)
-      rescue
-        # TODO: Raise different error if sound is in an unsupported format
-        raise SoundNotFoundError, "Sound file #{full_path} not found."
-      end
-      
-      @sounds[name] = wavefile
-      if name != path
-        @label_mappings[name] = path
-      end
+  def get_sample_data(label)
+    sample_data = @sound_bank[label]
     
-      if wavefile.num_channels > @num_channels
-        @num_channels = wavefile.num_channels
-      end
-    end
-  end
-  
-  # Returns the sample data (as an Array) for a sound contained in the Kit.
-  # Raises an error if the sound doesn't exist in the Kit.
-  def get_sample_data(name)
-    wavefile = @sounds[name]
-    
-    if wavefile == nil
+    if sample_data == nil
       raise StandardError, "Kit doesn't contain sound '#{name}'."
     else
-      wavefile.num_channels = @num_channels
-      wavefile.bits_per_sample = @bits_per_sample
-
-      return wavefile.sample_data
+      return sample_data
     end
-  end
-  
-  # Returns the number of sounds currently contained in the kit.
-  def size
-    return @sounds.length
   end
   
   # Produces nicer looking output than the default version of to_yaml().
@@ -107,4 +55,44 @@ class Kit
   end
   
   attr_reader :base_path, :label_mappings, :bits_per_sample, :num_channels
+  
+private
+
+  def get_absolute_path(base_path, sound_file_name)
+    path_is_absolute = sound_file_name.start_with?(File::SEPARATOR)
+    return path_is_absolute ? sound_file_name : (base_path + File::SEPARATOR + sound_file_name)
+  end
+
+  def load_sounds(base_path, kit_items)
+    # Make all sound file paths absolute
+    kit_items.each do |label, sound_file_name|
+      unless label == sound_file_name
+        @label_mappings[label] = sound_file_name
+      end
+      kit_items[label] = get_absolute_path(base_path, sound_file_name)
+    end
+    
+    # Load all sound files, bailing if any are invalid
+    raw_sounds = {}
+    kit_items.values.each do |sound_file_name|
+      begin
+        wavefile = WaveFile.open(sound_file_name)
+      rescue
+        # TODO: Raise different error if sound is in an unsupported format
+        raise SoundNotFoundError, "Sound file #{sound_file_name} not found."
+      end
+      @num_channels = [@num_channels, wavefile.num_channels].max
+      raw_sounds[sound_file_name] = wavefile
+    end
+    
+    # Convert each sound to a canonical format
+    raw_sounds.values.each do |wavefile|
+      wavefile.num_channels = @num_channels
+      wavefile.bits_per_sample = @bits_per_sample
+    end
+    
+    kit_items.each do |label, sound_file_name|
+      @sound_bank[label] = raw_sounds[sound_file_name].sample_data
+    end
+  end
 end

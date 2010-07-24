@@ -8,7 +8,7 @@ class Song
 
   def initialize(base_path)
     self.tempo = DEFAULT_TEMPO
-    @kit = Kit.new(base_path)
+    @kit = Kit.new(base_path, {})
     @patterns = {}
     @structure = []
   end

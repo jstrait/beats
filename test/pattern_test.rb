@@ -7,11 +7,10 @@ class PatternTest < Test::Unit::TestCase
   SECONDS_IN_MINUTE = 60.0
 
   def generate_test_data
-    kit = Kit.new("test/sounds")
-    kit.add("bass.wav",      "bass_mono_8.wav")
-    kit.add("snare.wav",     "snare_mono_8.wav")
-    kit.add("hh_closed.wav", "hh_closed_mono_8.wav")
-    kit.add("hh_open.wav",   "hh_open_mono_8.wav")
+    kit = Kit.new("test/sounds", {"bass.wav"      => "bass_mono_8.wav",
+                                  "snare.wav"     => "snare_mono_8.wav",
+                                  "hh_closed.wav" => "hh_closed_mono_8.wav",
+                                  "hh_open.wav"   => "hh_open_mono_8.wav"})
     
     test_patterns = {}
     
@@ -172,9 +171,8 @@ class PatternTest < Test::Unit::TestCase
   def test_sample_data_incoming_overflow_longer_than_pattern_length
     # bass.wav sample length:   6179
     # snare.wav sample length: 14700
-    kit = Kit.new("test/sounds")
-    kit.add("bass",  "bass_mono_8.wav")
-    kit.add("snare", "snare_mono_8.wav")
+    kit = Kit.new("test/sounds", {"bass"  => "bass_mono_8.wav",
+                                  "snare" => "snare_mono_8.wav"})
     bass_sample_data = kit.get_sample_data("bass")
     snare_sample_data = kit.get_sample_data("snare")
     tick_sample_length = bass_sample_data.length.to_f

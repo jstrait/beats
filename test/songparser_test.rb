@@ -10,11 +10,10 @@ class SongParserTest < Test::Unit::TestCase
   end
   
   def self.generate_test_data
-    kit = Kit.new("test/sounds")
-    kit.add("bass.wav",      "bass_mono_8.wav")
-    kit.add("snare.wav",     "snare_mono_8.wav")
-    kit.add("hh_closed.wav", "hh_closed_mono_8.wav")
-    kit.add("ride.wav",      "ride_mono_8.wav")
+    kit = Kit.new("test/sounds", {"bass.wav"      => "bass_mono_8.wav",
+                                  "snare.wav"     => "snare_mono_8.wav",
+                                  "hh_closed.wav" => "hh_closed_mono_8.wav",
+                                  "ride.wav"      => "ride_mono_8.wav"})
 
     test_songs = {}
     
