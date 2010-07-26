@@ -133,7 +133,7 @@ private
       track_list.each do |track_definition|
         track_name = track_definition.keys.first
         
-        # Handle case where no track pattern is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
+        # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
         track_definition[track_name] ||= ""
         
         new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
