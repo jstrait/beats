@@ -5,6 +5,7 @@ class Song
   SECONDS_PER_MINUTE = 60.0
   SAMPLES_PER_MINUTE = SAMPLE_RATE * SECONDS_PER_MINUTE
   DEFAULT_TEMPO = 120
+  PACK_CODE = "s*"   # All sample data is assumed to be 16-bit
 
   def initialize(base_path)
     self.tempo = DEFAULT_TEMPO
@@ -64,7 +65,6 @@ class Song
 
   def write_to_file(output_file_name)
     cache = {}
-    pack_code = pack_code()
     num_tracks_in_song = self.total_tracks()
     sample_length = sample_length_with_overflow()
     
@@ -82,9 +82,9 @@ class Song
         
         if @kit.num_channels == 1
           # Don't flatten the sample data Array, since it is already flattened. That would be a waste of time, yo.
-          cache[key] = {:primary => sample_data[:primary].pack(pack_code), :overflow => sample_data[:overflow]}
+          cache[key] = {:primary => sample_data[:primary].pack(PACK_CODE), :overflow => sample_data[:overflow]}
         else
-          cache[key] = {:primary => sample_data[:primary].flatten.pack(pack_code), :overflow => sample_data[:overflow]}
+          cache[key] = {:primary => sample_data[:primary].flatten.pack(PACK_CODE), :overflow => sample_data[:overflow]}
         end
       end
       
@@ -155,16 +155,6 @@ class Song
   attr_accessor :structure, :kit
 
 private
-
-  def pack_code
-    if @kit.bits_per_sample == 8
-      return "C*"
-    elsif @kit.bits_per_sample == 16
-      return "s*"
-    else
-      raise StandardError, "Invalid bits per sample of #{@kit.bits_per_sample}"
-    end
-  end
 
   def longest_length_in_array(arr)
     return arr.inject(0) {|max_length, name| (name.to_s.length > max_length) ? name.to_s.length : max_length }
