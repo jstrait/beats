@@ -11,7 +11,8 @@ class SoundNotFoundError < RuntimeError; end
 # details of converting them to a common format. Sounds that you get using
 # get_sample_data() will be in a common format.
 #
-# This class is immutable. Once a Kit is created, no new sounds can be added to it.
+# This class is immutable. All sounds should be added at initialization.
+# Once a Kit is created, no new sounds can be added to it.
 class Kit
   def initialize(base_path, kit_items)
     @base_path = base_path
@@ -20,7 +21,7 @@ class Kit
     @num_channels = 1
     @bits_per_sample = 16  # Only use 16-bit files as output. Supporting 8-bit output
                            # means extra complication for no real gain (I'm skeptical
-                           # anyone would explicitly want 8-bit output instead of 16-bit.
+                           # anyone would explicitly want 8-bit output instead of 16-bit).
                            
     load_sounds(base_path, kit_items)
   end
@@ -29,7 +30,7 @@ class Kit
     sample_data = @sound_bank[label]
     
     if sample_data == nil
-      raise StandardError, "Kit doesn't contain sound '#{name}'."
+      raise StandardError, "Kit doesn't contain sound '#{label}'."
     else
       return sample_data
     end
@@ -63,18 +64,32 @@ private
     return path_is_absolute ? sound_file_name : (base_path + File::SEPARATOR + sound_file_name)
   end
 
+  def longest_sample_data_length(arr)
+    return arr.inject(0) {|max_length, sample_data| (sample_data.length > max_length) ? sample_data.length : max_length }
+  end
+
+  # TODO: Break this monster method up
   def load_sounds(base_path, kit_items)
-    # Make all sound file paths absolute
-    kit_items.each do |label, sound_file_name|
-      unless label == sound_file_name
-        @label_mappings[label] = sound_file_name
+    # Set label mappings
+    kit_items.each do |label, sound_file_names|
+      unless label == sound_file_names
+        @label_mappings[label] = sound_file_names
       end
-      kit_items[label] = get_absolute_path(base_path, sound_file_name)
+    end
+    
+    # Make all sound file paths absolute
+    kit_items.each do |label, sound_file_names|
+      unless sound_file_names.class == Array
+        sound_file_names = [sound_file_names]
+      end
+      
+      sound_file_names.map! {|sound_file_name| get_absolute_path(base_path, sound_file_name)}  
+      kit_items[label] = sound_file_names
     end
     
     # Load all sound files, bailing if any are invalid
     raw_sounds = {}
-    kit_items.values.each do |sound_file_name|
+    kit_items.values.flatten.each do |sound_file_name|
       begin
         wavefile = WaveFile.open(sound_file_name)
       rescue
@@ -91,8 +106,39 @@ private
       wavefile.bits_per_sample = @bits_per_sample
     end
     
-    kit_items.each do |label, sound_file_name|
-      @sound_bank[label] = raw_sounds[sound_file_name].sample_data
+    # If necessary, mix component sounds into a composite
+    kit_items.each do |label, sound_file_names|
+      num_sounds = sound_file_names.length
+      sound_name = sound_file_names.pop
+      mixdown = raw_sounds[sound_name].sample_data.dup
+      sound_file_names.each do |sound_file_name|
+        sample_data = raw_sounds[sound_file_name].sample_data
+        if(mixdown.length > sample_data.length)
+          incoming_samples = sample_data
+        else
+          incoming_samples = mixdown
+          mixdown = sample_data
+        end
+        
+        if @num_channels == 1
+          incoming_samples.length.times {|i| mixdown[i] += incoming_samples[i]}
+        elsif @num_channels == 2
+          incoming_samples.length.times do |i|
+            mixdown[i] = [mixdown[i][0] + incoming_samples[i][0],
+                          mixdown[i][1] + incoming_samples[i][1]]
+          end
+        end
+      end
+      
+      if num_sounds > 1
+        if @num_channels == 1
+          mixdown = mixdown.map {|sample| sample / num_sounds }
+        elsif @num_channels == 2
+          mixdown = mixdown.map {|sample| [sample[0] / num_sounds, sample[1] / num_sounds] }
+        end
+      end
+      
+      @sound_bank[label] = mixdown
     end
   end
 end
