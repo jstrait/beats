@@ -59,7 +59,7 @@ protected
   def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
     blank_track_pattern = '.' * max_pattern_length
     
-    # 2.) For each pattern, add a new pattern to new song every max_pattern_length ticks
+    # For each pattern, add a new pattern to new song every max_pattern_length ticks
     optimized_structure = {}
     original_song.patterns.values.each do |pattern|
       tick_index = 0
@@ -92,7 +92,7 @@ protected
       end
     end
     
-    # 3.) Replace the Song's structure to reference the new sub-divided patterns
+    # Replace the Song's structure to reference the new sub-divided patterns
     # instead of the old patterns.
     optimized_structure = original_song.structure.map do |original_pattern|
       optimized_structure[original_pattern]
@@ -116,7 +116,7 @@ protected
     seen_patterns = []
     replacements = {}
     
-    # Pattern names are sorted to ensure consistent pattern replacement. Makes tests easier to write.
+    # Pattern names are sorted to ensure predictable pattern replacement. Makes tests easier to write.
     # Sort function added manually because Ruby 1.8 doesn't know how to sort symbols...
     pattern_names = song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s }
     
