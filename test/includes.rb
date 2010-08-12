@@ -5,6 +5,7 @@ require 'rubygems'
 require 'wavefile'
 
 # BEATS classes
+require 'audioutils'
 require 'beats'
 require 'kit'
 require 'pattern'

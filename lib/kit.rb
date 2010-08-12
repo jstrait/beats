@@ -140,14 +140,6 @@ private
       end
     end
     
-    if num_sounds > 1
-      if @num_channels == 1
-        mixdown = mixdown.map {|sample| sample / num_sounds }
-      elsif @num_channels == 2
-        mixdown = mixdown.map {|sample| [sample[0] / num_sounds, sample[1] / num_sounds] }
-      end
-    end
-    
-    return mixdown
+    return AudioUtils.normalize(mixdown, num_sounds)
   end
 end

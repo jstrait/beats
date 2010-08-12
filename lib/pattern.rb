@@ -46,7 +46,7 @@ class Pattern
                                                                          incoming_overflow,
                                                                          primary_sample_data,
                                                                          overflow_sample_data)
-    primary_sample_data = mixdown_sample_data(num_channels, num_tracks_in_song, primary_sample_data)
+    primary_sample_data = AudioUtils.normalize(primary_sample_data, num_tracks_in_song)
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
@@ -176,18 +176,5 @@ private
     end
   
     return primary_sample_data, overflow_sample_data
-  end
-
-  def mixdown_sample_data(num_channels, num_tracks_in_song, primary_sample_data)
-    # Mix down the pattern's tracks into one single track
-    if num_tracks_in_song > 1
-      if num_channels == 1
-        primary_sample_data = primary_sample_data.map {|sample| sample / num_tracks_in_song }
-      else
-        primary_sample_data = primary_sample_data.map {|sample| [sample[0] / num_tracks_in_song, sample[1] / num_tracks_in_song]}
-      end
-    end
-  
-    return primary_sample_data
   end
 end
