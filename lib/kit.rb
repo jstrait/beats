@@ -59,16 +59,6 @@ class Kit
   
 private
 
-  def get_absolute_path(base_path, sound_file_name)
-    path_is_absolute = sound_file_name.start_with?(File::SEPARATOR)
-    return path_is_absolute ? sound_file_name : (base_path + File::SEPARATOR + sound_file_name)
-  end
-
-  def longest_sample_data_length(arr)
-    return arr.inject(0) {|max_length, sample_data| (sample_data.length > max_length) ? sample_data.length : max_length }
-  end
-
-  # TODO: Break this monster method up
   def load_sounds(base_path, kit_items)
     # Set label mappings
     kit_items.each do |label, sound_file_names|
@@ -77,7 +67,31 @@ private
       end
     end
     
-    # Make all sound file paths absolute
+    kit_items = make_file_names_absolute(kit_items)
+    raw_sounds = load_raw_sounds(kit_items)
+    
+    # Convert each sound to a common format
+    raw_sounds.values.each do |wavefile|
+      wavefile.num_channels = @num_channels
+      wavefile.bits_per_sample = @bits_per_sample
+    end
+    
+    # If necessary, mix component sounds into a composite
+    kit_items.each do |label, sound_file_names|
+      @sound_bank[label] = mixdown(sound_file_names, raw_sounds)
+    end
+  end
+  
+  def longest_sample_data_length(arr)
+    return arr.inject(0) {|max_length, sample_data| (sample_data.length > max_length) ? sample_data.length : max_length }
+  end
+  
+  def get_absolute_path(base_path, sound_file_name)
+    path_is_absolute = sound_file_name.start_with?(File::SEPARATOR)
+    return path_is_absolute ? sound_file_name : (base_path + File::SEPARATOR + sound_file_name)
+  end
+  
+  def make_file_names_absolute(kit_items)
     kit_items.each do |label, sound_file_names|
       unless sound_file_names.class == Array
         sound_file_names = [sound_file_names]
@@ -87,7 +101,11 @@ private
       kit_items[label] = sound_file_names
     end
     
-    # Load all sound files, bailing if any are invalid
+    return kit_items
+  end
+  
+  # Load all sound files, bailing if any are invalid
+  def load_raw_sounds(kit_items)
     raw_sounds = {}
     kit_items.values.flatten.each do |sound_file_name|
       begin
@@ -100,45 +118,40 @@ private
       raw_sounds[sound_file_name] = wavefile
     end
     
-    # Convert each sound to a canonical format
-    raw_sounds.values.each do |wavefile|
-      wavefile.num_channels = @num_channels
-      wavefile.bits_per_sample = @bits_per_sample
+    return raw_sounds
+  end
+  
+  def mixdown(sound_file_names, raw_sounds)
+    num_sounds = sound_file_names.length
+    sound_name = sound_file_names.pop
+    mixdown = raw_sounds[sound_name].sample_data.dup
+    sound_file_names.each do |sound_file_name|
+      sample_data = raw_sounds[sound_file_name].sample_data
+      if(mixdown.length > sample_data.length)
+        incoming_samples = sample_data
+      else
+        incoming_samples = mixdown
+        mixdown = sample_data
+      end
+      
+      if @num_channels == 1
+        incoming_samples.length.times {|i| mixdown[i] += incoming_samples[i]}
+      elsif @num_channels == 2
+        incoming_samples.length.times do |i|
+          mixdown[i] = [mixdown[i][0] + incoming_samples[i][0],
+                        mixdown[i][1] + incoming_samples[i][1]]
+        end
+      end
     end
     
-    # If necessary, mix component sounds into a composite
-    kit_items.each do |label, sound_file_names|
-      num_sounds = sound_file_names.length
-      sound_name = sound_file_names.pop
-      mixdown = raw_sounds[sound_name].sample_data.dup
-      sound_file_names.each do |sound_file_name|
-        sample_data = raw_sounds[sound_file_name].sample_data
-        if(mixdown.length > sample_data.length)
-          incoming_samples = sample_data
-        else
-          incoming_samples = mixdown
-          mixdown = sample_data
-        end
-        
-        if @num_channels == 1
-          incoming_samples.length.times {|i| mixdown[i] += incoming_samples[i]}
-        elsif @num_channels == 2
-          incoming_samples.length.times do |i|
-            mixdown[i] = [mixdown[i][0] + incoming_samples[i][0],
-                          mixdown[i][1] + incoming_samples[i][1]]
-          end
-        end
+    if num_sounds > 1
+      if @num_channels == 1
+        mixdown = mixdown.map {|sample| sample / num_sounds }
+      elsif @num_channels == 2
+        mixdown = mixdown.map {|sample| [sample[0] / num_sounds, sample[1] / num_sounds] }
       end
-      
-      if num_sounds > 1
-        if @num_channels == 1
-          mixdown = mixdown.map {|sample| sample / num_sounds }
-        elsif @num_channels == 2
-          mixdown = mixdown.map {|sample| [sample[0] / num_sounds, sample[1] / num_sounds] }
-        end
-      end
-      
-      @sound_bank[label] = mixdown
     end
+    
+    return mixdown
   end
 end
