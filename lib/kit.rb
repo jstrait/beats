@@ -82,10 +82,6 @@ private
     end
   end
   
-  def longest_sample_data_length(arr)
-    return arr.inject(0) {|max_length, sample_data| (sample_data.length > max_length) ? sample_data.length : max_length }
-  end
-  
   def get_absolute_path(base_path, sound_file_name)
     path_is_absolute = sound_file_name.start_with?(File::SEPARATOR)
     return path_is_absolute ? sound_file_name : (base_path + File::SEPARATOR + sound_file_name)
