@@ -57,7 +57,7 @@ class Song
   def track_names
     track_names = {}
     @patterns.values.each do |pattern|
-      pattern.tracks.values.each {|track| track_names[track.name] = nil}
+      pattern.tracks.keys.each {|track_name| track_names[track_name] = nil}
     end
     
     return track_names.keys.sort
