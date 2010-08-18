@@ -5,9 +5,10 @@ start_time = Time.now
 $:.unshift File.dirname(__FILE__) + "/.."
 require "optparse"
 require "yaml"
+require "lib/wavefile"
+require "lib/beatswavefile"
 require "lib/audioutils"
 require "lib/beats"
-require "lib/beatswavefile"
 require "lib/kit"
 require "lib/pattern"
 require "lib/song"
@@ -15,7 +16,6 @@ require "lib/songoptimizer"
 require "lib/songparser"
 require "lib/songsplitter"
 require "lib/track"
-require "lib/wavefile"
 
 def parse_options
   options = {:split => false, :pattern => nil}
