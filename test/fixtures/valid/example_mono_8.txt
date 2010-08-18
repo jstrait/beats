@@ -8,7 +8,7 @@ Song:
     - Verse:   x2
     - Chorus:  x4
   Kit:
-    - bass:       ../../sounds/bass_mono_8.wav
+    - bass:       [../../sounds/bass_mono_8.wav]
     - snare:      ../../sounds/snare_mono_8.wav
     - hh_closed:  ../../sounds/hh_closed_mono_8.wav
     - agogo:      ../../sounds/agogo_high_mono_8.wav
