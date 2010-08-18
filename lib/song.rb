@@ -53,14 +53,9 @@ class Song
   def total_tracks
     @patterns.keys.collect {|pattern_name| @patterns[pattern_name].tracks.length }.max || 0
   end
-  
+
   def track_names
-    track_names = {}
-    @patterns.values.each do |pattern|
-      pattern.tracks.keys.each {|track_name| track_names[track_name] = nil}
-    end
-    
-    return track_names.keys.sort
+    @patterns.values.inject([]) {|track_names, pattern| track_names | pattern.tracks.keys }.sort
   end
 
   def write_to_file(output_file_name)

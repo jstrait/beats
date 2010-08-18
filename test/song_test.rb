@@ -83,6 +83,13 @@ class SongTest < Test::Unit::TestCase
                   "test/sounds/ride_mono_8.wav",
                   "test/sounds/snare_mono_8.wav"],
                   test_songs[:from_valid_yaml_string].track_names)
+    assert_equal(["bass",
+                  "hhclosed",
+                  "hhopen",
+                  "snare",
+                  "test/sounds/hh_closed_mono_8.wav",
+                  "test/sounds/ride_mono_8.wav"],
+                  test_songs[:from_valid_yaml_string_with_kit].track_names)
   end
   
   def test_sample_length
