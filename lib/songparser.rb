@@ -122,22 +122,31 @@ private
   def add_patterns_to_song(song, raw_patterns)
     raw_patterns.keys.each do |key|
       new_pattern = song.pattern key.to_sym
+      flow = ""
 
       track_list = raw_patterns[key]
+      # TODO Also raise error if only there is only 1 track and it's a flow track
       if track_list == nil
         # TODO: Use correct capitalization of pattern name in error message
         # TODO: Possibly allow if pattern not referenced in the Structure, or has 0 repeats?
         raise SongParseError, "Pattern '#{key}' has no tracks. It needs at least one."
       end
       
+      # TODO: What if there is more than one flow? Raise error, or have last one win?
       track_list.each do |track_definition|
         track_name = track_definition.keys.first
         
-        # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
-        track_definition[track_name] ||= ""
-        
-        new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
+        if track_name == "flow"
+          flow = track_definition[track_name]
+        else  
+          # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
+          track_definition[track_name] ||= ""
+
+          new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
+        end
       end
+      
+      new_pattern = PatternExpander.expand_pattern(flow, new_pattern)
     end
   end
   

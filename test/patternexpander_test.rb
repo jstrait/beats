@@ -12,7 +12,7 @@ class PatternExpanderTest < Test::Unit::TestCase
     assert_equal(true, PatternExpander.valid_flow?("::::"))
     assert_equal(true, PatternExpander.valid_flow?("|:--:|----|:--:|"))
     
-    # Contains invalid characters
+    # Contains characters other than :|- and [0-9]
     assert_equal(false, PatternExpander.valid_flow?("a"))
     assert_equal(false, PatternExpander.valid_flow?("1"))
     assert_equal(false, PatternExpander.valid_flow?(":--:z---"))
