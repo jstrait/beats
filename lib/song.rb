@@ -125,8 +125,8 @@ class Song
   
   # Removes any patterns that aren't referenced in the structure.
   def remove_unused_patterns
-    # Using reject() here, because for some reason select() returns an Array not a Hash.
-    @patterns = @patterns.reject {|k, pattern| !@structure.member?(pattern.name) }
+    # Using reject() here because for some reason select() returns an Array not a Hash.
+    @patterns.reject! {|k, pattern| !@structure.member?(pattern.name) }
   end
 
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
@@ -152,7 +152,7 @@ class Song
 private
 
   def longest_length_in_array(arr)
-    return arr.inject(0) {|max_length, name| (name.to_s.length > max_length) ? name.to_s.length : max_length }
+    return arr.inject(0) {|max_length, name| [name.to_s.length, max_length].max }
   end
 
   def structure_to_yaml
