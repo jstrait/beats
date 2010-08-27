@@ -3,6 +3,8 @@ class InvalidFlowError < RuntimeError; end
 class PatternExpander
   BARLINE = "|"
   TICK = "-"
+  REPEAT_FRAME_REGEX = /:[-]*:[0-9]*/
+  NUMBER_REGEX = /[0-9]+/
   
   # TODO: What should happen if flow is longer than pattern?
   # Either ignore extra flow, or add trailing .... to each track to match up?
@@ -21,31 +23,31 @@ class PatternExpander
       flow[0] = ":"  # Make the implicit : at the beginning explicit
     end
     
-    regex = /:[-]*:[0-9]*/
     repeat_frames = []
     lower_bound = 0
-    start = flow[lower_bound...flow.length] =~ regex
+    start = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
     while start != nil do
       h = {}
-      str = flow[lower_bound...flow.length].match(regex).to_s
+      str = flow[lower_bound...flow.length].match(REPEAT_FRAME_REGEX).to_s
       h[:range] = (lower_bound + start)..(lower_bound + start + str.length - 1)
-      num_repeats = str.match(/[0-9]+/).to_s
+      num_repeats = str.match(NUMBER_REGEX).to_s
       h[:repeats] = (num_repeats == "") ? 2 : num_repeats.to_i
       repeat_frames << h
-      lower_bound += str.length
+      lower_bound = start + str.length
       
-      start = flow[lower_bound...flow.length] =~ regex
+      start = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
     end
     
     repeat_frames.reverse.each do |frame|
       pattern.tracks.each do |name, track|
         range = frame[:range]
         
-        # WARNING: Don't change the two lines below to:
+        # WARNING: Don't change the three lines below to:
         #   track.rhythm[range] = whatever
         # When changing the rhythm like this, rhythm=() won't be called,
         # and Track.beats won't be updated as a result.
-        new_rhythm = track.rhythm[range] * frame[:repeats]
+        new_rhythm = track.rhythm
+        new_rhythm[range] = new_rhythm[range] * frame[:repeats]
         track.rhythm = new_rhythm
       end
     end
