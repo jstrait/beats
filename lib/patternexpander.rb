@@ -4,6 +4,8 @@ class PatternExpander
   BARLINE = "|"
   TICK = "-"
   
+  # TODO: What should happen if flow is longer than pattern?
+  # Either ignore extra flow, or add trailing .... to each track to match up?
   def self.expand_pattern(flow, pattern)
     unless self.valid_flow? flow
       raise InvalidFlowError, "Invalid flow"
@@ -15,7 +17,7 @@ class PatternExpander
     # If odd, then there's an implicit : at the beginning of the pattern.
     number_of_colons = flow.scan(/:/).length
     if number_of_colons % 2 == 1
-      # TODO: What if flow[0] is not -?
+      # TODO: What if flow[0] is not '-'
       flow[0] = ":"  # Make the implicit : at the beginning explicit
     end
     
@@ -38,9 +40,17 @@ class PatternExpander
     repeat_frames.reverse.each do |frame|
       pattern.tracks.each do |name, track|
         range = frame[:range]
-        track.rhythm[range] = track.rhythm[range] * frame[:repeats]
+        
+        # WARNING: Don't change the two lines below to:
+        #   track.rhythm[range] = whatever
+        # When changing the rhythm like this, rhythm=() won't be called,
+        # and Track.beats won't be updated as a result.
+        new_rhythm = track.rhythm[range] * frame[:repeats]
+        track.rhythm = new_rhythm
       end
     end
+    
+    return pattern
   end
   
   # TODO: Return more specific info on why flow isn't valid

@@ -15,6 +15,8 @@ class Track
     self.rhythm = rhythm
   end
   
+  # TODO: What to have this invoked when setting like this?
+  #   track.rhythm[x..y] = whatever
   def rhythm=(rhythm)
     @rhythm = rhythm.delete(BARLINE)
     beats = []
