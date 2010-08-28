@@ -20,7 +20,7 @@ class PatternExpanderTest < Test::Unit::TestCase
     end
   end
   
-  def test_expand_pattern_repeats
+  def test_expand_pattern_single_repeats
     expected_pattern = Pattern.new :verse
     expected_pattern.track "bass",  [], "X...X.X.X...X.X."
     expected_pattern.track "snare", [], "....X.......X..."
@@ -47,13 +47,29 @@ class PatternExpanderTest < Test::Unit::TestCase
     end
   end
   
+begin
+  def test_expand_pattern_multiple_repeats
+    expected_pattern = Pattern.new :verse
+   expected_pattern.track "bass",  [], "X...X...X.X.X.X."
+   expected_pattern.track "snare", [], "........X...X..."
+    
+    [":--::--:", ":-:2:--:", ":-:2:-:2"].each do |flow|
+      actual_pattern = Pattern.new :verse
+      actual_pattern.track "bass",  [], "|X...|X.X.|"
+      actual_pattern.track "snare", [], "|....|X...|"
+      actual_pattern = PatternExpander.expand_pattern(flow, actual_pattern)
+      assert(expected_pattern.same_tracks_as?(actual_pattern))
+    end
+  end
+end
+  
   def test_expand_pattern_invalid
     pattern = Pattern.new :verse
     pattern.track "bass",  [], "|X...|X.X.|"
     pattern.track "snare", [], "|....|X...|"
     
     # Patterns with an invalid character
-    ["a", "|---!---|"].each do |invalid_flow|
+    ["a", "|---!---|", "|....|....|"].each do |invalid_flow|
       assert_raise(InvalidFlowError) do
         PatternExpander.expand_pattern(invalid_flow, pattern)
       end
