@@ -6,6 +6,7 @@ class PatternExpander
   REPEAT_FRAME_REGEX = /:[-]*:[0-9]*/
   NUMBER_REGEX = /[0-9]+/
   
+  # TODO: This method totally sucks and is incomprehensible. Clean it up!
   # TODO: What should happen if flow is longer than pattern?
   # Either ignore extra flow, or add trailing .... to each track to match up?
   def self.expand_pattern(flow, pattern)
@@ -25,17 +26,23 @@ class PatternExpander
     
     repeat_frames = []
     lower_bound = 0
-    start = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
-    while start != nil do
-      h = {}
+    frame_start_index = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
+    while frame_start_index != nil do
       str = flow[lower_bound...flow.length].match(REPEAT_FRAME_REGEX).to_s
-      h[:range] = (lower_bound + start)..(lower_bound + start + str.length - 1)
-      num_repeats = str.match(NUMBER_REGEX).to_s
-      h[:repeats] = (num_repeats == "") ? 2 : num_repeats.to_i
-      repeat_frames << h
-      lower_bound = start + str.length
       
-      start = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
+      range_start = lower_bound + frame_start_index
+      range_end = range_start + str.length - 1
+      
+      num_repeats = str.match(NUMBER_REGEX).to_s
+      num_repeats = (num_repeats == "") ? 2 : num_repeats.to_i
+      
+      repeat_frame = {}
+      repeat_frame[:range] = range_start..range_end
+      repeat_frame[:repeats] = num_repeats
+      repeat_frames << repeat_frame
+      
+      lower_bound += frame_start_index + str.length
+      frame_start_index = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
     end
     
     repeat_frames.reverse.each do |frame|
