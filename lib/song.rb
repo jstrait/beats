@@ -54,6 +54,19 @@ class Song
     @patterns.keys.collect {|pattern_name| @patterns[pattern_name].tracks.length }.max || 0
   end
 
+  # The unique track names used in each of the song's patterns. Sorted in alphabetical order.
+  # For example calling this method for this song:
+  #
+  #   Verse:
+  #     - bass:  X...
+  #     - snare: ..X.
+  #
+  #   Chorus:
+  #     - bass:  X.X.
+  #     - snare: X.X.
+  #     - hihat: XXXX
+  #
+  # Will return: ["bass", "hihat", "snare"]
   def track_names
     @patterns.values.inject([]) {|track_names, pattern| track_names | pattern.tracks.keys }.sort
   end
