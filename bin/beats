@@ -15,7 +15,6 @@ require "lib/patternexpander"
 require "lib/song"
 require "lib/songoptimizer"
 require "lib/songparser"
-require "lib/songsplitter"
 require "lib/track"
 
 def parse_options

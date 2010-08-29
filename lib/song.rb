@@ -123,6 +123,35 @@ class Song
     return copy
   end
   
+  # Splits a Song object into multiple Song objects, where each new
+  # Song only has 1 track. For example, if a Song has 5 tracks, this will return
+  # a hash of 5 songs, each with one of the original Song's tracks.
+  def split()
+    split_songs = {}
+    track_names = track_names()
+    
+    track_names.each do |track_name|
+      new_song = copy_ignoring_patterns_and_structure()
+      
+      @patterns.each do |name, original_pattern|
+        new_pattern = new_song.pattern(name)
+        
+        if original_pattern.tracks.has_key?(track_name)
+          original_track = original_pattern.tracks[track_name]
+          new_pattern.track(original_track.name, original_track.wave_data, original_track.rhythm)
+        else
+          new_pattern.track(track_name, [], "." * original_pattern.tick_count())
+        end
+      end
+      
+      new_song.structure = @structure
+      
+      split_songs[track_name] = new_song
+    end
+    
+    return split_songs
+  end
+  
   # Removes any patterns that aren't referenced in the structure.
   def remove_unused_patterns
     # Using reject() here because for some reason select() returns an Array not a Hash.

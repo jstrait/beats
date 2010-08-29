@@ -35,8 +35,7 @@ class Beats
 
     duration = nil
     if @options[:split]
-      song_splitter = SongSplitter.new()
-      split_songs = song_splitter.split(song)
+      split_songs = song.split()
       split_songs.each do |track_name, split_song|
         split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
 
