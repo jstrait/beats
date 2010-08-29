@@ -1,12 +1,13 @@
 class InvalidFlowError < RuntimeError; end
 
+# TODO: The expand_pattern method in this class should probably be moved to the Pattern class.
+# This class would then go away.
 class PatternExpander
   BARLINE = "|"
   TICK = "-"
   REPEAT_FRAME_REGEX = /:[-]*:[0-9]*/
   NUMBER_REGEX = /[0-9]+/
   
-  # TODO: This method totally sucks and is incomprehensible. Clean it up!
   # TODO: What should happen if flow is longer than pattern?
   # Either ignore extra flow, or add trailing .... to each track to match up?
   def self.expand_pattern(flow, pattern)
@@ -18,6 +19,8 @@ class PatternExpander
     
     # Count number of :
     # If odd, then there's an implicit : at the beginning of the pattern.
+    # TODO: What if the first character in the flow is already :
+    #       That means repeat the first step twice, right?
     number_of_colons = flow.scan(/:/).length
     if number_of_colons % 2 == 1
       # TODO: What if flow[0] is not '-'
