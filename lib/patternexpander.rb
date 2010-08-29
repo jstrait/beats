@@ -24,26 +24,7 @@ class PatternExpander
       flow[0] = ":"  # Make the implicit : at the beginning explicit
     end
     
-    repeat_frames = []
-    lower_bound = 0
-    frame_start_index = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
-    while frame_start_index != nil do
-      str = flow[lower_bound...flow.length].match(REPEAT_FRAME_REGEX).to_s
-      
-      range_start = lower_bound + frame_start_index
-      range_end = range_start + str.length - 1
-      
-      num_repeats = str.match(NUMBER_REGEX).to_s
-      num_repeats = (num_repeats == "") ? 2 : num_repeats.to_i
-      
-      repeat_frame = {}
-      repeat_frame[:range] = range_start..range_end
-      repeat_frame[:repeats] = num_repeats
-      repeat_frames << repeat_frame
-      
-      lower_bound += frame_start_index + str.length
-      frame_start_index = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
-    end
+    repeat_frames = parse_flow_for_repeat_frames(flow)
     
     repeat_frames.reverse.each do |frame|
       pattern.tracks.each do |name, track|
@@ -92,5 +73,32 @@ class PatternExpander
     end
     
     return true
+  end
+  
+private
+
+  def self.parse_flow_for_repeat_frames(flow)
+    repeat_frames = []
+    lower_bound = 0
+    frame_start_index = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
+    while frame_start_index != nil do
+      str = flow[lower_bound...flow.length].match(REPEAT_FRAME_REGEX).to_s
+      
+      range_start = lower_bound + frame_start_index
+      range_end = range_start + str.length - 1
+      
+      num_repeats = str.match(NUMBER_REGEX).to_s
+      num_repeats = (num_repeats == "") ? 2 : num_repeats.to_i
+      
+      repeat_frame = {}
+      repeat_frame[:range] = range_start..range_end
+      repeat_frame[:repeats] = num_repeats
+      repeat_frames << repeat_frame
+      
+      lower_bound += frame_start_index + str.length
+      frame_start_index = flow[lower_bound...flow.length] =~ REPEAT_FRAME_REGEX
+    end
+    
+    return repeat_frames
   end
 end
