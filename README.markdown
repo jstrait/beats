@@ -29,14 +29,15 @@ BEATS is a command-line drum machine written in pure Ruby. Feed it a song notate
 	  - sounds/tom4.wav:  ...........X....
 	  - sounds/tom2.wav:  ..............X.
 
-And [here is what it sounds like](http://beatsdrummachine.com/beat.mp3) after getting the BEATS treatment. What a glorious groove!
+And [here's what it sounds like](http://beatsdrummachine.com/beat.mp3) after getting the BEATS treatment. What a glorious groove!
+
 
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.2.0. It was just released! It brings significant performance and architectural improvements. It also contains a few bug fixes.
+The latest stable version of BEATS is 1.2.0, released on July 12, 2010. It brings significant performance and architectural improvements. It also contains a few bug fixes. For more info, see [http://www.joelstrait.com/blog/2010/7/12/beats_1.2.0_released](http://www.joelstrait.com/blog/2010/7/12/beats_1.2.0_released).
 
-Since 1.2.0 was just released, I'm not sure just yet what will be coming in 1.3.0.
+Development for 1.3.0 is underway on the trunk. While the previous release focused on performance, this version will bring new features.
 
 
 Installation
