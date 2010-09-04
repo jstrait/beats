@@ -1,0 +1,10 @@
+# Invalid song, since the Kit references a sound that is not a valid *.wav file.
+Song:
+  Tempo: 100
+  Structure:
+    - Verse: x1
+  Kit:
+    - bad: test/songparser_test.rb
+
+Verse:
+  - bad: X...X...

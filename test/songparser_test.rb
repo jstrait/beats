@@ -84,8 +84,10 @@ class SongParserTest < Test::Unit::TestCase
                         "no_header",
                         "no_structure",
                         "pattern_with_no_tracks",
+                        "sound_in_kit_not_found",
                         "sound_in_track_not_found",
-                        "sound_in_kit_not_found",]
+                        "sound_in_kit_wrong_format",
+                        "sound_in_track_wrong_format"]
     
     invalid_fixtures.each do |fixture|
       assert_raise(SongParseError) do

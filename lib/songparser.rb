@@ -31,7 +31,9 @@ class SongParser
     # 2.) Build the kit
     begin
       kit = build_kit(base_path, raw_song_components[:kit], raw_song_components[:patterns])
-    rescue SoundNotFoundError => detail
+    rescue SoundFileNotFoundError => detail
+      raise SongParseError, "#{detail}"
+    rescue InvalidSoundFormatError => detail
       raise SongParseError, "#{detail}"
     end
     song.kit = kit
@@ -108,8 +110,8 @@ private
           track_name = track_definition.keys.first
           track_path = track_name
         
-          if track_name.end_with? ".wav"
-            kit_items[track_name] = track_path
+          if track_name != Pattern::FLOW_TRACK_NAME && kit_items[track_name] == nil
+            kit_items[track_name] = track_path   
           end
         end
       end
@@ -136,7 +138,7 @@ private
       track_list.each do |track_definition|
         track_name = track_definition.keys.first
         
-        if track_name == "flow"
+        if track_name == Pattern::FLOW_TRACK_NAME
           flow = track_definition[track_name]
         else  
           # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")

@@ -61,16 +61,25 @@ class KitTest < Test::Unit::TestCase
   end
   
   def test_invalid_initialization
-    assert_raise(SoundNotFoundError) { Kit.new("test/sounds", {"i_do_not_exist" => "i_do_not_exist.wav"}) }
+    # Tests for adding non-existant sound file to Kit
+    assert_raise(SoundFileNotFoundError) { Kit.new("test/sounds", {"i_do_not_exist" => "i_do_not_exist.wav"}) }
     
-    assert_raise(SoundNotFoundError) { Kit.new("test/sounds", {"mono16" => "bass_mono_16.wav",
-                                                               "i_do_not_exist" => "i_do_not_exist.wav"}) }
+    assert_raise(SoundFileNotFoundError) { Kit.new("test/sounds", {"mono16" => "bass_mono_16.wav",
+                                                                   "i_do_not_exist" => "i_do_not_exist.wav"}) }
     
-    assert_raise(SoundNotFoundError) { Kit.new("test/sounds", {"mono16" => "bass_mono_16.wav",
-                                                               "composite" => ["bass_mono_16.wav", "snare_mono_16.wav"],
-                                                               "i_do_not_exist" => "i_do_not_exist.wav"}) }
+    assert_raise(SoundFileNotFoundError) { Kit.new("test/sounds", {"mono16" => "bass_mono_16.wav",
+                                                                   "composite" => ["bass_mono_16.wav", "snare_mono_16.wav"],
+                                                                   "i_do_not_exist" => "i_do_not_exist.wav"}) }
     
-    # TODO: Add test for invalid file format
+    # Tests for adding invalid sound files to Kit
+    assert_raise(InvalidSoundFormatError) { Kit.new("test", {"bad" => "kit_test.rb"}) }
+    
+    assert_raise(InvalidSoundFormatError) { Kit.new("test", {"mono16" => "sounds/bass_mono_16.wav",
+                                                             "bad" => "kit_test.rb"}) }
+    
+    assert_raise(InvalidSoundFormatError) { Kit.new("test", {"mono16" => "sounds/bass_mono_16.wav",
+                                                             "composite" => ["sounds/bass_mono_16.wav", "sounds/snare_mono_16.wav"],
+                                                             "bad" => "kit_test.rb"}) }
   end
   
   def test_get_sample_data

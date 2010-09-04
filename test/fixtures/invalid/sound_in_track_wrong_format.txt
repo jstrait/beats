@@ -1,0 +1,8 @@
+# Invalid song, since a track references a sound that is not a valid *.wav file.
+Song:
+  Tempo: 100
+  Structure:
+    - Verse: x1
+
+Verse:
+  - test/songparser_test.rb: X...X...

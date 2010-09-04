@@ -1,4 +1,6 @@
 class Pattern
+  FLOW_TRACK_NAME = "flow"
+  
   def initialize(name)
     @name = name
     @tracks = {}

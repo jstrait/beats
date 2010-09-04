@@ -1,5 +1,9 @@
 # Raised when trying to load a sound file which can't be found at the path specified
-class SoundNotFoundError < RuntimeError; end
+class SoundFileNotFoundError < RuntimeError; end
+
+# Raised when trying to load a sound file which either isn't actually a sound file, or
+# is in an unsupported format.
+class InvalidSoundFormatError < RuntimeError; end
 
 # This class keeps track of the sounds that are used in a song. It provides a
 # central place for storing sound data, and most usefully, handles converting
@@ -106,9 +110,11 @@ private
     kit_items.values.flatten.each do |sound_file_name|
       begin
         wavefile = WaveFile.open(sound_file_name)
-      rescue
-        # TODO: Raise different error if sound is in an unsupported format
-        raise SoundNotFoundError, "Sound file #{sound_file_name} not found."
+      rescue Errno::ENOENT
+        raise SoundFileNotFoundError, "Sound file #{sound_file_name} not found."
+      rescue StandardError
+        raise InvalidSoundFormatError, "Sound file #{sound_file_name} is either not a sound file, " +
+                                       "or is in an unsupported format. BEATS can handle 8 or 16-bit *.wav files."
       end
       @num_channels = [@num_channels, wavefile.num_channels].max
       raw_sounds[sound_file_name] = wavefile
