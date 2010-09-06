@@ -1,6 +1,12 @@
 class SongParseError < RuntimeError; end
 
 class SongParser
+  DONT_USE_STRUCTURE_WARNING =
+      "\n" +
+      "WARNING! This song contains a 'Structure' section in the header.\n" +
+      "As of BEATS 1.3.0, the 'Structure' section should be renamed 'Flow'.\n" +
+      "You should change your song file, in a future version using 'Structure' will cause an error.\n"
+  
   NO_SONG_HEADER_ERROR_MSG =
 "Song must have a header. Here's an example:
 
@@ -72,6 +78,7 @@ private
 
   def split_raw_yaml_into_components(raw_song_definition)
     raw_song_components = {}
+    warnings = []
     raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
     
     if raw_song_components[:full_definition]["song"] != nil
@@ -88,17 +95,14 @@ private
       raw_song_components[:flow]    = raw_flow
     else
       if raw_structure != nil
-        puts "\n" +
-             "WARNING! This song contains a 'Structure' section in the header.\n" +
-             "As of BEATS 1.3.0, the 'Structure' section should be renamed 'Flow'.\n" +
-             "You should change your song file, in a future version using 'Structure' will cause an error.\n"
+        puts DONT_USE_STRUCTURE_WARNING
       end
       
       raw_song_components[:flow]    = raw_structure
     end
     
     raw_song_components[:patterns]  = raw_song_components[:full_definition].reject {|k, v| k == "song"}
-  
+    
     return raw_song_components
   end
       
