@@ -7,7 +7,7 @@ Song:
     - snare:    test/sounds/snare_mono_8.wav
     - hhclosed: test/sounds/hh_closed_mono_8.wav
     - hhopen:   test/sounds/hh_open_mono_8.wav
-  Structure:
+  Flow:
     - Verse:  x2
     - Chorus: x2
     - Verse:  x2

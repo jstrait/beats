@@ -1,7 +1,7 @@
 # Invalid song, since the tempo is not a number
 Song:
   Tempo: 100a
-  Structure:
+  Flow:
     - Verse:  x2
 
 Verse:

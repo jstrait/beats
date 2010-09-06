@@ -4,7 +4,7 @@
 
 Song:
   Tempo: 120
-  Structure:
+  Flow:
     - Verse:   x2
     - Chorus:  x4
     - Verse:   x2

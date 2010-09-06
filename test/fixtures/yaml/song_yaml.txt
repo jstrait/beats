@@ -1,6 +1,6 @@
 Song:
   Tempo: 99
-  Structure:
+  Flow:
     - Verse:   x2
     - Chorus:  x2
     - Verse:   x2

@@ -3,7 +3,7 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 require 'test/includes'
 
 class MockSongOptimizer < SongOptimizer
-  def clone_song_ignoring_patterns_and_structure(original_song)
+  def clone_song_ignoring_patterns_and_flow(original_song)
     return super
   end
 end
@@ -12,7 +12,7 @@ class SongOptimizerTest < Test::Unit::TestCase
   EXAMPLE_SONG_YAML = "
 Song:
   Tempo: 135
-  Structure:
+  Flow:
     - Verse:   x2
     - Chorus:  x4
     - Verse:   x2
@@ -39,7 +39,7 @@ Chorus:
   EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN = "
 Song:
   Tempo: 135
-  Structure:
+  Flow:
     - Verse:   x1
   Kit:
     - bass:   sounds/bass.wav
@@ -103,18 +103,18 @@ Verse:
     assert_equal(pattern.tracks["hh_closed"].rhythm, "..X.")
     assert_equal(pattern.tracks["sounds/tom2.wav"].rhythm, "..X.")
     
-    assert_equal(optimized_song.structure, [:chorus0, :chorus0, :verse8, :verse12,
-                                            :chorus0, :chorus0, :verse8, :verse12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :chorus0, :chorus0, :verse8, :verse12,
-                                            :chorus0, :chorus0, :verse8, :verse12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12,
-                                            :chorus0, :chorus4, :chorus8, :chorus12])
+    assert_equal(optimized_song.flow, [:chorus0, :chorus0, :verse8, :verse12,
+                                       :chorus0, :chorus0, :verse8, :verse12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12,
+                                       :chorus0, :chorus0, :verse8, :verse12,
+                                       :chorus0, :chorus0, :verse8, :verse12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12,
+                                       :chorus0, :chorus4, :chorus8, :chorus12])
   end
   
   def test_optimize_song_nondivisible_max_pattern_length()
@@ -133,7 +133,7 @@ Verse:
     assert_equal(".X...", pattern.tracks["bass"].rhythm)
     assert_equal("...X.", pattern.tracks["snare"].rhythm)
     
-    assert_equal([:verse0, :verse7], optimized_song.structure)
+    assert_equal([:verse0, :verse7], optimized_song.flow)
   end
   
   def test_optimize_song_containing_empty_pattern()
@@ -157,6 +157,6 @@ Verse:
     assert_equal("X...", pattern.tracks["bass"].rhythm)
     assert_equal("..X.", pattern.tracks["snare"].rhythm)
     
-    assert_equal([:verse0, :verse4, :verse8], optimized_song.structure)
+    assert_equal([:verse0, :verse4, :verse8], optimized_song.flow)
   end
 end

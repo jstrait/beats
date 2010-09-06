@@ -11,7 +11,7 @@ class Song
     self.tempo = DEFAULT_TEMPO
     @kit = Kit.new(base_path, {})
     @patterns = {}
-    @structure = []
+    @flow = []
   end
 
   # Adds a new pattern to the song, with the specified name.
@@ -24,7 +24,7 @@ class Song
   # (Assumes a sample rate of 44100). Does NOT include samples required for sound
   # overflow from the last pattern.
   def sample_length
-    @structure.inject(0) do |sum, pattern_name|
+    @flow.inject(0) do |sum, pattern_name|
       sum + @patterns[pattern_name].sample_length(@tick_sample_length)
     end
   end
@@ -33,13 +33,13 @@ class Song
   # (Assumes a sample rate of 44100). Includes samples required for sound overflow
   # from the last pattern.
   def sample_length_with_overflow
-    if @structure.length == 0
+    if @flow.length == 0
       return 0
     end
     
     full_sample_length = self.sample_length
-    last_pattern_sample_length = @patterns[@structure.last].sample_length(@tick_sample_length)
-    last_pattern_overflow_length = @patterns[@structure.last].sample_length_with_overflow(@tick_sample_length)
+    last_pattern_sample_length = @patterns[@flow.last].sample_length(@tick_sample_length)
+    last_pattern_overflow_length = @patterns[@flow.last].sample_length_with_overflow(@tick_sample_length)
     overflow = last_pattern_overflow_length - last_pattern_sample_length
 
     return sample_length + overflow
@@ -80,7 +80,7 @@ class Song
     file = wave_file.open_for_appending(output_file_name, sample_length)
     
     incoming_overflow = {}
-    @structure.each do |pattern_name|
+    @flow.each do |pattern_name|
       key = [pattern_name, incoming_overflow.hash]
       unless cache.member?(key)
         sample_data = @patterns[pattern_name].sample_data(@tick_sample_length,
@@ -127,8 +127,8 @@ class Song
     @tick_sample_length = SAMPLES_PER_MINUTE / new_tempo / 4.0
   end
   
-  # Returns a new Song that is identical but with no patterns or structure.
-  def copy_ignoring_patterns_and_structure
+  # Returns a new Song that is identical but with no patterns or flow.
+  def copy_ignoring_patterns_and_flow
     copy = Song.new(@kit.base_path)
     copy.tempo = @tempo
     copy.kit = @kit
@@ -144,7 +144,7 @@ class Song
     track_names = track_names()
     
     track_names.each do |track_name|
-      new_song = copy_ignoring_patterns_and_structure()
+      new_song = copy_ignoring_patterns_and_flow()
       
       @patterns.each do |name, original_pattern|
         new_pattern = new_song.pattern(name)
@@ -157,7 +157,7 @@ class Song
         end
       end
       
-      new_song.structure = @structure
+      new_song.flow = @flow
       
       split_songs[track_name] = new_song
     end
@@ -165,10 +165,10 @@ class Song
     return split_songs
   end
   
-  # Removes any patterns that aren't referenced in the structure.
+  # Removes any patterns that aren't referenced in the flow.
   def remove_unused_patterns
     # Using reject() here because for some reason select() returns an Array not a Hash.
-    @patterns.reject! {|k, pattern| !@structure.member?(pattern.name) }
+    @patterns.reject! {|k, pattern| !@flow.member?(pattern.name) }
   end
 
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
@@ -181,7 +181,7 @@ class Song
     
     yaml_output = "Song:\n"
     yaml_output += "  Tempo: #{@tempo}\n"
-    yaml_output += structure_to_yaml()
+    yaml_output += flow_to_yaml()
     yaml_output += @kit.to_yaml(2)
     yaml_output += patterns_to_yaml()
     
@@ -189,7 +189,7 @@ class Song
   end
 
   attr_reader :tick_sample_length, :patterns
-  attr_accessor :structure, :kit
+  attr_accessor :flow, :kit
 
 private
 
@@ -197,12 +197,12 @@ private
     return arr.inject(0) {|max_length, name| [name.to_s.length, max_length].max }
   end
 
-  def structure_to_yaml
-    yaml_output = "  Structure:\n"
-    ljust_amount = longest_length_in_array(@structure) + 1  # The +1 is for the trailing ":"
+  def flow_to_yaml
+    yaml_output = "  Flow:\n"
+    ljust_amount = longest_length_in_array(@flow) + 1  # The +1 is for the trailing ":"
     previous = nil
     count = 0
-    @structure.each do |pattern_name|
+    @flow.each do |pattern_name|
       if pattern_name == previous || previous == nil
         count += 1
       else

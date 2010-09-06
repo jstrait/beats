@@ -20,7 +20,7 @@ class SongOptimizer
   # generated faster.
   def optimize(original_song, max_pattern_length)
     # 1.) Create a new song, cloned from the original
-    optimized_song = original_song.copy_ignoring_patterns_and_structure()
+    optimized_song = original_song.copy_ignoring_patterns_and_flow()
     
     # 2.) Subdivide patterns
     optimized_song = subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
@@ -60,14 +60,14 @@ protected
     blank_track_pattern = '.' * max_pattern_length
     
     # For each pattern, add a new pattern to new song every max_pattern_length ticks
-    optimized_structure = {}
+    optimized_flow = {}
     original_song.patterns.values.each do |pattern|
       tick_index = 0
-      optimized_structure[pattern.name] = []
+      optimized_flow[pattern.name] = []
       
       while(pattern.tracks.values.first.rhythm[tick_index] != nil) do
         new_pattern = optimized_song.pattern("#{pattern.name}#{tick_index}".to_sym)
-        optimized_structure[pattern.name] << new_pattern.name
+        optimized_flow[pattern.name] << new_pattern.name
         pattern.tracks.values.each do |track|
           sub_track_pattern = track.rhythm[tick_index...(tick_index + max_pattern_length)]
           
@@ -92,12 +92,12 @@ protected
       end
     end
     
-    # Replace the Song's structure to reference the new sub-divided patterns
+    # Replace the Song's flow to reference the new sub-divided patterns
     # instead of the old patterns.
-    optimized_structure = original_song.structure.map do |original_pattern|
-      optimized_structure[original_pattern]
+    optimized_flow = original_song.flow.map do |original_pattern|
+      optimized_flow[original_pattern]
     end
-    optimized_song.structure = optimized_structure.flatten
+    optimized_song.flow = optimized_flow.flatten
 
     return optimized_song    
   end
@@ -136,14 +136,14 @@ protected
       end
     end
     
-    # Update structure to remove references to duplicates
-    new_structure = song.structure
+    # Update flow to remove references to duplicates
+    new_flow = song.flow
     replacements.each do |duplicate, replacement|
-      new_structure = new_structure.map do |pattern_name|
+      new_flow = new_flow.map do |pattern_name|
         (pattern_name == duplicate) ? replacement : pattern_name
       end
     end
-    song.structure = new_structure
+    song.flow = new_flow
     
     # Remove unused Patterns. Not strictly necessary, but makes resulting songs
     # easier to read for debugging purposes.

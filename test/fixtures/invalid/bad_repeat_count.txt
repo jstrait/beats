@@ -1,7 +1,7 @@
 # Invalid song, since the number of repeats for pattern Verse is not a number
 Song:
   Tempo: 100
-  Structure:
+  Flow:
     - Verse:  x2a
 
 Verse:

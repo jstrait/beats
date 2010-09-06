@@ -42,10 +42,10 @@ class SongParser
     add_patterns_to_song(song, raw_song_components[:patterns])
     
     # 4.) Set structure
-    if raw_song_components[:structure] == nil
-      raise SongParseError, "Song must have a Structure section in the header."
+    if raw_song_components[:flow] == nil
+      raise SongParseError, "Song must have a Flow section in the header."
     else
-      set_song_structure(song, raw_song_components[:structure])
+      set_song_flow(song, raw_song_components[:flow])
     end
     
     return song
@@ -81,7 +81,22 @@ private
     end
     raw_song_components[:tempo]     = raw_song_components[:header]["tempo"]
     raw_song_components[:kit]       = raw_song_components[:header]["kit"]
-    raw_song_components[:structure] = raw_song_components[:header]["structure"]
+    
+    raw_flow = raw_song_components[:header]["flow"]
+    raw_structure = raw_song_components[:header]["structure"]
+    if raw_flow != nil
+      raw_song_components[:flow]    = raw_flow
+    else
+      if raw_structure != nil
+        puts "\n" +
+             "WARNING! This song contains a 'Structure' section in the header.\n" +
+             "As of BEATS 1.3.0, the 'Structure' section should be renamed 'Flow'.\n" +
+             "You should change your song file, in a future version using 'Structure' will cause an error.\n"
+      end
+      
+      raw_song_components[:flow]    = raw_structure
+    end
+    
     raw_song_components[:patterns]  = raw_song_components[:full_definition].reject {|k, v| k == "song"}
   
     return raw_song_components
@@ -152,10 +167,10 @@ private
     end
   end
   
-  def set_song_structure(song, raw_structure)
-    structure = []
+  def set_song_flow(song, raw_flow)
+    flow = []
 
-    raw_structure.each{|pattern_item|
+    raw_flow.each{|pattern_item|
       if pattern_item.class == String
         pattern_item = {pattern_item => "x1"}
       end
@@ -181,9 +196,9 @@ private
         end
       end
       
-      multiples.times { structure << pattern_name_sym }
+      multiples.times { flow << pattern_name_sym }
     }
-    song.structure = structure
+    song.flow = flow
   end
     
   # Converts all hash keys to be lowercase

@@ -1,7 +1,7 @@
-# Invalid song, since the structure references a non-existent pattern
+# Invalid song, since the flow references a non-existent pattern
 Song:
   Tempo: 100
-  Structure:
+  Flow:
     - Verse:  x2
     - Chorus: x1
 

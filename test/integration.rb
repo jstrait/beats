@@ -9,9 +9,9 @@ class SongParserTest < Test::Unit::TestCase
   def test_bad_song_errors
     invalid_fixtures = ["bad_tempo.txt",
                         "bad_repeat_count.txt",
-                        "bad_structure.txt",
+                        "bad_flow.txt",
                         "no_header.txt",
-                        "no_structure.txt",
+                        "no_flow.txt",
                         "sound_in_kit_not_found.txt",
                         "sound_in_track_not_found.txt"]
         

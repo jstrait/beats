@@ -2,7 +2,7 @@
 
 Song:
   Tempo: 100
-  Structure:
+  Flow:
     - Verse: x1
     - Chorus: x1
 

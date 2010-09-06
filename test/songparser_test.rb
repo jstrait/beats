@@ -33,10 +33,10 @@ class SongParserTest < Test::Unit::TestCase
     test_songs = SongParserTest.generate_test_data()
     
     assert_equal(120, test_songs[:no_tempo].tempo)
-    assert_equal([:verse], test_songs[:no_tempo].structure)
+    assert_equal([:verse], test_songs[:no_tempo].flow)
     
     assert_equal(100, test_songs[:repeats_not_specified].tempo)
-    assert_equal([:verse], test_songs[:repeats_not_specified].structure)
+    assert_equal([:verse], test_songs[:repeats_not_specified].flow)
     
     # These two songs should be the same, except that one uses a kit in the song header
     # and the other doesn't.
@@ -48,7 +48,7 @@ class SongParserTest < Test::Unit::TestCase
                     :chorus, :chorus, :chorus, :chorus,
                     :bridge,
                     :chorus, :chorus, :chorus, :chorus],
-                   song.structure)
+                   song.flow)
       assert_equal(99, song.tempo)
       assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / 99 / 4.0, song.tick_sample_length)
       assert_equal(["bridge", "chorus", "verse"], song.patterns.keys.map{|key| key.to_s}.sort)
@@ -79,10 +79,10 @@ class SongParserTest < Test::Unit::TestCase
   
   def test_invalid_parse
     invalid_fixtures = ["bad_repeat_count",
-                        "bad_structure",
+                        "bad_flow",
                         "bad_tempo",
                         "no_header",
-                        "no_structure",
+                        "no_flow",
                         "pattern_with_no_tracks",
                         "sound_in_kit_not_found",
                         "sound_in_track_not_found",

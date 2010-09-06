@@ -16,8 +16,8 @@ class SongTest < Test::Unit::TestCase
 
     test_songs[:blank] = Song.new(base_path)
     
-    test_songs[:no_structure] = Song.new(base_path)
-    verse = test_songs[:no_structure].pattern :verse
+    test_songs[:no_flow] = Song.new(base_path)
+    verse = test_songs[:no_flow].pattern :verse
     verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
     verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
     verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
@@ -36,7 +36,7 @@ class SongTest < Test::Unit::TestCase
     chorus.track "bass.wav",  kit.get_sample_data("bass.wav"),  "X......."
     chorus.track "snare.wav", kit.get_sample_data("snare.wav"), "....X..X"
     chorus.track "ride.wav",  kit.get_sample_data("ride.wav"),  "X.....X."
-    test_songs[:from_code].structure = [:verse, :chorus, :verse, :chorus, :chorus]
+    test_songs[:from_code].flow = [:verse, :chorus, :verse, :chorus, :chorus]
     test_songs[:from_code].kit = kit
     
     return test_songs
@@ -45,15 +45,15 @@ class SongTest < Test::Unit::TestCase
   def test_initialize
     test_songs = generate_test_data()
     
-    assert_equal([], test_songs[:blank].structure)
+    assert_equal([], test_songs[:blank].flow)
     assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
                  test_songs[:blank].tick_sample_length)
     
-    assert_equal([], test_songs[:no_structure].structure)
+    assert_equal([], test_songs[:no_flow].flow)
     assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
-                 test_songs[:no_structure].tick_sample_length)
+                 test_songs[:no_flow].tick_sample_length)
     
-    assert_equal([:verse, :chorus, :verse, :chorus, :chorus], test_songs[:from_code].structure)
+    assert_equal([:verse, :chorus, :verse, :chorus, :chorus], test_songs[:from_code].flow)
     assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
                  test_songs[:from_code].tick_sample_length)
   end
@@ -62,7 +62,7 @@ class SongTest < Test::Unit::TestCase
     test_songs = generate_test_data()
     
     assert_equal(0, test_songs[:blank].total_tracks)
-    assert_equal(3, test_songs[:no_structure].total_tracks)
+    assert_equal(3, test_songs[:no_flow].total_tracks)
     assert_equal(3, test_songs[:from_code].total_tracks)
     assert_equal(1, test_songs[:repeats_not_specified].total_tracks)
     assert_equal(1, test_songs[:overflow].total_tracks)
@@ -73,7 +73,7 @@ class SongTest < Test::Unit::TestCase
     test_songs = generate_test_data()
     
     assert_equal([], test_songs[:blank].track_names)
-    assert_equal(["bass.wav", "hh_closed.wav", "snare.wav"], test_songs[:no_structure].track_names)
+    assert_equal(["bass.wav", "hh_closed.wav", "snare.wav"], test_songs[:no_flow].track_names)
     assert_equal(["bass.wav", "hh_closed.wav", "ride.wav", "snare.wav"], test_songs[:from_code].track_names)
     assert_equal(["test/sounds/bass_mono_8.wav"], test_songs[:repeats_not_specified].track_names)
     assert_equal(["test/sounds/snare_mono_8.wav"], test_songs[:overflow].track_names)
@@ -96,7 +96,7 @@ class SongTest < Test::Unit::TestCase
     test_songs = generate_test_data()
 
     assert_equal(0, test_songs[:blank].sample_length)
-    assert_equal(0, test_songs[:no_structure].sample_length)
+    assert_equal(0, test_songs[:no_flow].sample_length)
     
     assert_equal((test_songs[:from_code].tick_sample_length * 16 * 2) +
                      (test_songs[:from_code].tick_sample_length * 8 * 3),
@@ -112,7 +112,7 @@ class SongTest < Test::Unit::TestCase
     test_songs = generate_test_data()
     
     assert_equal(0, test_songs[:blank].sample_length_with_overflow)
-    assert_equal(0, test_songs[:no_structure].sample_length_with_overflow)
+    assert_equal(0, test_songs[:no_flow].sample_length_with_overflow)
     
     snare_overflow =
       (test_songs[:from_code].kit.get_sample_data("snare.wav").length -
@@ -135,25 +135,25 @@ class SongTest < Test::Unit::TestCase
                  test_songs[:from_valid_yaml_string].sample_length_with_overflow)
   end
   
-  def test_copy_ignoring_patterns_and_structure
+  def test_copy_ignoring_patterns_and_flow
     test_songs = generate_test_data()
     original_song = test_songs[:from_valid_yaml_string]
-    cloned_song = original_song.copy_ignoring_patterns_and_structure()
+    cloned_song = original_song.copy_ignoring_patterns_and_flow()
     
     assert_not_equal(cloned_song, original_song)
     assert_equal(cloned_song.tempo, original_song.tempo)
     assert_equal(cloned_song.kit, original_song.kit)
     assert_equal(cloned_song.tick_sample_length, original_song.tick_sample_length)
-    assert_equal([], cloned_song.structure)
+    assert_equal([], cloned_song.flow)
     assert_equal({}, cloned_song.patterns)
   end
   
   def test_remove_unused_patterns
     test_songs = generate_test_data()
     
-    assert_equal(1, test_songs[:no_structure].patterns.length)
-    test_songs[:no_structure].remove_unused_patterns()
-    assert_equal({}, test_songs[:no_structure].patterns)
+    assert_equal(1, test_songs[:no_flow].patterns.length)
+    test_songs[:no_flow].remove_unused_patterns()
+    assert_equal({}, test_songs[:no_flow].patterns)
     
     assert_equal(3, test_songs[:from_valid_yaml_string].patterns.length)
     test_songs[:from_valid_yaml_string].remove_unused_patterns()

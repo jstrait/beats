@@ -1,4 +1,4 @@
-# Invalid song, since it doesn't have a structure section in the header
+# Invalid song, since it doesn't have a Flow section in the header
 Song:
   Tempo: 100
 
