@@ -148,6 +148,40 @@ class SongTest < Test::Unit::TestCase
     assert_equal({}, cloned_song.patterns)
   end
   
+  def test_split
+    test_songs = generate_test_data()
+    split_songs = test_songs[:from_valid_yaml_string_with_kit].split()
+    
+    assert_equal(Hash, split_songs.class)
+    assert_equal(6, split_songs.length)
+    
+    song_names = split_songs.keys.sort
+    assert_equal(["bass",
+                  "hhclosed",
+                  "hhopen",
+                  "snare",
+                  "test/sounds/hh_closed_mono_8.wav",
+                  "test/sounds/ride_mono_8.wav"],
+                 song_names)
+                 
+    song_names.each do |song_name|
+      song = split_songs[song_name]
+      assert_equal(99, song.tempo)
+      assert_equal(3, song.patterns.length)
+      assert_equal([:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus, :chorus, :chorus,
+                    :bridge, :chorus, :chorus, :chorus, :chorus],
+                   song.flow)
+                   
+      song.patterns.each do |pattern_name, pattern|
+        assert_equal(1, pattern.tracks.length)
+        assert_equal([song_name], pattern.tracks.keys)
+        assert_equal(song_name, pattern.tracks[song_name].name)
+      end
+    end
+    
+    
+  end
+  
   def test_remove_unused_patterns
     test_songs = generate_test_data()
     
