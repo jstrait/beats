@@ -1,0 +1,10 @@
+# Header contains a "Structure" section instead of a "Flow" section.
+# This is valid for now, but is deprecated.
+
+Song:
+  Tempo: 100
+  Structure:
+    - Verse: x2
+
+Verse:
+  - test/sounds/bass_mono_8.wav: X...X...

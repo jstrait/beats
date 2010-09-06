@@ -25,6 +25,7 @@ class SongParserTest < Test::Unit::TestCase
     test_songs[:from_valid_yaml_string_with_kit] = load_fixture("valid/example_with_kit.txt")
     test_songs[:from_valid_yaml_string_with_empty_track] = load_fixture("valid/example_with_empty_track.txt")
     test_songs[:multiple_tracks_same_sound] = load_fixture("valid/multiple_tracks_same_sound.txt")
+    test_songs[:with_structure] = load_fixture("valid/with_structure.txt")
 
     return test_songs
   end
@@ -75,6 +76,12 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal("..............X.", song.patterns[:verse].tracks["snare"].rhythm)
     assert_equal("X.XXX.XXX.X.X.X.", song.patterns[:verse].tracks["hh_closed"].rhythm)
     assert_equal("..............XX", song.patterns[:verse].tracks["agogo"].rhythm)
+  
+    song = test_songs[:with_structure]
+    assert_equal([:verse, :verse], song.flow)
+    assert_equal(1, song.patterns.length)
+    assert_equal(1, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
   end
   
   def test_invalid_parse
