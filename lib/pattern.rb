@@ -108,29 +108,17 @@ private
     primary_sample_data = []
     overflow_sample_data = {}
     actual_sample_length = sample_length(tick_sample_length)
-  
+    
     if @intermediate_cache == nil
+      raw_track_sample_arrays = []
       track_names.each do |track_name|
         temp = @tracks[track_name].sample_data(tick_sample_length)
-    
-        if primary_sample_data == []
-          primary_sample_data = temp[:primary]
-          overflow_sample_data[track_name] = temp[:overflow]
-        else
-          track_samples = temp[:primary]
-          if num_channels == 1
-            track_samples.length.times {|i| primary_sample_data[i] += track_samples[i] }
-          else
-            track_samples.length.times do |i|
-              primary_sample_data[i] = [primary_sample_data[i][0] + track_samples[i][0],
-                                        primary_sample_data[i][1] + track_samples[i][1]]
-            end
-          end
-
-          overflow_sample_data[track_name] = temp[:overflow]
-        end
+        raw_track_sample_arrays << temp[:primary]
+        overflow_sample_data[track_name] = temp[:overflow]
       end
-    
+
+      primary_sample_data = AudioUtils.composite(raw_track_sample_arrays)
+      
       @intermediate_cache = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
     else
       primary_sample_data = @intermediate_cache[:primary].dup
