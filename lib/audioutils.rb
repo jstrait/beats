@@ -1,12 +1,14 @@
 class AudioUtils
 
-  # Assumes each sample_array is the same length
   def self.composite(sample_arrays)
     if sample_arrays == []
       return []
     end
 
     num_channels = num_channels(sample_arrays.first)
+
+    # Sort from longest to shortest
+    sample_arrays = sample_arrays.sort {|x, y| y.length <=> x.length}
 
     composited_output = sample_arrays.slice!(0)
     sample_arrays.each do |sample_array|

@@ -9,10 +9,12 @@ class AudioUtilsTest < Test::Unit::TestCase
     # Mono
     assert_equal([10, 20, 30, 40], AudioUtils.composite([[10, 20, 30, 40]]))
     assert_equal([30, 50, 70, -10], AudioUtils.composite([[10, 20, 30, 40], [20, 30, 40, -50]]))
+    assert_equal([70, 80, 60], AudioUtils.composite([[20, 30], [10], [40, 50, 60]]))
 
     # Stereo
     assert_equal([[10, 20], [30, 40]], AudioUtils.composite([[[10, 20], [30, 40]]]))
     assert_equal([[30, 50], [70, -10]], AudioUtils.composite([[[10, 20], [30, 40]], [[20, 30], [40, -50]]]))
+    assert_equal([[90, 120], [120, 140], [100, 110]], AudioUtils.composite([[[20, 30], [40, 50]], [[10, 20]], [[60, 70], [80, 90], [100, 110]]]))
   end
 
   def test_num_channels
