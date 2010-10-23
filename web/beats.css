@@ -119,6 +119,15 @@ li
 	list-style-type: square;
 }
 
+label {
+  width: 50%;
+  display: inline-block;
+}
+
+audio {
+  width: 50%;
+}
+
 div#about
 {
 	text-align: center;
