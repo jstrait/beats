@@ -124,28 +124,13 @@ private
   end
   
   def mixdown(sound_file_names, raw_sounds)
-    num_sounds = sound_file_names.length
-    sound_name = sound_file_names.pop
-    mixdown = raw_sounds[sound_name].sample_data.dup
+    sample_arrays = []    
     sound_file_names.each do |sound_file_name|
-      sample_data = raw_sounds[sound_file_name].sample_data
-      if(mixdown.length > sample_data.length)
-        incoming_samples = sample_data
-      else
-        incoming_samples = mixdown
-        mixdown = sample_data
-      end
-      
-      if @num_channels == 1
-        incoming_samples.length.times {|i| mixdown[i] += incoming_samples[i]}
-      elsif @num_channels == 2
-        incoming_samples.length.times do |i|
-          mixdown[i] = [mixdown[i][0] + incoming_samples[i][0],
-                        mixdown[i][1] + incoming_samples[i][1]]
-        end
-      end
+      sample_arrays << raw_sounds[sound_file_name].sample_data
     end
-    
-    return AudioUtils.normalize(mixdown, num_sounds)
+
+    composited_sample_data = AudioUtils.composite(sample_arrays)
+
+    return AudioUtils.normalize(composited_sample_data, sound_file_names.length)
   end
 end
