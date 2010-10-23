@@ -42,7 +42,7 @@ class Pattern
   end
     
   def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
-    primary_sample_data, overflow_sample_data = generate_main_sample_data(tick_sample_length, num_channels)
+    primary_sample_data, overflow_sample_data = generate_main_sample_data(tick_sample_length)
     primary_sample_data, overflow_sample_data = handle_incoming_overflow(tick_sample_length,
                                                                          num_channels,
                                                                          incoming_overflow,
@@ -103,7 +103,7 @@ private
     return name_key
   end
 
-  def generate_main_sample_data(tick_sample_length, num_channels)
+  def generate_main_sample_data(tick_sample_length)
     track_names = @tracks.keys
     primary_sample_data = []
     overflow_sample_data = {}
