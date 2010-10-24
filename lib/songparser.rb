@@ -51,7 +51,7 @@ class SongParser
     # 3.) Load patterns
     add_patterns_to_song(song, raw_song_components[:patterns])
     
-    # 4.) Set structure
+    # 4.) Set flow
     if raw_song_components[:flow] == nil
       raise SongParseError, "Song must have a Flow section in the header."
     else
@@ -199,9 +199,9 @@ private
           raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
         elsif multiples > 0 && !song.patterns.has_key?(pattern_name_sym)
           # This test is purposefully designed to only throw an error if the number of repeats is greater
-          # than 0. This allows you to specify an undefined pattern in the structure with "x0" repeats.
-          # This can be convenient for defining the structure before all patterns have been added to the song file.
-          raise SongParseError, "Song structure includes non-existent pattern: #{pattern_name}."
+          # than 0. This allows you to specify an undefined pattern in the flow with "x0" repeats.
+          # This can be convenient for defining the flow before all patterns have been added to the song file.
+          raise SongParseError, "Song flow includes non-existent pattern: #{pattern_name}."
         end
       end
       
