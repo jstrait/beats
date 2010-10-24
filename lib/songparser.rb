@@ -23,6 +23,10 @@ class SongParser
     raw_song_definition = canonicalize_definition(definition)
     raw_song_components = split_raw_yaml_into_components(raw_song_definition)
     
+    unless raw_song_components[:folder] == nil
+      base_path = raw_song_components[:folder]
+    end 
+    
     song = Song.new(base_path)
     
     # 1.) Set tempo
@@ -87,6 +91,7 @@ private
       raise SongParseError, NO_SONG_HEADER_ERROR_MSG
     end
     raw_song_components[:tempo]     = raw_song_components[:header]["tempo"]
+    raw_song_components[:folder]    = raw_song_components[:header]["folder"]
     raw_song_components[:kit]       = raw_song_components[:header]["kit"]
     
     raw_flow = raw_song_components[:header]["flow"]
