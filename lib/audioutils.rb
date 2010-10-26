@@ -1,5 +1,9 @@
 class AudioUtils
 
+  # Combines multiple sample arrays into one, by adding them together.
+  # When the sample arrays are different lengths, the output array will be the length
+  # of the longest input array.
+  # WARNING: Incoming arrays can be modified.
   def self.composite(sample_arrays)
     if sample_arrays == []
       return []
@@ -27,6 +31,28 @@ class AudioUtils
     return composited_output
   end
 
+
+  # Scales the amplitude of the incoming sample array by *scale* amount. Can be used in conjunction
+  # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
+  # TODO: Is there a better name for this method?
+  def self.normalize(sample_array, scale)
+    num_channels = num_channels(sample_array)
+
+    if scale > 1 && sample_array.length > 0
+      if num_channels == 1
+        sample_array = sample_array.map {|sample| sample / scale }
+      elsif num_channels == 2
+        sample_array = sample_array.map {|sample| [sample[0] / scale, sample[1] / scale]}
+      else
+        raise StandardError, "Invalid sample data array in AudioUtils.normalize()"
+      end
+    end
+    
+    return sample_array
+  end
+
+
+  # Returns FixNum count of channels in sample array.
   def self.num_channels(sample_array)
     first_element = sample_array.first
 
@@ -38,18 +64,5 @@ class AudioUtils
       # TODO: Define what to do here
     end
   end
-   
-  def self.normalize(sample_data, num_tracks)
-    if num_tracks > 1 && sample_data.length > 0
-      if sample_data.first.class == Fixnum
-        sample_data = sample_data.map {|sample| sample / num_tracks }
-      elsif sample_data.first.class == Array
-        sample_data = sample_data.map {|sample| [sample[0] / num_tracks, sample[1] / num_tracks]}
-      else
-        raise StandardError, "Invalid sample data array in AudioUtils.normalize()"
-      end
-    end
-    
-    return sample_data
-  end
 end
+
