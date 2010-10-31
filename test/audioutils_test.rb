@@ -3,14 +3,6 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 require 'test/includes'
 
 class AudioUtilsTest < Test::Unit::TestCase
-  S = [-100, 200, 300, -400]     # Sample data for a sound. Unrealistically short for clarity.
-  SL = S + [0, 0]                # Sound when tick sample length is longer than full sound length
-  SS = [-100, 200]               # Sound when tick sample length is less than full sound length
-  SO = [300, -400]               # Sound overflow when tick sample length is less than full sound length
-  TE = [0, 0, 0, 0]              # A tick with no sound, with length equal to S
-  TL = [0, 0, 0, 0, 0, 0]        # A tick with no sound, longer than full sound length
-  TS = [0, 0]                    # A tick with no sound, shorter than full sound length
-
   def test_composite
     assert_equal([], AudioUtils.composite([]))
 
@@ -35,6 +27,14 @@ class AudioUtilsTest < Test::Unit::TestCase
     assert_equal([100, 200, 300, 400, 500], AudioUtils.normalize([100, 200, 300, 400, 500], 1))
     assert_equal([20, 40, 60, 80, 100], AudioUtils.normalize([100, 200, 300, 400, 500], 5))
   end
+
+  S  = [-100, 200, 300, -400]    # Sample data for a sound. Unrealistically short for clarity.
+  SL = S + [0, 0]                # Sound when tick sample length is longer than full sound length
+  SS = [-100, 200]               # Sound when tick sample length is less than full sound length
+  SO = [300, -400]               # Sound overflow when tick sample length is less than full sound length
+  TE = [0, 0, 0, 0]              # A tick with no sound, with length equal to S
+  TL = [0, 0, 0, 0, 0, 0]        # A tick with no sound, longer than full sound length
+  TS = [0, 0]                    # A tick with no sound, shorter than full sound length
 
   # These tests use unrealistically short sounds and tick sample lengths, to make tests a lot easier to work with.
   def test_generate_rhythm_sample_data
