@@ -114,15 +114,14 @@ private
     end
     
     total_ticks = beats.inject(0) {|sum, n| sum + n}
+    
     primary_sample_length = (total_ticks * tick_sample_length).floor
     
-    last_beat_sample_length = beats.last * tick_sample_length
-    full_sample_length = primary_sample_length
-    if sound_sample_length > last_beat_sample_length
-      full_sample_length += sound_sample_length - last_beat_sample_length.floor
-    end
-        
-    return primary_sample_length, full_sample_length.floor
+    ticks_before_last_beat = total_ticks - beats.last
+    last_beat_start_sample = (ticks_before_last_beat * tick_sample_length).floor
+    full_sample_length = [primary_sample_length, last_beat_start_sample + sound_sample_length].max
+
+    return primary_sample_length, full_sample_length
   end
 end
 
