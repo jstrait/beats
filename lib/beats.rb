@@ -44,11 +44,11 @@ class Beats
         file_name = File.dirname(@output_file_name) + "/" +
                     File.basename(@output_file_name, extension) + "-" + File.basename(track_name, extension) +
                     extension
-        duration = AudioEngine.write_to_file(file_name, split_song, split_song.kit)
+        duration = AudioEngine.new(split_song, split_song.kit).write_to_file(file_name)
       end
     else
       song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-      duration = AudioEngine.write_to_file(@output_file_name, song, song.kit)
+      duration = AudioEngine.new(song, song.kit).write_to_file(@output_file_name)
     end
 
     return {:duration => duration}
