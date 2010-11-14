@@ -28,6 +28,12 @@ class AudioUtilsTest < Test::Unit::TestCase
     assert_equal([20, 40, 60, 80, 100], AudioUtils.normalize([100, 200, 300, 400, 500], 5))
   end
 
+  def test_tick_sample_length
+    assert_equal(6615.0, AudioUtils.tick_sample_length(44100, 100))
+    assert_equal(3307.5, AudioUtils.tick_sample_length(44100, 200))
+    assert_equal(3307.5, AudioUtils.tick_sample_length(22050, 100))
+  end
+
   S  = [-100, 200, 300, -400]    # Sample data for a sound. Unrealistically short for clarity.
   SL = S + [0, 0]                # Sound when tick sample length is longer than full sound length
   SS = [-100, 200]               # Sound when tick sample length is less than full sound length

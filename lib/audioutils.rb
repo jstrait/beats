@@ -93,6 +93,15 @@ class AudioUtils
   end
 
 
+  def self.tick_sample_length(samples_per_second, tempo)
+     samples_per_minute = samples_per_second * 60.0
+     samples_per_quarter_note = samples_per_minute / tempo
+
+     # Each tick is equivalent to a 16th note
+     return samples_per_quarter_note / 4.0
+  end
+
+
   # Returns FixNum count of channels in sample array.
   def self.num_channels(sample_array)
     first_element = sample_array.first
