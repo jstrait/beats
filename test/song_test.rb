@@ -3,8 +3,6 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 require 'test/includes'
 
 class SongTest < Test::Unit::TestCase
-  DEFAULT_TEMPO = 120
-  
   def generate_test_data
     kit = Kit.new("test/sounds", {"bass.wav"      => "bass_mono_8.wav",
                                   "snare.wav"     => "snare_mono_8.wav",
@@ -46,16 +44,13 @@ class SongTest < Test::Unit::TestCase
     test_songs = generate_test_data()
     
     assert_equal([], test_songs[:blank].flow)
-    assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
-                 test_songs[:blank].tick_sample_length)
+    assert_equal(5512.5, test_songs[:blank].tick_sample_length)
     
     assert_equal([], test_songs[:no_flow].flow)
-    assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
-                 test_songs[:no_flow].tick_sample_length)
+    assert_equal(5512.5, test_songs[:no_flow].tick_sample_length)
     
     assert_equal([:verse, :chorus, :verse, :chorus, :chorus], test_songs[:from_code].flow)
-    assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / DEFAULT_TEMPO / 4.0,
-                 test_songs[:from_code].tick_sample_length)
+    assert_equal(5512.5, test_songs[:from_code].tick_sample_length)
   end
   
   def test_total_tracks

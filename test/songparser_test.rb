@@ -51,7 +51,7 @@ class SongParserTest < Test::Unit::TestCase
                     :chorus, :chorus, :chorus, :chorus],
                    song.flow)
       assert_equal(99, song.tempo)
-      assert_equal((Song::SAMPLE_RATE * Song::SECONDS_PER_MINUTE) / 99 / 4.0, song.tick_sample_length)
+      assert_equal(6681.818181818181818, song.tick_sample_length)
       assert_equal(["bridge", "chorus", "verse"], song.patterns.keys.map{|key| key.to_s}.sort)
       assert_equal(4, song.patterns[:verse].tracks.length)
       assert_equal(5, song.patterns[:chorus].tracks.length)

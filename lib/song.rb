@@ -2,8 +2,6 @@ class InvalidTempoError < RuntimeError; end
 
 class Song
   SAMPLE_RATE = 44100
-  SECONDS_PER_MINUTE = 60.0
-  SAMPLES_PER_MINUTE = SAMPLE_RATE * SECONDS_PER_MINUTE
   DEFAULT_TEMPO = 120
 
   def initialize(base_path)
@@ -88,7 +86,7 @@ class Song
     end
     
     @tempo = new_tempo
-    @tick_sample_length = SAMPLES_PER_MINUTE / new_tempo / 4.0
+    @tick_sample_length = AudioUtils.tick_sample_length(SAMPLE_RATE, new_tempo)
   end
   
   # Returns a new Song that is identical but with no patterns or flow.
