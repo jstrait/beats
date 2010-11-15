@@ -1,21 +1,19 @@
 class AudioEngine
   SAMPLE_RATE = 44100
-  SECONDS_PER_MINUTE = 60.0
-  SAMPLES_PER_MINUTE = SAMPLE_RATE * SECONDS_PER_MINUTE
-  DEFAULT_TEMPO = 120
   PACK_CODE = "s*"   # All sample data is assumed to be 16-bit
 
   def initialize(song, kit)
     @song = song
     @kit = kit
     
+    @tick_sample_length = AudioUtils.tick_sample_length(SAMPLE_RATE, @song.tempo) 
     @pattern_cache = {}
     @track_cache = {}
   end
 
   def write_to_file(output_file_name)
     num_tracks_in_song = @song.total_tracks
-    sample_length = @song.sample_length_with_overflow()
+    sample_length = song_sample_length()
     
     wave_file = BeatsWaveFile.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
     file = wave_file.open_for_appending(output_file_name, sample_length)
@@ -24,7 +22,7 @@ class AudioEngine
     @song.flow.each do |pattern_name|
       key = [pattern_name, incoming_overflow.hash]
       unless @pattern_cache.member?(key)
-        sample_data = @song.patterns[pattern_name].sample_data(@song.tick_sample_length,
+        sample_data = @song.patterns[pattern_name].sample_data(@tick_sample_length,
                                                                @kit.num_channels,
                                                                num_tracks_in_song,
                                                                incoming_overflow)
@@ -46,6 +44,25 @@ class AudioEngine
     file.close()
 
     return wave_file.calculate_duration(SAMPLE_RATE, sample_length)
+  end
+
+  def song_sample_length()
+    if @song.flow.length == 0
+      return 0
+    end
+
+    patterns = @song.patterns
+
+    primary_sample_length = @song.flow.inject(0) do |sum, pattern_name|
+      sum + patterns[pattern_name].sample_length(@tick_sample_length)
+    end
+
+    last_pattern_name = @song.flow.last
+    last_pattern_sample_length = patterns[last_pattern_name].sample_length(@tick_sample_length)
+    last_pattern_overflow_length = patterns[last_pattern_name].sample_length_with_overflow(@tick_sample_length)
+    overflow_sample_length = last_pattern_overflow_length - last_pattern_sample_length
+
+    return primary_sample_length + overflow_sample_length
   end
 
 private

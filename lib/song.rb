@@ -17,30 +17,6 @@ class Song
     return @patterns[name]
   end
 
-  # Returns the number of samples required for the entire song at the current tempo.
-  # (Assumes a sample rate of 44100). Does NOT include samples required for sound
-  # overflow from the last pattern.
-  def sample_length
-    @flow.inject(0) do |sum, pattern_name|
-      sum + @patterns[pattern_name].sample_length(@tick_sample_length)
-    end
-  end
-
-  # Returns the number of samples required for the entire song at the current tempo.
-  # (Assumes a sample rate of 44100). Includes samples required for sound overflow
-  # from the last pattern.
-  def sample_length_with_overflow
-    if @flow.length == 0
-      return 0
-    end
-    
-    full_sample_length = self.sample_length
-    last_pattern_sample_length = @patterns[@flow.last].sample_length(@tick_sample_length)
-    last_pattern_overflow_length = @patterns[@flow.last].sample_length_with_overflow(@tick_sample_length)
-    overflow = last_pattern_overflow_length - last_pattern_sample_length
-
-    return sample_length + overflow
-  end
   
   # The number of tracks that the pattern with the greatest number of tracks has.
   # TODO: Is it a problem that an optimized song can have a different total_tracks() value than
