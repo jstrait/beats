@@ -65,6 +65,8 @@ class AudioEngine
     return primary_sample_length + overflow_sample_length
   end
 
+  attr_reader :tick_sample_length
+
 private
 
   def merge_overflow(overflow, num_tracks_in_song)

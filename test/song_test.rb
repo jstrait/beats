@@ -44,13 +44,8 @@ class SongTest < Test::Unit::TestCase
     test_songs = generate_test_data()
     
     assert_equal([], test_songs[:blank].flow)
-    assert_equal(5512.5, test_songs[:blank].tick_sample_length)
-    
     assert_equal([], test_songs[:no_flow].flow)
-    assert_equal(5512.5, test_songs[:no_flow].tick_sample_length)
-    
     assert_equal([:verse, :chorus, :verse, :chorus, :chorus], test_songs[:from_code].flow)
-    assert_equal(5512.5, test_songs[:from_code].tick_sample_length)
   end
   
   def test_total_tracks
@@ -95,7 +90,6 @@ class SongTest < Test::Unit::TestCase
     assert_not_equal(cloned_song, original_song)
     assert_equal(cloned_song.tempo, original_song.tempo)
     assert_equal(cloned_song.kit, original_song.kit)
-    assert_equal(cloned_song.tick_sample_length, original_song.tick_sample_length)
     assert_equal([], cloned_song.flow)
     assert_equal({}, cloned_song.patterns)
   end

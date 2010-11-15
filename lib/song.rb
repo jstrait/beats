@@ -1,7 +1,6 @@
 class InvalidTempoError < RuntimeError; end
 
 class Song
-  SAMPLE_RATE = 44100
   DEFAULT_TEMPO = 120
 
   def initialize(base_path)
@@ -62,7 +61,6 @@ class Song
     end
     
     @tempo = new_tempo
-    @tick_sample_length = AudioUtils.tick_sample_length(SAMPLE_RATE, new_tempo)
   end
   
   # Returns a new Song that is identical but with no patterns or flow.
@@ -126,7 +124,7 @@ class Song
     return yaml_output
   end
 
-  attr_reader :tick_sample_length, :patterns
+  attr_reader :patterns
   attr_accessor :flow, :kit
 
 private

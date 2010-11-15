@@ -16,6 +16,13 @@ class AudioUtilsTest < Test::Unit::TestCase
     return test_songs 
   end
 
+  def test_initialize
+    test_songs = load_song_fixtures()
+
+    assert_equal(5512.5, AudioEngine.new(test_songs[:blank], nil).tick_sample_length)
+    assert_equal(6615.0, AudioEngine.new(test_songs[:repeats_not_specified], nil).tick_sample_length)
+  end
+
   def test_song_sample_length
     test_songs = load_song_fixtures()
     
