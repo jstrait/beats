@@ -43,14 +43,6 @@ class Song
     @patterns.values.inject([]) {|track_names, pattern| track_names | pattern.tracks.keys }.sort
   end
 
-  def num_channels
-    return @kit.num_channels
-  end
-  
-  def bits_per_sample
-    return @kit.bits_per_sample
-  end
-
   def tempo
     return @tempo
   end
