@@ -18,12 +18,13 @@ class SongOptimizer
   
   # Returns a Song that will produce the same output as original_song, but should be
   # generated faster.
-  def optimize(original_song, max_pattern_length)
+  # TODO: Remove dependency on having kit passed in
+  def optimize(original_song, kit, max_pattern_length)
     # 1.) Create a new song, cloned from the original
     optimized_song = original_song.copy_ignoring_patterns_and_flow()
     
     # 2.) Subdivide patterns
-    optimized_song = subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
+    optimized_song = subdivide_song_patterns(original_song, optimized_song, kit, max_pattern_length)
 
     # 3.) Prune duplicate patterns
     optimized_song = prune_duplicate_patterns(optimized_song)
@@ -56,7 +57,7 @@ protected
   #
   # Note that if a track in a sub-divided pattern has no triggers (such as track2 in the
   # 2nd pattern above), it will not be included in the new pattern.
-  def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
+  def subdivide_song_patterns(original_song, optimized_song, kit, max_pattern_length)
     blank_track_pattern = '.' * max_pattern_length
     
     # For each pattern, add a new pattern to new song every max_pattern_length ticks
@@ -83,7 +84,7 @@ protected
           # Track.sample_data() examines its sound's sample data to determine if it is
           # mono or stereo. If the first item in the sample data Array is an Array,
           # it decides stereo. That's what the [] vs. [[]] is about.
-          placeholder_wave_data = (optimized_song.kit.num_channels == 1) ? [] : [[]]          
+          placeholder_wave_data = (kit.num_channels == 1) ? [] : [[]]          
           
           new_pattern.track("placeholder", placeholder_wave_data, blank_track_pattern)
         end

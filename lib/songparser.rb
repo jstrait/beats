@@ -27,7 +27,7 @@ class SongParser
       base_path = raw_song_components[:folder]
     end 
     
-    song = Song.new(base_path)
+    song = Song.new()
     
     # 1.) Set tempo
     begin
@@ -46,10 +46,9 @@ class SongParser
     rescue InvalidSoundFormatError => detail
       raise SongParseError, "#{detail}"
     end
-    song.kit = kit
     
     # 3.) Load patterns
-    add_patterns_to_song(song, raw_song_components[:patterns])
+    add_patterns_to_song(song, kit, raw_song_components[:patterns])
     
     # 4.) Set flow
     if raw_song_components[:flow] == nil
@@ -58,7 +57,7 @@ class SongParser
       set_song_flow(song, raw_song_components[:flow])
     end
     
-    return song
+    return song, kit
   end
   
 private
@@ -145,7 +144,7 @@ private
     return kit
   end
   
-  def add_patterns_to_song(song, raw_patterns)
+  def add_patterns_to_song(song, kit, raw_patterns)
     raw_patterns.keys.each do |key|
       new_pattern = song.pattern key.to_sym
       flow = ""
@@ -168,7 +167,7 @@ private
           # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
           track_definition[track_name] ||= ""
 
-          new_pattern.track track_name, song.kit.get_sample_data(track_name), track_definition[track_name]
+          new_pattern.track track_name, kit.get_sample_data(track_name), track_definition[track_name]
         end
       end
       

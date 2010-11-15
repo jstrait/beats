@@ -4,34 +4,48 @@ require 'test/includes'
 
 class SongParserTest < Test::Unit::TestCase
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
+
+  # TODO: Add fixture for track with no rhythm
+  VALID_FIXTURES =   [:no_tempo,
+                      :repeats_not_specified,
+                      :pattern_with_overflow,
+                      :example_no_kit,
+                      :example_with_kit,
+                      :example_with_empty_track,
+                      :multiple_tracks_same_sound,
+                      :with_structure]
   
+  INVALID_FIXTURES = [:bad_repeat_count,
+                      :bad_flow,
+                      :bad_tempo,
+                      :no_header,
+                      :no_flow,
+                      :pattern_with_no_tracks,
+                      :sound_in_kit_not_found,
+                      :sound_in_track_not_found,
+                      :sound_in_kit_wrong_format,
+                      :sound_in_track_wrong_format]
+
   def self.load_fixture(fixture_name)
     return SongParser.new().parse(FIXTURE_BASE_PATH, YAML.load_file("test/fixtures/#{fixture_name}"))
   end
-  
+
   def self.generate_test_data
-    kit = Kit.new("test/sounds", {"bass.wav"      => "bass_mono_8.wav",
-                                  "snare.wav"     => "snare_mono_8.wav",
-                                  "hh_closed.wav" => "hh_closed_mono_8.wav",
-                                  "ride.wav"      => "ride_mono_8.wav"})
-
     test_songs = {}
-    
-    # TODO: Add fixture for track with no rhythm
-    test_songs[:no_tempo] = load_fixture("valid/no_tempo.txt")
-    test_songs[:repeats_not_specified] = load_fixture("valid/repeats_not_specified.txt")
-    test_songs[:overflow] = load_fixture("valid/pattern_with_overflow.txt")
-    test_songs[:from_valid_yaml_string] = load_fixture("valid/example_no_kit.txt")
-    test_songs[:from_valid_yaml_string_with_kit] = load_fixture("valid/example_with_kit.txt")
-    test_songs[:from_valid_yaml_string_with_empty_track] = load_fixture("valid/example_with_empty_track.txt")
-    test_songs[:multiple_tracks_same_sound] = load_fixture("valid/multiple_tracks_same_sound.txt")
-    test_songs[:with_structure] = load_fixture("valid/with_structure.txt")
+    test_kits = {}
 
-    return test_songs
+    VALID_FIXTURES.each do |fixture_name|
+      song, kit = load_fixture("valid/#{fixture_name}.txt")
+      test_songs[fixture_name] = song
+      test_kits[fixture_name] = kit
+    end
+    
+    return test_songs, test_kits
   end
 
+  # TODO: Add somes tests to validate the Kits
   def test_valid_parse
-    test_songs = SongParserTest.generate_test_data()
+    test_songs, test_kits = SongParserTest.generate_test_data()
     
     assert_equal(120, test_songs[:no_tempo].tempo)
     assert_equal([:verse], test_songs[:no_tempo].flow)
@@ -41,7 +55,7 @@ class SongParserTest < Test::Unit::TestCase
     
     # These two songs should be the same, except that one uses a kit in the song header
     # and the other doesn't.
-    [:from_valid_yaml_string, :from_valid_yaml_string_with_kit].each do |song_key|
+    [:example_no_kit, :example_with_kit].each do |song_key|
       song = test_songs[song_key]
       assert_equal([:verse, :verse,
                     :chorus, :chorus,
@@ -57,7 +71,7 @@ class SongParserTest < Test::Unit::TestCase
       assert_equal(1, song.patterns[:bridge].tracks.length)
     end
     
-    song = test_songs[:from_valid_yaml_string_with_empty_track]
+    song = test_songs[:example_with_empty_track]
     assert_equal(1, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
     assert_equal("........", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
@@ -84,18 +98,7 @@ class SongParserTest < Test::Unit::TestCase
   end
   
   def test_invalid_parse
-    invalid_fixtures = ["bad_repeat_count",
-                        "bad_flow",
-                        "bad_tempo",
-                        "no_header",
-                        "no_flow",
-                        "pattern_with_no_tracks",
-                        "sound_in_kit_not_found",
-                        "sound_in_track_not_found",
-                        "sound_in_kit_wrong_format",
-                        "sound_in_track_wrong_format"]
-    
-    invalid_fixtures.each do |fixture|
+    INVALID_FIXTURES.each do |fixture|
       assert_raise(SongParseError) do
         song = SongParserTest.load_fixture("invalid/#{fixture}.txt")
       end

@@ -8,10 +8,10 @@ Song:
     - Bridge:  x1
     - Chorus:  x4
   Kit:
-    - bass:      test/sounds/bass_mono_8.wav
-    - hhclosed:  test/sounds/hh_closed_mono_8.wav
-    - hhopen:    test/sounds/hh_open_mono_8.wav
-    - snare:     test/sounds/snare_mono_8.wav
+    - bass:      bass_mono_8.wav
+    - hhclosed:  hh_closed_mono_8.wav
+    - hhopen:    hh_open_mono_8.wav
+    - snare:     snare_mono_8.wav
 
 Bridge:
   - hhclosed:  XX.XXX.XXX.XXX.XXX.XXX.XXX.XXX.X

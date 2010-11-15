@@ -3,9 +3,8 @@ class InvalidTempoError < RuntimeError; end
 class Song
   DEFAULT_TEMPO = 120
 
-  def initialize(base_path)
+  def initialize()
     self.tempo = DEFAULT_TEMPO
-    @kit = Kit.new(base_path, {})
     @patterns = {}
     @flow = []
   end
@@ -57,9 +56,8 @@ class Song
   
   # Returns a new Song that is identical but with no patterns or flow.
   def copy_ignoring_patterns_and_flow
-    copy = Song.new(@kit.base_path)
+    copy = Song.new()
     copy.tempo = @tempo
-    copy.kit = @kit
     
     return copy
   end
@@ -102,7 +100,7 @@ class Song
   # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
   # using the SongParser class. This lets you save a Song to disk, to be re-loaded later. Produces nicer
   # looking output than the default version of to_yaml().
-  def to_yaml
+  def to_yaml(kit)
     # This implementation intentionally builds up a YAML string manually instead of using YAML::dump().
     # Ruby 1.8 makes it difficult to ensure a consistent ordering of hash keys, which makes the output ugly
     # and also hard to test.
@@ -110,14 +108,14 @@ class Song
     yaml_output = "Song:\n"
     yaml_output += "  Tempo: #{@tempo}\n"
     yaml_output += flow_to_yaml()
-    yaml_output += @kit.to_yaml(2)
+    yaml_output += kit.to_yaml(2)
     yaml_output += patterns_to_yaml()
     
     return yaml_output
   end
 
   attr_reader :patterns
-  attr_accessor :flow, :kit
+  attr_accessor :flow
 
 private
 

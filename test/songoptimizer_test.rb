@@ -51,14 +51,13 @@ Verse:
 
   def test_optimize
     parser = SongParser.new()
-    original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)
+    original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)
     
     optimizer = SongOptimizer.new()
-    optimized_song = optimizer.optimize(original_song, 4)
+    optimized_song = optimizer.optimize(original_song, kit, 4)
     
     assert_equal(optimized_song.tempo, 135)
     #assert_equal(optimized_song.total_tracks, 5)
-    assert_equal(original_song.kit, optimized_song.kit)
 
     # TODO: Add some sort of AudioEngine test to verify that optimized and unoptimized song have same sample data.
     #assert_equal(original_song.sample_length, optimized_song.sample_length)
@@ -121,10 +120,10 @@ Verse:
   
   def test_optimize_song_nondivisible_max_pattern_length()
     parser = SongParser.new()
-    original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
     
     optimizer = SongOptimizer.new()
-    optimized_song = optimizer.optimize(original_song, 7)
+    optimized_song = optimizer.optimize(original_song, kit, 7)
     
     pattern = optimized_song.patterns[:verse0]
     assert_equal(["bass"], pattern.tracks.keys.sort)
@@ -140,10 +139,10 @@ Verse:
   
   def test_optimize_song_containing_empty_pattern()
     parser = SongParser.new()
-    original_song = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
     
     optimizer = SongOptimizer.new()
-    optimized_song = optimizer.optimize(original_song, 4)
+    optimized_song = optimizer.optimize(original_song, kit, 4)
     
     pattern = optimized_song.patterns[:verse0]
     assert_equal(["bass"], pattern.tracks.keys.sort)

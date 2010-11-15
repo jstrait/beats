@@ -20,7 +20,7 @@ class Beats
     end
 
     song_parser = SongParser.new()
-    song = song_parser.parse(File.dirname(@input_file_name), YAML.load_file(@input_file_name))
+    song, kit = song_parser.parse(File.dirname(@input_file_name), YAML.load_file(@input_file_name))
     song_optimizer = SongOptimizer.new()
 
     if @options[:pattern] != nil
@@ -37,18 +37,18 @@ class Beats
     if @options[:split]
       split_songs = song.split()
       split_songs.each do |track_name, split_song|
-        split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
+        split_song = song_optimizer.optimize(split_song, kit, OPTIMIZED_PATTERN_LENGTH)
 
         # TODO: Move building the output file name into its own method?
         extension = File.extname(@output_file_name)
         file_name = File.dirname(@output_file_name) + "/" +
                     File.basename(@output_file_name, extension) + "-" + File.basename(track_name, extension) +
                     extension
-        duration = AudioEngine.new(split_song, split_song.kit).write_to_file(file_name)
+        duration = AudioEngine.new(split_song, kit).write_to_file(file_name)
       end
     else
-      song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-      duration = AudioEngine.new(song, song.kit).write_to_file(@output_file_name)
+      song = song_optimizer.optimize(song, kit, OPTIMIZED_PATTERN_LENGTH)
+      duration = AudioEngine.new(song, kit).write_to_file(@output_file_name)
     end
 
     return {:duration => duration}
