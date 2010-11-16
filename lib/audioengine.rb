@@ -46,6 +46,7 @@ class AudioEngine
     return wave_file.calculate_duration(SAMPLE_RATE, sample_length)
   end
 
+  # TODO: What if pattern before final pattern has really long sample that extends past the end of the last pattern's overflow?
   def song_sample_length()
     if @song.flow.length == 0
       return 0
