@@ -83,9 +83,13 @@ class AudioUtils
   # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
   # TODO: Is there a better name for this method?
   def self.normalize(sample_array, scale)
+    if sample_array == [] || sample_array == [[]]
+      return sample_array
+    end
+    
     num_channels = num_channels(sample_array)
 
-    if scale > 1 && sample_array.length > 0
+    if scale > 1
       if num_channels == 1
         sample_array = sample_array.map {|sample| sample / scale }
       elsif num_channels == 2
