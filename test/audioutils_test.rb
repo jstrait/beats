@@ -4,9 +4,13 @@ require 'test/includes'
 
 class AudioUtilsTest < Test::Unit::TestCase
   def test_composite
+    # Mono empty arrays
     assert_equal([], AudioUtils.composite([]))
-    assert_equal([[]], AudioUtils.composite([[]]))
+    assert_equal([], AudioUtils.composite([[]]))
     assert_equal([], AudioUtils.composite([[], [], [], []]))
+
+    # Stereo empty arrays
+    assert_equal([[]], AudioUtils.composite([[[]]]))
     assert_equal([[]], AudioUtils.composite([[[]], [[]], [[]], [[]]]))
 
     # Mono
