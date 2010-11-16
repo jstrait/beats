@@ -12,6 +12,7 @@ class AudioEngine
   end
 
   def write_to_file(output_file_name)
+    packed_pattern_cache = {}
     num_tracks_in_song = @song.total_tracks
     sample_length = song_sample_length()
     
@@ -21,23 +22,19 @@ class AudioEngine
     incoming_overflow = {}
     @song.flow.each do |pattern_name|
       key = [pattern_name, incoming_overflow.hash]
-      unless @pattern_cache.member?(key)
-        sample_data = @song.patterns[pattern_name].sample_data(@tick_sample_length,
-                                                               @kit.num_channels,
-                                                               num_tracks_in_song,
-                                                               incoming_overflow)
-        
+      unless packed_pattern_cache.member?(key)
+        sample_data = generate_pattern_sample_data(@song.patterns[pattern_name], incoming_overflow)
 
         if @kit.num_channels == 1
           # Don't flatten the sample data Array, since it is already flattened. That would be a waste of time, yo.
-          @pattern_cache[key] = {:primary => sample_data[:primary].pack(PACK_CODE), :overflow => sample_data[:overflow]}
+          packed_pattern_cache[key] = {:primary => sample_data[:primary].pack(PACK_CODE), :overflow => sample_data[:overflow]}
         else
-          @pattern_cache[key] = {:primary => sample_data[:primary].flatten.pack(PACK_CODE), :overflow => sample_data[:overflow]}
+          packed_pattern_cache[key] = {:primary => sample_data[:primary].flatten.pack(PACK_CODE), :overflow => sample_data[:overflow]}
         end
       end
 
-      file.syswrite(@pattern_cache[key][:primary])
-      incoming_overflow = @pattern_cache[key][:overflow]
+      file.syswrite(packed_pattern_cache[key][:primary])
+      incoming_overflow = packed_pattern_cache[key][:overflow]
     end
 
     # Write any remaining overflow from the final pattern
@@ -49,6 +46,18 @@ class AudioEngine
 
     return wave_file.calculate_duration(SAMPLE_RATE, sample_length)
   end
+
+  def generate_pattern_sample_data(pattern, incoming_overflow)
+    primary_sample_data, overflow_sample_data = generate_main_sample_data(pattern)
+    primary_sample_data, overflow_sample_data = handle_incoming_overflow(pattern,
+                                                                         incoming_overflow,
+                                                                         primary_sample_data,
+                                                                         overflow_sample_data)
+    primary_sample_data = AudioUtils.normalize(primary_sample_data, @song.total_tracks)
+    
+    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+  end
+
 
   # TODO: What if pattern before final pattern has really long sample that extends past the end of the last pattern's overflow?
   def song_sample_length()
@@ -71,4 +80,81 @@ class AudioEngine
   end
 
   attr_reader :tick_sample_length
+
+private
+
+  def pattern_sample_length(pattern)
+    tracks = pattern.tracks
+
+    track_lengths = tracks.keys.collect do |track_name|
+      tracks[track_name].sample_length(@tick_sample_length)
+    end
+    
+    return track_lengths.max || 0
+  end
+
+  def generate_main_sample_data(pattern)
+    track_names = pattern.tracks.keys
+    primary_sample_data = []
+    overflow_sample_data = {}
+    actual_sample_length = pattern_sample_length(pattern)
+        
+    if @pattern_cache[pattern] == nil
+      raw_track_sample_arrays = []
+      track_names.each do |track_name|
+        temp = pattern.tracks[track_name].sample_data(@tick_sample_length)
+        raw_track_sample_arrays << temp[:primary]
+        overflow_sample_data[track_name] = temp[:overflow]
+      end
+
+      primary_sample_data = AudioUtils.composite(raw_track_sample_arrays)
+      
+      @pattern_cache[pattern] = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
+    else
+      primary_sample_data = @pattern_cache[pattern][:primary].dup
+      overflow_sample_data = @pattern_cache[pattern][:overflow].dup
+    end
+  
+    return primary_sample_data, overflow_sample_data
+  end
+
+  def handle_incoming_overflow(pattern, incoming_overflow, primary_sample_data, overflow_sample_data)
+    track_names = pattern.tracks.keys
+  
+    # Add overflow from previous pattern
+    incoming_overflow.keys.each do |track_name|
+      num_incoming_overflow_samples = incoming_overflow[track_name].length
+    
+      if num_incoming_overflow_samples > 0
+        if track_names.member?(track_name)
+          # TODO: Does this handle situations where track has a .... rhythm and overflow is
+          # longer than track length?
+        
+          intro_length = pattern.tracks[track_name].intro_sample_length(@tick_sample_length)
+          if num_incoming_overflow_samples > intro_length
+            num_incoming_overflow_samples = intro_length
+          end
+        else
+          # If incoming overflow for track is longer than the pattern length, only add the first part of
+          # the overflow to the pattern, and add the remainder to overflow_sample_data so that it gets
+          # handled by the next pattern to be generated.
+          if num_incoming_overflow_samples > primary_sample_data.length
+            overflow_sample_data[track_name] = (incoming_overflow[track_name])[primary_sample_data.length...num_incoming_overflow_samples]
+            num_incoming_overflow_samples = primary_sample_data.length
+          end
+        end
+      
+        if @kit.num_channels == 1
+          num_incoming_overflow_samples.times {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
+        else
+          num_incoming_overflow_samples.times do |i|
+            primary_sample_data[i] = [primary_sample_data[i][0] + incoming_overflow[track_name][i][0],
+                                      primary_sample_data[i][1] + incoming_overflow[track_name][i][1]]
+          end
+        end
+      end
+    end
+  
+    return primary_sample_data, overflow_sample_data
+  end
 end

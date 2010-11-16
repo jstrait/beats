@@ -122,7 +122,9 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(false, left_pattern.same_tracks_as?(something_extra))
     assert_equal(false, something_extra.same_tracks_as?(left_pattern))
   end
-  
+
+# TODO: Replace these with suitable AudioEngine.pattern_sample_data() tests.
+=begin
   def test_sample_data
     tick_sample_lengths = [
       13860.0,
@@ -196,4 +198,5 @@ class PatternTest < Test::Unit::TestCase
     assert_equal([], actual_sample_data[:overflow]["bass"])
     assert_equal(expected_overflow_sample_data, actual_sample_data[:overflow]["snare"])
   end
+=end
 end

@@ -40,18 +40,6 @@ class Pattern
   def tick_count
     return @tracks.values.collect {|track| track.rhythm.length }.max || 0
   end
-    
-  def sample_data(tick_sample_length, num_channels, num_tracks_in_song, incoming_overflow)
-    primary_sample_data, overflow_sample_data = generate_main_sample_data(tick_sample_length)
-    primary_sample_data, overflow_sample_data = handle_incoming_overflow(tick_sample_length,
-                                                                         num_channels,
-                                                                         incoming_overflow,
-                                                                         primary_sample_data,
-                                                                         overflow_sample_data)
-    primary_sample_data = AudioUtils.normalize(primary_sample_data, num_tracks_in_song)
-    
-    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
-  end
   
   # Returns whether or not this pattern has the same number of tracks as other_pattern, and that
   # each of the tracks has the same name and rhythm. Ordering of tracks does not matter; will
@@ -101,70 +89,5 @@ private
     end
     
     return name_key
-  end
-
-  def generate_main_sample_data(tick_sample_length)
-    track_names = @tracks.keys
-    primary_sample_data = []
-    overflow_sample_data = {}
-    actual_sample_length = sample_length(tick_sample_length)
-    
-    if @intermediate_cache == nil
-      raw_track_sample_arrays = []
-      track_names.each do |track_name|
-        temp = @tracks[track_name].sample_data(tick_sample_length)
-        raw_track_sample_arrays << temp[:primary]
-        overflow_sample_data[track_name] = temp[:overflow]
-      end
-
-      primary_sample_data = AudioUtils.composite(raw_track_sample_arrays)
-      
-      @intermediate_cache = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
-    else
-      primary_sample_data = @intermediate_cache[:primary].dup
-      overflow_sample_data = @intermediate_cache[:overflow].dup
-    end
-  
-    return primary_sample_data, overflow_sample_data
-  end
-
-  def handle_incoming_overflow(tick_sample_length, num_channels, incoming_overflow, primary_sample_data, overflow_sample_data)
-    track_names = @tracks.keys
-  
-    # Add overflow from previous pattern
-    incoming_overflow.keys.each do |track_name|
-      num_incoming_overflow_samples = incoming_overflow[track_name].length
-    
-      if num_incoming_overflow_samples > 0
-        if track_names.member?(track_name)
-          # TODO: Does this handle situations where track has a .... rhythm and overflow is
-          # longer than track length?
-        
-          intro_length = @tracks[track_name].intro_sample_length(tick_sample_length)
-          if num_incoming_overflow_samples > intro_length
-            num_incoming_overflow_samples = intro_length
-          end
-        else
-          # If incoming overflow for track is longer than the pattern length, only add the first part of
-          # the overflow to the pattern, and add the remainder to overflow_sample_data so that it gets
-          # handled by the next pattern to be generated.
-          if num_incoming_overflow_samples > primary_sample_data.length
-            overflow_sample_data[track_name] = (incoming_overflow[track_name])[primary_sample_data.length...num_incoming_overflow_samples]
-            num_incoming_overflow_samples = primary_sample_data.length
-          end
-        end
-      
-        if num_channels == 1
-          num_incoming_overflow_samples.times {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
-        else
-          num_incoming_overflow_samples.times do |i|
-            primary_sample_data[i] = [primary_sample_data[i][0] + incoming_overflow[track_name][i][0],
-                                      primary_sample_data[i][1] + incoming_overflow[track_name][i][1]]
-          end
-        end
-      end
-    end
-  
-    return primary_sample_data, overflow_sample_data
   end
 end
