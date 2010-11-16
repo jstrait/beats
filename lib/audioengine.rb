@@ -40,7 +40,11 @@ class AudioEngine
       incoming_overflow = @pattern_cache[key][:overflow]
     end
 
-    wave_file.write_snippet(file, merge_overflow(incoming_overflow, num_tracks_in_song))
+    # Write any remaining overflow from the final pattern
+    final_overflow_composite = AudioUtils.composite(incoming_overflow.values)
+    final_overflow_composite = AudioUtils.normalize(final_overflow_composite, num_tracks_in_song)
+    wave_file.write_snippet(file, final_overflow_composite)
+    
     file.close()
 
     return wave_file.calculate_duration(SAMPLE_RATE, sample_length)
@@ -67,28 +71,4 @@ class AudioEngine
   end
 
   attr_reader :tick_sample_length
-
-private
-
-  def merge_overflow(overflow, num_tracks_in_song)
-    merged_sample_data = []
-
-    unless overflow == {}
-      longest_overflow = overflow[overflow.keys.first]
-      overflow.keys.each do |track_name|
-        if overflow[track_name].length > longest_overflow.length
-          longest_overflow = overflow[track_name]
-        end
-      end
-
-      # TODO: What happens if final overflow is really long, and extends past single '.' rhythm?
-      final_overflow_pattern = Pattern.new(:overflow)
-      wave_data = @kit.num_channels == 1 ? [] : [[]]
-      final_overflow_pattern.track "", wave_data, "."
-      final_overflow_sample_data = final_overflow_pattern.sample_data(longest_overflow.length, @kit.num_channels, num_tracks_in_song, overflow)
-      merged_sample_data = final_overflow_sample_data[:primary]
-    end
-
-    return merged_sample_data
-  end
 end
