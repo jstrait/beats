@@ -7,6 +7,8 @@ class AudioUtils
   def self.composite(sample_arrays)
     if sample_arrays == []
       return []
+    elsif sample_arrays == [[]]
+      return [[]]
     end
 
     num_channels = num_channels(sample_arrays.first)
@@ -16,16 +18,20 @@ class AudioUtils
 
     composited_output = sample_arrays.slice!(0)
     sample_arrays.each do |sample_array|
-      if num_channels == 1
-        sample_array.length.times {|i| composited_output[i] += sample_array[i] }
-      elsif num_channels == 2
-        sample_array.length.times do |i|
-          composited_output[i] = [composited_output[i][0] + sample_array[i][0],
-                                  composited_output[i][1] + sample_array[i][1]]
+        if num_channels == 1
+          unless sample_array == []
+            sample_array.length.times {|i| composited_output[i] += sample_array[i] }
+          end
+        elsif num_channels == 2
+          unless sample_array == [[]]
+            sample_array.length.times do |i|
+              composited_output[i] = [composited_output[i][0] + sample_array[i][0],
+                                      composited_output[i][1] + sample_array[i][1]]
+            end
+          end
+        else
+          raise StandardError, "Invalid sample data array"
         end
-      else
-        raise StandardError, "Invalid sample data array in AudioUtils.composite()"
-      end
     end
  
     return composited_output
@@ -106,10 +112,10 @@ class AudioUtils
   def self.num_channels(sample_array)
     first_element = sample_array.first
 
-    if first_element.class == Fixnum
+    if sample_array == [] || first_element.class == Fixnum
       return 1
-    elsif first_element.class == Array
-      return first_element.length
+    elsif sample_array == [[]] || first_element.class == Array
+      return 2
     else
       # TODO: Define what to do here
     end
