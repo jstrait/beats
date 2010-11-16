@@ -5,10 +5,8 @@ class AudioUtils
   # of the longest input array.
   # WARNING: Incoming arrays can be modified.
   def self.composite(sample_arrays)
-    if sample_arrays == []
-      return []
-    elsif sample_arrays == [[]]
-      return [[]]
+    if sample_arrays == [] || sample_arrays == [[]]
+      return sample_arrays
     end
 
     num_channels = num_channels(sample_arrays.first)
