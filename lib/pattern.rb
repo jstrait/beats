@@ -25,18 +25,6 @@ class Pattern
     return new_track
   end
   
-  # The number of samples required for the pattern at the given tempo. DOES NOT include samples
-  # necessary for sound that overflows past the last tick of the pattern.
-  def sample_length(tick_sample_length)
-    @tracks.keys.collect {|track_name| @tracks[track_name].sample_length(tick_sample_length) }.max || 0
-  end
-  
-  # The number of samples required for the pattern at the given tempo. Include sound overflow
-  # past the last tick of the pattern.
-  def sample_length_with_overflow(tick_sample_length)
-    @tracks.keys.collect {|track_name| @tracks[track_name].sample_length_with_overflow(tick_sample_length) }.max || 0
-  end
-  
   def tick_count
     return @tracks.values.collect {|track| track.rhythm.length }.max || 0
   end
