@@ -38,10 +38,6 @@ class Track
       beats = [0]
     end
     @beats = beats
-    
-    # Remove any cached sample data
-    @sample_data = nil
-    @overflow = nil
   end
   
   def intro_sample_length(tick_sample_length)
@@ -52,6 +48,6 @@ class Track
     return @rhythm.length
   end
    
-  attr_accessor :name, :beats
-  attr_reader :rhythm
+  attr_accessor :name
+  attr_reader :rhythm, :beats
 end
