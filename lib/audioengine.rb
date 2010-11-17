@@ -101,8 +101,7 @@ private
     track_names = pattern.tracks.keys
     primary_sample_data = []
     overflow_sample_data = {}
-    actual_sample_length = pattern_sample_length(pattern)
-        
+    
     if @pattern_cache[pattern] == nil
       raw_track_sample_arrays = []
       track_names.each do |track_name|
