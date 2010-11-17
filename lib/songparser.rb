@@ -167,7 +167,7 @@ private
           # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
           track_definition[track_name] ||= ""
 
-          new_pattern.track track_name, kit.get_sample_data(track_name), track_definition[track_name]
+          new_pattern.track track_name, track_definition[track_name]
         end
       end
       

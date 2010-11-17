@@ -5,16 +5,16 @@ require 'test/includes'
 class PatternExpanderTest < Test::Unit::TestCase  
   def test_expand_pattern_no_repeats
     expected_pattern = Pattern.new :verse
-    expected_pattern.track "bass",  [], "X...X.X."
-    expected_pattern.track "snare", [], "....X..."
+    expected_pattern.track "bass",  "X...X.X."
+    expected_pattern.track "snare", "....X..."
         
     # All of these should result in no expansion, since there are no repeats.
     # In other words, the pattern shouldn't change.
     # TODO: Add test for when flow is longer than longest track in pattern
     ["", "|----|----|", "|----", "----:-:1"].each do |flow|
       actual_pattern = Pattern.new :verse
-      actual_pattern.track "bass",  [], "|X...|X.X.|"
-      actual_pattern.track "snare", [], "|....|X...|"
+      actual_pattern.track "bass",  "|X...|X.X.|"
+      actual_pattern.track "snare", "|....|X...|"
       actual_pattern = PatternExpander.expand_pattern(flow, actual_pattern)
       assert(expected_pattern.same_tracks_as?(actual_pattern))
     end
@@ -22,26 +22,26 @@ class PatternExpanderTest < Test::Unit::TestCase
   
   def test_expand_pattern_single_repeats
     expected_pattern = Pattern.new :verse
-    expected_pattern.track "bass",  [], "X...X.X.X...X.X."
-    expected_pattern.track "snare", [], "....X.......X..."
+    expected_pattern.track "bass",  "X...X.X.X...X.X."
+    expected_pattern.track "snare", "....X.......X..."
     
     ["|----|---:|", "|----|---:2|", ":------:"].each do |flow|
       actual_pattern = Pattern.new :verse
-      actual_pattern.track "bass",  [], "|X...|X.X.|"
-      actual_pattern.track "snare", [], "|....|X...|"
+      actual_pattern.track "bass",  "|X...|X.X.|"
+      actual_pattern.track "snare", "|....|X...|"
       actual_pattern = PatternExpander.expand_pattern(flow, actual_pattern)
       assert(expected_pattern.same_tracks_as?(actual_pattern))
     end
     
     
     expected_pattern = Pattern.new :verse
-    expected_pattern.track "bass",  [], "X...X.X.X.X.X.X.X.X...X."
-    expected_pattern.track "snare", [], "....X...X...X...X...XXXX"
+    expected_pattern.track "bass",  "X...X.X.X.X.X.X.X.X...X."
+    expected_pattern.track "snare", "....X...X...X...X...XXXX"
     
     ["|----|:-:4|----|"].each do |flow|
       actual_pattern = Pattern.new :verse
-      actual_pattern.track "bass",  [], "|X...|X.X.|..X.|"
-      actual_pattern.track "snare", [], "|....|X...|XXXX|"
+      actual_pattern.track "bass",  "|X...|X.X.|..X.|"
+      actual_pattern.track "snare", "|....|X...|XXXX|"
       actual_pattern = PatternExpander.expand_pattern(flow, actual_pattern)  
       assert(expected_pattern.same_tracks_as?(actual_pattern))
     end
@@ -49,13 +49,13 @@ class PatternExpanderTest < Test::Unit::TestCase
     
     # Zero repeats, so section gets removed from pattern
     expected_pattern = Pattern.new :verse
-    expected_pattern.track "bass",  [], "X.....X."
-    expected_pattern.track "snare", [], "....XXXX"
+    expected_pattern.track "bass",  "X.....X."
+    expected_pattern.track "snare", "....XXXX"
     
     ["|----|:-:0|----|"].each do |flow|
       actual_pattern = Pattern.new :verse
-      actual_pattern.track "bass",  [], "|X...|X.X.|..X.|"
-      actual_pattern.track "snare", [], "|....|X...|XXXX|"
+      actual_pattern.track "bass",  "|X...|X.X.|..X.|"
+      actual_pattern.track "snare", "|....|X...|XXXX|"
       actual_pattern = PatternExpander.expand_pattern(flow, actual_pattern)  
       assert(expected_pattern.same_tracks_as?(actual_pattern))
     end
@@ -63,26 +63,26 @@ class PatternExpanderTest < Test::Unit::TestCase
   
   def test_expand_pattern_multiple_repeats
     expected_pattern = Pattern.new :verse
-    expected_pattern.track "bass",  [], "X...X...X.X.X.X."
-    expected_pattern.track "snare", [], "........X...X..."
+    expected_pattern.track "bass",  "X...X...X.X.X.X."
+    expected_pattern.track "snare", "........X...X..."
     
     [":--::--:", ":-:2:--:", ":-:2:-:2"].each do |flow|
       actual_pattern = Pattern.new :verse
-      actual_pattern.track "bass",  [], "|X...|X.X.|"
-      actual_pattern.track "snare", [], "|....|X...|"
+      actual_pattern.track "bass",  "|X...|X.X.|"
+      actual_pattern.track "snare", "|....|X...|"
       actual_pattern = PatternExpander.expand_pattern(flow, actual_pattern)
       assert(expected_pattern.same_tracks_as?(actual_pattern))
     end
     
     
     expected_pattern = Pattern.new :verse
-    expected_pattern.track "bass",  [], "X...X.X.X.X.X.X..XXX..XX.."
-    expected_pattern.track "snare", [], "....X...X...X...X...XX..XX"
+    expected_pattern.track "bass",  "X...X.X.X.X.X.X..XXX..XX.."
+    expected_pattern.track "snare", "....X...X...X...X...XX..XX"
     
     ["----:-:3--:--:", "|----|:-:3|--|:-:2|"].each do |flow|
       actual_pattern = Pattern.new :verse
-      actual_pattern.track "bass",  [], "|X...|X.X.|.X|XX..|"
-      actual_pattern.track "snare", [], "|....|X...|X.|..XX|"
+      actual_pattern.track "bass",  "|X...|X.X.|.X|XX..|"
+      actual_pattern.track "snare", "|....|X...|X.|..XX|"
       actual_pattern = PatternExpander.expand_pattern(flow, actual_pattern)
       assert(expected_pattern.same_tracks_as?(actual_pattern))
     end
@@ -90,8 +90,8 @@ class PatternExpanderTest < Test::Unit::TestCase
   
   def test_expand_pattern_invalid
     pattern = Pattern.new :verse
-    pattern.track "bass",  [], "|X...|X.X.|"
-    pattern.track "snare", [], "|....|X...|"
+    pattern.track "bass",  "|X...|X.X.|"
+    pattern.track "snare", "|....|X...|"
     
     # Patterns with an invalid character
     ["a", "|---!---|", "|....|....|"].each do |invalid_flow|

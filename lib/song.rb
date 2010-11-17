@@ -77,9 +77,9 @@ class Song
         
         if original_pattern.tracks.has_key?(track_name)
           original_track = original_pattern.tracks[track_name]
-          new_pattern.track(original_track.name, original_track.wave_data, original_track.rhythm)
+          new_pattern.track(original_track.name, original_track.rhythm)
         else
-          new_pattern.track(track_name, [], "." * original_pattern.tick_count())
+          new_pattern.track(track_name, "." * original_pattern.tick_count())
         end
       end
       

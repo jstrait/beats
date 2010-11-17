@@ -118,8 +118,8 @@ private
     
     if @pattern_cache[pattern] == nil
       raw_track_sample_arrays = []
-      track_names.each do |track_name|
-        temp = pattern.tracks[track_name].sample_data(@tick_sample_length)
+      pattern.tracks.each do |track_name, track|
+        temp = AudioUtils.generate_rhythm(track.beats, @tick_sample_length, @kit.get_sample_data(track.name))
         raw_track_sample_arrays << temp[:primary]
         overflow_sample_data[track_name] = temp[:overflow]
       end

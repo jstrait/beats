@@ -151,7 +151,6 @@ Verse:
     pattern = optimized_song.patterns[:verse4]
     assert_equal(["placeholder"], pattern.tracks.keys.sort)
     assert_equal("....", pattern.tracks["placeholder"].rhythm)
-    assert_equal([], pattern.tracks["placeholder"].wave_data)
     
     pattern = optimized_song.patterns[:verse8]
     assert_equal(["bass", "snare"], pattern.tracks.keys.sort)

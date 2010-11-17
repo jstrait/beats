@@ -5,13 +5,9 @@ class Track
   BEAT = "X"
   BARLINE = "|"
   
-  def initialize(name, wave_data, rhythm)
+  def initialize(name, rhythm)
     # TODO: Add validation for input parameters
-    
-    @wave_data = wave_data
     @name = name
-    @sample_data = nil
-    @overflow = nil
     self.rhythm = rhythm
   end
   
@@ -51,39 +47,11 @@ class Track
   def intro_sample_length(tick_sample_length)
     return @beats[0] * tick_sample_length.floor
   end
-  
-  def sample_length(tick_sample_length)
-    total_ticks = @beats.inject(0) {|sum, n| sum + n}
-    return (total_ticks * tick_sample_length).floor
-  end
-  
-  def sample_length_with_overflow(tick_sample_length)
-    temp_sample_length = sample_length(tick_sample_length)
     
-    unless @beats == [0]
-      beat_sample_length = @beats.last * tick_sample_length
-      if(@wave_data.length > beat_sample_length)
-        temp_sample_length += @wave_data.length - beat_sample_length.floor
-      end
-    end
-    
-    return temp_sample_length.floor
-  end
-  
   def tick_count
     return @rhythm.length
   end
-  
-  def sample_data(tick_sample_length)
-    if @sample_data == nil
-      combined_sample_data = AudioUtils.generate_rhythm(@beats, tick_sample_length, @wave_data)
-      @sample_data = combined_sample_data[:primary]
-      @overflow = combined_sample_data[:overflow]
-    end
-    
-    return {:primary => @sample_data.dup, :overflow => @overflow}
-  end
-  
-  attr_accessor :name, :wave_data, :beats
+   
+  attr_accessor :name, :beats
   attr_reader :rhythm
 end

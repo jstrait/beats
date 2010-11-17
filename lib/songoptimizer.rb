@@ -73,7 +73,7 @@ protected
           sub_track_pattern = track.rhythm[tick_index...(tick_index + max_pattern_length)]
           
           if sub_track_pattern != blank_track_pattern
-            new_pattern.track(track.name, track.wave_data, sub_track_pattern)
+            new_pattern.track(track.name, sub_track_pattern)
           end
         end
         
@@ -81,12 +81,7 @@ protected
         # Otherwise, this pattern will have no ticks, and no sound will be generated,
         # causing the pattern to be "compacted away".
         if new_pattern.tracks.empty?
-          # Track.sample_data() examines its sound's sample data to determine if it is
-          # mono or stereo. If the first item in the sample data Array is an Array,
-          # it decides stereo. That's what the [] vs. [[]] is about.
-          placeholder_wave_data = (kit.num_channels == 1) ? [] : [[]]          
-          
-          new_pattern.track("placeholder", placeholder_wave_data, blank_track_pattern)
+          new_pattern.track("placeholder", blank_track_pattern)
         end
         
         tick_index += max_pattern_length

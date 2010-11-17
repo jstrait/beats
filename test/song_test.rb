@@ -9,11 +9,6 @@ class SongTest < Test::Unit::TestCase
               :example_with_kit]
 
   def generate_test_data
-    kit = Kit.new("test/sounds", {"bass.wav"      => "bass_mono_8.wav",
-                                  "snare.wav"     => "snare_mono_8.wav",
-                                  "hh_closed.wav" => "hh_closed_mono_8.wav",
-                                  "ride.wav"      => "ride_mono_8.wav"})
-    
     test_songs = {}
     base_path = File.dirname(__FILE__) + "/.."
 
@@ -21,9 +16,9 @@ class SongTest < Test::Unit::TestCase
     
     test_songs[:no_flow] = Song.new()
     verse = test_songs[:no_flow].pattern :verse
-    verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
-    verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
-    verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
+    verse.track "bass.wav",      "X.......X......."
+    verse.track "snare.wav",     "....X.......X..."
+    verse.track "hh_closed.wav", "X.X.X.X.X.X.X.X."
     
     song_parser = SongParser.new()
     FIXTURES.each do |fixture_name|
@@ -32,13 +27,13 @@ class SongTest < Test::Unit::TestCase
 
     test_songs[:from_code] = Song.new()
     verse = test_songs[:from_code].pattern :verse
-    verse.track "bass.wav",      kit.get_sample_data("bass.wav"),      "X.......X......."
-    verse.track "snare.wav",     kit.get_sample_data("snare.wav"),     "....X.......X..."
-    verse.track "hh_closed.wav", kit.get_sample_data("hh_closed.wav"), "X.X.X.X.X.X.X.X."
+    verse.track "bass.wav",      "X.......X......."
+    verse.track "snare.wav",     "....X.......X..."
+    verse.track "hh_closed.wav", "X.X.X.X.X.X.X.X."
     chorus = test_songs[:from_code].pattern :chorus
-    chorus.track "bass.wav",  kit.get_sample_data("bass.wav"),  "X......."
-    chorus.track "snare.wav", kit.get_sample_data("snare.wav"), "....X..X"
-    chorus.track "ride.wav",  kit.get_sample_data("ride.wav"),  "X.....X."
+    chorus.track "bass.wav",  "X......."
+    chorus.track "snare.wav", "....X..X"
+    chorus.track "ride.wav",  "X.....X."
     test_songs[:from_code].flow = [:verse, :chorus, :verse, :chorus, :chorus]
     
     return test_songs
