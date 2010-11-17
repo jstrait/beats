@@ -9,7 +9,7 @@ class Pattern
   # Adds a new track to the pattern.
   def track(name, wave_data, rhythm)
     track_key = unique_track_name(name)
-    new_track = Track.new(track_key, wave_data, rhythm)        
+    new_track = Track.new(name, wave_data, rhythm)        
     @tracks[track_key] = new_track
 
     # If the new track is longer than any of the previously added tracks,

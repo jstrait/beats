@@ -68,15 +68,17 @@ class AudioEngine
     patterns = @song.patterns
 
     primary_sample_length = @song.flow.inject(0) do |sum, pattern_name|
-      sum + pattern_sample_length(patterns[pattern_name])
+      sum + pattern_sample_length(patterns[pattern_name])[:primary]
     end
 
     last_pattern_name = @song.flow.last
-    last_pattern_sample_length = pattern_sample_length(patterns[last_pattern_name])
-    last_pattern_overflow_length = patterns[last_pattern_name].sample_length_with_overflow(@tick_sample_length)
-    overflow_sample_length = last_pattern_overflow_length - last_pattern_sample_length
 
-    return primary_sample_length + overflow_sample_length
+    last_pattern_sample_length = pattern_sample_length(patterns[last_pattern_name])
+    #last_pattern_overflow_length = patterns[last_pattern_name].sample_length_with_overflow(@tick_sample_length)
+    #
+    #overflow_sample_length = last_pattern_overflow_length - last_pattern_sample_length
+
+    return primary_sample_length + last_pattern_sample_length[:overflow]
   end
 
   attr_reader :tick_sample_length
@@ -84,17 +86,33 @@ class AudioEngine
 private
 
   def pattern_sample_length(pattern)
-    tracks = pattern.tracks
+    primary_sample_lengths = []
+    overflow_sample_lengths = []
 
-    track_lengths = tracks.keys.collect do |track_name|
-      track_sample_length(tracks[track_name])
+    track_lengths = pattern.tracks.collect do |track_name, track|
+      track_sample_length = track_sample_length(track)
+      primary_sample_lengths << track_sample_length[:primary]
+      overflow_sample_lengths << track_sample_length[:overflow]
     end
     
-    return track_lengths.max || 0
+    return {:primary => primary_sample_lengths.max || 0, :overflow => overflow_sample_lengths.max || 0}
   end
 
   def track_sample_length(track)
-    return (track.tick_count * @tick_sample_length).floor
+    primary_sample_length = (track.tick_count * @tick_sample_length).floor
+    
+    # Does this account for non-integer tick sample lengths in previous beats?
+    sound_sample_data = @kit.get_sample_data(track.name)
+    unless track.beats == [0]
+      beat_sample_length = track.beats.last * @tick_sample_length
+      if(sound_sample_data.length > beat_sample_length)
+        overflow_sample_length = sound_sample_data.length - beat_sample_length.floor
+      else
+        overflow_sample_length = 0
+      end
+    end
+    
+    return {:primary => primary_sample_length, :overflow => overflow_sample_length}
   end
 
   def generate_main_sample_data(pattern)

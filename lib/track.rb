@@ -84,6 +84,6 @@ class Track
     return {:primary => @sample_data.dup, :overflow => @overflow}
   end
   
-  attr_accessor :name, :wave_data
+  attr_accessor :name, :wave_data, :beats
   attr_reader :rhythm
 end
