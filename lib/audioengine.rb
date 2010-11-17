@@ -68,11 +68,11 @@ class AudioEngine
     patterns = @song.patterns
 
     primary_sample_length = @song.flow.inject(0) do |sum, pattern_name|
-      sum + patterns[pattern_name].sample_length(@tick_sample_length)
+      sum + pattern_sample_length(patterns[pattern_name])
     end
 
     last_pattern_name = @song.flow.last
-    last_pattern_sample_length = patterns[last_pattern_name].sample_length(@tick_sample_length)
+    last_pattern_sample_length = pattern_sample_length(patterns[last_pattern_name])
     last_pattern_overflow_length = patterns[last_pattern_name].sample_length_with_overflow(@tick_sample_length)
     overflow_sample_length = last_pattern_overflow_length - last_pattern_sample_length
 
@@ -87,10 +87,14 @@ private
     tracks = pattern.tracks
 
     track_lengths = tracks.keys.collect do |track_name|
-      tracks[track_name].sample_length(@tick_sample_length)
+      track_sample_length(tracks[track_name])
     end
     
     return track_lengths.max || 0
+  end
+
+  def track_sample_length(track)
+    return (track.tick_count * @tick_sample_length).floor
   end
 
   def generate_main_sample_data(pattern)
