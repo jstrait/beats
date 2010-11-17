@@ -112,7 +112,6 @@ private
   end
 
   def generate_main_sample_data(pattern)
-    track_names = pattern.tracks.keys
     primary_sample_data = []
     overflow_sample_data = {}
     
