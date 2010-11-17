@@ -72,11 +72,7 @@ class AudioEngine
     end
 
     last_pattern_name = @song.flow.last
-
     last_pattern_sample_length = pattern_sample_length(patterns[last_pattern_name])
-    #last_pattern_overflow_length = patterns[last_pattern_name].sample_length_with_overflow(@tick_sample_length)
-    #
-    #overflow_sample_length = last_pattern_overflow_length - last_pattern_sample_length
 
     return primary_sample_length + last_pattern_sample_length[:overflow]
   end
