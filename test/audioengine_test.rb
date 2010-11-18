@@ -2,7 +2,7 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/includes'
 
-class AudioUtilsTest < Test::Unit::TestCase
+class AudioEngineTest < Test::Unit::TestCase
   FIXTURES = [:repeats_not_specified,
               :pattern_with_overflow,
               :example_no_kit,
