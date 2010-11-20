@@ -57,6 +57,7 @@ class AudioUtilsTest < Test::Unit::TestCase
     
     # 1.) Tick sample length is equal to the length of the sound sample data.
     #     When this is the case, overflow should never occur.
+    #     In practice, this will probably not occur often, but these tests act as a form of sanity check.
     helper_generate_rhythm [0],          4, []
     helper_generate_rhythm [0, 1],       4, S
     helper_generate_rhythm [0, 2],       4, S + TE
@@ -95,7 +96,13 @@ class AudioUtilsTest < Test::Unit::TestCase
     helper_generate_rhythm [3, 2],       2, (TS * 3) + S,    []
     helper_generate_rhythm [1, 2, 1, 2], 2, TS + S + SS + S, []
 
-    # 3B.) Tick sample length is shorter than the sound sample data, but not by an integer amount.
+    # 3B.) Tick sample length is shorter than sound sample data, such that a beat other than the final one
+    #      would extend past the end of the rhythm if not cut off. Make sure that the sample data array doesn't
+    #      inadvertently lengthen as a result.
+    helper_generate_rhythm [0, 1, 1], 1, [-100, -100], [200, 300, -400]
+
+
+    # 3C.) Tick sample length is shorter than the sound sample data, but not by an integer amount.
     # 
     # Each tick of 1.83 samples should end on the following boundaries:
     # Tick:               1,    2,    3,    4,    5,     6

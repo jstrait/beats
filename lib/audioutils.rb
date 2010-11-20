@@ -35,47 +35,35 @@ class AudioUtils
     return composited_output
   end
 
-
-  def self.generate_rhythm(beats, tick_sample_length, sound_sample_array)
-    primary_sample_length, full_sample_length =
-        calculate_rhythm_sample_length(beats, tick_sample_length, sound_sample_array.length)
-    
-    fill_value = (sound_sample_array.first.class == Array) ? [0, 0] : 0
-    full_sample_data = [].fill(fill_value, 0, full_sample_length)
-    
-    if full_sample_length > 0
-      remainder = 0.0
-      offset = beats[0] * tick_sample_length
-      remainder += offset - offset.floor
-
-      beats[1...(beats.length)].each do |beat_length|
-        beat_sample_length = beat_length * tick_sample_length
-
-        remainder += beat_sample_length - beat_sample_length.floor
-        if remainder >= 1.0
-          beat_sample_length += 1
-          remainder -= 1.0
-        end
-
-        full_sample_data[offset...(offset + sound_sample_array.length)] = sound_sample_array
-        offset += beat_sample_length.floor
-      end
-
-      if full_sample_length > primary_sample_length
-        primary_sample_data = full_sample_data[0...offset]
-        overflow_sample_data = full_sample_data[primary_sample_length...full_sample_length]
-      else
-        primary_sample_data = full_sample_data
-        overflow_sample_data = []
-      end
-    else
-      primary_sample_data = []
-      overflow_sample_data = []
-    end
- 
-    return { :primary => primary_sample_data, :overflow => overflow_sample_data }
+  def self.tick_start_sample(tick_index, tick_sample_length)
+    return (tick_index * tick_sample_length).floor
   end
 
+  def self.generate_rhythm(beats, tick_sample_length, sound)
+    if beats == [0]
+      return {:primary => [], :overflow => []}    # Is this really what should happen? Why throw away overflow?
+    end
+
+    fill_value = (num_channels(sound) == 1) ? 0 : [0, 0]
+    tick_count = beats.inject(0) {|sum, x| sum + x}
+    primary_sample_data = [].fill(fill_value, 0, self.tick_start_sample(tick_count, tick_sample_length))
+
+    tick_index = beats[0]
+    beat_sample_length = 0
+    beats[1...(beats.length)].each do |beat_tick_length|
+      start_sample = self.tick_start_sample(tick_index, tick_sample_length)
+      end_sample = [(start_sample + sound.length), primary_sample_data.length].min
+      beat_sample_length = end_sample - start_sample
+
+      primary_sample_data[start_sample...end_sample] = sound[0...beat_sample_length]
+
+      tick_index += beat_tick_length
+    end
+
+    overflow_sample_data = (sound == [] || sound == [[]]) ? [] : sound[beat_sample_length...(sound.length)]
+
+    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+  end
 
   # Scales the amplitude of the incoming sample array by *scale* amount. Can be used in conjunction
   # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
@@ -121,24 +109,6 @@ class AudioUtils
     else
       # TODO: Define what to do here
     end
-  end
-
-private
-
-  def self.calculate_rhythm_sample_length(beats, tick_sample_length, sound_sample_length)
-    if beats == [0]
-      return 0, 0
-    end
-    
-    total_ticks = beats.inject(0) {|sum, n| sum + n}
-    
-    primary_sample_length = (total_ticks * tick_sample_length).floor
-    
-    ticks_before_last_beat = total_ticks - beats.last
-    last_beat_start_sample = (ticks_before_last_beat * tick_sample_length).floor
-    full_sample_length = [primary_sample_length, last_beat_start_sample + sound_sample_length].max
-
-    return primary_sample_length, full_sample_length
   end
 end
 
