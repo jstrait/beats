@@ -40,10 +40,6 @@ class Track
     @beats = beats
   end
   
-  def intro_sample_length(tick_sample_length)
-    return @beats[0] * tick_sample_length.floor
-  end
-    
   def tick_count
     return @rhythm.length
   end

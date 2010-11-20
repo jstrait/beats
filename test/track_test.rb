@@ -51,18 +51,4 @@ class TrackTest < Test::Unit::TestCase
     assert_equal(4,  test_tracks[:placeholder].tick_count())
     assert_equal(32, test_tracks[:complicated].tick_count())
   end
-
-  def test_intro_sample_length
-    # TODO: Add tests for when tick_sample_length has a non-zero remainder
-    
-    test_tracks = generate_test_data()
-
-    tick_sample_length = 6179.0   # sounds/bass.wav
-    assert_equal(0,     test_tracks[:blank].intro_sample_length(tick_sample_length))
-    assert_equal(0,     test_tracks[:solo].intro_sample_length(tick_sample_length))
-    assert_equal(18537, test_tracks[:with_overflow].intro_sample_length(tick_sample_length))
-    assert_equal(0,     test_tracks[:with_barlines].intro_sample_length(tick_sample_length))
-    assert_equal(24716, test_tracks[:placeholder].intro_sample_length(tick_sample_length))
-    assert_equal(12358, test_tracks[:complicated].intro_sample_length(tick_sample_length))
-  end
 end
