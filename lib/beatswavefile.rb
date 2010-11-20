@@ -20,9 +20,16 @@ class BeatsWaveFile < WaveFile
   # a field for the total number of samples in the file. This number of samples must be
   # subsequently be written to the file using write_snippet() or it won't be valid and you
   # won't be able to play it.
-  def open_for_appending(path, num_samples)
+  def open_for_appending(path)
+    file = File.open(path, "w")
+    write_header(file, 0)
+    
+    return file
+  end
+
+  def write_header(file, sample_length)
     bytes_per_sample = (@bits_per_sample / 8)
-    sample_data_size = num_samples * bytes_per_sample * @num_channels
+    sample_data_size = sample_length * bytes_per_sample * @num_channels
 
     # Write the header
     header = CHUNK_ID
@@ -39,10 +46,7 @@ class BeatsWaveFile < WaveFile
     header += DATA_CHUNK_ID
     header += [sample_data_size].pack("V")
 
-    file = File.open(path, "w")
     file.syswrite(header)
-    
-    return file
   end
   
   def calculate_duration(sample_rate, total_samples)

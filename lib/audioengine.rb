@@ -14,10 +14,10 @@ class AudioEngine
   def write_to_file(output_file_name)
     packed_pattern_cache = {}
     num_tracks_in_song = @song.total_tracks
-    sample_length = song_sample_length()
+    samples_written = 0
     
     wave_file = BeatsWaveFile.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
-    file = wave_file.open_for_appending(output_file_name, sample_length)
+    file = wave_file.open_for_appending(output_file_name)
 
     incoming_overflow = {}
     @song.flow.each do |pattern_name|
@@ -27,14 +27,19 @@ class AudioEngine
 
         if @kit.num_channels == 1
           # Don't flatten the sample data Array, since it is already flattened. That would be a waste of time, yo.
-          packed_pattern_cache[key] = {:primary => sample_data[:primary].pack(PACK_CODE), :overflow => sample_data[:overflow]}
+          packed_pattern_cache[key] = {:primary        => sample_data[:primary].pack(PACK_CODE),
+                                       :overflow       => sample_data[:overflow],
+                                       :primary_length => sample_data[:primary].length}
         else
-          packed_pattern_cache[key] = {:primary => sample_data[:primary].flatten.pack(PACK_CODE), :overflow => sample_data[:overflow]}
+          packed_pattern_cache[key] = {:primary        => sample_data[:primary].flatten.pack(PACK_CODE),
+                                       :overflow       => sample_data[:overflow],
+                                       :primary_length => sample_data[:primary].length}
         end
       end
 
       file.syswrite(packed_pattern_cache[key][:primary])
       incoming_overflow = packed_pattern_cache[key][:overflow]
+      samples_written += packed_pattern_cache[key][:primary_length]
     end
 
     # Write any remaining overflow from the final pattern
@@ -45,10 +50,15 @@ class AudioEngine
     else
       file.syswrite(final_overflow_composite.flatten.pack(PACK_CODE))
     end
+    samples_written += final_overflow_composite.length
     
+    # Now that we know how many samples have been written, go back and re-write the correct header.
+    file.sysseek(0)
+    wave_file.write_header(file, samples_written)
+
     file.close()
 
-    return wave_file.calculate_duration(SAMPLE_RATE, sample_length)
+    return wave_file.calculate_duration(SAMPLE_RATE, samples_written)
   end
 
   def generate_pattern_sample_data(pattern, incoming_overflow)
@@ -62,58 +72,9 @@ class AudioEngine
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
 
-
-  # TODO: What if pattern before final pattern has really long sample that extends past the end of the last pattern's overflow?
-  def song_sample_length()
-    if @song.flow.length == 0
-      return 0
-    end
-
-    patterns = @song.patterns
-
-    primary_sample_length = @song.flow.inject(0) do |sum, pattern_name|
-      sum + pattern_sample_length(patterns[pattern_name])[:primary]
-    end
-
-    last_pattern_name = @song.flow.last
-    last_pattern_sample_length = pattern_sample_length(patterns[last_pattern_name])
-
-    return primary_sample_length + last_pattern_sample_length[:overflow]
-  end
-
   attr_reader :tick_sample_length
 
 private
-
-  def pattern_sample_length(pattern)
-    primary_sample_lengths = []
-    overflow_sample_lengths = []
-
-    track_lengths = pattern.tracks.collect do |track_name, track|
-      track_sample_length = track_sample_length(track)
-      primary_sample_lengths << track_sample_length[:primary]
-      overflow_sample_lengths << track_sample_length[:overflow]
-    end
-    
-    return {:primary => primary_sample_lengths.max || 0, :overflow => overflow_sample_lengths.max || 0}
-  end
-
-  def track_sample_length(track)
-    primary_sample_length = (track.tick_count * @tick_sample_length).floor
-    
-    # Does this account for non-integer tick sample lengths in previous beats?
-    sound_sample_data = @kit.get_sample_data(track.name)
-    unless track.beats == [0]
-      beat_sample_length = track.beats.last * @tick_sample_length
-      if(sound_sample_data.length > beat_sample_length)
-        overflow_sample_length = sound_sample_data.length - beat_sample_length.floor
-      else
-        overflow_sample_length = 0
-      end
-    end
-    
-    return {:primary => primary_sample_length, :overflow => overflow_sample_length}
-  end
 
   def generate_main_sample_data(pattern)
     primary_sample_data = []

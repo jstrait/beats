@@ -30,15 +30,4 @@ class AudioEngineTest < Test::Unit::TestCase
     assert_equal(5512.5, test_songs[:blank].tick_sample_length)
     assert_equal(6615.0, test_songs[:repeats_not_specified].tick_sample_length)
   end
-
-  def test_song_sample_length
-    test_songs = load_song_fixtures()
-    
-    # TO DO: Replace these with simpler examples
-    assert_equal(0,       test_songs[:blank].song_sample_length)    
-    assert_equal(6615,    test_songs[:repeats_not_specified].song_sample_length)
-    assert_equal(61005,   test_songs[:pattern_with_overflow].song_sample_length)
-    assert_equal(3215289, test_songs[:example_no_kit].song_sample_length)
-    assert_equal(3215289, test_songs[:example_with_kit].song_sample_length)
-  end
 end
