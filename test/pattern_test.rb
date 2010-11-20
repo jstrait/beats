@@ -44,27 +44,6 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(pattern.tracks.length, 3)
   end
 
-=begin
-  def test_sample_length
-    test_patterns = generate_test_data()
-    
-    tick_sample_length = 13860.0
-    assert_equal(test_patterns[:blank].sample_length(tick_sample_length), 0)
-    assert_equal(test_patterns[:verse].sample_length(tick_sample_length), tick_sample_length * 32)
-    assert_equal(test_patterns[:staircase].sample_length(tick_sample_length), tick_sample_length * 4)
-
-    tick_sample_length = 6681.81818181818
-    assert_equal(test_patterns[:blank].sample_length(tick_sample_length), 0)
-    assert_equal(test_patterns[:verse].sample_length(tick_sample_length), (tick_sample_length * 32).floor)
-    assert_equal(test_patterns[:staircase].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
-
-    tick_sample_length = 16134.1463414634
-    assert_equal(test_patterns[:blank].sample_length(tick_sample_length), 0)
-    assert_equal(test_patterns[:verse].sample_length(tick_sample_length), (tick_sample_length * 32).floor)
-    assert_equal(test_patterns[:staircase].sample_length(tick_sample_length), (tick_sample_length * 4).floor)
-  end
-=end
-
   def test_tick_count
     test_patterns = generate_test_data()
     
