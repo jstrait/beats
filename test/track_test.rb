@@ -2,20 +2,16 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/includes'
 
-class MockTrack < Track
-  #attr_reader :beats
-end
-
 class TrackTest < Test::Unit::TestCase
   def generate_test_data
     test_tracks = {}
     
-    test_tracks[:blank] = MockTrack.new("bass", "")
-    test_tracks[:solo] = MockTrack.new("bass", "X")
-    test_tracks[:with_overflow] = MockTrack.new("bass", "...X")
-    test_tracks[:with_barlines] = MockTrack.new("bass", "|X.X.|X.X.|")
-    test_tracks[:placeholder] = MockTrack.new("bass", "....")
-    test_tracks[:complicated] = MockTrack.new("bass", "..X...X...X...X.X...X...X...X...")
+    test_tracks[:blank] = Track.new("bass", "")
+    test_tracks[:solo] = Track.new("bass", "X")
+    test_tracks[:with_overflow] = Track.new("bass", "...X")
+    test_tracks[:with_barlines] = Track.new("bass", "|X.X.|X.X.|")
+    test_tracks[:placeholder] = Track.new("bass", "....")
+    test_tracks[:complicated] = Track.new("bass", "..X...X...X...X.X...X...X...X...")
     
     return test_tracks
   end
