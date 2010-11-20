@@ -40,7 +40,11 @@ class AudioEngine
     # Write any remaining overflow from the final pattern
     final_overflow_composite = AudioUtils.composite(incoming_overflow.values)
     final_overflow_composite = AudioUtils.normalize(final_overflow_composite, num_tracks_in_song)
-    wave_file.write_snippet(file, final_overflow_composite)
+    if @kit.num_channels == 1
+      file.syswrite(final_overflow_composite.pack(PACK_CODE))
+    else
+      file.syswrite(final_overflow_composite.flatten.pack(PACK_CODE))
+    end
     
     file.close()
 

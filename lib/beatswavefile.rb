@@ -45,25 +45,6 @@ class BeatsWaveFile < WaveFile
     return file
   end
   
-  # Appending sample_data to file, which is assumed to be open. Should be used in
-  # conjunction with open_for_appending(). The File object returned by that method
-  # should be passed in here. WARNING: you are responsible for writing the correct
-  # number of samples to the file, with 1 or more calls to this method. The caller
-  # of this method is also responsible for closing the File object when finished.
-  def write_snippet(file, sample_data)
-    if @bits_per_sample == 8
-      pack_code = "C*"
-    elsif @bits_per_sample == 16
-      pack_code = "s*"
-    end
-    
-    if @num_channels == 1
-      file.syswrite(sample_data.pack(pack_code))
-    else
-      file.syswrite(sample_data.flatten.pack(pack_code))
-    end
-  end
-  
   def calculate_duration(sample_rate, total_samples)
     samples_per_millisecond = sample_rate / 1000.0
     samples_per_second = sample_rate
