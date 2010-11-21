@@ -35,10 +35,8 @@ class AudioUtils
     return composited_output
   end
 
-  def self.tick_start_sample(tick_index, tick_sample_length)
-    return (tick_index * tick_sample_length).floor
-  end
 
+  # Generates the sample data for a Track. Should probably be moved over to AudioEngine.
   def self.generate_rhythm(track, tick_sample_length, sound)
     beats = track.beats
     if beats == [0]
@@ -89,6 +87,10 @@ class AudioUtils
   end
 
 
+  # Returns the number of samples that each tick lasts at a given sample rate and tempo.
+  # The sample length can be a non-integer value. Although there's no such thing as a partial
+  # sample, this is required to prevent small timing errors from creeping in. If they
+  # accumulate, they can cause rhythms to drift out of time.
   def self.tick_sample_length(samples_per_second, tempo)
      samples_per_minute = samples_per_second * 60.0
      samples_per_quarter_note = samples_per_minute / tempo
@@ -98,7 +100,15 @@ class AudioUtils
   end
 
 
+  # Returns the sample index that a given tick (offset from 0) starts on.
+  def self.tick_start_sample(tick_index, tick_sample_length)
+    return (tick_index * tick_sample_length).floor
+  end
+
+
   # Returns FixNum count of channels in sample array.
+  # TODO: This method should probably not exist. Instead, Kit.num_channels should be used.
+  # One problem with this method is that it requires use of the stupid [[]] for stereo data.
   def self.num_channels(sample_array)
     first_element = sample_array.first
 
