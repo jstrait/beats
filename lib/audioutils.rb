@@ -39,14 +39,14 @@ class AudioUtils
     return (tick_index * tick_sample_length).floor
   end
 
-  def self.generate_rhythm(beats, tick_sample_length, sound)
+  def self.generate_rhythm(track, tick_sample_length, sound)
+    beats = track.beats
     if beats == [0]
       return {:primary => [], :overflow => []}    # Is this really what should happen? Why throw away overflow?
     end
 
     fill_value = (num_channels(sound) == 1) ? 0 : [0, 0]
-    tick_count = beats.inject(0) {|sum, x| sum + x}
-    primary_sample_data = [].fill(fill_value, 0, self.tick_start_sample(tick_count, tick_sample_length))
+    primary_sample_data = [].fill(fill_value, 0, self.tick_start_sample(track.tick_count, tick_sample_length))
 
     tick_index = beats[0]
     beat_sample_length = 0
