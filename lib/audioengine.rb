@@ -111,7 +111,7 @@ private
           # TODO: Does this handle situations where track has a .... rhythm and overflow is
           # longer than track length?
         
-          intro_length = pattern.tracks[track_name].intro_sample_length(@tick_sample_length)
+          intro_length = (pattern.tracks[track_name].beats[0] * tick_sample_length).floor
           if num_incoming_overflow_samples > intro_length
             num_incoming_overflow_samples = intro_length
           end
