@@ -100,42 +100,29 @@ private
   end
 
   def handle_incoming_overflow(pattern, incoming_overflow, primary_sample_data, overflow_sample_data)
-    track_names = pattern.tracks.keys
-  
-    # Add overflow from previous pattern
-    incoming_overflow.keys.each do |track_name|
-      num_incoming_overflow_samples = incoming_overflow[track_name].length
-    
-      if num_incoming_overflow_samples > 0
-        if track_names.member?(track_name)
-          # TODO: Does this handle situations where track has a .... rhythm and overflow is
-          # longer than track length?
-        
-          intro_length = (pattern.tracks[track_name].beats[0] * tick_sample_length).floor
-          if num_incoming_overflow_samples > intro_length
-            num_incoming_overflow_samples = intro_length
-          end
-        else
-          # If incoming overflow for track is longer than the pattern length, only add the first part of
-          # the overflow to the pattern, and add the remainder to overflow_sample_data so that it gets
-          # handled by the next pattern to be generated.
-          if num_incoming_overflow_samples > primary_sample_data.length
-            overflow_sample_data[track_name] = (incoming_overflow[track_name])[primary_sample_data.length...num_incoming_overflow_samples]
-            num_incoming_overflow_samples = primary_sample_data.length
-          end
-        end
+    pattern_track_names = pattern.tracks.keys
+    sample_arrays = [primary_sample_data]
+
+    incoming_overflow.each do |incoming_track_name, incoming_sample_data|
+      end_sample = incoming_sample_data.length
       
-        if @kit.num_channels == 1
-          num_incoming_overflow_samples.times {|i| primary_sample_data[i] += incoming_overflow[track_name][i]}
-        else
-          num_incoming_overflow_samples.times do |i|
-            primary_sample_data[i] = [primary_sample_data[i][0] + incoming_overflow[track_name][i][0],
-                                      primary_sample_data[i][1] + incoming_overflow[track_name][i][1]]
-          end
+      if pattern_track_names.member?(incoming_track_name)
+        track = pattern.tracks[incoming_track_name]
+
+        if track.beats.length > 1
+          intro_length = (pattern.tracks[incoming_track_name].beats[0] * tick_sample_length).floor
+          end_sample = [end_sample, intro_length].min
         end
       end
+
+      if end_sample > primary_sample_data.length
+        end_sample = primary_sample_data.length
+        overflow_sample_data[incoming_track_name] = incoming_sample_data[(primary_sample_data.length)...(incoming_sample_data.length)]
+      end
+
+      sample_arrays << incoming_sample_data[0...end_sample]
     end
-  
-    return primary_sample_data, overflow_sample_data
+
+    return AudioUtils.composite(sample_arrays), overflow_sample_data
   end
 end
