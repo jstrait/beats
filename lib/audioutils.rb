@@ -1,3 +1,4 @@
+# This class contains some utility methods for working with sample data.
 class AudioUtils
 
   # Combines multiple sample arrays into one, by adding them together.
@@ -87,10 +88,10 @@ class AudioUtils
   end
 
 
-  # Returns the number of samples that each tick lasts at a given sample rate and tempo.
-  # The sample length can be a non-integer value. Although there's no such thing as a partial
-  # sample, this is required to prevent small timing errors from creeping in. If they
-  # accumulate, they can cause rhythms to drift out of time.
+  # Returns the number of samples that each tick (i.e. a 'X' or a '.') lasts at a given sample
+  # rate and tempo. The sample length can be a non-integer value. Although there's no such
+  # thing as a partial sample, this is required to prevent small timing errors from creeping in.
+  # If they accumulate, they can cause rhythms to drift out of time.
   def self.tick_sample_length(samples_per_second, tempo)
      samples_per_minute = samples_per_second * 60.0
      samples_per_quarter_note = samples_per_minute / tempo
