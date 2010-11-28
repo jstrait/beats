@@ -76,6 +76,32 @@ class AudioEngine
 
 private
 
+  def generate_track_sample_data(track, sound)
+    beats = track.beats
+    if beats == [0]
+      return {:primary => [], :overflow => []}    # Is this really what should happen? Why throw away overflow?
+    end
+
+    fill_value = (@kit.num_channels == 1) ? 0 : [0, 0]
+    primary_sample_data = [].fill(fill_value, 0, AudioUtils.tick_start_sample(track.tick_count, @tick_sample_length))
+
+    tick_index = beats[0]
+    beat_sample_length = 0
+    beats[1...(beats.length)].each do |beat_tick_length|
+      start_sample = AudioUtils.tick_start_sample(tick_index, @tick_sample_length)
+      end_sample = [(start_sample + sound.length), primary_sample_data.length].min
+      beat_sample_length = end_sample - start_sample
+
+      primary_sample_data[start_sample...end_sample] = sound[0...beat_sample_length]
+
+      tick_index += beat_tick_length
+    end
+
+    overflow_sample_data = (sound == [] || sound == [[]]) ? [] : sound[beat_sample_length...(sound.length)]
+
+    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+  end
+
   def generate_main_sample_data(pattern)
     primary_sample_data = []
     overflow_sample_data = {}
@@ -83,7 +109,7 @@ private
     if @pattern_cache[pattern] == nil
       raw_track_sample_arrays = []
       pattern.tracks.each do |track_name, track|
-        temp = AudioUtils.generate_rhythm(track, @tick_sample_length, @kit.get_sample_data(track.name))
+        temp = generate_track_sample_data(track, @kit.get_sample_data(track.name))
         raw_track_sample_arrays << temp[:primary]
         overflow_sample_data[track_name] = temp[:overflow]
       end

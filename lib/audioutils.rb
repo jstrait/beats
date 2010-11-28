@@ -37,33 +37,6 @@ class AudioUtils
   end
 
 
-  # Generates the sample data for a Track. Should probably be moved over to AudioEngine.
-  def self.generate_rhythm(track, tick_sample_length, sound)
-    beats = track.beats
-    if beats == [0]
-      return {:primary => [], :overflow => []}    # Is this really what should happen? Why throw away overflow?
-    end
-
-    fill_value = (num_channels(sound) == 1) ? 0 : [0, 0]
-    primary_sample_data = [].fill(fill_value, 0, self.tick_start_sample(track.tick_count, tick_sample_length))
-
-    tick_index = beats[0]
-    beat_sample_length = 0
-    beats[1...(beats.length)].each do |beat_tick_length|
-      start_sample = self.tick_start_sample(tick_index, tick_sample_length)
-      end_sample = [(start_sample + sound.length), primary_sample_data.length].min
-      beat_sample_length = end_sample - start_sample
-
-      primary_sample_data[start_sample...end_sample] = sound[0...beat_sample_length]
-
-      tick_index += beat_tick_length
-    end
-
-    overflow_sample_data = (sound == [] || sound == [[]]) ? [] : sound[beat_sample_length...(sound.length)]
-
-    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
-  end
-
   # Scales the amplitude of the incoming sample array by *scale* amount. Can be used in conjunction
   # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
   # TODO: Is there a better name for this method?
