@@ -133,7 +133,7 @@ private
       sample_arrays << raw_sounds[sound_file_name].sample_data
     end
 
-    composited_sample_data = AudioUtils.composite(sample_arrays)
+    composited_sample_data = AudioUtils.composite(sample_arrays, @num_channels)
 
     return AudioUtils.normalize(composited_sample_data, sound_file_names.length)
   end

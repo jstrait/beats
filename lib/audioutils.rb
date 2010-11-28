@@ -5,12 +5,10 @@ class AudioUtils
   # When the sample arrays are different lengths, the output array will be the length
   # of the longest input array.
   # WARNING: Incoming arrays can be modified.
-  def self.composite(sample_arrays)
+  def self.composite(sample_arrays, num_channels)
     if sample_arrays == []
       return []
     end
-
-    num_channels = num_channels(sample_arrays.first)
 
     # Sort from longest to shortest
     sample_arrays = sample_arrays.sort {|x, y| y.length <=> x.length}
