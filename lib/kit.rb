@@ -32,7 +32,7 @@ class Kit
   
   def get_sample_data(label)
     if label == "placeholder"
-      return (@num_channels == 1) ? [] : [[]]
+      return []
     end
 
     sample_data = @sound_bank[label]

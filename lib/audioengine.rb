@@ -97,7 +97,7 @@ private
       tick_index += beat_tick_length
     end
 
-    overflow_sample_data = (sound == [] || sound == [[]]) ? [] : sound[beat_sample_length...(sound.length)]
+    overflow_sample_data = (sound == []) ? [] : sound[beat_sample_length...(sound.length)]
 
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end

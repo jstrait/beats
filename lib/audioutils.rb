@@ -15,20 +15,16 @@ class AudioUtils
 
     composited_output = sample_arrays.slice!(0)
     sample_arrays.each do |sample_array|
+      unless sample_array == []
         if num_channels == 1
-          unless sample_array == []
-            sample_array.length.times {|i| composited_output[i] += sample_array[i] }
-          end
+          sample_array.length.times {|i| composited_output[i] += sample_array[i] }
         elsif num_channels == 2
-          unless sample_array == [[]]
-            sample_array.length.times do |i|
-              composited_output[i] = [composited_output[i][0] + sample_array[i][0],
-                                      composited_output[i][1] + sample_array[i][1]]
-            end
+          sample_array.length.times do |i|
+            composited_output[i] = [composited_output[i][0] + sample_array[i][0],
+                                    composited_output[i][1] + sample_array[i][1]]
           end
-        else
-          raise StandardError, "Invalid sample data array"
         end
+      end
     end
  
     return composited_output
@@ -39,7 +35,7 @@ class AudioUtils
   # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
   # TODO: Is there a better name for this method?
   def self.normalize(sample_array, num_channels, scale)
-    if sample_array == [] || sample_array == [[]]
+    if sample_array == []
       return sample_array
     end
     
