@@ -1,15 +1,10 @@
 # Adds some functionality to the WaveFile gem that allows for improved performance. The 
-# combo of open_for_appending() and write_snippet() allow a wave file to be written to
-# disk in chunks, instead of all at once. This improves performance (and I would assume
-# memory usage) by eliminating the need to store the entire sample data for the song in
-# memory in a giant (i.e. millions of elements) array.
+# use of open_for_appending() allows a wave file to be written to disk in chunks, instead
+# of all at once. This improves performance (and I would assume memory usage) by eliminating
+# the need to store the entire sample data for the song in memory in a giant (i.e. millions
+# of elements) array.
 #
 # I'm not sure these methods in their current form are suitable for the WaveFile gem.
-# That's a public API so I want to be careful adding to it, and these methods fall into the
-# category of "you should know what you're doing." In particular, open_for_appending() and
-# write_snippet() need to be used together, and if you don't use them right your saved wave
-# file will be messed up. There's probably a better API for doing this.
-#
 # If I figure out a better API I might add it to the WaveFile gem in the future, but until
 # then I'm just putting it here. Since BEATS is a stand-alone app and not a re-usable library,
 # I don't think this should be a problem.
