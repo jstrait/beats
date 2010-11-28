@@ -38,13 +38,11 @@ class AudioUtils
   # Scales the amplitude of the incoming sample array by *scale* amount. Can be used in conjunction
   # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
   # TODO: Is there a better name for this method?
-  def self.normalize(sample_array, scale)
+  def self.normalize(sample_array, num_channels, scale)
     if sample_array == [] || sample_array == [[]]
       return sample_array
     end
     
-    num_channels = num_channels(sample_array)
-
     if scale > 1
       if num_channels == 1
         sample_array = sample_array.map {|sample| sample / scale }
@@ -75,22 +73,6 @@ class AudioUtils
   # Returns the sample index that a given tick (offset from 0) starts on.
   def self.tick_start_sample(tick_index, tick_sample_length)
     return (tick_index * tick_sample_length).floor
-  end
-
-
-  # Returns FixNum count of channels in sample array.
-  # TODO: This method should probably not exist. Instead, Kit.num_channels should be used.
-  # One problem with this method is that it requires use of the stupid [[]] for stereo data.
-  def self.num_channels(sample_array)
-    first_element = sample_array.first
-
-    if sample_array == [] || first_element.class == Fixnum
-      return 1
-    elsif sample_array == [[]] || first_element.class == Array
-      return 2
-    else
-      # TODO: Define what to do here
-    end
   end
 end
 

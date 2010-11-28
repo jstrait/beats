@@ -135,6 +135,6 @@ private
 
     composited_sample_data = AudioUtils.composite(sample_arrays, @num_channels)
 
-    return AudioUtils.normalize(composited_sample_data, sound_file_names.length)
+    return AudioUtils.normalize(composited_sample_data, @num_channels, sound_file_names.length)
   end
 end
