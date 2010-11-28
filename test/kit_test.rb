@@ -9,6 +9,9 @@ class KitTest < Test::Unit::TestCase
   def generate_test_data
     kits = {}
     
+    # Kit with no sounds
+    kits[:empty] = Kit.new("test/sounds", {})
+
     # Kits which only has simple sounds
     kits[:mono8]    = Kit.new("test/sounds", {"mono8" => "bass_mono_8.wav"})
     kits[:mono16]   = Kit.new("test/sounds", {"mono8"  => "bass_mono_8.wav",
@@ -34,6 +37,9 @@ class KitTest < Test::Unit::TestCase
   
   def test_valid_initialization
     kits = generate_test_data()
+   
+    assert_equal(16, kits[:empty].bits_per_sample)
+    assert_equal(1, kits[:empty].num_channels)
     
     assert_equal(16, kits[:mono8].bits_per_sample)
     assert_equal(1, kits[:mono8].num_channels)
