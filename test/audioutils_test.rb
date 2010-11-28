@@ -31,6 +31,9 @@ class AudioUtilsTest < Test::Unit::TestCase
     assert_equal([[]], AudioUtils.normalize([[]], 2, 5))
     assert_equal([100, 200, 300, 400, 500], AudioUtils.normalize([100, 200, 300, 400, 500], 1, 1))
     assert_equal([20, 40, 60, 80, 100], AudioUtils.normalize([100, 200, 300, 400, 500], 1, 5))
+
+    assert_equal([[100, 200], [300, 400], [500, 600]], AudioUtils.normalize([[100, 200], [300, 400], [500, 600]], 2, 1))
+    assert_equal([[20, 40], [60, 80], [100, 120]], AudioUtils.normalize([[100, 200], [300, 400], [500, 600]], 2, 5))
   end
 
   def test_tick_sample_length
