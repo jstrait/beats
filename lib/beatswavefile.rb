@@ -12,9 +12,9 @@ class BeatsWaveFile < WaveFile
   
   # Writes the header for the wave file to path, and returns an open File object that
   # can be used outside the method to append the sample data. WARNING: The header contains
-  # a field for the total number of samples in the file. This number of samples must be
-  # subsequently be written to the file using write_snippet() or it won't be valid and you
-  # won't be able to play it.
+  # a field for the total number of samples in the file. This number of samples (and exactly
+  # this number of samples) must be subsequently be written to the file before it is closed
+  # or it won't be valid and you won't be able to play it.
   def open_for_appending(path)
     file = File.open(path, "w")
     write_header(file, 0)
