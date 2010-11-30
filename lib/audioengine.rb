@@ -100,21 +100,9 @@ private
   # from tracks whose last sound trigger extends past the end of the pattern. This overflow can be
   # used by the next pattern to avoid sounds cutting off when the pattern changes.
   def generate_pattern_sample_data(pattern, incoming_overflow)
-    primary_sample_data = []
-    overflow_sample_data = {}
-    
-    # Composite each track, and collect each track's overflow so that it can be handled in the
-    # next pattern to be generated.
+    # Unless cached, composite each track's sample data.
     if @composited_pattern_cache[pattern] == nil
-      raw_track_sample_arrays = []
-      pattern.tracks.each do |track_name, track|
-        temp = generate_track_sample_data(track, @kit.get_sample_data(track.name))
-        raw_track_sample_arrays << temp[:primary]
-        overflow_sample_data[track_name] = temp[:overflow]
-      end
-
-      primary_sample_data = AudioUtils.composite(raw_track_sample_arrays, @kit.num_channels)
-      
+      primary_sample_data, overflow_sample_data = composite_pattern_tracks(pattern)
       @composited_pattern_cache[pattern] = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
     else
       primary_sample_data = @composited_pattern_cache[pattern][:primary].dup
@@ -129,6 +117,20 @@ private
     primary_sample_data = AudioUtils.normalize(primary_sample_data, @kit.num_channels, @song.total_tracks)
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+  end
+
+  def composite_pattern_tracks(pattern)
+    overflow_sample_data = {}
+
+    raw_track_sample_arrays = []
+      pattern.tracks.each do |track_name, track|
+        temp = generate_track_sample_data(track, @kit.get_sample_data(track.name))
+        raw_track_sample_arrays << temp[:primary]
+        overflow_sample_data[track_name] = temp[:overflow]
+      end
+
+    primary_sample_data = AudioUtils.composite(raw_track_sample_arrays, @kit.num_channels)
+    return primary_sample_data, overflow_sample_data
   end
 
   # Applies sound overflow (i.e. long sounds such as cymbal crash which extend past the last step)
