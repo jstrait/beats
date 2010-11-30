@@ -96,27 +96,15 @@ private
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
 
-  def generate_pattern_sample_data(pattern, incoming_overflow)
-    primary_sample_data, overflow_sample_data = generate_main_sample_data(pattern)
-    primary_sample_data, overflow_sample_data = handle_incoming_overflow(pattern,
-                                                                         incoming_overflow,
-                                                                         primary_sample_data,
-                                                                         overflow_sample_data)
-    primary_sample_data = AudioUtils.normalize(primary_sample_data, @kit.num_channels, @song.total_tracks)
-    
-    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
-  end
-
   # Composites the sample data for each of the pattern's tracks, and returns the overflow sample data
   # from tracks whose last sound trigger extends past the end of the pattern. This overflow can be
   # used by the next pattern to avoid sounds cutting off when the pattern changes.
-  #
-  # Overflow can't be composited here because the next pattern might truncate each track's overflow
-  # separately depending on when the track's first trigger occurs.
-  def generate_main_sample_data(pattern)
+  def generate_pattern_sample_data(pattern, incoming_overflow)
     primary_sample_data = []
     overflow_sample_data = {}
     
+    # Composite each track, and collect each track's overflow so that it can be handled in the
+    # next pattern to be generated.
     if @composited_pattern_cache[pattern] == nil
       raw_track_sample_arrays = []
       pattern.tracks.each do |track_name, track|
@@ -132,8 +120,15 @@ private
       primary_sample_data = @composited_pattern_cache[pattern][:primary].dup
       overflow_sample_data = @composited_pattern_cache[pattern][:overflow].dup
     end
-  
-    return primary_sample_data, overflow_sample_data
+    
+    # Composite overflow from the previous pattern onto this pattern, to prevent sounds from cutting off.
+    primary_sample_data, overflow_sample_data = handle_incoming_overflow(pattern,
+                                                                         incoming_overflow,
+                                                                         primary_sample_data,
+                                                                         overflow_sample_data)
+    primary_sample_data = AudioUtils.normalize(primary_sample_data, @kit.num_channels, @song.total_tracks)
+    
+    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
 
   # Applies sound overflow (i.e. long sounds such as cymbal crash which extend past the last step)
