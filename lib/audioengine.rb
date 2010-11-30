@@ -1,3 +1,6 @@
+# This class actually generates the output sound data for the performance.
+# Applies a Kit to a Song (which contains sub Patterns and Tracks) to
+# produce output sample data.
 class AudioEngine
   SAMPLE_RATE = 44100
   PACK_CODE = "s*"   # All sample data is assumed to be 16-bit
@@ -16,9 +19,11 @@ class AudioEngine
     num_tracks_in_song = @song.total_tracks
     samples_written = 0
     
+    # Open output wave file and preparing it for writing sample data.
     wave_file = BeatsWaveFile.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
     file = wave_file.open_for_appending(output_file_name)
 
+    # Generate each pattern's sample data, or pull it from cache, and append it to the wave file.
     incoming_overflow = {}
     @song.flow.each do |pattern_name|
       key = [pattern_name, incoming_overflow.hash]
@@ -76,6 +81,7 @@ class AudioEngine
 
 private
 
+  # Generates the sample data for a single track, using the specified sound's sample data.
   def generate_track_sample_data(track, sound)
     beats = track.beats
     if beats == [0]
@@ -102,6 +108,12 @@ private
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
 
+  # Composites the sample data for each of the pattern's tracks, and returns the overflow sample data
+  # from tracks whose last sound trigger extends past the end of the pattern. This overflow can be
+  # used by the next pattern to avoid sounds cutting off when the pattern changes.
+  #
+  # Overflow can't be composited here because the next pattern might truncate each track's overflow
+  # separately depending on when the track's first trigger occurs.
   def generate_main_sample_data(pattern)
     primary_sample_data = []
     overflow_sample_data = {}
@@ -125,6 +137,16 @@ private
     return primary_sample_data, overflow_sample_data
   end
 
+  # Applies sound overflow (i.e. long sounds such as cymbal crash which extend past the last step)
+  # from the previous pattern in the flow to the current pattern. This prevents sounds from being
+  # cut off when the pattern changes.
+  # 
+  # It would probably be shorter and conceptually simpler to deal with incoming overflow in
+  # generate_track_sample_data() instead of this method. (In fact, this method would go away).
+  # However, doing it this way allows for caching composited pattern sample data, and
+  # applying incoming overflow to the composite. This allows each pattern to only be composited once,
+  # regardless of the incoming overflow that each performance of it receives. If incoming overflow
+  # was handled at the Track level we couldn't do that.
   def handle_incoming_overflow(pattern, incoming_overflow, primary_sample_data, overflow_sample_data)
     pattern_track_names = pattern.tracks.keys
     sample_arrays = [primary_sample_data]
