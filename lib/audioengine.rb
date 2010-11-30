@@ -10,8 +10,7 @@ class AudioEngine
     @kit = kit
     
     @tick_sample_length = AudioUtils.tick_sample_length(SAMPLE_RATE, @song.tempo) 
-    @pattern_cache = {}
-    @track_cache = {}
+    @composited_pattern_cache = {}
   end
 
   def write_to_file(output_file_name)
@@ -118,7 +117,7 @@ private
     primary_sample_data = []
     overflow_sample_data = {}
     
-    if @pattern_cache[pattern] == nil
+    if @composited_pattern_cache[pattern] == nil
       raw_track_sample_arrays = []
       pattern.tracks.each do |track_name, track|
         temp = generate_track_sample_data(track, @kit.get_sample_data(track.name))
@@ -128,10 +127,10 @@ private
 
       primary_sample_data = AudioUtils.composite(raw_track_sample_arrays, @kit.num_channels)
       
-      @pattern_cache[pattern] = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
+      @composited_pattern_cache[pattern] = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
     else
-      primary_sample_data = @pattern_cache[pattern][:primary].dup
-      overflow_sample_data = @pattern_cache[pattern][:overflow].dup
+      primary_sample_data = @composited_pattern_cache[pattern][:primary].dup
+      overflow_sample_data = @composited_pattern_cache[pattern][:overflow].dup
     end
   
     return primary_sample_data, overflow_sample_data
