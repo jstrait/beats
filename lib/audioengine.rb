@@ -66,17 +66,6 @@ class AudioEngine
     return wave_file.calculate_duration(SAMPLE_RATE, samples_written)
   end
 
-  def generate_pattern_sample_data(pattern, incoming_overflow)
-    primary_sample_data, overflow_sample_data = generate_main_sample_data(pattern)
-    primary_sample_data, overflow_sample_data = handle_incoming_overflow(pattern,
-                                                                         incoming_overflow,
-                                                                         primary_sample_data,
-                                                                         overflow_sample_data)
-    primary_sample_data = AudioUtils.normalize(primary_sample_data, @kit.num_channels, @song.total_tracks)
-    
-    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
-  end
-
   attr_reader :tick_sample_length
 
 private
@@ -105,6 +94,17 @@ private
 
     overflow_sample_data = (sound == []) ? [] : sound[beat_sample_length...(sound.length)]
 
+    return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+  end
+
+  def generate_pattern_sample_data(pattern, incoming_overflow)
+    primary_sample_data, overflow_sample_data = generate_main_sample_data(pattern)
+    primary_sample_data, overflow_sample_data = handle_incoming_overflow(pattern,
+                                                                         incoming_overflow,
+                                                                         primary_sample_data,
+                                                                         overflow_sample_data)
+    primary_sample_data = AudioUtils.normalize(primary_sample_data, @kit.num_channels, @song.total_tracks)
+    
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
 
