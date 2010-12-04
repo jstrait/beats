@@ -40,7 +40,7 @@ class Track
     @beats = beats
   end
   
-  def tick_count
+  def step_count
     return @rhythm.length
   end
    

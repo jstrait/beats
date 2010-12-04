@@ -44,12 +44,12 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(pattern.tracks.length, 3)
   end
 
-  def test_tick_count
+  def test_step_count
     test_patterns = generate_test_data()
     
-    assert_equal(0,  test_patterns[:blank].tick_count())
-    assert_equal(32, test_patterns[:verse].tick_count())
-    assert_equal(4,  test_patterns[:staircase].tick_count())
+    assert_equal(0,  test_patterns[:blank].step_count())
+    assert_equal(32, test_patterns[:verse].step_count())
+    assert_equal(4,  test_patterns[:staircase].step_count())
   end
 
   def test_same_tracks_as?

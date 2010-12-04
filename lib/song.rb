@@ -79,7 +79,7 @@ class Song
           original_track = original_pattern.tracks[track_name]
           new_pattern.track(original_track.name, original_track.rhythm)
         else
-          new_pattern.track(track_name, "." * original_pattern.tick_count())
+          new_pattern.track(track_name, "." * original_pattern.step_count)
         end
       end
       

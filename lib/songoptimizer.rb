@@ -58,17 +58,17 @@ protected
   def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
     blank_track_pattern = '.' * max_pattern_length
     
-    # For each pattern, add a new pattern to new song every max_pattern_length ticks
+    # For each pattern, add a new pattern to new song every max_pattern_length steps
     optimized_flow = {}
     original_song.patterns.values.each do |pattern|
-      tick_index = 0
+      step_index = 0
       optimized_flow[pattern.name] = []
       
-      while(pattern.tracks.values.first.rhythm[tick_index] != nil) do
-        new_pattern = optimized_song.pattern("#{pattern.name}#{tick_index}".to_sym)
+      while(pattern.tracks.values.first.rhythm[step_index] != nil) do
+        new_pattern = optimized_song.pattern("#{pattern.name}#{step_index}".to_sym)
         optimized_flow[pattern.name] << new_pattern.name
         pattern.tracks.values.each do |track|
-          sub_track_pattern = track.rhythm[tick_index...(tick_index + max_pattern_length)]
+          sub_track_pattern = track.rhythm[step_index...(step_index + max_pattern_length)]
           
           if sub_track_pattern != blank_track_pattern
             new_pattern.track(track.name, sub_track_pattern)
@@ -76,13 +76,13 @@ protected
         end
         
         # If no track has a trigger during this step pattern, add a blank track.
-        # Otherwise, this pattern will have no ticks, and no sound will be generated,
+        # Otherwise, this pattern will have no steps, and no sound will be generated,
         # causing the pattern to be "compacted away".
         if new_pattern.tracks.empty?
           new_pattern.track("placeholder", blank_track_pattern)
         end
         
-        tick_index += max_pattern_length
+        step_index += max_pattern_length
       end
     end
     

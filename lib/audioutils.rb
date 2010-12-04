@@ -53,22 +53,22 @@ class AudioUtils
   end
 
 
-  # Returns the number of samples that each tick (i.e. a 'X' or a '.') lasts at a given sample
+  # Returns the number of samples that each step (i.e. a 'X' or a '.') lasts at a given sample
   # rate and tempo. The sample length can be a non-integer value. Although there's no such
   # thing as a partial sample, this is required to prevent small timing errors from creeping in.
   # If they accumulate, they can cause rhythms to drift out of time.
-  def self.tick_sample_length(samples_per_second, tempo)
+  def self.step_sample_length(samples_per_second, tempo)
      samples_per_minute = samples_per_second * 60.0
      samples_per_quarter_note = samples_per_minute / tempo
 
-     # Each tick is equivalent to a 16th note
+     # Each step is equivalent to a 16th note
      return samples_per_quarter_note / 4.0
   end
 
 
-  # Returns the sample index that a given tick (offset from 0) starts on.
-  def self.tick_start_sample(tick_index, tick_sample_length)
-    return (tick_index * tick_sample_length).floor
+  # Returns the sample index that a given step (offset from 0) starts on.
+  def self.step_start_sample(step_index, step_sample_length)
+    return (step_index * step_sample_length).floor
   end
 end
 
