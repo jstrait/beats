@@ -1,5 +1,8 @@
 class SongParseError < RuntimeError; end
 
+# This class is used to parse a raw YAML song definition into domain objects. These
+# domain objects can then be used by AudioEngine to generate the output sample data
+# for the song.
 class SongParser
   DONT_USE_STRUCTURE_WARNING =
       "\n" +
@@ -19,7 +22,8 @@ class SongParser
   def initialize
   end
   
-  def parse(base_path, definition = nil)
+  # Parses a raw YAML song definition and converts it into a Song and Kit object.
+  def parse(base_path, definition)
     raw_song_definition = canonicalize_definition(definition)
     raw_song_components = split_raw_yaml_into_components(raw_song_definition)
     
@@ -48,7 +52,7 @@ class SongParser
     end
     
     # 3.) Load patterns
-    add_patterns_to_song(song, kit, raw_song_components[:patterns])
+    add_patterns_to_song(song, raw_song_components[:patterns])
     
     # 4.) Set flow
     if raw_song_components[:flow] == nil
@@ -64,6 +68,9 @@ private
 
   # Is "canonicalize" a word?
   def canonicalize_definition(definition)
+    # TODO: What value is there in supporting both raw YAML strings and pre-parsed YAML hashes?
+    # Why not just pick one format and go with it? Raw String format seems like the better
+    # idea of the two.
     if definition.class == String
       begin
         raw_song_definition = YAML.load(definition)
@@ -144,7 +151,7 @@ private
     return kit
   end
   
-  def add_patterns_to_song(song, kit, raw_patterns)
+  def add_patterns_to_song(song, raw_patterns)
     raw_patterns.keys.each do |key|
       new_pattern = song.pattern key.to_sym
       flow = ""
@@ -192,7 +199,8 @@ private
       multiples = multiples_str.to_i
       
       unless multiples_str.match(/[^0-9]/) == nil
-        raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
+        raise SongParseError,
+              "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
       else
         if multiples < 0
           raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
