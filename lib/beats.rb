@@ -22,9 +22,11 @@ class Beats
     song, kit = song_parser.parse(File.dirname(@input_file_name), YAML.load_file(@input_file_name))
     song_optimizer = SongOptimizer.new()
 
-    if @options[:pattern] != nil
+    # If the -p option is used, transform the song into one whose flow consists of
+    # playing that single pattern once.
+    unless @options[:pattern] == nil
       pattern_name = @options[:pattern].downcase.to_sym
-      unless song.patterns.member?(pattern_name)
+      unless song.patterns.has_key?(pattern_name)
         raise StandardError, "The song does not include a pattern called #{@options[:pattern]}"
       end
       
