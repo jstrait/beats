@@ -27,7 +27,7 @@ class SongParserTest < Test::Unit::TestCase
                       :sound_in_track_wrong_format]
 
   def self.load_fixture(fixture_name)
-    return SongParser.new().parse(FIXTURE_BASE_PATH, YAML.load_file("test/fixtures/#{fixture_name}"))
+    return SongParser.new().parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
   end
 
   def self.generate_test_data

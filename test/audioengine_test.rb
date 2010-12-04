@@ -16,7 +16,7 @@ class AudioEngineTest < Test::Unit::TestCase
     test_engines[:blank] = AudioEngine.new(Song.new(), Kit.new(base_path, {}))
 
     FIXTURES.each do |fixture_name|
-      song, kit = song_parser.parse(base_path, YAML.load_file("test/fixtures/valid/#{fixture_name}.txt"))
+      song, kit = song_parser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
       test_engines[fixture_name] = AudioEngine.new(song, kit)
     end
      

@@ -23,13 +23,12 @@ class SongParser
   end
   
   # Parses a raw YAML song definition and converts it into a Song and Kit object.
-  def parse(base_path, definition)
-    raw_song_definition = canonicalize_definition(definition)
-    raw_song_components = split_raw_yaml_into_components(raw_song_definition)
+  def parse(base_path, raw_yaml_string)
+    raw_song_components = hashify_raw_yaml(raw_yaml_string)
     
     unless raw_song_components[:folder] == nil
       base_path = raw_song_components[:folder]
-    end 
+    end
     
     song = Song.new()
     
@@ -66,27 +65,13 @@ class SongParser
   
 private
 
-  # Is "canonicalize" a word?
-  def canonicalize_definition(definition)
-    # TODO: What value is there in supporting both raw YAML strings and pre-parsed YAML hashes?
-    # Why not just pick one format and go with it? Raw String format seems like the better
-    # idea of the two.
-    if definition.class == String
-      begin
-        raw_song_definition = YAML.load(definition)
-      rescue ArgumentError => detail
-        raise SongParseError, "Syntax error in YAML file"
-      end
-    elsif definition.class == Hash
-      raw_song_definition = definition
-    else
-      raise SongParseError, "Invalid song input"
+  def hashify_raw_yaml(raw_yaml_string)
+    begin
+      raw_song_definition = YAML.load(raw_yaml_string)
+    rescue ArgumentError => detail
+      raise SongParseError, "Syntax error in YAML file"
     end
-    
-    return raw_song_definition
-  end
 
-  def split_raw_yaml_into_components(raw_song_definition)
     raw_song_components = {}
     warnings = []
     raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)

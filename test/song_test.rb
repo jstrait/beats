@@ -22,7 +22,7 @@ class SongTest < Test::Unit::TestCase
     
     song_parser = SongParser.new()
     FIXTURES.each do |fixture_name|
-      test_songs[fixture_name], throwaway_kit = song_parser.parse(base_path, YAML.load_file("test/fixtures/valid/#{fixture_name}.txt"))
+      test_songs[fixture_name], throwaway_kit = song_parser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
     end
 
     test_songs[:from_code] = Song.new()

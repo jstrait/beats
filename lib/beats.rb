@@ -19,7 +19,7 @@ class Beats
     end
 
     song_parser = SongParser.new()
-    song, kit = song_parser.parse(File.dirname(@input_file_name), YAML.load_file(@input_file_name))
+    song, kit = song_parser.parse(File.dirname(@input_file_name), File.read(@input_file_name))
     song_optimizer = SongOptimizer.new()
 
     # If the -p option is used, transform the song into one whose flow consists of
