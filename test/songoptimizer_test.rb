@@ -54,7 +54,7 @@ Verse:
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)
     
     optimizer = SongOptimizer.new()
-    optimized_song = optimizer.optimize(original_song, kit, 4)
+    optimized_song = optimizer.optimize(original_song, 4)
     
     assert_equal(optimized_song.tempo, 135)
     #assert_equal(optimized_song.total_tracks, 5)
@@ -123,7 +123,7 @@ Verse:
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
     
     optimizer = SongOptimizer.new()
-    optimized_song = optimizer.optimize(original_song, kit, 7)
+    optimized_song = optimizer.optimize(original_song, 7)
     
     pattern = optimized_song.patterns[:verse0]
     assert_equal(["bass"], pattern.tracks.keys.sort)
@@ -142,7 +142,7 @@ Verse:
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
     
     optimizer = SongOptimizer.new()
-    optimized_song = optimizer.optimize(original_song, kit, 4)
+    optimized_song = optimizer.optimize(original_song, 4)
     
     pattern = optimized_song.patterns[:verse0]
     assert_equal(["bass"], pattern.tracks.keys.sort)

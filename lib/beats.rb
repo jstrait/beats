@@ -37,7 +37,7 @@ class Beats
     if @options[:split]
       split_songs = song.split()
       split_songs.each do |track_name, split_song|
-        split_song = song_optimizer.optimize(split_song, kit, OPTIMIZED_PATTERN_LENGTH)
+        split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
 
         # TODO: Move building the output file name into its own method?
         extension = File.extname(@output_file_name)
@@ -47,7 +47,7 @@ class Beats
         duration = AudioEngine.new(split_song, kit).write_to_file(file_name)
       end
     else
-      song = song_optimizer.optimize(song, kit, OPTIMIZED_PATTERN_LENGTH)
+      song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
       duration = AudioEngine.new(song, kit).write_to_file(@output_file_name)
     end
 

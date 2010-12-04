@@ -1,14 +1,13 @@
-# This class is used to transform a Song object into an equivalent Song object that
-# will be generated faster by the sound engine.
+# This class is used to transform a Song object into an equivalent Song object whose
+# sample data will be generated faster by the audio engine.
 #
 # The primary method is optimize(). Currently, it performs two optimizations:
 #
 #   1.) Breaks patterns into shorter patterns. Generating one long Pattern is generally
 #       slower than generating several short Patterns with the same combined length.
 #   2.) Replaces Patterns which are equivalent (i.e. they have the same tracks with the
-#       same rhythms) into one canonical Pattern. This allows for better caching, by
-#       preventing the sound engine from generating sample data for a Pattern when the
-#       same sample data has already been generated for a different Pattern.
+#       same rhythms) with one canonical Pattern. This allows for better caching, by
+#       preventing the audio engine from generating the same sample data more than once.
 #
 # Note that step #1 actually performs double duty, because breaking Patterns into smaller
 # pieces increases the likelihood there will be duplicates that can be combined.
@@ -18,13 +17,12 @@ class SongOptimizer
   
   # Returns a Song that will produce the same output as original_song, but should be
   # generated faster.
-  # TODO: Remove dependency on having kit passed in
-  def optimize(original_song, kit, max_pattern_length)
+  def optimize(original_song, max_pattern_length)
     # 1.) Create a new song, cloned from the original
     optimized_song = original_song.copy_ignoring_patterns_and_flow()
     
     # 2.) Subdivide patterns
-    optimized_song = subdivide_song_patterns(original_song, optimized_song, kit, max_pattern_length)
+    optimized_song = subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
 
     # 3.) Prune duplicate patterns
     optimized_song = prune_duplicate_patterns(optimized_song)
@@ -57,7 +55,7 @@ protected
   #
   # Note that if a track in a sub-divided pattern has no triggers (such as track2 in the
   # 2nd pattern above), it will not be included in the new pattern.
-  def subdivide_song_patterns(original_song, optimized_song, kit, max_pattern_length)
+  def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
     blank_track_pattern = '.' * max_pattern_length
     
     # For each pattern, add a new pattern to new song every max_pattern_length ticks
