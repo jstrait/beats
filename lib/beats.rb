@@ -1,6 +1,5 @@
 class Beats
   BEATS_VERSION = "1.3.0a"
-  SAMPLE_RATE = 44100
   OPTIMIZED_PATTERN_LENGTH = 4
 
   def initialize(input_file_name, output_file_name, options)
