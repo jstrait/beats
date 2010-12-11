@@ -5,18 +5,29 @@ class SoundFileNotFoundError < RuntimeError; end
 # is in an unsupported format.
 class InvalidSoundFormatError < RuntimeError; end
 
-# This class keeps track of the sounds that are used in a song. It provides a
-# central place for storing sound data, and most usefully, handles converting
-# sounds in different formats to a standard format.
-#
-# For example, if a song requires a sound that is mono/8-bit, another that is
-# stereo/8-bit, and another that is stereo/16-bit, it can't mix them together
-# because they are in different formats. Kit however automatically handles the
-# details of converting them to a common format. Sounds that you get using
+
+# This class provides a repository for the sounds used in a song. Most usefully, it
+# also handles converting the sounds to a common format. For example, if a song requires
+# a sound that is mono/8-bit, another that is stereo/8-bit, and another that is
+# stereo/16-bit, they have to be converted to a common format before they can be used
+# together. Kit handles this conversion; all sounds retrieved using
 # get_sample_data() will be in a common format.
 #
-# This class is immutable. All sounds should be added at initialization.
-# Once a Kit is created, no new sounds can be added to it.
+# Sounds can only be added at initialization. During initialization, the sample data
+# for each sound is loaded into memory, and converted to the common format if necessary.
+# This format is:
+#
+#   Bits per sample: 16
+#   Sample rate:     44100
+#   Channels:        Stereo, unless all of the kit sounds are mono.
+#
+# For example if the kit has these sounds:
+#
+#   my_sound_1.wav:  mono, 16-bit
+#   my_sound_2.wav:  stereo, 8-bit
+#   my_sound_3.wav:  mono, 8-bit
+#
+# they will all be converted to stereo/16-bit during initialization.
 class Kit
   def initialize(base_path, kit_items)
     @base_path = base_path
@@ -30,6 +41,26 @@ class Kit
     load_sounds(base_path, kit_items)
   end
   
+  # Returns the sample data for a sound contained in the Kit. If the all sounds in the
+  # kit are mono, then this will be a flat Array of Integers between -32768 and 32767.
+  # Otherwise, this will be an Array of Integer pairs between -32768 and 32767.
+  #
+  # label - The name of the sound to get sample data for. If the sound was defined in
+  #         the Kit section of a song file, this will generally be a descriptive label
+  #         such as "bass" or "snare". If defined in a track but not the kit, it will
+  #         generally be a file name such as "my_sounds/hihat/hi_hat.wav".
+  #
+  # Examples
+  #
+  #   # If @num_channels is 1, a flat Array of Integers:
+  #   get_sample_data("bass")
+  #   # => [154, 7023, 8132, 2622, -132, 34, ..., -6702]
+  #
+  #   # If @num_channels is 2, a Array of Integer pairs:
+  #   get_sample_data("snare")
+  #   # => [[57, 1265], [-452, 10543], [-2531, 12643], [-6372, 11653], ..., [5482, 25673]]
+  #
+  # Returns the sample data Array for the sound bound to label.
   def get_sample_data(label)
     if label == "placeholder"
       return []
@@ -38,13 +69,19 @@ class Kit
     sample_data = @sound_bank[label]
     
     if sample_data == nil
+      # TODO: Should we really throw an exception here rather than just returning nil?
       raise StandardError, "Kit doesn't contain sound '#{label}'."
     else
       return sample_data
     end
   end
   
-  # Produces nicer looking output than the default version of to_yaml().
+  # Returns a YAML representation of the Kit. Produces nicer looking output than the default version
+  # of to_yaml().
+  #
+  # indent_space_count - The number of spaces to indent each line in the output (default: 0).
+  #
+  # Returns a String representation of the Kit in YAML format.
   def to_yaml(indent_space_count = 0)
     yaml = ""
     longest_label_mapping_length =
