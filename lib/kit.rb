@@ -76,6 +76,12 @@ class Kit
     end
   end
   
+  def scale!(scale_factor)
+    @sound_bank.each do |label, sample_array|
+      @sound_bank[label] = AudioUtils.normalize(sample_array, @num_channels, scale_factor)
+    end
+  end
+
   # Returns a YAML representation of the Kit. Produces nicer looking output than the default version
   # of to_yaml().
   #
