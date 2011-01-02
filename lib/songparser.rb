@@ -139,7 +139,6 @@ private
   def add_patterns_to_song(song, raw_patterns)
     raw_patterns.keys.each do |key|
       new_pattern = song.pattern key.to_sym
-      flow = ""
 
       track_list = raw_patterns[key]
       # TODO Also raise error if only there is only 1 track and it's a flow track
@@ -153,17 +152,11 @@ private
       track_list.each do |track_definition|
         track_name = track_definition.keys.first
         
-        if track_name == Pattern::FLOW_TRACK_NAME
-          flow = track_definition[track_name]
-        else  
-          # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
-          track_definition[track_name] ||= ""
-
-          new_pattern.track track_name, track_definition[track_name]
-        end
+        # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
+        track_definition[track_name] ||= ""
+        
+        new_pattern.track track_name, track_definition[track_name]
       end
-      
-      new_pattern = PatternExpander.expand_pattern(flow, new_pattern)
     end
   end
   
