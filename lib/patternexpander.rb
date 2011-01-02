@@ -1,5 +1,9 @@
 class InvalidFlowError < RuntimeError; end
 
+# This class is used for an experimental feature that allows specifying repeats inside of
+# individual patterns, instead of the song flow. This feature is currently disabled, so for
+# the time being this class is dead code.
+#
 # TODO: The expand_pattern method in this class should probably be moved to the Pattern class.
 # This class would then go away.
 class PatternExpander
