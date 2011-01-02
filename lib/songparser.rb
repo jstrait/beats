@@ -7,7 +7,7 @@ class SongParser
   DONT_USE_STRUCTURE_WARNING =
       "\n" +
       "WARNING! This song contains a 'Structure' section in the header.\n" +
-      "As of BEATS 1.3.0, the 'Structure' section should be renamed 'Flow'.\n" +
+      "As of BEATS 1.2.1, the 'Structure' section should be renamed 'Flow'.\n" +
       "You should change your song file, in a future version using 'Structure' will cause an error.\n"
   
   NO_SONG_HEADER_ERROR_MSG =
@@ -15,7 +15,7 @@ class SongParser
 
   Song:
     Tempo: 120
-    Structure:
+    Flow:
       - Verse: x2
       - Chorus: x2"
   
