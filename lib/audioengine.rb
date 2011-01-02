@@ -48,7 +48,7 @@ class AudioEngine
 
     # Write any remaining overflow from the final pattern
     final_overflow_composite = AudioUtils.composite(incoming_overflow.values, @kit.num_channels)
-    final_overflow_composite = AudioUtils.normalize(final_overflow_composite, @kit.num_channels, num_tracks_in_song)
+    final_overflow_composite = AudioUtils.scale(final_overflow_composite, @kit.num_channels, num_tracks_in_song)
     if @kit.num_channels == 1
       file.syswrite(final_overflow_composite.pack(PACK_CODE))
     else
@@ -114,7 +114,7 @@ private
                                                                          incoming_overflow,
                                                                          primary_sample_data,
                                                                          overflow_sample_data)
-    primary_sample_data = AudioUtils.normalize(primary_sample_data, @kit.num_channels, @song.total_tracks)
+    primary_sample_data = AudioUtils.scale(primary_sample_data, @kit.num_channels, @song.total_tracks)
     
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end

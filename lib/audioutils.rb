@@ -33,8 +33,7 @@ class AudioUtils
 
   # Scales the amplitude of the incoming sample array by *scale* amount. Can be used in conjunction
   # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
-  # TODO: Is there a better name for this method?
-  def self.normalize(sample_array, num_channels, scale)
+  def self.scale(sample_array, num_channels, scale)
     if sample_array == []
       return sample_array
     end

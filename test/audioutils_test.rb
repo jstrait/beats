@@ -27,14 +27,14 @@ class AudioUtilsTest < Test::Unit::TestCase
     assert_equal([[90, 120], [120, 140], [100, 110]], AudioUtils.composite([[[20, 30], [40, 50]], [[10, 20]], [[60, 70], [80, 90], [100, 110]]], 2))
   end
 
-  def test_normalize
-    assert_equal([], AudioUtils.normalize([], 1, 5))
-    assert_equal([], AudioUtils.normalize([], 2, 5))
-    assert_equal([100, 200, 300, 400, 500], AudioUtils.normalize([100, 200, 300, 400, 500], 1, 1))
-    assert_equal([20, 40, 60, 80, 100], AudioUtils.normalize([100, 200, 300, 400, 500], 1, 5))
+  def test_scale
+    assert_equal([], AudioUtils.scale([], 1, 5))
+    assert_equal([], AudioUtils.scale([], 2, 5))
+    assert_equal([100, 200, 300, 400, 500], AudioUtils.scale([100, 200, 300, 400, 500], 1, 1))
+    assert_equal([20, 40, 60, 80, 100], AudioUtils.scale([100, 200, 300, 400, 500], 1, 5))
 
-    assert_equal([[100, 200], [300, 400], [500, 600]], AudioUtils.normalize([[100, 200], [300, 400], [500, 600]], 2, 1))
-    assert_equal([[20, 40], [60, 80], [100, 120]], AudioUtils.normalize([[100, 200], [300, 400], [500, 600]], 2, 5))
+    assert_equal([[100, 200], [300, 400], [500, 600]], AudioUtils.scale([[100, 200], [300, 400], [500, 600]], 2, 1))
+    assert_equal([[20, 40], [60, 80], [100, 120]], AudioUtils.scale([[100, 200], [300, 400], [500, 600]], 2, 5))
   end
 
   def test_step_sample_length

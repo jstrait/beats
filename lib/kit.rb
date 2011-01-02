@@ -78,7 +78,7 @@ class Kit
   
   def scale!(scale_factor)
     @sound_bank.each do |label, sample_array|
-      @sound_bank[label] = AudioUtils.normalize(sample_array, @num_channels, scale_factor)
+      @sound_bank[label] = AudioUtils.scale(sample_array, @num_channels, scale_factor)
     end
   end
 
@@ -178,6 +178,6 @@ private
 
     composited_sample_data = AudioUtils.composite(sample_arrays, @num_channels)
 
-    return AudioUtils.normalize(composited_sample_data, @num_channels, sound_file_names.length)
+    return AudioUtils.scale(composited_sample_data, @num_channels, sound_file_names.length)
   end
 end
