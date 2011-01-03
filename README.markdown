@@ -37,7 +37,7 @@ Current Status
 
 The latest stable version of BEATS is 1.2.0, released on July 12, 2010. It brings significant performance and architectural improvements. It also contains a few bug fixes. For more info, see [http://www.joelstrait.com/blog/2010/7/12/beats_1.2.0_released](http://www.joelstrait.com/blog/2010/7/12/beats_1.2.0_released).
 
-Development for 1.2.1 is underway on the trunk. This is a minor release which will add a few small features.
+Development for 1.2.1 is underway on the trunk. This is a minor release which will add a few small features:
 
 * You can use the | character to represent bar lines in a track rhythm. This is optional, but often makes longer rhythms easier to read.
 * The "Structure" section of the song header is now called "Flow".
