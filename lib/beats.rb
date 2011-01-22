@@ -34,7 +34,7 @@ class Beats
         raise StandardError, "The song does not include a pattern called #{@options[:pattern]}"
       end
       
-      song.structure = [pattern_name]
+      song.flow = [pattern_name]
       song.remove_unused_patterns()
     end
 
