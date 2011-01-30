@@ -30,12 +30,7 @@ class Beats
     # playing that single pattern once.
     unless @options[:pattern] == nil
       pattern_name = @options[:pattern].downcase.to_sym
-      unless song.patterns.has_key?(pattern_name)
-        raise StandardError, "The song does not include a pattern called #{@options[:pattern]}"
-      end
-      
-      song.flow = [pattern_name]
-      song.remove_unused_patterns()
+      song.remove_patterns_except(pattern_name)
     end
 
     duration = nil

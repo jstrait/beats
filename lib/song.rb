@@ -61,6 +61,21 @@ class Song
     
     return copy
   end
+
+  # Changes the song flow to consist of playing the specified pattern once. All other patterns will
+  # be removed from the song as a side effect.
+  #
+  # pattern_to_keep - The Symbol name of the pattern to preserve.
+  #
+  # Returns nothing.
+  def remove_patterns_except(pattern_to_keep)
+    unless @patterns.has_key?(pattern_to_keep)
+      raise StandardError, "The song does not include a pattern called #{pattern_to_keep}"
+    end
+      
+    @flow = [pattern_to_keep]
+    remove_unused_patterns()
+  end
   
   # Splits a Song object into multiple Song objects, where each new
   # Song only has 1 track. For example, if a Song has 5 tracks, this will return
