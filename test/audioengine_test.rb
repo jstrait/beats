@@ -40,7 +40,6 @@ class AudioEngineTest < Test::Unit::TestCase
 
   # These tests use unrealistically short sounds and step sample lengths, to make tests a lot easier to work with.
   def test_generate_track_sample_data
-    
     # 1.) Tick sample length is equal to the length of the sound sample data.
     #     When this is the case, overflow should never occur.
     #     In practice, this will probably not occur often, but these tests act as a form of sanity check.
@@ -50,6 +49,7 @@ class AudioEngineTest < Test::Unit::TestCase
     helper_generate_track_sample_data ".X",     4, TE + S
     helper_generate_track_sample_data "...X.",  4, (TE * 3) + S + TE
     helper_generate_track_sample_data ".X.XX.", 4, TE + S + TE + S + S + TE
+    helper_generate_track_sample_data "...",    4, TE * 3
   
     # 2A.) Tick sample length is longer than the sound sample data. This is similar to (1), except that there should
     #     be some extra silence after the end of each trigger.
@@ -60,6 +60,7 @@ class AudioEngineTest < Test::Unit::TestCase
     helper_generate_track_sample_data ".X",     6, TL + SL
     helper_generate_track_sample_data "...X.",  6, (TL * 3) + SL + TL
     helper_generate_track_sample_data ".X.XX.", 6, TL + SL + TL + SL + SL + TL
+    helper_generate_track_sample_data "...",    6, (TE + TS) * 3
 
     # 2B.) Tick sample length is longer than the sound sample data, but not by an integer amount.
     #
@@ -73,6 +74,7 @@ class AudioEngineTest < Test::Unit::TestCase
     helper_generate_track_sample_data ".X",     5.83, TL[0..4] + SL
     helper_generate_track_sample_data "...X.",  5.83, ([0] * 17) + SL + TL
     helper_generate_track_sample_data ".X.XX.", 5.83, TL[0..4] + SL + TL + SL + SL + TL[0..4]
+    helper_generate_track_sample_data "...",    5.83, [0] * 17
 
     # 3A.) Tick sample length is shorter than the sound sample data. Overflow will now occur!
     helper_generate_track_sample_data "",       2, [],              []
@@ -81,6 +83,7 @@ class AudioEngineTest < Test::Unit::TestCase
     helper_generate_track_sample_data ".X",     2, TS + SS,         SO
     helper_generate_track_sample_data "...X.",  2, (TS * 3) + S,    []
     helper_generate_track_sample_data ".X.XX.", 2, TS + S + SS + S, []
+    helper_generate_track_sample_data "...",    2, [0] * 6,         []
 
     # 3B.) Tick sample length is shorter than sound sample data, such that a beat other than the final one
     #      would extend past the end of the rhythm if not cut off. Make sure that the sample data array doesn't
@@ -99,6 +102,7 @@ class AudioEngineTest < Test::Unit::TestCase
     helper_generate_track_sample_data ".X",     1.83, [0] + S[0..1],          S[2..3]
     helper_generate_track_sample_data "...X.",  1.83, ([0] * 5) + S,          []
     helper_generate_track_sample_data ".X.XX.", 1.83, [0] + S + SS + S[0..2], S[3..3]
+    helper_generate_track_sample_data "...",    1.83, [0, 0, 0, 0, 0],        []
   end
 
   def helper_generate_track_sample_data(rhythm, step_sample_length, expected_primary, expected_overflow = [])
