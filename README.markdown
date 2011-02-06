@@ -67,3 +67,8 @@ Found a Bug? Have a Suggestion? Want to Contribute?
 
 Contact me (Joel Strait) by sending a GitHub message.
 
+
+License
+-------
+BEATS is released under the MIT license.
+
