@@ -47,7 +47,7 @@ Development for 1.2.1 is underway on the trunk. This is a minor release which wi
 Installation
 ------------
 
-To install the latest stable version (1.2.0), run the following from the command line:
+To install the latest stable version (1.2.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     sudo gem install beats
 
@@ -59,7 +59,9 @@ BEATS is not very useful unless you have some sounds to use with it. You can dow
 Usage
 -----
 
-BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit [https://github.com/jstrait/beats/wiki/Usage](https://github.com/jstrait/beats/wiki/Usage).
+BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed list of instructions, visit [https://github.com/jstrait/beats/wiki/Usage](https://github.com/jstrait/beats/wiki/Usage) on the [BEATS Wiki](https://github.com/jstrait/beats/wiki).
+
+The BEATS wiki also has a [Getting Started](https://github.com/jstrait/beats/wiki/Getting-Started) tutorial which shows how to create an example beat from scratch.
 
 
 Found a Bug? Have a Suggestion? Want to Contribute?
