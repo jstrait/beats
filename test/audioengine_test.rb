@@ -117,13 +117,79 @@ class AudioEngineTest < Test::Unit::TestCase
     assert_equal(expected_primary,         actual[:primary])
     assert_equal(expected_overflow,        actual[:overflow])
   end
+
+  def test_composite_pattern_tracks
+    mono_kit = MockKit.new(".", {})
+    mono_kit.sound_bank = { "S"  => S,
+                            "SL" => SL,
+                            "SS" => SS,
+                            "SO" => SO,
+                            "TE" => TE,
+                            "TL" => TL,
+                            "TS" => TS }
+
+    # Simple case, no overflow (mono)
+    pattern = Pattern.new("foo")
+    pattern.track "S",  "X..."
+    pattern.track "SO", "X.X."
+    pattern.track "S",  "X.XX"
+
+    engine = MockAudioEngine.new(Song.new(), mono_kit)
+    engine.step_sample_length = 4
+    primary, overflow = engine.composite_pattern_tracks(pattern)
+    assert_equal([100, 0, 600, -800, 0, 0, 0, 0, 200, -200, 300, -400, -100, 200, 300, -400], primary)
+    
+    assert_equal([
+                    -100 + 300 + -100,   200 + -400 + 200,   300 + 0 + 300,   -400 + 0 + -400,
+                    0 + 0 + 0,           0 + 0 + 0,          0 + 0 + 0,       0 + 0 + 0,
+                    0 + 300 + -100,      0 + -400 + 200,     0 + 0 + 300,     0 + 0 + -400,
+                    0 + 0 + -100,        0 + 0 + 200,        0 + 0 + 300,     0 + 0 + -400
+                 ],
+                 primary)
+    
+    assert_equal({"S" => [], "SO" => [], "S2" => []}, overflow)
+
+    # Simple case, no overflow (stereo)
+    # TODO
+
+    # Some overflow (mono)
+    pattern = Pattern.new("foo")
+    pattern.track "S",  "X..X"
+    pattern.track "SO", "XX.X"
+    pattern.track "SL", ".X.X"
+
+    engine = MockAudioEngine.new(Song.new(), mono_kit)
+    engine.step_sample_length = 3
+    primary, overflow = engine.composite_pattern_tracks(pattern)
+    assert_equal([
+                    -100 + 300 + 0,      200 + -400 + 0,     300 + 0 + 0,
+                    -400 + 300 + -100,   0 + -400 + 200,     0 + 0 + 300,
+                    0 + 0 + -400,        0 + 0 + 0,          0 + 0 + 0,
+                    -100 + 300 + -100,   200 + -400 + 200,   300 + 0 + 300
+                 ],
+                 primary)
+    assert_equal({"S" => [-400], "SO" => [], "SL" => [-400, 0, 0]}, overflow)
+
+
+    # Some overflow (stereo)
+    # TODO
+  end
 end
 
+# Make private methods public for testing
 class MockAudioEngine < AudioEngine
-  # Make private method public
   def generate_track_sample_data(track, sound)
     super
   end
 
+  def composite_pattern_tracks(pattern)
+    super
+  end
+
   attr_accessor :step_sample_length
+end
+
+# Allow setting sample data directly, instead of loading from a file
+class MockKit < Kit
+  attr_accessor :sound_bank
 end
