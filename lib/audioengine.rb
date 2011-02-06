@@ -3,7 +3,7 @@
 # produce output sample data.
 class AudioEngine
   SAMPLE_RATE = 44100
-  PACK_CODE = "s*"   # All sample data is assumed to be 16-bit
+  PACK_CODE = "s*"   # All output sample data is assumed to be 16-bit
 
   def initialize(song, kit)
     @song = song
