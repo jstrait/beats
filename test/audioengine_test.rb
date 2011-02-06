@@ -70,10 +70,10 @@ class AudioEngineTest < Test::Unit::TestCase
   MONO_KIT.num_channels = 1
 
   STEREO_KIT = MockKit.new(".", {})
-  STEREO_KIT.sound_bank = { "S"  => [[-100, -100], [200, 200], [300, 300], [-400, -400]],
-                            "SL" => [[-100, -100], [200, 200], [300, 300], [-400, -400], [0, 0], [0, 0]],
-                            "SS" => [[-100, -100], [200, 200]],
-                            "SO" => [[300, 300], [-400, -400]],
+  STEREO_KIT.sound_bank = { "S"  => [[-100, 800], [200, -700], [300, -600], [-400, 400]],
+                            "SL" => [[-100, 800], [200, -700], [300, -600], [-400, 400], [0, 0], [0, 0]],
+                            "SS" => [[-100, 800], [200, -700]],
+                            "SO" => [[300, -600], [-400, 400]],
                             "TE" => [[0, 0], [0, 0], [0, 0], [0, 0]],
                             "TL" => [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
                             "TS" => [[0, 0], [0, 0]],
@@ -172,44 +172,66 @@ class AudioEngineTest < Test::Unit::TestCase
   end
 
   def test_composite_pattern_tracks
-    # Simple case, no overflow (mono)
-    pattern = Pattern.new("foo")
-    pattern.track "S",  "X..."
-    pattern.track "SO", "X.X."
-    pattern.track "S",  "X.XX"
+    no_overflow_pattern = Pattern.new("no_overflow")
+    no_overflow_pattern.track "S",  "X..."
+    no_overflow_pattern.track "SO", "X.X."
+    no_overflow_pattern.track "S",  "X.XX"
 
+    overflow_pattern = Pattern.new("overflow")
+    overflow_pattern.track "S",  "X..X"
+    overflow_pattern.track "SO", "XX.X"
+    overflow_pattern.track "SL", ".X.X"
+
+
+    # Simple case, no overflow (stereo)
     engine = MockAudioEngine.new(Song.new(), MONO_KIT)
     engine.step_sample_length = 4
-    primary, overflow = engine.composite_pattern_tracks(pattern)
-    assert_equal([100, 0, 600, -800, 0, 0, 0, 0, 200, -200, 300, -400, -100, 200, 300, -400], primary)
-    
+    primary, overflow = engine.composite_pattern_tracks(no_overflow_pattern)
     assert_equal([
                     -100 + 300 + -100,   200 + -400 + 200,   300 + 0 + 300,   -400 + 0 + -400,
                     0 + 0 + 0,           0 + 0 + 0,          0 + 0 + 0,       0 + 0 + 0,
                     0 + 300 + -100,      0 + -400 + 200,     0 + 0 + 300,     0 + 0 + -400,
-                    0 + 0 + -100,        0 + 0 + 200,        0 + 0 + 300,     0 + 0 + -400
+                    0 + 0 + -100,        0 + 0 + 200,        0 + 0 + 300,     0 + 0 + -400,
                  ],
                  primary)
-    
     assert_equal({"S" => [], "SO" => [], "S2" => []}, overflow)
 
+
     # Simple case, no overflow (stereo)
-    # TODO
+    engine = MockAudioEngine.new(Song.new(), STEREO_KIT)
+    engine.step_sample_length = 4
+    primary, overflow = engine.composite_pattern_tracks(no_overflow_pattern)
+    assert_equal([
+                    [-100 + 300 + -100,      800 + -600 + 800],
+                        [200 + -400 + 200,   -700 + 400 + -700],
+                        [300 + 0 + 300,      -600 + 0 + -600],
+                        [-400 + 0 + -400,    400 + 0 + 400],
+                    [0 + 0 + 0,        0 + 0 + 0],
+                        [0 + 0 + 0,    0 + 0 + 0],
+                        [0 + 0 + 0,    0 + 0 + 0],
+                        [0 + 0 + 0,    0 + 0 + 0],
+                    [0 + 300 + -100,        0 + -600 + 800],
+                        [0 + -400 + 200,    0 + 400 + -700],
+                        [0 + 0 + 300,       0 + 0 + -600],
+                        [0 + 0 + -400,      0 + 0 + 400],
+                    [0 + 0 + -100,       0 + 0 + 800],
+                        [0 + 0 + 200,    0 + 0 + -700],
+                        [0 + 0 + 300,    0 + 0 + -600],
+                        [0 + 0 + -400,   0 + 0 + 400],
+                 ],
+                 primary)
+    assert_equal({"S" => [], "SO" => [], "S2" => []}, overflow)
+
 
     # Some overflow (mono)
-    pattern = Pattern.new("foo")
-    pattern.track "S",  "X..X"
-    pattern.track "SO", "XX.X"
-    pattern.track "SL", ".X.X"
-
     engine = MockAudioEngine.new(Song.new(), MONO_KIT)
     engine.step_sample_length = 3
-    primary, overflow = engine.composite_pattern_tracks(pattern)
+    primary, overflow = engine.composite_pattern_tracks(overflow_pattern)
     assert_equal([
                     -100 + 300 + 0,      200 + -400 + 0,     300 + 0 + 0,
                     -400 + 300 + -100,   0 + -400 + 200,     0 + 0 + 300,
                     0 + 0 + -400,        0 + 0 + 0,          0 + 0 + 0,
-                    -100 + 300 + -100,   200 + -400 + 200,   300 + 0 + 300
+                    -100 + 300 + -100,   200 + -400 + 200,   300 + 0 + 300,
                  ],
                  primary)
     assert_equal({"S" => [-400], "SO" => [], "SL" => [-400, 0, 0]}, overflow)
