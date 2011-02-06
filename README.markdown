@@ -59,4 +59,11 @@ BEATS is not very useful unless you have some sounds to use with it. You can dow
 Usage
 -----
 
-BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit [https://github.com/jstrait/beats/wiki/Usage](https://github.com/jstrait/beats/wiki/Usage). 
+BEATS runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit [https://github.com/jstrait/beats/wiki/Usage](https://github.com/jstrait/beats/wiki/Usage).
+
+
+Found a Bug? Have a Suggestion? Want to Contribute?
+---------------------------------------------------
+
+Contact me (Joel Strait) by sending a GitHub message.
+
