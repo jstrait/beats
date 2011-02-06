@@ -238,6 +238,24 @@ class AudioEngineTest < Test::Unit::TestCase
 
 
     # Some overflow (stereo)
-    # TODO
+    engine = MockAudioEngine.new(Song.new(), STEREO_KIT)
+    engine.step_sample_length = 3
+    primary, overflow = engine.composite_pattern_tracks(overflow_pattern)
+    assert_equal([
+                    [-100 + 300 + 0,        800 + -600 + 0],
+                        [200 + -400 + 0,    -700 + 400 + 0],
+                        [300 + 0 + 0,       -600 + 0 + 0],
+                    [-400 + 300 + -100,     400 + -600 + 800],
+                        [0 + -400 + 200,    0 + 400 + -700],
+                        [0 + 0 + 300,       0 + 0 + -600],
+                    [0 + 0 + -400,     0 + 0 + 400],
+                        [0 + 0 + 0,    0 + 0 + 0],
+                        [0 + 0 + 0,    0 + 0 + 0],
+                    [-100 + 300 + -100,       800 + -600 + 800],
+                        [200 + -400 + 200,    -700 + 400 + -700],
+                        [300 + 0 + 300,       -600 + 0 + -600],
+                 ],
+                 primary)
+    assert_equal({"S" => [[-400, 400]], "SO" => [], "SL" => [[-400, 400], [0, 0], [0, 0]]}, overflow)
   end
 end
