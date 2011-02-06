@@ -2,6 +2,24 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/includes'
 
+# Make private methods public for testing
+class MockAudioEngine < AudioEngine
+  def generate_track_sample_data(track, sound)
+    super
+  end
+
+  def composite_pattern_tracks(pattern)
+    super
+  end
+
+  attr_accessor :step_sample_length
+end
+
+# Allow setting sample data directly, instead of loading from a file
+class MockKit < Kit
+  attr_accessor :sound_bank, :num_channels
+end
+
 class AudioEngineTest < Test::Unit::TestCase
   FIXTURES = [:repeats_not_specified,
               :pattern_with_overflow,
@@ -30,87 +48,122 @@ class AudioEngineTest < Test::Unit::TestCase
     assert_equal(6615.0, test_engines[:repeats_not_specified].step_sample_length)
   end
 
-  S  = [-100, 200, 300, -400]    # Sample data for a sound. Unrealistically short for clarity.
-  SL = S + [0, 0]                # Sound when step sample length is longer than full sound length
-  SS = [-100, 200]               # Sound when step sample length is less than full sound length
-  SO = [300, -400]               # Sound overflow when step sample length is less than full sound length
-  TE = [0, 0, 0, 0]              # A step with no sound, with length equal to S
-  TL = [0, 0, 0, 0, 0, 0]        # A step with no sound, longer than full sound length
-  TS = [0, 0]                    # A step with no sound, shorter than full sound length
 
-  # These tests use unrealistically short sounds and step sample lengths, to make tests a lot easier to work with.
+  # S    Sample data for a sound. Unrealistically short for clarity.
+  # SL   Sound when step sample length is longer than full sound length
+  # SS   Sound when step sample length is less than full sound length
+  # SO   Sound overflow when step sample length is less than full sound length
+  # TE   A step with no sound, with length equal to S
+  # TL   A step with no sound, longer than full sound length
+  # TS   A step with no sound, shorter than full sound length
+  # Z    A zero sample
+
+  MONO_KIT = MockKit.new(".", {})
+  MONO_KIT.sound_bank = { "S"  => [-100, 200, 300, -400],
+                          "SL" => [-100, 200, 300, -400, 0, 0],
+                          "SS" => [-100, 200],
+                          "SO" => [300, -400],
+                          "TE" => [0, 0, 0, 0],
+                          "TL" => [0, 0, 0, 0, 0, 0],
+                          "TS" => [0, 0],
+                          "Z"  => [0] }
+  MONO_KIT.num_channels = 1
+
+  STEREO_KIT = MockKit.new(".", {})
+  STEREO_KIT.sound_bank = { "S"  => [[-100, -100], [200, 200], [300, 300], [-400, -400]],
+                            "SL" => [[-100, -100], [200, 200], [300, 300], [-400, -400], [0, 0], [0, 0]],
+                            "SS" => [[-100, -100], [200, 200]],
+                            "SO" => [[300, 300], [-400, -400]],
+                            "TE" => [[0, 0], [0, 0], [0, 0], [0, 0]],
+                            "TL" => [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
+                            "TS" => [[0, 0], [0, 0]],
+                            "Z"  => [[0, 0]] }
+  STEREO_KIT.num_channels = 2
+
+
+  # These tests use unrealistically short sounds and step sample lengths, to make tests easier to work with.
   def test_generate_track_sample_data
-    # 1.) Tick sample length is equal to the length of the sound sample data.
-    #     When this is the case, overflow should never occur.
-    #     In practice, this will probably not occur often, but these tests act as a form of sanity check.
-    helper_generate_track_sample_data "",       4, []
-    helper_generate_track_sample_data "X",      4, S
-    helper_generate_track_sample_data "X.",     4, S + TE
-    helper_generate_track_sample_data ".X",     4, TE + S
-    helper_generate_track_sample_data "...X.",  4, (TE * 3) + S + TE
-    helper_generate_track_sample_data ".X.XX.", 4, TE + S + TE + S + S + TE
-    helper_generate_track_sample_data "...",    4, TE * 3
-  
-    # 2A.) Tick sample length is longer than the sound sample data. This is similar to (1), except that there should
-    #     be some extra silence after the end of each trigger.
-    #     Like (1), overflow should never occur.
-    helper_generate_track_sample_data "",       6, []
-    helper_generate_track_sample_data "X",      6, SL
-    helper_generate_track_sample_data "X.",     6, SL + TL
-    helper_generate_track_sample_data ".X",     6, TL + SL
-    helper_generate_track_sample_data "...X.",  6, (TL * 3) + SL + TL
-    helper_generate_track_sample_data ".X.XX.", 6, TL + SL + TL + SL + SL + TL
-    helper_generate_track_sample_data "...",    6, (TE + TS) * 3
+    [MONO_KIT, STEREO_KIT].each do |kit|
+      s  = kit.get_sample_data("S")
+      sl = kit.get_sample_data("SL")
+      ss = kit.get_sample_data("SS")
+      so = kit.get_sample_data("SO")
+      te = kit.get_sample_data("TE")
+      tl = kit.get_sample_data("TL")
+      ts = kit.get_sample_data("TS")
+      z  = kit.get_sample_data("Z")
 
-    # 2B.) Tick sample length is longer than the sound sample data, but not by an integer amount.
-    #
-    # Each step of 5.83 samples should end on the following boundaries:
-    # Tick:               1,     2,     3,     4,     5,     6
-    # Raw:        0.0, 5.83, 11.66, 17.49, 23.32, 29.15, 34.98
-    # Quantized:    0,    5,    11,    17,    23,    29,    34
-    helper_generate_track_sample_data "",       5.83, []
-    helper_generate_track_sample_data "X",      5.83, SL[0..4]
-    helper_generate_track_sample_data "X.",     5.83, SL[0..4] + TL
-    helper_generate_track_sample_data ".X",     5.83, TL[0..4] + SL
-    helper_generate_track_sample_data "...X.",  5.83, ([0] * 17) + SL + TL
-    helper_generate_track_sample_data ".X.XX.", 5.83, TL[0..4] + SL + TL + SL + SL + TL[0..4]
-    helper_generate_track_sample_data "...",    5.83, [0] * 17
+      # 1.) Tick sample length is equal to the length of the sound sample data.
+      #     When this is the case, overflow should never occur.
+      #     In practice, this will probably not occur often, but these tests act as a form of sanity check.
+      helper_generate_track_sample_data kit, "",       4, []
+      helper_generate_track_sample_data kit, "X",      4, s
+      helper_generate_track_sample_data kit, "X.",     4, s + te
+      helper_generate_track_sample_data kit, ".X",     4, te + s
+      helper_generate_track_sample_data kit, "...X.",  4, (te * 3) + s + te
+      helper_generate_track_sample_data kit, ".X.XX.", 4, te + s + te + s + s + te
+      helper_generate_track_sample_data kit, "...",    4, te * 3
 
-    # 3A.) Tick sample length is shorter than the sound sample data. Overflow will now occur!
-    helper_generate_track_sample_data "",       2, [],              []
-    helper_generate_track_sample_data "X",      2, SS,              SO
-    helper_generate_track_sample_data "X.",     2, S,               []
-    helper_generate_track_sample_data ".X",     2, TS + SS,         SO
-    helper_generate_track_sample_data "...X.",  2, (TS * 3) + S,    []
-    helper_generate_track_sample_data ".X.XX.", 2, TS + S + SS + S, []
-    helper_generate_track_sample_data "...",    2, [0] * 6,         []
+      # 2A.) Tick sample length is longer than the sound sample data. This is similar to (1), except that there should
+      #     be some extra silence after the end of each trigger.
+      #     Like (1), overflow should never occur.
+      helper_generate_track_sample_data kit, "",       6, []
+      helper_generate_track_sample_data kit, "X",      6, sl
+      helper_generate_track_sample_data kit, "X.",     6, sl + tl
+      helper_generate_track_sample_data kit, ".X",     6, tl + sl
+      helper_generate_track_sample_data kit, "...X.",  6, (tl * 3) + sl + tl
+      helper_generate_track_sample_data kit, ".X.XX.", 6, tl + sl + tl + sl + sl + tl
+      helper_generate_track_sample_data kit, "...",    6, (te + ts) * 3
 
-    # 3B.) Tick sample length is shorter than sound sample data, such that a beat other than the final one
-    #      would extend past the end of the rhythm if not cut off. Make sure that the sample data array doesn't
-    #      inadvertently lengthen as a result.
-    helper_generate_track_sample_data "XX", 1, [-100, -100], [200, 300, -400]
+      # 2B.) Tick sample length is longer than the sound sample data, but not by an integer amount.
+      #
+      # Each step of 5.83 samples should end on the following boundaries:
+      # Tick:               1,     2,     3,     4,     5,     6
+      # Raw:        0.0, 5.83, 11.66, 17.49, 23.32, 29.15, 34.98
+      # Quantized:    0,    5,    11,    17,    23,    29,    34
+      helper_generate_track_sample_data kit, "",       5.83, []
+      helper_generate_track_sample_data kit, "X",      5.83, sl[0..4]
+      helper_generate_track_sample_data kit, "X.",     5.83, sl[0..4] + tl
+      helper_generate_track_sample_data kit, ".X",     5.83, tl[0..4] + sl
+      helper_generate_track_sample_data kit, "...X.",  5.83, (z * 17) + sl + tl
+      helper_generate_track_sample_data kit, ".X.XX.", 5.83, tl[0..4] + sl + tl + sl + sl + tl[0..4]
+      helper_generate_track_sample_data kit, "...",    5.83, z * 17
 
-    # 3C.) Tick sample length is shorter than the sound sample data, but not by an integer amount.
-    # 
-    # Each step of 1.83 samples should end on the following boundaries:
-    # Tick:               1,    2,    3,    4,    5,     6
-    # Raw:        0.0, 1.83, 3.66, 5.49, 7.32, 9.15, 10.98
-    # Quantized:    0,    1,    3,    5,    7,    9,    10
-    helper_generate_track_sample_data "",       1.83,                         []
-    helper_generate_track_sample_data "X",      1.83, S[0..0],                S[1..3]
-    helper_generate_track_sample_data "X.",     1.83, S[0..2],                S[3..3]
-    helper_generate_track_sample_data ".X",     1.83, [0] + S[0..1],          S[2..3]
-    helper_generate_track_sample_data "...X.",  1.83, ([0] * 5) + S,          []
-    helper_generate_track_sample_data ".X.XX.", 1.83, [0] + S + SS + S[0..2], S[3..3]
-    helper_generate_track_sample_data "...",    1.83, [0, 0, 0, 0, 0],        []
+      # 3A.) Tick sample length is shorter than the sound sample data. Overflow will now occur!
+      helper_generate_track_sample_data kit, "",       2, [],              []
+      helper_generate_track_sample_data kit, "X",      2, ss,              so
+      helper_generate_track_sample_data kit, "X.",     2, s,               []
+      helper_generate_track_sample_data kit, ".X",     2, ts + ss,         so
+      helper_generate_track_sample_data kit, "...X.",  2, (ts * 3) + s,    []
+      helper_generate_track_sample_data kit, ".X.XX.", 2, ts + s + ss + s, []
+      helper_generate_track_sample_data kit, "...",    2, z * 6,         []
+
+      # 3B.) Tick sample length is shorter than sound sample data, such that a beat other than the final one
+      #      would extend past the end of the rhythm if not cut off. Make sure that the sample data array doesn't
+      #      inadvertently lengthen as a result.
+      #helper_generate_track_sample_data kit, "XX", 1, [-100, -100], [200, 300, -400]
+
+      # 3C.) Tick sample length is shorter than the sound sample data, but not by an integer amount.
+      # 
+      # Each step of 1.83 samples should end on the following boundaries:
+      # Tick:               1,    2,    3,    4,    5,     6
+      # Raw:        0.0, 1.83, 3.66, 5.49, 7.32, 9.15, 10.98
+      # Quantized:    0,    1,    3,    5,    7,    9,    10
+      helper_generate_track_sample_data kit, "",       1.83,                         []
+      helper_generate_track_sample_data kit, "X",      1.83, s[0..0],                s[1..3]
+      helper_generate_track_sample_data kit, "X.",     1.83, s[0..2],                s[3..3]
+      helper_generate_track_sample_data kit, ".X",     1.83, z + s[0..1],            s[2..3]
+      helper_generate_track_sample_data kit, "...X.",  1.83, (z * 5) + s,            []
+      helper_generate_track_sample_data kit, ".X.XX.", 1.83, z + s + ss + s[0..2],   s[3..3]
+      helper_generate_track_sample_data kit, "...",    1.83, z * 5,                  []
+    end
   end
 
-  def helper_generate_track_sample_data(rhythm, step_sample_length, expected_primary, expected_overflow = [])
+  def helper_generate_track_sample_data(kit, rhythm, step_sample_length, expected_primary, expected_overflow = [])
     track = Track.new("foo", rhythm)
-    kit = Kit.new(".", {})
     engine = MockAudioEngine.new(Song.new(), kit)
     engine.step_sample_length = step_sample_length
-    actual = engine.generate_track_sample_data(track, S)
+    actual = engine.generate_track_sample_data(track, kit.get_sample_data("S"))
     
     assert_equal(Hash,                     actual.class)
     assert_equal(["overflow", "primary"],  actual.keys.map{|key| key.to_s}.sort)
@@ -119,22 +172,13 @@ class AudioEngineTest < Test::Unit::TestCase
   end
 
   def test_composite_pattern_tracks
-    mono_kit = MockKit.new(".", {})
-    mono_kit.sound_bank = { "S"  => S,
-                            "SL" => SL,
-                            "SS" => SS,
-                            "SO" => SO,
-                            "TE" => TE,
-                            "TL" => TL,
-                            "TS" => TS }
-
     # Simple case, no overflow (mono)
     pattern = Pattern.new("foo")
     pattern.track "S",  "X..."
     pattern.track "SO", "X.X."
     pattern.track "S",  "X.XX"
 
-    engine = MockAudioEngine.new(Song.new(), mono_kit)
+    engine = MockAudioEngine.new(Song.new(), MONO_KIT)
     engine.step_sample_length = 4
     primary, overflow = engine.composite_pattern_tracks(pattern)
     assert_equal([100, 0, 600, -800, 0, 0, 0, 0, 200, -200, 300, -400, -100, 200, 300, -400], primary)
@@ -158,7 +202,7 @@ class AudioEngineTest < Test::Unit::TestCase
     pattern.track "SO", "XX.X"
     pattern.track "SL", ".X.X"
 
-    engine = MockAudioEngine.new(Song.new(), mono_kit)
+    engine = MockAudioEngine.new(Song.new(), MONO_KIT)
     engine.step_sample_length = 3
     primary, overflow = engine.composite_pattern_tracks(pattern)
     assert_equal([
@@ -174,22 +218,4 @@ class AudioEngineTest < Test::Unit::TestCase
     # Some overflow (stereo)
     # TODO
   end
-end
-
-# Make private methods public for testing
-class MockAudioEngine < AudioEngine
-  def generate_track_sample_data(track, sound)
-    super
-  end
-
-  def composite_pattern_tracks(pattern)
-    super
-  end
-
-  attr_accessor :step_sample_length
-end
-
-# Allow setting sample data directly, instead of loading from a file
-class MockKit < Kit
-  attr_accessor :sound_bank
 end
