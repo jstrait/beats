@@ -1,25 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>BEATS Drum Machine</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="description" content="A drum machine written in Ruby." />
-  <meta name="keywords" content="" />
-  <link rel="stylesheet" type="text/css" media="all" href="beats.css" />
-  <link rel="icon" type="image/png" href="favicon.png">
-</head>
-<body>
-  <a href="http://github.com/jstrait/beats"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-  <div class="menubar">
-    <ul>
-      <li><a href="beats.html">Home</a></li>
-      <li><a href="download.html">Download</a></li>
-      <li><a href="examples.html">Examples</a></li>
-      <li><a href="docs.html">Strategy Guide</a></li>
-    </ul>
-  </div>
+<? require_once("header.php");
+   drawHeader(); ?>
   <div class="content-box">
     <h2>BEATS Strategy Guide</h2>
     <p>BEATS runs from the command-line. The syntax:</p>
@@ -71,8 +51,4 @@ beats -p Verse example_song.txt
     <p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a &#8220;rest&#8221; between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
     <p>As a final note, patterns and the song header can come in any order. If you want to put the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
   </div>
-  <div id="about" class="content-box">
-    <p>Copyright &copy; 2010 <a href="http://www.joelstrait.com">Joel Strait</a></p>
-  </div>
-</body>
-</html>
+<? drawFooter(); ?>

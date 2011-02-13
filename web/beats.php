@@ -1,25 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>BEATS Drum Machine</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="description" content="A drum machine written in Ruby." />
-  <meta name="keywords" content="" />
-  <link rel="stylesheet" type="text/css" media="all" href="beats.css" />
-  <link rel="icon" type="image/png" href="favicon.png">
-</head>
-<body>
-  <a href="http://github.com/jstrait/beats"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-  <div class="menubar">
-    <ul>
-      <li><a href="beats.html">Home</a></li>
-      <li><a href="download.html">Download</a></li>
-      <li><a href="examples.html">Examples</a></li>
-      <li><a href="docs.html">Strategy Guide</a></li>
-    </ul>
-  </div>
+<? require_once("header.php");
+   drawHeader(); ?>
   <div class="content-box">
     <h1>BEATS</h1>
     <p>is a command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel. Here is an example song:</p>
@@ -54,8 +34,4 @@ Chorus:
     <p>And <a href="media/beat.mp3">here is what it sounds like</a> after getting the BEATS treatment. What a glorious groove!</p>
     <p class="last">So go forth and <a href="download.html">install BEATS</a>, download some <a href="download.html#drum-kits">drum sounds</a>, and <a href="examples.html">listen to some examples</a>. Then read up on <a href="docs.html">how to use it</a>.</p>
   </div>
-  <div id="about" class="content-box">
-    <p>Copyright &copy; 2010 <a href="http://www.joelstrait.com">Joel Strait</a></p>
-  </div>
-</body>
-</html>
+<? drawFooter(); ?>

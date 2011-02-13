@@ -1,25 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>BEATS Drum Machine</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="description" content="A drum machine written in Ruby." />
-  <meta name="keywords" content="" />
-  <link rel="stylesheet" type="text/css" media="all" href="beats.css" />
-  <link rel="icon" type="image/png" href="favicon.png">
-</head>
-<body>
-  <a href="http://github.com/jstrait/beats"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-  <div class="menubar">
-    <ul>
-      <li><a href="beats.html">Home</a></li>
-      <li><a href="download.html">Download</a></li>
-      <li><a href="examples.html">Examples</a></li>
-      <li><a href="docs.html">Strategy Guide</a></li>
-  </ul>
-  </div>
+<? require_once("header.php");
+   drawHeader(); ?>
   <div class="content-box">
     <h2>Example Songs</h2>
     <p>For each of the examples, there are two audio files. One shows the drum beat that comes straight out of BEATS. The second shows a full arrangement with other instruments done in Garageband.</p>
@@ -76,11 +56,7 @@ Chorus:
     <label>Full Song:</label><audio src="beat.mp3" controls></audio>
     Synth sounds provided by a <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>
-  <div id="about" class="content-box">
-    <p>Copyright &copy; 2010 <a href="http://www.joelstrait.com">Joel Strait</a></p>
-  </div>
-</body>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>
 <script type="text/javascript">
 function toggleSource(toggleId, elementId) {
   var toggler = $(toggleId);
@@ -90,4 +66,4 @@ function toggleSource(toggleId, elementId) {
   toggler.innerText = (element.visible()) ? "Hide Source" : "Show source"; 
 }
 </script>
-</html>
+<? drawFooter(); ?>
