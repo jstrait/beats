@@ -31,7 +31,7 @@ img#github-banner {
 .menubar li {
   list-style: none;
   float: left;
-  width: 192px;
+  margin-right: 24px;
   font-weight: bold;
 }
 
