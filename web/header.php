@@ -14,13 +14,13 @@ function drawHeader() {
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
-  <a href="http://github.com/jstrait/beats"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  <a href="http://github.com/jstrait/beats"><img id="github-banner" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   <div class="menubar">
     <ul>
       <li><a href="/">Home</a></li>
-      <li><a href="/download">Download</a></li>
-      <li><a href="/examples">Examples</a></li>
-      <li><a href="/strategyguide">Strategy Guide</a></li>
+      <li><a href="/download/">Download</a></li>
+      <li><a href="/examples/">Examples</a></li>
+      <li><a href="/strategyguide/">Strategy Guide</a></li>
     </ul>
   </div>
 <? }
@@ -28,7 +28,7 @@ function drawHeader() {
 function drawFooter() {
 ?>
 <div id="about" class="content-box">
-    <p>Copyright &copy; 2010-11 <a href="http://www.joelstrait.com">Joel Strait</a></p>
+    <p>Copyright &copy; 2010-11 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
   </div>
 </body>
 </html>

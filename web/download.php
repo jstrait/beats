@@ -21,10 +21,10 @@
         <h3><a href="/casio_sa20_drum_sounds.zip">Casio SA-20</a></h3>
         <p>20 <span style="text-decoration: line-through;">high quality</span> sounds sampled from a <a href="http://images.gittigidiyor.com/1882/Casio-SA-20-Tone-Bank-Elektronik-Klavye__18821134_0.jpg">Casio SA-20 keyboard</a> I got when I was 8 years old.</p>
         <ul>
-          <li><label>bass.wav:</label><audio src="media/bass.wav" controls></audio></li>
-          <li><label>snare.wav:</label><audio src="media/snare.wav" controls></audio></li>
-          <li><label>hh_closed.wav:</label><audio src="media/hh_closed.wav" controls></audio></li>
-          <li><label>tom3.wav:</label><audio src="media/tom3.wav" controls></audio></li>
+          <li><label>bass.wav:</label><audio src="/media/bass.wav" controls></audio></li>
+          <li><label>snare.wav:</label><audio src="/media/snare.wav" controls></audio></li>
+          <li><label>hh_closed.wav:</label><audio src="/media/hh_closed.wav" controls></audio></li>
+          <li><label>tom3.wav:</label><audio src="/media/tom3.wav" controls></audio></li>
         </ul>
       </li>
       <li id="drumkit-hammerhead">

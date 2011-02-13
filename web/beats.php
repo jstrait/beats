@@ -31,7 +31,7 @@ Chorus:
   - hh_closed:  X.XXX.XXX.XX..X.
   - tom_high:   ...........X....
   - tom_low:    ..............X.</pre></code></p>
-    <p>And <a href="media/beat.mp3">here is what it sounds like</a> after getting the BEATS treatment. What a glorious groove!</p>
-    <p class="last">So go forth and <a href="download.html">install BEATS</a>, download some <a href="download.html#drum-kits">drum sounds</a>, and <a href="examples.html">listen to some examples</a>. Then read up on <a href="docs.html">how to use it</a>.</p>
+    <p>And <a href="/media/beat.mp3">here is what it sounds like</a> after getting the BEATS treatment. What a glorious groove!</p>
+    <p class="last">So go forth and <a href="/download/">install BEATS</a>, download some <a href="/download#drum-kits">drum sounds</a>, and <a href="/examples/">listen to some examples</a>. Then read up on <a href="/strategyguide/">how to use it</a>.</p>
   </div>
 <? drawFooter(); ?>

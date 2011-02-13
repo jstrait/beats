@@ -6,7 +6,7 @@
   </div>
   <div class="content-box">
     <h2>Space Guitar</h2>
-    <p>Drum kit: <a href="download.html#drumkit-hammerhead">Hammerhead</a></p>
+    <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
     <label>Straight from BEATS:</label><audio src="beat.mp3" controls></audio>
     <label>Full Song:</label><audio src="beat.mp3" controls></audio>
     <div>
@@ -51,7 +51,7 @@ Chorus:
   </div>
   <div class="content-box">
     <h2>Synth Groove</h2>
-    <p>Drum kit: <a href="download.html#drumkit-hammerhead">Hammerhead</a></p>
+    <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
     <label>Straight from BEATS:</label><audio src="beat.mp3" controls></audio>
     <label>Full Song:</label><audio src="beat.mp3" controls></audio>
     Synth sounds provided by a <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
