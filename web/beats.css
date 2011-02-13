@@ -8,6 +8,13 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+img#github-banner {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border: 0px;
+}
+
 .menubar {
   background: #fff;
   width: 576px;
