@@ -13,9 +13,15 @@
     <h2>Drum Sounds</h2>
     <p>BEATS is not terribly useful unless you have drum sounds to use with it. You can use many 8 and 16-bit wave files as drum sounds. Here are a few collections of sounds to help you get started:</p>
     <ul>
-      <li id="drumkit-yamaha">
-        <h3><a href="#">Yamaha</a></h3>
-        <p>__ drum kits of varying styles sampled from a Yamaha PSR-520 keyboard.</p>
+      <li id="drumkit-hammerhead">
+        <h3><a href="#">Hammerhead</a></h3>
+        <p>371 sounds liberated from various <a href="http://www.threechords.com/hammerhead/introduction.shtml">Hammerhead</a> drum machine sound banks using <a href="https://github.com/jstrait/clawhammer">Clawhammer</a>.</p>
+        <ul>
+          <li><label>acoustic_3_1.wav:</label><audio src="/media/acoustic_3_1.wav" controls></audio></li>
+          <li><label>hh_909_clap.wav:</label><audio src="/media/hh_909_clap.wav" controls></audio></li>
+          <li><label>jungle_3.wav:</label><audio src="/media/jungle_3.wav" controls></audio></li>
+          <li><label>industrial_fx_4.wav:</label><audio src="/media/industrial_fx_4.wav" controls></audio></li>
+        </ul>
       </li>
       <li id="drumkit-casio">
         <h3><a href="/casio_sa20_drum_sounds.zip">Casio SA-20</a></h3>
@@ -25,16 +31,6 @@
           <li><label>snare.wav:</label><audio src="/media/snare.wav" controls></audio></li>
           <li><label>hh_closed.wav:</label><audio src="/media/hh_closed.wav" controls></audio></li>
           <li><label>tom3.wav:</label><audio src="/media/tom3.wav" controls></audio></li>
-        </ul>
-      </li>
-      <li id="drumkit-hammerhead">
-        <h3><a href="#">Hammerhead</a></h3>
-        <p>371 sounds liberated from various <a href="http://www.threechords.com/hammerhead/introduction.shtml">Hammerhead</a> drum machine sound banks using <a href="https://github.com/jstrait/clawhammer">Clawhammer</a>.</p>
-        <ul>
-          <li><label>acoustic_3_1.wav:</label><audio src="/media/acoustic_3_1.wav" controls></audio></li>
-          <li><label>hh_909_clap.wav:</label><audio src="/media/hh_909_clap.wav" controls></audio></li>
-          <li><label>jungle_3.wav:</label><audio src="/media/jungle_3.wav" controls></audio></li>
-          <li><label>industrial_fx_4.wav:</label><audio src="/media/industrial_fx_4.wav" controls></audio></li>
         </ul>
       </li>
     </ul>
