@@ -29,7 +29,13 @@
       </li>
       <li id="drumkit-hammerhead">
         <h3><a href="#">Hammerhead</a></h3>
-        <p>__ sounds liberated from various <a href="#">Hammerhead</a> drum machine sound banks using <a href="#">Clawhammer</a>.</p>
+        <p>371 sounds liberated from various <a href="http://www.threechords.com/hammerhead/introduction.shtml">Hammerhead</a> drum machine sound banks using <a href="https://github.com/jstrait/clawhammer">Clawhammer</a>.</p>
+        <ul>
+          <li><label>acoustic_3_1.wav:</label><audio src="/media/acoustic_3_1.wav" controls></audio></li>
+          <li><label>hh_909_clap.wav:</label><audio src="/media/hh_909_clap.wav" controls></audio></li>
+          <li><label>jungle_3.wav:</label><audio src="/media/jungle_3.wav" controls></audio></li>
+          <li><label>industrial_fx_4.wav:</label><audio src="/media/industrial_fx_4.wav" controls></audio></li>
+        </ul>
       </li>
     </ul>
   </div>
