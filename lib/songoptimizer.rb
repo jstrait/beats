@@ -65,7 +65,9 @@ protected
       optimized_flow[pattern.name] = []
       
       while(pattern.tracks.values.first.rhythm[step_index] != nil) do
-        new_pattern = optimized_song.pattern("#{pattern.name}#{step_index}".to_sym)
+        # TODO: Is this pattern 100% sufficient to prevent collisions between subdivided
+        #       pattern names and existing patterns with numeric suffixes?
+        new_pattern = optimized_song.pattern("#{pattern.name}_#{step_index}".to_sym)
         optimized_flow[pattern.name] << new_pattern.name
         pattern.tracks.values.each do |track|
           sub_track_pattern = track.rhythm[step_index...(step_index + max_pattern_length)]

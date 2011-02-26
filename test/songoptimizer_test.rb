@@ -9,6 +9,8 @@ class MockSongOptimizer < SongOptimizer
 end
 
 class SongOptimizerTest < Test::Unit::TestCase
+  FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
+
   EXAMPLE_SONG_YAML = "
 Song:
   Tempo: 135
@@ -49,6 +51,10 @@ Verse:
   - bass:   X.......X...
   - snare:  ..........X."
 
+  def self.load_fixture(fixture_name)
+    return SongParser.new().parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
+  end
+
   def test_optimize
     parser = SongParser.new()
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)
@@ -64,58 +70,58 @@ Verse:
     #assert_equal(original_song.sample_length_with_overflow, optimized_song.sample_length_with_overflow)
     #assert_equal(original_song.sample_data(false), optimized_song.sample_data(false))
     
-    # Patterns :verse0 and :verse4 should be removed since they are identical to :chorus0
-    assert_equal([:chorus0, :chorus12, :chorus4, :chorus8, :verse12, :verse8],
+    # Patterns :verse_0 and :verse_4 should be removed since they are identical to :chorus_0
+    assert_equal([:chorus_0, :chorus_12, :chorus_4, :chorus_8, :verse_12, :verse_8],
                  optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
         
-    pattern = optimized_song.patterns[:verse8]
+    pattern = optimized_song.patterns[:verse_8]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
     assert_equal(pattern.tracks["bass"].rhythm, "X...")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "X.X.")
     
-    pattern = optimized_song.patterns[:verse12]
+    pattern = optimized_song.patterns[:verse_12]
     assert_equal(pattern.tracks.keys.sort, ["agogo", "bass", "hh_closed", "snare"])
     assert_equal(pattern.tracks["bass"].rhythm, "X...")
     assert_equal(pattern.tracks["snare"].rhythm, "..X.")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "X.X.")
     assert_equal(pattern.tracks["agogo"].rhythm, "..XX")
     
-    pattern = optimized_song.patterns[:chorus0]
+    pattern = optimized_song.patterns[:chorus_0]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
     assert_equal(pattern.tracks["bass"].rhythm, "X...")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
     
-    pattern = optimized_song.patterns[:chorus4]
+    pattern = optimized_song.patterns[:chorus_4]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "snare"])
     assert_equal(pattern.tracks["bass"].rhythm, "X...")
     assert_equal(pattern.tracks["snare"].rhythm, "X...")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
     
-    pattern = optimized_song.patterns[:chorus8]
+    pattern = optimized_song.patterns[:chorus_8]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "sounds/tom4.wav"])
     assert_equal(pattern.tracks["bass"].rhythm, "XX..")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
     assert_equal(pattern.tracks["sounds/tom4.wav"].rhythm, "...X")
     
-    pattern = optimized_song.patterns[:chorus12]
+    pattern = optimized_song.patterns[:chorus_12]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "snare", "sounds/tom2.wav"])
     assert_equal(pattern.tracks["bass"].rhythm, "X...")
     assert_equal(pattern.tracks["snare"].rhythm, "X...")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "..X.")
     assert_equal(pattern.tracks["sounds/tom2.wav"].rhythm, "..X.")
     
-    assert_equal(optimized_song.flow, [:chorus0, :chorus0, :verse8, :verse12,
-                                       :chorus0, :chorus0, :verse8, :verse12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12,
-                                       :chorus0, :chorus0, :verse8, :verse12,
-                                       :chorus0, :chorus0, :verse8, :verse12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12,
-                                       :chorus0, :chorus4, :chorus8, :chorus12])
+    assert_equal(optimized_song.flow, [:chorus_0, :chorus_0, :verse_8, :verse_12,
+                                       :chorus_0, :chorus_0, :verse_8, :verse_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12,
+                                       :chorus_0, :chorus_0, :verse_8, :verse_12,
+                                       :chorus_0, :chorus_0, :verse_8, :verse_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12,
+                                       :chorus_0, :chorus_4, :chorus_8, :chorus_12])
   end
   
   def test_optimize_song_nondivisible_max_pattern_length()
@@ -125,18 +131,26 @@ Verse:
     optimizer = SongOptimizer.new()
     optimized_song = optimizer.optimize(original_song, 7)
     
-    pattern = optimized_song.patterns[:verse0]
+    pattern = optimized_song.patterns[:verse_0]
     assert_equal(["bass"], pattern.tracks.keys.sort)
     assert_equal("X......", pattern.tracks["bass"].rhythm)
     
-    pattern = optimized_song.patterns[:verse7]
+    pattern = optimized_song.patterns[:verse_7]
     assert_equal(["bass", "snare"], pattern.tracks.keys.sort)
     assert_equal(".X...", pattern.tracks["bass"].rhythm)
     assert_equal("...X.", pattern.tracks["snare"].rhythm)
     
-    assert_equal([:verse0, :verse7], optimized_song.flow)
+    assert_equal([:verse_0, :verse_7], optimized_song.flow)
   end
   
+  def test_pattern_collision
+    original_song, kit = SongOptimizerTest.load_fixture("valid/optimize_pattern_collision.txt")
+    optimizer = SongOptimizer.new()
+    optimized_song = optimizer.optimize(original_song, 4)
+  
+    assert_equal([:verse2_0, :verse_0, :verse_20], optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
+  end
+
   def test_optimize_song_containing_empty_pattern()
     parser = SongParser.new()
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
@@ -144,19 +158,19 @@ Verse:
     optimizer = SongOptimizer.new()
     optimized_song = optimizer.optimize(original_song, 4)
     
-    pattern = optimized_song.patterns[:verse0]
+    pattern = optimized_song.patterns[:verse_0]
     assert_equal(["bass"], pattern.tracks.keys.sort)
     assert_equal("X...", pattern.tracks["bass"].rhythm)
     
-    pattern = optimized_song.patterns[:verse4]
+    pattern = optimized_song.patterns[:verse_4]
     assert_equal(["placeholder"], pattern.tracks.keys.sort)
     assert_equal("....", pattern.tracks["placeholder"].rhythm)
     
-    pattern = optimized_song.patterns[:verse8]
+    pattern = optimized_song.patterns[:verse_8]
     assert_equal(["bass", "snare"], pattern.tracks.keys.sort)
     assert_equal("X...", pattern.tracks["bass"].rhythm)
     assert_equal("..X.", pattern.tracks["snare"].rhythm)
     
-    assert_equal([:verse0, :verse4, :verse8], optimized_song.flow)
+    assert_equal([:verse_0, :verse_4, :verse_8], optimized_song.flow)
   end
 end

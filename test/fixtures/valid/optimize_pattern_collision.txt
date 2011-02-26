@@ -1,0 +1,28 @@
+# Test fixture to verify SongOptimizer bug fix.
+#
+# SongOptimizer.subdivide_song_patterns() breaks up patterns into smaller sub-patterns. The bug
+# was that when master patterns had numeric suffixes, new sub-patterns could be given names that
+# collided with other sub-patterns. If they had different rhythms, one sub-pattern would obliterate
+# the other one leading to incorrect song output.
+#
+# In the example below, when sub-dividing patterns with a max size of 4 steps, the new patterns
+# highlighted with !!!! would both be called Verse20, causing a collision. 
+
+
+Song:
+  Flow:
+    - Verse
+    - Verse2
+
+
+Verse:
+#                                 0    4    8    12   16   20
+#                                                          !!!!
+  - test/sounds/bass_mono_8.wav: |X...|X...|X...|X...|X...|X.XX|
+
+
+Verse2:                       
+#                                 0    4    8    12   16   20
+#                                 !!!!
+  - test/sounds/bass_mono_8.wav: |X..X|X..X|X..X|X..X|X..X|X..X|
+
