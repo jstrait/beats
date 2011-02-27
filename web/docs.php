@@ -50,6 +50,7 @@ beats -p Verse example_song.txt
   - sounds/ride.wav:  X...............</code></pre></p>
     <p>Each track line starts with the sound file to use (8 and 16-bit Wave files are supported). You can either use a sound defined in the Kit section of the header, or alternately use a specific file name. (The example above mixes and matches). File paths can be relative or absolute; relative paths are relative from the path of the song file. Track lines must be indented properly and start with a dash (once again, due to this being YAML).</p>
     <p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a &#8220;rest&#8221; between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
+    <p>You can also use <code>|</code> as a bar line to mark measures or sections. These are totally optional, but can make patterns easier to read. BEATS ignores these, and you can put them wherever you want in the pattern.</p>
     <p>As a final note, patterns and the song header can come in any order. If you want to put the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
   </div>
 <? drawFooter(); ?>
