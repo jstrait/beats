@@ -7,8 +7,8 @@
   <div class="content-box">
     <h2>Space Guitar</h2>
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label>Straight from BEATS:</label><audio src="beat.mp3" controls></audio>
-    <label>Full Song:</label><audio src="beat.mp3" controls></audio>
+    <label>Straight from BEATS</label><audio src="beat.mp3" controls></audio>
+    <label>Full Song</label><audio src="beat.mp3" controls></audio>
     <div>
       <a id="toggle-techno-guitar" href="#" onclick="toggleSource('toggle-techno-guitar', 'source-techno-guitar'); return false;">Show Source</a>
       <pre id="source-techno-guitar" style="display: none;"><code>Song:
@@ -52,8 +52,8 @@ Chorus:
   <div class="content-box">
     <h2>Synth Groove</h2>
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label>Straight from BEATS:</label><audio src="beat.mp3" controls></audio>
-    <label>Full Song:</label><audio src="beat.mp3" controls></audio>
+    <label>Straight from BEATS</label><audio src="beat.mp3" controls></audio>
+    <label>Full Song</label><audio src="beat.mp3" controls></audio>
     Synth sounds provided by a <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>

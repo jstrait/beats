@@ -17,20 +17,20 @@
         <h3><a href="#">Hammerhead</a></h3>
         <p>371 sounds liberated from various <a href="http://www.threechords.com/hammerhead/introduction.shtml">Hammerhead</a> drum machine sound banks using <a href="https://github.com/jstrait/clawhammer">Clawhammer</a>.</p>
         <ul class="sample-list">
-          <li><label>acoustic_3_1.wav:</label><audio src="/media/acoustic_3_1.wav" controls></audio></li>
-          <li><label>hh_909_clap.wav:</label><audio src="/media/hh_909_clap.wav" controls></audio></li>
-          <li><label>jungle_3.wav:</label><audio src="/media/jungle_3.wav" controls></audio></li>
-          <li><label>industrial_fx_4.wav:</label><audio src="/media/industrial_fx_4.wav" controls></audio></li>
+          <li><label>acoustic_3_1.wav</label><audio src="/media/acoustic_3_1.wav" controls></audio></li>
+          <li><label>hh_909_clap.wav</label><audio src="/media/hh_909_clap.wav" controls></audio></li>
+          <li><label>jungle_3.wav</label><audio src="/media/jungle_3.wav" controls></audio></li>
+          <li><label>industrial_fx_4.wav</label><audio src="/media/industrial_fx_4.wav" controls></audio></li>
         </ul>
       </li>
       <li id="drumkit-casio" class="drumkit">
         <h3><a href="/casio_sa20_drum_sounds.zip">Casio SA-20</a></h3>
         <p>20 <span style="text-decoration: line-through;">high quality</span> sounds sampled from a <a href="http://images.gittigidiyor.com/1882/Casio-SA-20-Tone-Bank-Elektronik-Klavye__18821134_0.jpg">Casio SA-20 keyboard</a> I got when I was 8 years old.</p>
         <ul class="sample-list">
-          <li><label>bass.wav:</label><audio src="/media/bass.wav" controls></audio></li>
-          <li><label>snare.wav:</label><audio src="/media/snare.wav" controls></audio></li>
-          <li><label>hh_closed.wav:</label><audio src="/media/hh_closed.wav" controls></audio></li>
-          <li><label>tom3.wav:</label><audio src="/media/tom3.wav" controls></audio></li>
+          <li><label>bass.wav</label><audio src="/media/bass.wav" controls></audio></li>
+          <li><label>snare.wav</label><audio src="/media/snare.wav" controls></audio></li>
+          <li><label>hh_closed.wav</label><audio src="/media/hh_closed.wav" controls></audio></li>
+          <li><label>tom3.wav</label><audio src="/media/tom3.wav" controls></audio></li>
         </ul>
       </li>
     </ul>
