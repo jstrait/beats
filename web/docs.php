@@ -1,7 +1,8 @@
 <? require_once("header.php");
    drawHeader(); ?>
   <div class="content-box">
-    <h2>BEATS Strategy Guide</h2>
+    <h2 id="strategy-guide">BEATS Strategy Guide</h2>
+    <p id="hot-tips">Hot tips, straight from the pros!</p>
     <p>BEATS runs from the command-line. The syntax:</p>
     <p><code><pre class="single-line">beats [options] INPUT [OUTPUT]</pre></code></p>
     <p><code>INPUT</code> is the YAML file for your song. <code>OUTPUT</code> is the <code>*.wav</code> file where BEATS will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>

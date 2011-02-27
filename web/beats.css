@@ -145,3 +145,12 @@ div#about {
   text-align: center;
   padding-bottom: 0.0em;
 }
+
+h2#strategy-guide {
+  margin-bottom: 0.0em;
+}
+
+p#hot-tips {
+  font-style: italic;
+  color: #ccc;
+}

@@ -54,7 +54,7 @@ Chorus:
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
     <label>Straight from BEATS</label><audio src="beat.mp3" controls></audio>
     <label>Full Song</label><audio src="beat.mp3" controls></audio>
-    Synth sounds provided by a <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
+    Synth sounds provided by an old <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>
 <script type="text/javascript">
