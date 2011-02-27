@@ -2,13 +2,13 @@
    drawHeader(); ?>
   <div class="content-box">
     <h2>Example Songs</h2>
-    <p>For each of the examples, there are two audio files. One shows the drum beat that comes straight out of BEATS. The second shows a full arrangement with other instruments done in Garageband.</p>
+    <p>Each example includes the raw output from BEATS, as well as an arrangement with other instruments done in GarageBand.</p>
   </div>
   <div class="content-box">
     <h2>Space Guitar</h2>
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label>Straight from BEATS</label><audio src="beat.mp3" controls></audio>
-    <label>Full Song</label><audio src="beat.mp3" controls></audio>
+    <label class="example-song">Raw BEATS</label><audio class="example-song"src="beat.mp3" controls></audio>
+    <label class="example-song">Full Song</label><audio class="example-song" src="beat.mp3" controls></audio>
     <div>
       <a id="toggle-techno-guitar" href="#" onclick="toggleSource('toggle-techno-guitar', 'source-techno-guitar'); return false;">Show Source</a>
       <pre id="source-techno-guitar" style="display: none;"><code>Song:
@@ -52,8 +52,8 @@ Chorus:
   <div class="content-box">
     <h2>Synth Groove</h2>
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label>Straight from BEATS</label><audio src="beat.mp3" controls></audio>
-    <label>Full Song</label><audio src="beat.mp3" controls></audio>
+    <label class="example-song">Raw BEATS</label><audio class="example-song" src="beat.mp3" controls></audio>
+    <label class="example-song">Full Song</label><audio class="example-song" src="beat.mp3" controls></audio>
     Synth sounds provided by an old <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>

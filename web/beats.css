@@ -136,9 +136,17 @@ label {
   display: inline-block;
 }
 
+label.example-song {
+  width: 35%;
+}
+
 audio {
   width: 50%;
   vertical-align: top;
+}
+
+audio.example-song {
+  width: 55%;
 }
 
 div#about {
