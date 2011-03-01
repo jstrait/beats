@@ -113,6 +113,10 @@ private
   def load_sounds(base_path, kit_items)
     # Set label mappings
     kit_items.each do |label, sound_file_names|
+      if sound_file_names.class == Array
+        raise StandardError, "Composite sounds aren't allowed (yet...)"
+      end
+
       unless label == sound_file_names
         @label_mappings[label] = sound_file_names
       end
