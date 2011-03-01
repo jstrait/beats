@@ -26,9 +26,10 @@ class SongParser
   def parse(base_path, raw_yaml_string)
     raw_song_components = hashify_raw_yaml(raw_yaml_string)
     
-    unless raw_song_components[:folder] == nil
-      base_path = raw_song_components[:folder]
-    end
+    # This will be coming in a future version...
+    #unless raw_song_components[:folder] == nil
+    #  base_path = raw_song_components[:folder]
+    #end
     
     song = Song.new()
     
