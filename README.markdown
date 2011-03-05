@@ -42,6 +42,7 @@ Development for 1.2.1 is underway on the trunk. This is a minor release which wi
 * You can use the | character to represent bar lines in a track rhythm. This is optional, but often makes longer rhythms easier to read.
 * The "Structure" section of the song header is now called "Flow".
 * A pattern can contain multiple tracks that use the same sound. Previously, BEATS would pick one of those tracks as the 'winner', and the other tracks wouldn't be played.
+* Bug fix: A better error message is displayed if a sound file is in an unsupported format (such as MP3), or is not even a sound file.
 
 
 Installation
