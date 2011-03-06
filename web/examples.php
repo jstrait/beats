@@ -5,55 +5,54 @@
     <p>Each example includes the raw output from BEATS, as well as an arrangement with other instruments done in GarageBand.</p>
   </div>
   <div class="content-box">
-    <h2>Space Guitar</h2>
-    <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label class="example-song">Raw BEATS</label><audio class="example-song"src="beat.mp3" controls></audio>
-    <label class="example-song">Full Song</label><audio class="example-song" src="beat.mp3" controls></audio>
-    <div>
-      <a id="toggle-techno-guitar" href="#" onclick="toggleSource('toggle-techno-guitar', 'source-techno-guitar'); return false;">Show Source</a>
-      <pre id="source-techno-guitar" style="display: none;"><code>Song:
-  Tempo: 130
-  Flow:
-    - Verse:   x3
-    - VerseA:  x1
-    - Chorus:  x3
-    - VerseA:  x1
-  Kit:
-    - bass:       "bass/House #2-1.wav"
-    - sub_bass:   "bass/Roland TR-909-1.wav"
-    - clap:       "clap/CompuRhythm 8000-3.wav"
-    - snare:      "snare/Korg Rhythm 55-2.wav"
-    - hh_closed:  "hihat/House #2-5.wav"
-    - hh_open:    "hihat/House #2-6.wav"
-    - ding:       "Anabolic-5.wav"
-
-Verse:
-  - bass:      |X...X...X...X...|X...X...X...X...|
-  - clap:      |....X.......X...|....X.........X.|
-  - hh_closed: |.XXXX.X.XX..XX..|.XXXX.X.XX..XX.X|
-  - ding:      |X...............|................|
-
-VerseA:
-  - bass:      |X...X...X...X...|X...X...X...X...|
-  - clap:      |....X.......X...|....X.........X.|
-  - snare:     |................|..........X.XXXX|
-  - hh_closed: |.XXXX.X.XX..XX..|.XXXX.X.XX..XX.X|
-  - ding:      |X...............|................|
-
-Chorus:
-  - bass:      |X...X...X...X...|X...X...X...X...|
-  - sub_bass:  |X.......X.......|X.......X......X|
-  - clap:      |....X.......X...|....X.........X.|
-  - snare:     |....X.......X.XX|....X.XX......X.|
-  - hh_closed: |.XXXX.X.XX..XX..|.XXXX.X.XX..XX.X|
-  - ding:      |X...............|................|</code></pre>
-    </div>
-  </div>
-  <div class="content-box">
     <h2>Synth Groove</h2>
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label class="example-song">Raw BEATS</label><audio class="example-song" src="beat.mp3" controls></audio>
-    <label class="example-song">Full Song</label><audio class="example-song" src="beat.mp3" controls></audio>
+    <label class="example-song">Raw BEATS</label>
+    <audio class="example-song" controls="controls">
+      <source src="/media/beats_drum_machine_synth_groove_raw.mp3" />
+      <source src="/media/beats_drum_machine_synth_groove_raw.ogg" />
+      Your browser can't play this audio file.
+    </audio>
+    <label class="example-song">Full Song</label>
+    <audio class="example-song" controls="controls">
+      <source src="/media/beats_drum_machine_synth_groove.mp3" />
+      <source src="/media/beats_drum_machine_synth_groove.ogg" />
+      Your browser can't play this audio file.
+    </audio>
+    <div>
+      <a id="toggle-synth-groove" href="#" onclick="toggleSource('toggle-synth-groove', 'source-synth-groove'); return false;">Show Source</a>
+      <pre id="source-synth-groove" style="display: none;"><code>Song:
+  Tempo: 105
+  Flow:
+    - Verse:   x4
+    - Chorus:  x4
+    - Verse:   x4
+  Kit:
+    - bass:        ultimate_dnb_2.wav
+    - deep_bass:   house_1_1.wav
+    - clap:        compurhythm_8000_3.wav
+    - hihat:       compurhythm_78_4.wav
+    - hihat2:      human_beatbox_4.wav
+    - tom:         coron_drum_synce_ds7_2.wav
+    - bongo_high:  bongo_3.wav
+    - bongo_low:   bongo_2.wav
+
+Verse:
+  - bass:        |X.X.....X.X.....|
+  - deep_bass:   |.....X.X........|
+  - clap:        |....X.......X...|
+  - hihat:       |X.X..X.XX.X.X.X.|
+  - hihat2:      |............XXXX|
+  - tom:         |X...............|
+
+Chorus:
+  - bass:        |X.X..X.XX.X.....|
+  - clap:        |....X.......X...|
+  - hihat:       |X.X..X.XX.X.X.X.|
+  - bongo_high:  |X.X.XX....XX.XX.|
+  - bongo_low:   |.X..............|</code></pre>
+    </div>
+
     Synth sounds provided by an old <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>
