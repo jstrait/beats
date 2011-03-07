@@ -5,7 +5,7 @@
     <p>Run the following from the command line:</p>
     <p><code><pre class="single-line">sudo gem install beats</pre></code></p>
     <p>This will download BEATS from <a href="http://rubygems.org/gems/beats">rubygems.org</a> and add a <code>beats</code> command to your path.</p>
-    <p>The current version of BEATS is 1.2.0. If you have an older version, you can update with this:</p>
+    <p>The current version of BEATS is 1.2.1. If you have an older version, you can update with this:</p>
     <p><code><pre class="single-line">sudo gem update beats</pre></code></p>
     <p>Not sure what version you have? Run <code>beats -v</code>.</p>
   </div>

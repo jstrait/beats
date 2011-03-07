@@ -35,12 +35,10 @@ And [here's what it sounds like](http://beatsdrummachine.com/beat.mp3) after get
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.2.0, released on July 12, 2010. It brings significant performance and architectural improvements. It also contains a few bug fixes. For more info, see [http://www.joelstrait.com/blog/2010/7/12/beats_1.2.0_released](http://www.joelstrait.com/blog/2010/7/12/beats_1.2.0_released).
-
-Development for 1.2.1 is underway on the trunk. This is a minor release which will add a few small features:
+The latest stable version of BEATS is 1.2.1, released on March 6, 2011. This is a minor release which includes the following improvments:
 
 * You can use the | character to represent bar lines in a track rhythm. This is optional, but often makes longer rhythms easier to read.
-* The "Structure" section of the song header is now called "Flow".
+* The "Structure" section of the song header is now called "Flow". (You can still use "Structure" for now, but you'll get a warning).
 * A pattern can contain multiple tracks that use the same sound. Previously, BEATS would pick one of those tracks as the 'winner', and the other tracks wouldn't be played.
 * Bug fix: A better error message is displayed if a sound file is in an unsupported format (such as MP3), or is not even a sound file.
 
@@ -48,7 +46,7 @@ Development for 1.2.1 is underway on the trunk. This is a minor release which wi
 Installation
 ------------
 
-To install the latest stable version (1.2.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (1.2.1) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     sudo gem install beats
 
