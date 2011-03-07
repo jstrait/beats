@@ -162,3 +162,8 @@ p#hot-tips {
   font-style: italic;
   color: #ccc;
 }
+
+a.toggle {
+  margin-bottom: 1.5em;
+  display: inline-block;
+}
