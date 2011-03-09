@@ -35,7 +35,7 @@ And [here's what it sounds like](http://beatsdrummachine.com/beat.mp3) after get
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.2.1, released on March 6, 2011. This is a minor release which includes the following improvments:
+The latest stable version of BEATS is 1.2.1, released on March 6, 2011. This is a minor release which includes the following improvements:
 
 * You can use the | character to represent bar lines in a track rhythm. This is optional, but often makes longer rhythms easier to read.
 * The "Structure" section of the song header is now called "Flow". (You can still use "Structure" for now, but you'll get a warning).
