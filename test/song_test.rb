@@ -93,20 +93,6 @@ class SongTest < Test::Unit::TestCase
     assert_equal({}, cloned_song.patterns)
   end
   
-  def test_remove_patterns_except
-    # Remove an existing pattern.
-    test_songs = generate_test_data()
-    test_songs[:example_with_kit].remove_patterns_except(:chorus)
-    assert_equal([:chorus], test_songs[:example_with_kit].flow)
-    assert_equal([:chorus], test_songs[:example_with_kit].patterns.keys)
-
-    # Try to remove a non-existent pattern. Error city.
-    test_songs = generate_test_data()
-    assert_raise(StandardError) do
-      test_songs[:example_with_kit].remove_patterns_except(:iamnotapattern)
-    end
-  end
-
   def test_split
     test_songs = generate_test_data()
     split_songs = test_songs[:example_with_kit].split()
