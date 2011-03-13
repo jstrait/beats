@@ -120,8 +120,7 @@ protected
     end
     song.flow = new_flow
     
-    # Remove unused Patterns. Not strictly necessary, but makes resulting songs
-    # easier to read for debugging purposes.
+    # This isn't strictly necessary, but makes resulting songs easier to read for debugging purposes.
     song.remove_unused_patterns()
 
     return song
