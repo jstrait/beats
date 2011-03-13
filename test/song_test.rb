@@ -47,6 +47,23 @@ class SongTest < Test::Unit::TestCase
     assert_equal([:verse, :chorus, :verse, :chorus, :chorus], test_songs[:from_code].flow)
   end
   
+  def test_pattern
+    song = Song.new()
+    verse1 = song.pattern :Verse
+
+    assert_equal(:Verse, verse1.name)
+    assert_equal({:Verse => verse1}, song.patterns)
+
+    verse2 = song.pattern :Verse
+    assert_equal(:Verse, verse2.name)
+    assert_equal({:Verse => verse2}, song.patterns)
+    assert_not_equal(verse1, verse2)
+
+    chorus = song.pattern :Chorus
+    assert_equal(2, song.patterns.length)
+    assert_equal({:Chorus => chorus, :Verse => verse2}, song.patterns)
+  end
+  
   def test_total_tracks
     test_songs = generate_test_data()
     
