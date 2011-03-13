@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.executables = "beats"
   s.summary = "A command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel."
   s.description = "A command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel."
-  s.files = ["LICENSE", "README.markdown"] + Dir['lib/**/*.rb'] + Dir['bin/*'] + Dir['test/**/*']
+  s.files = ["LICENSE", "README.markdown", "Rakefile"] + Dir['lib/**/*.rb'] + Dir['bin/*'] + Dir['test/**/*']
   s.test_files = Dir['test/**/*']
   s.require_path = "lib"
 end
