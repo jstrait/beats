@@ -1,9 +1,12 @@
 class SongParseError < RuntimeError; end
 
 
-# This class is used to parse a raw YAML song definition into domain objects. These
-# domain objects can then be used by AudioEngine to generate the output sample data
-# for the song.
+# This class is used to parse a raw YAML song definition into domain objects (i.e.
+# Song, Pattern, Track, and Kit). These domain objects can then be used by AudioEngine
+# to generate the actual audio data that is saved to disk.
+#
+# The sole public method is parse(). It takes a raw YAML string and returns a Song and
+# Kit object (or raises an error if the YAML string couldn't be parsed correctly).
 class SongParser
   DONT_USE_STRUCTURE_WARNING =
       "\n" +

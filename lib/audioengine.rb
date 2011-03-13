@@ -1,6 +1,14 @@
-# This class actually generates the output sound data for the performance.
-# Applies a Kit to a Song (which contains sub Patterns and Tracks) to
-# produce output sample data.
+# This class actually generates the output audio data that is saved to disk.
+#
+# To produce audio data, it needs two things: a Song and a Kit. The Song tells
+# it which notes to play and when, while the Kit provides the sample data to
+# use for each instrument's notes.
+#
+# Example usage, assuming song and kit are already defined:
+#
+#   engine = AudioEngine.new(song, kit)
+#   engine.write_to_file("my_song.wav")
+#
 class AudioEngine
   SAMPLE_RATE = 44100
   PACK_CODE = "s*"   # All output sample data is assumed to be 16-bit

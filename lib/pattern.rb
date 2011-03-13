@@ -1,3 +1,8 @@
+# Domain object which models one or more Tracks playing a part of the song at the same time.
+# For example, a bass drum, snare drum, and hi-hat track playing the song's chorus.
+#
+# This object is like sheet music; the AudioEngine is responsible creating actual
+# audio data for a Pattern (with the help of a Kit).
 class Pattern
   FLOW_TRACK_NAME = "flow"
   

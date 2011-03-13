@@ -1,5 +1,11 @@
 class InvalidRhythmError < RuntimeError; end
 
+
+# Domain object which models a kit sound playing a rhythm. For example,
+# a bass drum playing every quarter note for two measures.
+#
+# This object is like sheet music; the AudioEngine is responsible creating actual
+# audio data for a Track (with the help of a Kit).
 class Track
   REST = "."
   BEAT = "X"

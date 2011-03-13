@@ -1,5 +1,13 @@
 class InvalidTempoError < RuntimeError; end
 
+
+# Domain object which models the 'sheet music' for a full song. Models the Patterns
+# that should be played, in which order (i.e. the flow), and at which tempo.
+#
+# This is the top-level model object that is used by the AudioEngine to produce
+# actual audio data. A Song tells the AudioEngine what notes to play and when,
+# while a Kit provides the sample data to use for each note. With a Song and a Kit
+# the AudioEngine can produce the audio data that is stored to disk.
 class Song
   DEFAULT_TEMPO = 120
 
