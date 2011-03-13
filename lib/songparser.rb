@@ -150,7 +150,7 @@ private
       # TODO Also raise error if only there is only 1 track and it's a flow track
       if track_list == nil
         # TODO: Use correct capitalization of pattern name in error message
-        # TODO: Possibly allow if pattern not referenced in the Structure, or has 0 repeats?
+        # TODO: Possibly allow if pattern not referenced in the Flow, or has 0 repeats?
         raise SongParseError, "Pattern '#{key}' has no tracks. It needs at least one."
       end
       
