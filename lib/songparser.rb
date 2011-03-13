@@ -111,6 +111,7 @@ private
     kit_items = {}
     
     # Add sounds defined in the Kit section of the song header
+    # Converts [{a=>1}, {b=>2}, {c=>3}] from raw YAML to {a=>1, b=>2, c=>3}
     # TODO: Raise error is same name is defined more than once in the Kit
     unless raw_kit == nil
       raw_kit.each do |kit_item|
