@@ -109,16 +109,40 @@ protected
   #
   # Duplicate Patterns are more likely to occur after calling subdivide_song_patterns().
   def prune_duplicate_patterns(song)
+    pattern_replacements = determine_pattern_replacements(song.patterns)
+
+    # Update flow to remove references to duplicates
+    new_flow = song.flow
+    pattern_replacements.each do |duplicate, replacement|
+      new_flow = new_flow.map do |pattern_name|
+        (pattern_name == duplicate) ? replacement : pattern_name
+      end
+    end
+    song.flow = new_flow
+    
+    # Remove unused Patterns. Not strictly necessary, but makes resulting songs
+    # easier to read for debugging purposes.
+    song.remove_unused_patterns()
+
+    return song
+  end
+
+
+  # Examines a set of patterns definitions, determining which ones have the same tracks with the same
+  # rhythms. Then constructs a hash of pattern => pattern indicating that all occurances in the flow
+  # of the key should be replaced with the value, so that the other equivalent definitions can be pruned
+  # from the song (and hence their sample data doesn't need to be generated).
+  def determine_pattern_replacements(patterns)
     seen_patterns = []
     replacements = {}
     
     # Pattern names are sorted to ensure predictable pattern replacement. Makes tests easier to write.
     # Sort function added manually because Ruby 1.8 doesn't know how to sort symbols...
-    pattern_names = song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s }
+    pattern_names = patterns.keys.sort {|x, y| x.to_s <=> y.to_s }
     
     # Detect duplicates
     pattern_names.each do |pattern_name|
-      pattern = song.patterns[pattern_name]
+      pattern = patterns[pattern_name]
       found_duplicate = false
       seen_patterns.each do |seen_pattern|
         if !found_duplicate && pattern.same_tracks_as?(seen_pattern)
@@ -131,20 +155,7 @@ protected
         seen_patterns << pattern
       end
     end
-    
-    # Update flow to remove references to duplicates
-    new_flow = song.flow
-    replacements.each do |duplicate, replacement|
-      new_flow = new_flow.map do |pattern_name|
-        (pattern_name == duplicate) ? replacement : pattern_name
-      end
-    end
-    song.flow = new_flow
-    
-    # Remove unused Patterns. Not strictly necessary, but makes resulting songs
-    # easier to read for debugging purposes.
-    song.remove_unused_patterns()
 
-    return song
+    return replacements
   end
 end
