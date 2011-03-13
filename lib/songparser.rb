@@ -74,7 +74,6 @@ private
     end
 
     raw_song_components = {}
-    warnings = []
     raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
     
     if raw_song_components[:full_definition]["song"] != nil
