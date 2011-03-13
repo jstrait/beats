@@ -1,5 +1,6 @@
 class SongParseError < RuntimeError; end
 
+
 # This class is used to parse a raw YAML song definition into domain objects. These
 # domain objects can then be used by AudioEngine to generate the output sample data
 # for the song.
@@ -19,9 +20,10 @@ class SongParser
       - Verse: x2
       - Chorus: x2"
   
-  def initialize
+  def initialize()
   end
-  
+
+
   # Parses a raw YAML song definition and converts it into a Song and Kit object.
   def parse(base_path, raw_yaml_string)
     raw_song_components = hashify_raw_yaml(raw_yaml_string)
@@ -63,8 +65,10 @@ class SongParser
     
     return song, kit
   end
-  
+
+
 private
+
 
   def hashify_raw_yaml(raw_yaml_string)
     begin
@@ -101,7 +105,8 @@ private
     
     return raw_song_components
   end
-      
+
+
   def build_kit(base_path, raw_kit, raw_patterns)
     kit_items = {}
     
@@ -135,7 +140,8 @@ private
     kit = Kit.new(base_path, kit_items)
     return kit
   end
-  
+
+
   def add_patterns_to_song(song, raw_patterns)
     raw_patterns.keys.each do |key|
       new_pattern = song.pattern key.to_sym
@@ -159,7 +165,8 @@ private
       end
     end
   end
-  
+
+
   def set_song_flow(song, raw_flow)
     flow = []
 
@@ -194,7 +201,8 @@ private
     }
     song.flow = flow
   end
-    
+
+
   # Converts all hash keys to be lowercase
   def downcase_hash_keys(hash)
     return hash.inject({}) do |new_hash, pair|
