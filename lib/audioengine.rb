@@ -1,8 +1,8 @@
 # This class actually generates the output audio data that is saved to disk.
 #
 # To produce audio data, it needs two things: a Song and a Kit. The Song tells
-# it which notes to play and when, while the Kit provides the sample data to
-# use for each instrument's notes.
+# it which sounds to trigger and when, while the Kit provides the sample data
+# for each of these sounds.
 #
 # Example usage, assuming song and kit are already defined:
 #

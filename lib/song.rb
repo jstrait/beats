@@ -5,9 +5,9 @@ class InvalidTempoError < RuntimeError; end
 # that should be played, in which order (i.e. the flow), and at which tempo.
 #
 # This is the top-level model object that is used by the AudioEngine to produce
-# actual audio data. A Song tells the AudioEngine what notes to play and when,
-# while a Kit provides the sample data to use for each note. With a Song and a Kit
-# the AudioEngine can produce the audio data that is stored to disk.
+# actual audio data. A Song tells the AudioEngine what sounds to trigger and when.
+# A Kit provides the sample data for each of these sounds. With a Song and a Kit
+# the AudioEngine can produce the audio data that is saved to disk.
 class Song
   DEFAULT_TEMPO = 120
 
