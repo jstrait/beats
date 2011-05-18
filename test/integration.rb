@@ -89,6 +89,11 @@ class SongParserTest < Test::Unit::TestCase
   end
   
   def clean_output_folder()
+    # Make the folder if it doesn't already exist
+    unless File.directory? OUTPUT_FOLDER	
+      Dir.mkdir(OUTPUT_FOLDER)
+    end
+    
     dir = Dir.new(OUTPUT_FOLDER)
     file_names = dir.entries
     file_names.each do |file_name|
