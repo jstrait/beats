@@ -1,6 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/includes'
+require 'includes'
 
 class SongParserTest < Test::Unit::TestCase
   TRACK_NAMES =  ["bass", "snare", "hh_closed", "hh_closed2", "agogo", "tom4", "tom2"]

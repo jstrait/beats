@@ -1,6 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/includes'
+require 'includes'
 
 class MockSongOptimizer < SongOptimizer
   def clone_song_ignoring_patterns_and_flow(original_song)

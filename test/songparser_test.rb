@@ -1,6 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/includes'
+require 'includes'
 
 class SongParserTest < Test::Unit::TestCase
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."

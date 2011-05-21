@@ -1,6 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/includes'
+require 'includes'
 
 class SongTest < Test::Unit::TestCase
   FIXTURES = [:repeats_not_specified,

@@ -1,6 +1,6 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
-require 'test/includes'
+require 'includes'
 
 class PatternExpanderTest < Test::Unit::TestCase  
   def test_expand_pattern_no_repeats

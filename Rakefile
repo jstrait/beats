@@ -1,5 +1,6 @@
 require 'rake/testtask'
  
 Rake::TestTask.new do |t|
-  t.test_files = FileList['test/**/*.rb']
+  t.libs << 'lib' << 'test'
+  t.pattern = 'test/**/*_test.rb'
 end
