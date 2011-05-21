@@ -16,7 +16,7 @@ class BeatsWaveFile < WaveFile
   # this number of samples) must be subsequently be written to the file before it is closed
   # or it won't be valid and you won't be able to play it.
   def open_for_appending(path)
-    file = File.open(path, "w")
+    file = File.open(path, "wb")
     write_header(file, 0)
     
     return file
