@@ -44,6 +44,22 @@ def parse_options
   return options
 end
 
+def print_error_and_exit(error, input_file_name)
+  case error
+  when Errno::ENOENT
+    puts "Song file '#{input_file_name}' not found.\n"
+  when SongParseError
+    puts "Song file '#{input_file_name}' has an error:\n"
+    puts "  #{error}\n"
+  when StandardError
+    puts "An error occured while generating sound for '#{input_file_name}':\n"
+    puts "  #{error}\n"
+  else
+    puts "An unexpected error occured while running BEATS:"
+    puts "  #{error}\n"
+  end
+end
+
 options = parse_options
 input_file_name = ARGV[0]
 output_file_name = ARGV[1]
@@ -54,18 +70,6 @@ begin
   output = beats.run()
   duration = output[:duration]
   puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio written in #{Time.now - start_time} seconds."
-rescue Errno::ENOENT => detail
-  puts "\n"
-  puts "Song file '#{input_file_name}' not found.\n"
-  puts "\n"
-rescue SongParseError => detail
-  puts "\n"
-  puts "Song file '#{input_file_name}' has an error:\n"
-  puts "  #{detail}\n"
-  puts "\n"
-rescue StandardError => detail
-  puts "\n"
-  puts "An error occured while generating sound for '#{input_file_name}':\n"
-  puts "  #{detail}\n"
-  puts "\n"
+rescue => error
+  print_error_and_exit(error, input_file_name)
 end
