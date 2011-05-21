@@ -21,6 +21,8 @@ def parse_options
   options = {:split => false, :pattern => nil}
 
   optparse = OptionParser.new do |opts|
+    opts.banner = "Usage: beats [options] input_file [output_file]"
+
     opts.on('-s', '--split', "Save each track to an individual wave file") do
       options[:split] = true
     end
