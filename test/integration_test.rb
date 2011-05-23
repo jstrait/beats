@@ -48,7 +48,11 @@ class SongParserTest < Test::Unit::TestCase
     beats = Beats.new(song_fixture, actual_output_file, {:split => false, :pattern => nil})
     beats.run()
     assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
-    assert_equal(File.read(expected_output_file), File.read(actual_output_file))
+
+    # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
+    expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read() }
+    actual_output_file_contents = File.open(actual_output_file, "rb") {|f| f.read() }
+    assert_equal(expected_output_file_contents, actual_output_file_contents)
     
     # Clean up after ourselves
     File.delete(actual_output_file)
@@ -81,8 +85,12 @@ class SongParserTest < Test::Unit::TestCase
       actual_output_file = "#{actual_output_prefix}-#{track_name}.wav"
       expected_output_file = "#{expected_output_prefix}-#{track_name}.wav"
       assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
-      assert_equal(File.read(expected_output_file), File.read(actual_output_file))
       
+      # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
+      expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read() }
+      actual_output_file_contents = File.open(actual_output_file, "rb") {|f| f.read() }
+      assert_equal(expected_output_file_contents, actual_output_file_contents)
+            
       # Clean up after ourselves
       File.delete(actual_output_file)
     end
