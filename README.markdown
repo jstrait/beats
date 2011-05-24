@@ -5,7 +5,7 @@ BEATS is a command-line drum machine written in pure Ruby. Feed it a song notate
 
     Song:
       Tempo: 120
-      Structure:
+      Flow:
         - Verse:   x2
         - Chorus:  x4
         - Verse:   x2
