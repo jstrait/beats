@@ -17,11 +17,13 @@ require "lib/songoptimizer"
 require "lib/songparser"
 require "lib/track"
 
-def parse_options
+USAGE_INSTRUCTIONS = ""
+
+def parse_options()
   options = {:split => false, :pattern => nil}
 
   optparse = OptionParser.new do |opts|
-    opts.banner = "Usage: beats [options] input_file [output_file]"
+    opts.banner = "usage: beats [options] input_file [output_file]"
 
     opts.on('-s', '--split', "Save each track to an individual wave file") do
       options[:split] = true
@@ -41,13 +43,18 @@ def parse_options
       exit
     end
   end
-  optparse.parse!
+
+  USAGE_INSTRUCTIONS << optparse.to_s
+  optparse.parse!()
 
   return options
 end
 
 def print_error(error, input_file_name)
   case error
+  when OptionParser::InvalidOption
+    puts "beats: illegal option #{error.args.join(' ')}"
+    puts USAGE_INSTRUCTIONS
   when Errno::ENOENT
     puts "Song file '#{input_file_name}' not found.\n"
   when SongParseError
@@ -62,13 +69,13 @@ def print_error(error, input_file_name)
   end
 end
 
-options = parse_options
-input_file_name = ARGV[0]
-output_file_name = ARGV[1]
-
-beats = Beats.new(input_file_name, output_file_name, options)
-
 begin
+  options = parse_options()
+  input_file_name = ARGV[0]
+  output_file_name = ARGV[1]
+
+  beats = Beats.new(input_file_name, output_file_name, options)
+
   output = beats.run()
   duration = output[:duration]
   puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio written in #{Time.now - start_time} seconds."
