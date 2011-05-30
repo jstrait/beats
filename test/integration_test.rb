@@ -2,7 +2,7 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'includes'
 
-class SongParserTest < Test::Unit::TestCase
+class IntegrationTest < Test::Unit::TestCase
   TRACK_NAMES =  ["bass", "snare", "hh_closed", "hh_closed2", "agogo", "tom4", "tom2"]
   OUTPUT_FOLDER = "test/integration_output"
   
