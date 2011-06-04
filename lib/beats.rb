@@ -8,15 +8,16 @@ class Beats
 
   def initialize(input_file_name, output_file_name, options)
     @input_file_name =  input_file_name
+
+    if output_file_name == nil
+      output_file_name = File.basename(input_file_name, File.extname(input_file_name)) + ".wav"
+    end
     @output_file_name = output_file_name
+    
     @options = options
   end
 
   def run
-    if @output_file_name == nil
-      @output_file_name = File.basename(@input_file_name, File.extname(@input_file_name)) + ".wav"
-    end
-
     song_parser = SongParser.new()
     song, kit = song_parser.parse(File.dirname(@input_file_name), File.read(@input_file_name))
 
