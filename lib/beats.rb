@@ -13,11 +13,6 @@ class Beats
   end
 
   def run
-    if @input_file_name == nil
-      ARGV[0] = '-h'
-      parse_options()
-    end
-
     if @output_file_name == nil
       @output_file_name = File.basename(@input_file_name, File.extname(@input_file_name)) + ".wav"
     end
