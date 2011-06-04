@@ -19,10 +19,26 @@ class Beats
 
     song_parser = SongParser.new()
     song, kit = song_parser.parse(File.dirname(@input_file_name), File.read(@input_file_name))
+
+    song = normalize_for_pattern_option(song)
+    songs_to_generate = normalize_for_split_option(song)
+
     song_optimizer = SongOptimizer.new()
 
-    # If the -p option is used, transform the song into one whose flow consists of
-    # playing that single pattern once.
+    duration = nil
+    songs_to_generate.each do |output_file_name, song|
+      song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
+      duration = AudioEngine.new(song, kit).write_to_file(output_file_name)
+    end
+
+    return {:duration => duration}
+  end
+
+private
+
+  # If the -p option is used, transform the song into one whose flow consists of
+  # playing that single pattern once.
+  def normalize_for_pattern_option(song)
     unless @options[:pattern] == nil
       pattern_name = @options[:pattern].downcase.to_sym
 
@@ -34,24 +50,28 @@ class Beats
       song.remove_unused_patterns()
     end
 
-    duration = nil
+    return song
+  end
+
+  # Returns a hash of file name => song object for each song that should go through the audio engine
+  def normalize_for_split_option(song)
+    songs_to_generate = {}
+
     if @options[:split]
       split_songs = song.split()
       split_songs.each do |track_name, split_song|
-        split_song = song_optimizer.optimize(split_song, OPTIMIZED_PATTERN_LENGTH)
-
         # TODO: Move building the output file name into its own method?
         extension = File.extname(@output_file_name)
         file_name = File.dirname(@output_file_name) + "/" +
                     File.basename(@output_file_name, extension) + "-" + File.basename(track_name, extension) +
                     extension
-        duration = AudioEngine.new(split_song, kit).write_to_file(file_name)
+
+        songs_to_generate[file_name] = split_song
       end
     else
-      song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-      duration = AudioEngine.new(song, kit).write_to_file(@output_file_name)
+      songs_to_generate[@output_file_name] = song
     end
 
-    return {:duration => duration}
+    return songs_to_generate
   end
 end
