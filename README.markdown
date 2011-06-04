@@ -42,17 +42,24 @@ The latest stable version of BEATS is 1.2.1, released on March 6, 2011. This is 
 * A pattern can contain multiple tracks that use the same sound. Previously, BEATS would pick one of those tracks as the 'winner', and the other tracks wouldn't be played.
 * Bug fix: A better error message is displayed if a sound file is in an unsupported format (such as MP3), or is not even a sound file.
 
+Work is currently under way on 1.2.2, which will be another small update. It is planned to be released in early June. The planned changes for this version are:
+
+* Bug fix: Compatibility issues with Windows
+* Bug fix: Return the correct status code when BEATS terminates, to improve scriptability.
+
 
 Installation
 ------------
 
 To install the latest stable version (1.2.1) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
-    sudo gem install beats
+    gem install beats
 
-You can then run BEATS from the command-line using the `beats` command.
+Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, use `sudo gem install beats` instead. If you are using RVM, plain `gem install beats` should work fine.
 
-BEATS is not very useful unless you have some sounds to use with it. You can download some example sounds from [http://beatsdrummachine.com](http://beatsdrummachine.com).
+Once installed, you can then run BEATS from the command-line using the `beats` command.
+
+BEATS is not very useful unless you have some sounds to use with it. You can download some example sounds from [http://beatsdrummachine.com](http://beatsdrummachine.com/download#drum-kits).
 
 
 Usage
