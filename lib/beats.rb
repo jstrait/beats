@@ -18,15 +18,13 @@ class Beats
   end
 
   def run
-    song_parser = SongParser.new()
-    song, kit = song_parser.parse(File.dirname(@input_file_name), File.read(@input_file_name))
+    song, kit = SongParser.new().parse(File.dirname(@input_file_name), File.read(@input_file_name))
 
     song = normalize_for_pattern_option(song)
     songs_to_generate = normalize_for_split_option(song)
 
-    song_optimizer = SongOptimizer.new()
-
     duration = nil
+    song_optimizer = SongOptimizer.new()
     songs_to_generate.each do |output_file_name, song|
       song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
       duration = AudioEngine.new(song, kit).write_to_file(output_file_name)
