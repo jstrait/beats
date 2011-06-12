@@ -35,14 +35,7 @@ And [here's what it sounds like](http://beatsdrummachine.com/beat.mp3) after get
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.2.1, released on March 6, 2011. This is a minor release which includes the following improvements:
-
-* You can use the | character to represent bar lines in a track rhythm. This is optional, but often makes longer rhythms easier to read.
-* The "Structure" section of the song header is now called "Flow". (You can still use "Structure" for now, but you'll get a warning).
-* A pattern can contain multiple tracks that use the same sound. Previously, BEATS would pick one of those tracks as the 'winner', and the other tracks wouldn't be played.
-* Bug fix: A better error message is displayed if a sound file is in an unsupported format (such as MP3), or is not even a sound file.
-
-Work is currently under way on 1.2.2, which will be another small update. It is planned to be released in early June. The planned changes for this version are:
+The latest stable version of BEATS is 1.2.2, released on June 12, 2011. This is a minor release which includes two bug fixes:
 
 * Bug fix: Compatibility issues with Windows
 * Bug fix: Return the correct status code when BEATS terminates, to improve scriptability.
@@ -51,7 +44,7 @@ Work is currently under way on 1.2.2, which will be another small update. It is 
 Installation
 ------------
 
-To install the latest stable version (1.2.1) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (1.2.2) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
@@ -73,7 +66,7 @@ The BEATS wiki also has a [Getting Started](https://github.com/jstrait/beats/wik
 Found a Bug? Have a Suggestion? Want to Contribute?
 ---------------------------------------------------
 
-Contact me (Joel Strait) by sending a GitHub message.
+Contact me (Joel Strait) by sending a GitHub message or opening a GitHub issue.
 
 
 License
