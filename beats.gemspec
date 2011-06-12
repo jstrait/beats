@@ -1,8 +1,8 @@
 Gem::Specification.new do |s| 
   s.name = "beats"
-  s.version = "1.2.1"
+  s.version = "1.2.2"
   s.author = "Joel Strait"
-  s.email = ""
+  s.email = "joel dot strait at Google's popular web mail service"
   s.homepage = "http://beatsdrummachine.com/"
   s.platform = Gem::Platform::RUBY
   s.executables = "beats"
