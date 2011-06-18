@@ -35,9 +35,9 @@ And [here's what it sounds like](http://beatsdrummachine.com/beat.mp3) after get
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.2.2, released on June 12, 2011. This is a minor release which includes two bug fixes:
+The latest stable version of BEATS is 1.2.2, released on June 13, 2011. This is a minor release which includes two bug fixes:
 
-* Bug fix: Compatibility issues with Windows
+* Bug fix: Compatibility issues with Windows. Thanks to Luis Lavena for mentioning the problem and how to fix it.
 * Bug fix: Return the correct status code when BEATS terminates, to improve scriptability.
 
 
