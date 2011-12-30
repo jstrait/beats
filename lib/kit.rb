@@ -137,18 +137,15 @@ private
     end
   end
   
-  def get_absolute_path(base_path, sound_file_name)
-    path_is_absolute = sound_file_name.start_with?(File::SEPARATOR)
-    return path_is_absolute ? sound_file_name : (base_path + File::SEPARATOR + sound_file_name)
-  end
-  
+  # Converts relative paths into absolute paths. Note that this will also handle
+  # expanding ~ on platforms that support that.
   def make_file_names_absolute(kit_items)
     kit_items.each do |label, sound_file_names|
       unless sound_file_names.class == Array
         sound_file_names = [sound_file_names]
       end
       
-      sound_file_names.map! {|sound_file_name| get_absolute_path(base_path, sound_file_name)}  
+      sound_file_names.map! {|sound_file_name| File.expand_path(sound_file_name, base_path) }  
       kit_items[label] = sound_file_names
     end
     
