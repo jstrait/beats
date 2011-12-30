@@ -27,6 +27,14 @@ class IntegrationTest < Test::Unit::TestCase
   # TODO: Add tests for the -p option
   # TODO: Add test verify that song generated with and without SongOptimizer are identical.
   
+  def test_base_path
+    # Make sure no output from previous tests is still around
+    clean_output_folder()
+
+    run_combined_test("mono", 16, "_base_path", "test/sounds")
+    run_split_test("mono", 16, "_base_path", "test/sounds")
+  end
+
   def test_generate_combined
     # Make sure no output from previous tests is still around
     clean_output_folder()
@@ -37,15 +45,20 @@ class IntegrationTest < Test::Unit::TestCase
     run_combined_test("stereo", 16)
   end
   
-  def run_combined_test(num_channels, bits_per_sample)
+  def run_combined_test(num_channels, bits_per_sample, suffix="", base_path=nil)
     # Make sure no output from previous tests is still around
     assert_equal([".", ".."], Dir.new(OUTPUT_FOLDER).entries)
     
-    song_fixture         = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}.txt"
-    actual_output_file   = "#{OUTPUT_FOLDER}/example_combined_#{num_channels}_#{bits_per_sample}.wav"
+    song_fixture         = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}#{suffix}.txt"
+    actual_output_file   = "#{OUTPUT_FOLDER}/example_combined_#{num_channels}_#{bits_per_sample}#{suffix}.wav"
     expected_output_file = "test/fixtures/expected_output/example_combined_#{num_channels}_#{bits_per_sample}.wav"
     
-    beats = Beats.new(song_fixture, actual_output_file, {:split => false})
+    options = {:split => false}
+    unless base_path == nil
+      options[:base_path] = base_path
+    end
+
+    beats = Beats.new(song_fixture, actual_output_file, options)
     beats.run()
     assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
@@ -68,15 +81,20 @@ class IntegrationTest < Test::Unit::TestCase
     run_split_test("stereo", 16)
   end
   
-  def run_split_test(num_channels, bits_per_sample)
+  def run_split_test(num_channels, bits_per_sample, suffix="", base_path=nil)
     # Make sure no output from previous tests is still around
     assert_equal([".", ".."], Dir.new(OUTPUT_FOLDER).entries)
     
-    song_fixture         = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}.txt"
-    actual_output_prefix   = "#{OUTPUT_FOLDER}/example_split_#{num_channels}_#{bits_per_sample}"
+    song_fixture         = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}#{suffix}.txt"
+    actual_output_prefix   = "#{OUTPUT_FOLDER}/example_split_#{num_channels}_#{bits_per_sample}#{suffix}"
     expected_output_prefix = "test/fixtures/expected_output/example_split_#{num_channels}_#{bits_per_sample}"
     
-    beats = Beats.new(song_fixture, actual_output_prefix + ".wav", {:split => true})
+    options = {:split => true}
+    unless base_path == nil
+      options[:base_path] = base_path
+    end
+
+    beats = Beats.new(song_fixture, actual_output_prefix + ".wav", options)
     beats.run()
     TRACK_NAMES.each do |track_name|
       if(track_name.start_with?("tom"))

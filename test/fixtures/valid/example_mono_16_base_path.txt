@@ -1,0 +1,33 @@
+# An example song using mono 16-bit sounds
+# The sound files in this example do not exist in the given
+# location relative to this file, so this is intended for testing
+# when a custom base path is given.
+
+Song:
+  Tempo: 120
+  Flow:
+    - Verse:   x2
+    - Chorus:  x4
+    - Verse:   x2
+    - Chorus:  x4
+  Kit:
+    - bass:       bass_mono_16.wav
+    - snare:      snare_mono_16.wav
+    - hh_closed:  hh_closed_mono_16.wav
+    - agogo:      agogo_high_mono_16.wav
+
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+  - hh_closed:  X.XXX.XX........
+  - hh_closed:  ........X.X.X.X.
+  - agogo:      ..............XX
+
+# Also including non-Kit sounds to test that they work as well:
+Chorus:
+  - bass:              X...X...XX..X...
+  - snare:             ....X.......X...
+  - hh_closed:         X.XXX.XX........
+  - hh_closed:         ........X.XX..X.
+  - tom4_mono_16.wav:  ...........X....
+  - tom2_mono_16.wav:  ..............X.
