@@ -6,6 +6,11 @@ class IntegrationTest < Test::Unit::TestCase
   TRACK_NAMES =  ["bass", "snare", "hh_closed", "hh_closed2", "agogo", "tom4", "tom2"]
   OUTPUT_FOLDER = "test/integration_output"
   
+  def setup
+    # Make sure no output from previous tests is still around
+    clean_output_folder()
+  end
+
   def test_bad_song_errors
     invalid_fixtures = ["bad_tempo.txt",
                         "bad_repeat_count.txt",
@@ -28,17 +33,11 @@ class IntegrationTest < Test::Unit::TestCase
   # TODO: Add test verify that song generated with and without SongOptimizer are identical.
   
   def test_base_path
-    # Make sure no output from previous tests is still around
-    clean_output_folder()
-
     run_combined_test("mono", 16, "_base_path", "test/sounds")
     run_split_test("mono", 16, "_base_path", "test/sounds")
   end
 
   def test_generate_combined
-    # Make sure no output from previous tests is still around
-    clean_output_folder()
-    
     run_combined_test("mono",   8)
     run_combined_test("mono",   16)
     run_combined_test("stereo", 8)
@@ -72,9 +71,6 @@ class IntegrationTest < Test::Unit::TestCase
   end
   
   def test_generate_split
-    # Make sure no output from previous tests is still around
-    clean_output_folder()
-    
     run_split_test("mono",    8)
     run_split_test("mono",   16)
     run_split_test("stereo",  8)
