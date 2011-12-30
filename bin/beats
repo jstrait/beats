@@ -32,7 +32,7 @@ def parse_options()
     opts.on('-p', '--pattern PATTERN_NAME', "Output a single pattern instead of the whole song" ) do |p|
       options[:pattern] = p
     end
-  
+
     opts.on('--path BASE_PATH', "The base path used to load sound files with relative paths.") do |base_path|
       options[:base_path] = base_path
     end
@@ -41,7 +41,7 @@ def parse_options()
       puts "BEATS v#{Beats::BEATS_VERSION}"
       exit
     end
-  
+
     opts.on( '-h', '--help', "Display this screen and exit" ) do
       puts opts
       exit
