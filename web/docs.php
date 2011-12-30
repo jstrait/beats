@@ -31,10 +31,10 @@ beats --path ~/drum_sounds example_song.txt
     <h2>Creating Songs</h2>
     <p>Songs are notated using <a href="http://en.wikipedia.org/wiki/YAML">YAML</a>, so each song file is just a plain text file you can edit in TextEdit, VIM, or whatever. The file extension doesn&#8217;t matter.</p>
     <p>Each song is divided into one or more patterns. A pattern represents a section of the song, such as a verse, chorus, or bridge. Each pattern in turn has one or more tracks. Each track represents an individual sound, such as a bass drum, snare, or hi-hat.</p>
-    <p>Songs should start with a header indicating the tempo, the structure of the song, and aliases for commonly used sounds. Here&#8217;s an example below. Since this is YAML, lines must be indented correctly. Also, each row in the Structure or Kit should be preceded by a dash.</p>
+    <p>Songs should start with a header indicating the tempo, the flow of the song, and aliases for commonly used sounds. Here&#8217;s an example below. Since this is YAML, lines must be indented correctly. Also, each row in the Flow or Kit should be preceded by a dash.</p>
     <p><pre><code>Song:
   Tempo: 120
-  Structure:
+  Flow:
     - Verse:   x4
     - Chorus:  x2
     - Bridge:  x1
@@ -44,7 +44,7 @@ beats --path ~/drum_sounds example_song.txt
     - bass:      sounds/808bass.wav
     - hh_closed: sounds/hihat_awesome.wav
     - hh_open:   sounds/hh_open.wav</code></pre></p>
-    <p>The Kit section is optional, but the Structure is required.</p>
+    <p>The Kit section is optional, but the Flow is required.</p>
     <p>One or more patterns should follow the header. (If there are no patterns, there is nothing to play!) Each pattern definition starts with the pattern name, followed by the rhythm for each track on separate lines.</p>
     <p><pre><code>Verse:
   - bass:             X.......X.......
