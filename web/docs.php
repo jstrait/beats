@@ -7,19 +7,23 @@
     <p><code><pre class="single-line">beats [options] INPUT [OUTPUT]</pre></code></p>
     <p><code>INPUT</code> is the YAML file for your song. <code>OUTPUT</code> is the <code>*.wav</code> file where BEATS will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>
     <p><code><pre class="single-line">beats example_song.txt beat.wav</pre></code></p>
-    <p>BEATS supports two command-line options, which can be used together or separately:</p>
+    <p>BEATS supports the following command-line options, which can be used together or separately:</p>
     <p><code><pre>-s, --split
     Save each track to a separate Wave file,
     instead of combining them into one.
-
 
 -p, --pattern PATTERN_NAME
     Only generate the pattern PATTERN_NAME,
     instead of the entire song.
 
+--path BASE_PATH
+    Look for song files with relative paths
+    relative to BASE_PATH, instead of relative
+    to the song file's path.
 
 beats -s example_song.txt
 beats -p Verse example_song.txt
+beats --path ~/drum_sounds example_song.txt
 </pre></code></p>
     <p>Finally, a note about Ruby 1.8.7 vs. 1.9.x. BEATS runs fine on both, but is more than 2x faster on 1.9.x. Therefore, it&#8217;s highly recommended that you use 1.9.x if possible.</p>
   </div>
