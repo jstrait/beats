@@ -1,5 +1,5 @@
 class Beats
-  BEATS_VERSION = "1.2.2"
+  BEATS_VERSION = "1.2.3alpha"
  
   # Each pattern in the song will be split up into sub patterns that have at most this many steps.
   # In general, audio for several shorter patterns can be generated more quickly than for one long
