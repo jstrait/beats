@@ -21,7 +21,7 @@
 beats -s example_song.txt
 beats -p Verse example_song.txt
 </pre></code></p>
-    <p>Finally, a note about Ruby 1.8 vs. 1.9. BEATS runs fine on both versions, but is more than 2x faster on 1.9. Therefore, it&#8217;s highly recommended that you use 1.9 if possible. BEATS will run using whichever <code>ruby</code> command <code>/usr/bin/env</code> points to.</p>
+    <p>Finally, a note about Ruby 1.8.7 vs. 1.9.x. BEATS runs fine on both, but is more than 2x faster on 1.9.x. Therefore, it&#8217;s highly recommended that you use 1.9.x if possible.</p>
   </div>
   <div class="content-box">
     <h2>Creating Songs</h2>
