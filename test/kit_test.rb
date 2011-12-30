@@ -1,5 +1,3 @@
-$:.unshift File.join(File.dirname(__FILE__),'..','lib')
-
 require 'includes'
 
 # Kit which allows directly changing the sound bank after initialization, to allows tests

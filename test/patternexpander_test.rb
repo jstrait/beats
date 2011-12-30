@@ -1,5 +1,3 @@
-$:.unshift File.join(File.dirname(__FILE__),'..','lib')
-
 require 'includes'
 
 class PatternExpanderTest < Test::Unit::TestCase  
