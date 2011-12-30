@@ -20,7 +20,7 @@ require "lib/track"
 USAGE_INSTRUCTIONS = ""
 
 def parse_options()
-  options = {:split => false, :pattern => nil}
+  options = {:split => false}
 
   optparse = OptionParser.new do |opts|
     opts.banner = "usage: beats [options] input_file [output_file]"

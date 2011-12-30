@@ -17,7 +17,7 @@ class IntegrationTest < Test::Unit::TestCase
         
     invalid_fixtures.each do |fixture_name|
       assert_raise(SongParseError) do
-        beats = Beats.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false, :pattern => nil})
+        beats = Beats.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false})
         beats.run()
       end
     end
@@ -45,7 +45,7 @@ class IntegrationTest < Test::Unit::TestCase
     actual_output_file   = "#{OUTPUT_FOLDER}/example_combined_#{num_channels}_#{bits_per_sample}.wav"
     expected_output_file = "test/fixtures/expected_output/example_combined_#{num_channels}_#{bits_per_sample}.wav"
     
-    beats = Beats.new(song_fixture, actual_output_file, {:split => false, :pattern => nil})
+    beats = Beats.new(song_fixture, actual_output_file, {:split => false})
     beats.run()
     assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
@@ -76,7 +76,7 @@ class IntegrationTest < Test::Unit::TestCase
     actual_output_prefix   = "#{OUTPUT_FOLDER}/example_split_#{num_channels}_#{bits_per_sample}"
     expected_output_prefix = "test/fixtures/expected_output/example_split_#{num_channels}_#{bits_per_sample}"
     
-    beats = Beats.new(song_fixture, actual_output_prefix + ".wav", {:split => true, :pattern => nil})
+    beats = Beats.new(song_fixture, actual_output_prefix + ".wav", {:split => true})
     beats.run()
     TRACK_NAMES.each do |track_name|
       if(track_name.start_with?("tom"))
