@@ -35,16 +35,16 @@ And [here's what it sounds like](http://beatsdrummachine.com/beat.mp3) after get
 Current Status
 --------------
 
-The latest stable version of BEATS is 1.2.2, released on June 13, 2011. This is a minor release which includes two bug fixes:
+The latest stable version of BEATS is 1.2.3, released on December 31, 2011. This is a minor release which includes two improvements:
 
-* Bug fix: Compatibility issues with Windows. Thanks to Luis Lavena for mentioning the problem and how to fix it.
-* Bug fix: Return the correct status code when BEATS terminates, to improve scriptability.
+* Bug fix: You can now use `~` in sound file paths, and it will correctly expand to your home folder. (At least on UNIX OSes, I'm not sure if that works on Windows).
+* The new `--path` option allows setting the base path from which relative sound file paths are searched for.
 
 
 Installation
 ------------
 
-To install the latest stable version (1.2.2) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (1.2.3) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
