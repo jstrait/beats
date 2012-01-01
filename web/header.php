@@ -28,7 +28,7 @@ function drawHeader() {
 function drawFooter() {
 ?>
 <div id="about" class="content-box">
-    <p>Copyright &copy; 2010-11 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
+    <p>Copyright &copy; 2010-12 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
   </div>
 </body>
 </html>
