@@ -24,11 +24,10 @@ class AudioEngine
   def write_to_file(output_file_name)
     packed_pattern_cache = {}
     num_tracks_in_song = @song.total_tracks
-    samples_written = 0
-    
-    # Open output wave file and preparing it for writing sample data.
-    wave_file = BeatsWaveFile.new(@kit.num_channels, SAMPLE_RATE, @kit.bits_per_sample)
-    file = wave_file.open_for_appending(output_file_name)
+ 
+    # Open output wave file and prepare it for writing sample data.
+    format = WaveFile::Format.new(@kit.num_channels, @kit.bits_per_sample, SAMPLE_RATE)
+    writer = WaveFile::Writer.new(output_file_name, format)
 
     # Generate each pattern's sample data, or pull it from cache, and append it to the wave file.
     incoming_overflow = {}
@@ -37,40 +36,22 @@ class AudioEngine
       unless packed_pattern_cache.member?(key)
         sample_data = generate_pattern_sample_data(@song.patterns[pattern_name], incoming_overflow)
 
-        if @kit.num_channels == 1
-          # Don't flatten the sample data Array, since it is already flattened. That would be a waste of time, yo.
-          packed_pattern_cache[key] = {:primary        => sample_data[:primary].pack(PACK_CODE),
-                                       :overflow       => sample_data[:overflow],
-                                       :primary_length => sample_data[:primary].length}
-        else
-          packed_pattern_cache[key] = {:primary        => sample_data[:primary].flatten.pack(PACK_CODE),
-                                       :overflow       => sample_data[:overflow],
-                                       :primary_length => sample_data[:primary].length}
-        end
+        packed_pattern_cache[key] = { :primary => WaveFile::Buffer.new(sample_data[:primary], format),
+                                      :overflow => WaveFile::Buffer.new(sample_data[:overflow], format) }
       end
 
-      file.syswrite(packed_pattern_cache[key][:primary])
-      incoming_overflow = packed_pattern_cache[key][:overflow]
-      samples_written += packed_pattern_cache[key][:primary_length]
+      writer.write(packed_pattern_cache[key][:primary])
+      incoming_overflow = packed_pattern_cache[key][:overflow].samples
     end
 
     # Write any remaining overflow from the final pattern
-    final_overflow_composite = AudioUtils.composite(incoming_overflow.values, @kit.num_channels)
-    final_overflow_composite = AudioUtils.scale(final_overflow_composite, @kit.num_channels, num_tracks_in_song)
-    if @kit.num_channels == 1
-      file.syswrite(final_overflow_composite.pack(PACK_CODE))
-    else
-      file.syswrite(final_overflow_composite.flatten.pack(PACK_CODE))
-    end
-    samples_written += final_overflow_composite.length
-    
-    # Now that we know how many samples have been written, go back and re-write the correct header.
-    file.sysseek(0)
-    wave_file.write_header(file, samples_written)
+    final_overflow_composite = AudioUtils.composite(incoming_overflow.values, format.channels)
+    final_overflow_composite = AudioUtils.scale(final_overflow_composite, format.channels, num_tracks_in_song)
+    writer.write(WaveFile::Buffer.new(final_overflow_composite, format))
 
-    file.close()
+    writer.close()
 
-    return wave_file.calculate_duration(SAMPLE_RATE, samples_written)
+    return WaveFile::Reader.info(output_file_name).duration
   end
 
   attr_reader :step_sample_length

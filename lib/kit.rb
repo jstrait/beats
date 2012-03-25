@@ -123,17 +123,16 @@ private
     end
     
     kit_items = make_file_names_absolute(kit_items)
-    raw_sounds = load_raw_sounds(kit_items)
+    sound_buffers = load_raw_sounds(kit_items)
     
+    canonical_format = WaveFile::Format.new(@num_channels, @bits_per_sample, 44100)
+
     # Convert each sound to a common format
-    raw_sounds.values.each do |wavefile|
-      wavefile.num_channels = @num_channels
-      wavefile.bits_per_sample = @bits_per_sample
-    end
-    
+    sound_buffers.each {|file_name, buffer| sound_buffers[file_name] = buffer.convert(canonical_format) }
+
     # If necessary, mix component sounds into a composite
     kit_items.each do |label, sound_file_names|
-      @sound_bank[label] = mixdown(sound_file_names, raw_sounds)
+      @sound_bank[label] = mixdown(sound_file_names, sound_buffers)
     end
   end
   
@@ -157,24 +156,26 @@ private
     raw_sounds = {}
     kit_items.values.flatten.each do |sound_file_name|
       begin
-        wavefile = WaveFile.open(sound_file_name)
+        info = WaveFile::Reader.info(sound_file_name)
+        WaveFile::Reader.new(sound_file_name).each_buffer(info.sample_count) do |buffer|
+          raw_sounds[sound_file_name] = buffer
+          @num_channels = [@num_channels, buffer.channels].max
+        end
       rescue Errno::ENOENT
         raise SoundFileNotFoundError, "Sound file #{sound_file_name} not found."
       rescue StandardError
         raise InvalidSoundFormatError, "Sound file #{sound_file_name} is either not a sound file, " +
-                                       "or is in an unsupported format. BEATS can handle 8 or 16-bit *.wav files."
+                                       "or is in an unsupported format. BEATS can handle 8, 16, or 32-bit PCM *.wav files."
       end
-      @num_channels = [@num_channels, wavefile.num_channels].max
-      raw_sounds[sound_file_name] = wavefile
     end
     
     return raw_sounds
   end
   
   def mixdown(sound_file_names, raw_sounds)
-    sample_arrays = []    
+    sample_arrays = []
     sound_file_names.each do |sound_file_name|
-      sample_arrays << raw_sounds[sound_file_name].sample_data
+      sample_arrays << raw_sounds[sound_file_name].samples
     end
 
     composited_sample_data = AudioUtils.composite(sample_arrays, @num_channels)
