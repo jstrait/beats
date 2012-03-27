@@ -27,7 +27,7 @@ class AudioEngine
  
     # Open output wave file and prepare it for writing sample data.
     format = WaveFile::Format.new(@kit.num_channels, @kit.bits_per_sample, SAMPLE_RATE)
-    writer = WaveFile::Writer.new(output_file_name, format)
+    writer = WaveFile::CachingWriter.new(output_file_name, format)
 
     # Generate each pattern's sample data, or pull it from cache, and append it to the wave file.
     incoming_overflow = {}
