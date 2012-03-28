@@ -17,7 +17,14 @@ module WaveFile
         packed_buffer_data = @buffer_cache[key]
       else
         samples = buffer.convert(@format).samples
-        data = samples.flatten.pack(@pack_code)
+
+        if @format.channels > 1
+          data = samples.flatten.pack(@pack_code)
+        else
+          # Flattening an already flat array is a waste of time.
+          data = samples.pack(@pack_code)
+        end
+
         packed_buffer_data = { :data => data, :sample_count => samples.length }
         @buffer_cache[key] = packed_buffer_data
       end
