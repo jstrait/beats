@@ -37,7 +37,7 @@ class Kit
     @bits_per_sample = 16  # Only use 16-bit files as output. Supporting 8-bit output
                            # means extra complication for no real gain (I'm skeptical
                            # anyone would explicitly want 8-bit output instead of 16-bit).
-                           
+
     load_sounds(base_path, kit_items)
   end
   
