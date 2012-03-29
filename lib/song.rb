@@ -50,10 +50,6 @@ class Song
     @patterns.values.inject([]) {|track_names, pattern| track_names | pattern.tracks.keys }.sort
   end
 
-  def tempo
-    return @tempo
-  end
-
   def tempo=(new_tempo)
     unless new_tempo.class == Fixnum && new_tempo > 0
       raise InvalidTempoError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
@@ -122,7 +118,7 @@ class Song
     return yaml_output
   end
 
-  attr_reader :patterns
+  attr_reader :patterns, :tempo
   attr_accessor :flow
 
 private
