@@ -11,7 +11,7 @@ class InvalidTempoError < RuntimeError; end
 class Song
   DEFAULT_TEMPO = 120
 
-  def initialize()
+  def initialize
     self.tempo = DEFAULT_TEMPO
     @patterns = {}
     @flow = []
@@ -69,7 +69,7 @@ class Song
   # Splits a Song object into multiple Song objects, where each new
   # Song only has 1 track. For example, if a Song has 5 tracks, this will return
   # a hash of 5 songs, each with one of the original Song's tracks.
-  def split()
+  def split
     split_songs = {}
     track_names = track_names()
     

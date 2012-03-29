@@ -12,7 +12,7 @@
 # Note that step #1 actually performs double duty, because breaking Patterns into smaller
 # pieces increases the likelihood there will be duplicates that can be combined.
 class SongOptimizer
-  def initialize()
+  def initialize
   end
   
   # Returns a Song that will produce the same output as original_song, but should be

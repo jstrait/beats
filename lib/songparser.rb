@@ -23,7 +23,7 @@ class SongParser
       - Verse: x2
       - Chorus: x2"
   
-  def initialize()
+  def initialize
   end
 
 
