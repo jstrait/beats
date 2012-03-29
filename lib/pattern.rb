@@ -31,7 +31,7 @@ class Pattern
   end
   
   def step_count
-    return @tracks.values.collect {|track| track.rhythm.length }.max || 0
+    @tracks.values.collect {|track| track.rhythm.length }.max || 0
   end
   
   # Returns whether or not this pattern has the same number of tracks as other_pattern, and that

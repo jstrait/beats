@@ -47,7 +47,7 @@ class Track
   end
   
   def step_count
-    return @rhythm.length
+    @rhythm.length
   end
    
   attr_accessor :name
