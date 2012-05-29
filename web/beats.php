@@ -9,11 +9,11 @@
     - Verse:  x4
     - Chorus: x4
   Kit:
-    - bass:     house_bass.wav
-    - snare:    "Roland TR-909-2.wav"
-    - hihat:    house_hihat.wav
-    - cowbell:  cowbell.wav
-    - deep:     deep_bass.wav
+    - bass:     house_2_1.wav
+    - snare:    roland_tr_909_2.wav
+    - hihat:    house_2_5.wav
+    - cowbell:  big_beat_5.wav
+    - deep:     house_2_2.wav
     
 
 Verse:
