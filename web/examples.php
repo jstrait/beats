@@ -2,12 +2,12 @@
    drawHeader(); ?>
   <div class="content-box">
     <h2>Example Songs</h2>
-    <p>Each example includes the raw output from BEATS, as well as an arrangement with other instruments done in GarageBand.</p>
+    <p>Each example includes the raw output from Beats, as well as an arrangement with other instruments done in GarageBand.</p>
   </div>
   <div class="content-box">
     <h2>Synth Groove</h2>
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label class="example-song">Raw BEATS</label>
+    <label class="example-song">Raw Beats</label>
     <audio class="example-song" controls>
       <source src="/media/beats_drum_machine_synth_groove_raw.mp3" />
       <source src="/media/beats_drum_machine_synth_groove_raw.ogg" />

@@ -1,13 +1,13 @@
 <? require_once("header.php");
    drawHeader(); ?>
   <div class="content-box">
-    <h2 id="strategy-guide">BEATS Strategy Guide</h2>
+    <h2 id="strategy-guide">Beats Strategy Guide</h2>
     <p id="hot-tips">Hot tips, straight from the pros!</p>
-    <p>BEATS runs from the command-line. The syntax:</p>
+    <p>Beats runs from the command-line. The syntax:</p>
     <p><code><pre class="single-line">beats [options] INPUT [OUTPUT]</pre></code></p>
-    <p><code>INPUT</code> is the YAML file for your song. <code>OUTPUT</code> is the <code>*.wav</code> file where BEATS will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>
+    <p><code>INPUT</code> is the YAML file for your song. <code>OUTPUT</code> is the <code>*.wav</code> file where Beats will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>
     <p><code><pre class="single-line">beats example_song.txt beat.wav</pre></code></p>
-    <p>BEATS supports the following command-line options, which can be used together or separately:</p>
+    <p>Beats supports the following command-line options, which can be used together or separately:</p>
     <p><code><pre>-s, --split
     Save each track to a separate Wave file,
     instead of combining them into one.
@@ -25,7 +25,7 @@ beats -s example_song.txt
 beats -p Verse example_song.txt
 beats --path ~/drum_sounds example_song.txt
 </pre></code></p>
-    <p>Finally, a note about Ruby 1.8.7 vs. 1.9.x. BEATS runs fine on both, but is more than 2x faster on 1.9.x. Therefore, it&#8217;s highly recommended that you use 1.9.x if possible.</p>
+    <p>Finally, a note about Ruby 1.8.7 vs. 1.9.x. Beats runs fine on both, but is more than 2x faster on 1.9.x. Therefore, it&#8217;s highly recommended that you use 1.9.x if possible.</p>
   </div>
   <div class="content-box">
     <h2>Creating Songs</h2>
@@ -54,7 +54,7 @@ beats --path ~/drum_sounds example_song.txt
   - sounds/ride.wav:  X...............</code></pre></p>
     <p>Each track line starts with the sound file to use (8 and 16-bit Wave files are supported). You can either use a sound defined in the Kit section of the header, or alternately use a specific file name. (The example above mixes and matches). File paths can be relative or absolute; relative paths are relative from the path of the song file. Track lines must be indented properly and start with a dash (once again, due to this being YAML).</p>
     <p>The track rhythm follows the sound name. An <code>X</code> means that the sound should be triggered, and a <code>.</code> indicates a &#8220;rest&#8221; between triggers. Each <code>X</code> or <code>.</code> represents a 16th note. You only need to indicate the downbeat of each sound, since sounds will play their full duration (unless cut off by another trigger). For example, to play a quarter note rhythm, <code>X...X...X...X...</code> will do the trick.</p>
-    <p>You can also use <code>|</code> as a bar line to mark measures or sections. These are totally optional, but can make patterns easier to read. BEATS ignores these, and you can put them wherever you want in the pattern.</p>
+    <p>You can also use <code>|</code> as a bar line to mark measures or sections. These are totally optional, but can make patterns easier to read. Beats ignores these, and you can put them wherever you want in the pattern.</p>
     <p>As a final note, patterns and the song header can come in any order. If you want to put the song header at the end of the file, you can. You can also mix up the order that patterns are defined.</p>
   </div>
 <? drawFooter(); ?>

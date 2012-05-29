@@ -1,7 +1,7 @@
 <? require_once("header.php");
    drawHeader(); ?>
   <div class="content-box">
-    <h1>BEATS</h1>
+    <h1>Beats</h1>
     <p>is a command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel. Here is an example song:</p>
     <p><pre><code>Song:
   Tempo: 105
@@ -27,7 +27,7 @@ Chorus:
   - hihat:    XXXXXXXXXXXXX...
   - cowbell:  ....XX.X..X.X...
   - deep:     .............X..</code></pre></p>
-    <p>And <a href="/media/beat.mp3">here is what it sounds like</a> after getting the BEATS treatment. What a glorious groove!</p>
-    <p class="last">So go forth and <a href="/download/">install BEATS</a>, download some <a href="/download#drum-kits">drum sounds</a>, and <a href="/examples/">listen to some examples</a>. Then read up on <a href="/strategyguide/">how to use it</a>.</p>
+    <p>And <a href="/media/beat.mp3">here is what it sounds like</a> after getting the Beats treatment. What a glorious groove!</p>
+    <p class="last">So go forth and <a href="/download/">install Beats</a>, download some <a href="/download#drum-kits">drum sounds</a>, and <a href="/examples/">listen to some examples</a>. Then read up on <a href="/strategyguide/">how to use it</a>.</p>
   </div>
 <? drawFooter(); ?>
