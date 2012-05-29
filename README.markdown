@@ -4,32 +4,30 @@ Beats Drum Machine
 Beats is a command-line drum machine written in pure Ruby. Feed it a song notated in YAML, and it will produce a precision-milled *.wav file of impeccable timing and feel. Here's an example song:
 
     Song:
-      Tempo: 120
+      Tempo: 105
       Flow:
-        - Verse:   x2
-        - Chorus:  x4
-        - Verse:   x2
-        - Chorus:  x4
+        - Verse:  x4
+        - Chorus: x4
       Kit:
-        - bass:       sounds/bass.wav
-        - snare:      sounds/snare.wav
-        - hh_closed:  sounds/hh_closed.wav
-        - agogo:      sounds/agogo_high.wav
-
+        - bass:     house_2_1.wav
+        - snare:    roland_tr_909_2.wav
+        - hihat:    house_2_5.wav
+        - cowbell:  big_beat_5.wav
+        - deep:     house_2_2.wav  
+    
     Verse:
-      - bass:             X...X...X...X...
-      - snare:            ..............X.
-      - hh_closed:        X.XXX.XXX.X.X.X.
-      - agogo:            ..............XX
-
+      - bass:     X..X...X..X.....
+      - snare:    ....X.......X...
+      - hihat:    ..X...X...X...X.
+    
     Chorus:
-      - bass:             X...X...X...X...
-      - snare:            ....X.......X...
-      - hh_closed:        X.XXX.XXX.XX..X.
-      - sounds/tom4.wav:  ...........X....
-      - sounds/tom2.wav:  ..............X.
+      - bass:     X..X...X..X.....
+      - snare:    ....X.......X...
+      - hihat:    XXXXXXXXXXXXX...
+      - cowbell:  ....XX.X..X.X...
+      - deep:     .............X..
 
-And [here's what it sounds like](http://beatsdrummachine.com/beat.mp3) after getting the Beats treatment. What a glorious groove!
+And [here's what it sounds like](http://beatsdrummachine.com/media/beat.mp3) after getting the Beats treatment. What a glorious groove!
 
 
 Current Status
