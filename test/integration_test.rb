@@ -44,7 +44,7 @@ class IntegrationTest < Test::Unit::TestCase
   
   def run_combined_test(num_channels, bits_per_sample, suffix="", base_path=nil)
     # Make sure no output from previous tests is still around
-    assert_equal([".", ".."], Dir.new(OUTPUT_FOLDER).entries)
+    assert_directory_is_empty OUTPUT_FOLDER
     
     song_fixture         = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}#{suffix}.txt"
     actual_output_file   = "#{OUTPUT_FOLDER}/example_combined_#{num_channels}_#{bits_per_sample}#{suffix}.wav"
@@ -77,7 +77,7 @@ class IntegrationTest < Test::Unit::TestCase
   
   def run_split_test(num_channels, bits_per_sample, suffix="", base_path=nil)
     # Make sure no output from previous tests is still around
-    assert_equal([".", ".."], Dir.new(OUTPUT_FOLDER).entries)
+    assert_directory_is_empty OUTPUT_FOLDER
     
     song_fixture         = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}#{suffix}.txt"
     actual_output_prefix   = "#{OUTPUT_FOLDER}/example_split_#{num_channels}_#{bits_per_sample}#{suffix}"
@@ -106,6 +106,10 @@ class IntegrationTest < Test::Unit::TestCase
       # Clean up after ourselves
       File.delete(actual_output_file)
     end
+  end
+
+  def assert_directory_is_empty dir
+    assert_equal([".", ".."].sort, Dir.new(dir).entries.sort)
   end
   
   def clean_output_folder()
