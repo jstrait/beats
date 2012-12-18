@@ -19,3 +19,5 @@ require 'song'
 require 'songparser'
 require 'songoptimizer'
 require 'track'
+
+YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE)

@@ -18,6 +18,7 @@ require "lib/songparser"
 require "lib/track"
 
 USAGE_INSTRUCTIONS = ""
+YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE)
 
 def parse_options()
   options = {:split => false}
