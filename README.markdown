@@ -33,16 +33,16 @@ And [here's what it sounds like](http://beatsdrummachine.com/media/beat.mp3) aft
 Current Status
 --------------
 
-The latest stable version of Beats is 1.2.3, released on December 31, 2011. This is a minor release which includes two improvements:
+The latest stable version of Beats is 1.2.4, released on December 22, 2012. This is a minor release which includes two improvements:
 
-* Bug fix: You can now use `~` in sound file paths, and it will correctly expand to your home folder. (At least on UNIX OSes, I'm not sure if that works on Windows).
-* The new `--path` option allows setting the base path from which relative sound file paths are searched for.
+* Now works in MRI 1.9.3
+* Now supports 32-bit PCM Wave files, due to upgrading to WaveFile 0.4.0. Previously, only 8-bit and 16-bit PCM files were supported.
 
 
 Installation
 ------------
 
-To install the latest stable version (1.2.3) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (1.2.4) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
