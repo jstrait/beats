@@ -1,7 +1,7 @@
 require 'wavefile'
 
 # This class contains some utility methods for working with sample data.
-class AudioUtils
+module AudioUtils
 
   # Combines multiple sample arrays into one, by adding them together.
   # When the sample arrays are different lengths, the output array will be the length
