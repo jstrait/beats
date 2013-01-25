@@ -53,7 +53,7 @@ class AudioEngine
 
     writer.close()
 
-    return WaveFile::Reader.info(output_file_name).duration
+    AudioUtils.wavefile_duration(output_file_name)
   end
 
   attr_reader :step_sample_length
