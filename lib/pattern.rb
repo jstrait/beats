@@ -40,7 +40,7 @@ class Pattern
   def same_tracks_as?(other_pattern)
     @tracks.keys.each do |track_name|
       other_pattern_track = other_pattern.tracks[track_name]
-      if other_pattern_track == nil || @tracks[track_name].rhythm != other_pattern_track.rhythm
+      if other_pattern_track.nil? || @tracks[track_name].rhythm != other_pattern_track.rhythm
         return false
       end
     end
