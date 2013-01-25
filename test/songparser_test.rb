@@ -12,7 +12,7 @@ class SongParserTest < Test::Unit::TestCase
                       :example_with_empty_track,
                       :multiple_tracks_same_sound,
                       :with_structure]
-  
+
   INVALID_FIXTURES = [:bad_repeat_count,
                       :bad_flow,
                       :bad_tempo,
@@ -37,20 +37,20 @@ class SongParserTest < Test::Unit::TestCase
       test_songs[fixture_name] = song
       test_kits[fixture_name] = kit
     end
-    
+
     return test_songs, test_kits
   end
 
   # TODO: Add somes tests to validate the Kits
   def test_valid_parse
     test_songs, test_kits = SongParserTest.generate_test_data()
-    
+
     assert_equal(120, test_songs[:no_tempo].tempo)
     assert_equal([:verse], test_songs[:no_tempo].flow)
-    
+
     assert_equal(100, test_songs[:repeats_not_specified].tempo)
     assert_equal([:verse], test_songs[:repeats_not_specified].flow)
-    
+
     # These two songs should be the same, except that one uses a kit in the song header
     # and the other doesn't.
     [:example_no_kit, :example_with_kit].each do |song_key|
@@ -68,13 +68,13 @@ class SongParserTest < Test::Unit::TestCase
       assert_equal(5, song.patterns[:chorus].tracks.length)
       assert_equal(1, song.patterns[:bridge].tracks.length)
     end
-    
+
     song = test_songs[:example_with_empty_track]
     assert_equal(1, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
     assert_equal("........", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/snare_mono_8.wav"].rhythm)
-    
+
     song = test_songs[:multiple_tracks_same_sound]
     assert_equal(2, song.patterns.length)
     assert_equal(7, song.patterns[:verse].tracks.length)
@@ -87,21 +87,21 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal("..............X.", song.patterns[:verse].tracks["snare"].rhythm)
     assert_equal("X.XXX.XXX.X.X.X.", song.patterns[:verse].tracks["hh_closed"].rhythm)
     assert_equal("..............XX", song.patterns[:verse].tracks["agogo"].rhythm)
-  
+
     song = test_songs[:with_structure]
     assert_equal([:verse, :verse], song.flow)
     assert_equal(1, song.patterns.length)
     assert_equal(1, song.patterns[:verse].tracks.length)
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
   end
-  
+
   def test_invalid_parse
     INVALID_FIXTURES.each do |fixture|
       assert_raise(SongParseError) do
         song = SongParserTest.load_fixture("invalid/#{fixture}.txt")
       end
     end
-    
+
     assert_raise(InvalidRhythmError) do
       song = SongParserTest.load_fixture("invalid/bad_rhythm.txt")
     end

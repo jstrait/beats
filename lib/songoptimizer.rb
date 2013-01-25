@@ -14,13 +14,13 @@
 class SongOptimizer
   def initialize
   end
-  
+
   # Returns a Song that will produce the same output as original_song, but should be
   # generated faster.
   def optimize(original_song, max_pattern_length)
     # 1.) Create a new song, cloned from the original
     optimized_song = original_song.copy_ignoring_patterns_and_flow()
-    
+
     # 2.) Subdivide patterns
     optimized_song = subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
 
@@ -30,8 +30,8 @@ class SongOptimizer
     return optimized_song
   end
 
-protected  
-  
+protected
+
   # Splits the patterns of a Song into smaller patterns, each one with at most
   # max_pattern_length steps. For example, if max_pattern_length is 4, then
   # the following pattern:
@@ -57,13 +57,13 @@ protected
   # 2nd pattern above), it will not be included in the new pattern.
   def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
     blank_track_pattern = '.' * max_pattern_length
-    
+
     # For each pattern, add a new pattern to new song every max_pattern_length steps
     optimized_flow = {}
     original_song.patterns.values.each do |pattern|
       step_index = 0
       optimized_flow[pattern.name] = []
-      
+
       while(pattern.tracks.values.first.rhythm[step_index] != nil) do
         # TODO: Is this pattern 100% sufficient to prevent collisions between subdivided
         #       pattern names and existing patterns with numeric suffixes?
@@ -71,23 +71,23 @@ protected
         optimized_flow[pattern.name] << new_pattern.name
         pattern.tracks.values.each do |track|
           sub_track_pattern = track.rhythm[step_index...(step_index + max_pattern_length)]
-          
+
           if sub_track_pattern != blank_track_pattern
             new_pattern.track(track.name, sub_track_pattern)
           end
         end
-        
+
         # If no track has a trigger during this step pattern, add a blank track.
         # Otherwise, this pattern will have no steps, and no sound will be generated,
         # causing the pattern to be "compacted away".
         if new_pattern.tracks.empty?
           new_pattern.track("placeholder", blank_track_pattern)
         end
-        
+
         step_index += max_pattern_length
       end
     end
-    
+
     # Replace the Song's flow to reference the new sub-divided patterns
     # instead of the old patterns.
     optimized_flow = original_song.flow.map do |original_pattern|
@@ -95,10 +95,10 @@ protected
     end
     optimized_song.flow = optimized_flow.flatten
 
-    return optimized_song    
+    return optimized_song
   end
-  
-  
+
+
   # Replaces any Patterns that are duplicates (i.e., each track uses the same sound and has
   # the same rhythm) with a single canonical pattern.
   #
@@ -119,7 +119,7 @@ protected
       end
     end
     song.flow = new_flow
-    
+
     # This isn't strictly necessary, but makes resulting songs easier to read for debugging purposes.
     song.remove_unused_patterns()
 
@@ -134,11 +134,11 @@ protected
   def determine_pattern_replacements(patterns)
     seen_patterns = []
     replacements = {}
-    
+
     # Pattern names are sorted to ensure predictable pattern replacement. Makes tests easier to write.
     # Sort function added manually because Ruby 1.8 doesn't know how to sort symbols...
     pattern_names = patterns.keys.sort {|x, y| x.to_s <=> y.to_s }
-    
+
     # Detect duplicates
     pattern_names.each do |pattern_name|
       pattern = patterns[pattern_name]
@@ -149,7 +149,7 @@ protected
           found_duplicate = true
         end
       end
-      
+
       if !found_duplicate
         seen_patterns << pattern
       end

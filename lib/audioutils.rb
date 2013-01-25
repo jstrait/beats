@@ -26,7 +26,7 @@ class AudioUtils
         end
       end
     end
- 
+
     return composited_output
   end
 
@@ -37,7 +37,7 @@ class AudioUtils
     if sample_array == []
       return sample_array
     end
-    
+
     if scale > 1
       if num_channels == 1
         sample_array = sample_array.map {|sample| sample / scale }
@@ -47,7 +47,7 @@ class AudioUtils
         raise StandardError, "Invalid sample data array in AudioUtils.normalize()"
       end
     end
-    
+
     return sample_array
   end
 

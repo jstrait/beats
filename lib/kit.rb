@@ -40,7 +40,7 @@ class Kit
 
     load_sounds(base_path, kit_items)
   end
-  
+
   # Returns the sample data for a sound contained in the Kit. If the all sounds in the
   # kit are mono, then this will be a flat Array of Fixnums between -32768 and 32767.
   # Otherwise, this will be an Array of Fixnums pairs between -32768 and 32767.
@@ -67,7 +67,7 @@ class Kit
     end
 
     sample_data = @sound_bank[label]
-    
+
     if sample_data == nil
       # TODO: Should we really throw an exception here rather than just returning nil?
       raise StandardError, "Kit doesn't contain sound '#{label}'."
@@ -75,7 +75,7 @@ class Kit
       return sample_data
     end
   end
-  
+
   def scale!(scale_factor)
     @sound_bank.each do |label, sample_array|
       @sound_bank[label] = AudioUtils.scale(sample_array, @num_channels, scale_factor)
@@ -102,12 +102,12 @@ class Kit
         yaml += " " * indent_space_count + "  - #{(label + ":").ljust(ljust_amount)}  #{path}\n"
       end
     end
-    
+
     return yaml
   end
-  
+
   attr_reader :base_path, :label_mappings, :bits_per_sample, :num_channels
-  
+
 private
 
   def load_sounds(base_path, kit_items)
@@ -121,10 +121,10 @@ private
         @label_mappings[label] = sound_file_names
       end
     end
-    
+
     kit_items = make_file_names_absolute(kit_items)
     sound_buffers = load_raw_sounds(kit_items)
-    
+
     canonical_format = WaveFile::Format.new(@num_channels, @bits_per_sample, 44100)
 
     # Convert each sound to a common format
@@ -135,7 +135,7 @@ private
       @sound_bank[label] = mixdown(sound_file_names, sound_buffers)
     end
   end
-  
+
   # Converts relative paths into absolute paths. Note that this will also handle
   # expanding ~ on platforms that support that.
   def make_file_names_absolute(kit_items)
@@ -143,14 +143,14 @@ private
       unless sound_file_names.class == Array
         sound_file_names = [sound_file_names]
       end
-      
-      sound_file_names.map! {|sound_file_name| File.expand_path(sound_file_name, base_path) }  
+
+      sound_file_names.map! {|sound_file_name| File.expand_path(sound_file_name, base_path) }
       kit_items[label] = sound_file_names
     end
-    
+
     return kit_items
   end
-  
+
   # Load all sound files, bailing if any are invalid
   def load_raw_sounds(kit_items)
     raw_sounds = {}
@@ -168,10 +168,10 @@ private
                                        "or is in an unsupported format. BEATS can handle 8, 16, or 32-bit PCM *.wav files."
       end
     end
-    
+
     return raw_sounds
   end
-  
+
   def mixdown(sound_file_names, raw_sounds)
     sample_arrays = []
     sound_file_names.each do |sound_file_name|

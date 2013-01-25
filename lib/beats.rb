@@ -1,6 +1,6 @@
 class Beats
   BEATS_VERSION = "1.2.4"
- 
+
   # Each pattern in the song will be split up into sub patterns that have at most this many steps.
   # In general, audio for several shorter patterns can be generated more quickly than for one long
   # pattern, and can also be cached more effectively.
@@ -13,7 +13,7 @@ class Beats
       output_file_name = File.basename(input_file_name, File.extname(input_file_name)) + ".wav"
     end
     @output_file_name = output_file_name
-    
+
     @options = options
   end
 

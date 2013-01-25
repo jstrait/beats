@@ -21,7 +21,7 @@ class CachingWriterTest < Test::Unit::TestCase
     buffer = WaveFile::Buffer.new([0, 1, 2], format)
     writer.write(buffer)
     assert_equal(buffer1_bytes, get_bytes(string_io))
-    
+
     buffer = WaveFile::Buffer.new([3, 4, 5], format)
     writer.write(buffer)
     assert_equal(buffer1_bytes + buffer2_bytes, get_bytes(string_io))
