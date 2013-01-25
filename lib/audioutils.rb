@@ -1,3 +1,5 @@
+require 'wavefile'
+
 # This class contains some utility methods for working with sample data.
 class AudioUtils
 
