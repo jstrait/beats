@@ -24,14 +24,13 @@ class Beats
     song = normalize_for_pattern_option(song)
     songs_to_generate = normalize_for_split_option(song)
 
-    duration = nil
     song_optimizer = SongOptimizer.new()
-    songs_to_generate.each do |output_file_name, song|
+    durations = songs_to_generate.collect do |output_file_name, song|
       song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-      duration = AudioEngine.new(song, kit).write_to_file(output_file_name)
+      AudioEngine.new(song, kit).write_to_file(output_file_name)
     end
 
-    return {:duration => duration}
+    return {:duration => durations.last}
   end
 
 private
