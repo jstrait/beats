@@ -16,15 +16,15 @@ class AudioEngine
   def initialize(song, kit)
     @song = song
     @kit = kit
-    
-    @step_sample_length = AudioUtils.step_sample_length(SAMPLE_RATE, @song.tempo) 
+
+    @step_sample_length = AudioUtils.step_sample_length(SAMPLE_RATE, @song.tempo)
     @composited_pattern_cache = {}
   end
 
   def write_to_file(output_file_name)
     packed_pattern_cache = {}
     num_tracks_in_song = @song.total_tracks
- 
+
     # Open output wave file and prepare it for writing sample data.
     format = WaveFile::Format.new(@kit.num_channels, @kit.bits_per_sample, SAMPLE_RATE)
     writer = WaveFile::CachingWriter.new(output_file_name, format)
@@ -97,14 +97,14 @@ private
       primary_sample_data = @composited_pattern_cache[pattern][:primary].dup
       overflow_sample_data = @composited_pattern_cache[pattern][:overflow].dup
     end
-    
+
     # Composite overflow from the previous pattern onto this pattern, to prevent sounds from cutting off.
     primary_sample_data, overflow_sample_data = handle_incoming_overflow(pattern,
                                                                          incoming_overflow,
                                                                          primary_sample_data,
                                                                          overflow_sample_data)
     primary_sample_data = AudioUtils.scale(primary_sample_data, @kit.num_channels, @song.total_tracks)
-    
+
     return {:primary => primary_sample_data, :overflow => overflow_sample_data}
   end
 
@@ -125,7 +125,7 @@ private
   # Applies sound overflow (i.e. long sounds such as cymbal crash which extend past the last step)
   # from the previous pattern in the flow to the current pattern. This prevents sounds from being
   # cut off when the pattern changes.
-  # 
+  #
   # It would probably be shorter and conceptually simpler to deal with incoming overflow in
   # generate_track_sample_data() instead of this method. (In fact, this method would go away).
   # However, doing it this way allows for caching composited pattern sample data, and
@@ -138,7 +138,7 @@ private
 
     incoming_overflow.each do |incoming_track_name, incoming_sample_data|
       end_sample = incoming_sample_data.length
-      
+
       if pattern_track_names.member?(incoming_track_name)
         track = pattern.tracks[incoming_track_name]
 

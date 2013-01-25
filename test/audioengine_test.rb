@@ -28,15 +28,15 @@ class AudioEngineTest < Test::Unit::TestCase
     test_engines = {}
     base_path = File.dirname(__FILE__) + "/.."
     song_parser = SongParser.new()
-    
+
     test_engines[:blank] = AudioEngine.new(Song.new(), Kit.new(base_path, {}))
 
     FIXTURES.each do |fixture_name|
       song, kit = song_parser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
       test_engines[fixture_name] = AudioEngine.new(song, kit)
     end
-     
-    return test_engines 
+
+    return test_engines
   end
 
   def test_initialize
@@ -142,7 +142,7 @@ class AudioEngineTest < Test::Unit::TestCase
       #helper_generate_track_sample_data kit, "XX", 1, [-100, -100], [200, 300, -400]
 
       # 3C.) Tick sample length is shorter than the sound sample data, but not by an integer amount.
-      # 
+      #
       # Each step of 1.83 samples should end on the following boundaries:
       # Tick:               1,    2,    3,    4,    5,     6
       # Raw:        0.0, 1.83, 3.66, 5.49, 7.32, 9.15, 10.98
@@ -162,7 +162,7 @@ class AudioEngineTest < Test::Unit::TestCase
     engine = MockAudioEngine.new(Song.new(), kit)
     engine.step_sample_length = step_sample_length
     actual = engine.generate_track_sample_data(track, kit.get_sample_data("S"))
-    
+
     assert_equal(Hash,                     actual.class)
     assert_equal(["overflow", "primary"],  actual.keys.map{|key| key.to_s}.sort)
     assert_equal(expected_primary,         actual[:primary])
