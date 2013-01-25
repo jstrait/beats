@@ -69,5 +69,9 @@ class AudioUtils
   def self.step_start_sample(step_index, step_sample_length)
     return (step_index * step_sample_length).floor
   end
+
+  def self.wavefile_duration(filename)
+    WaveFile::Reader.info(filename).duration
+  end
 end
 
