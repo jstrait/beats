@@ -68,7 +68,7 @@ class Kit
 
     sample_data = @sound_bank[label]
 
-    if sample_data == nil
+    if sample_data.nil?
       # TODO: Should we really throw an exception here rather than just returning nil?
       raise StandardError, "Kit doesn't contain sound '#{label}'."
     else

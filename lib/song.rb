@@ -133,7 +133,7 @@ private
     previous = nil
     count = 0
     @flow.each do |pattern_name|
-      if pattern_name == previous || previous == nil
+      if pattern_name == previous || previous.nil?
         count += 1
       else
         yaml_output += "    - #{(previous.to_s.capitalize + ':').ljust(ljust_amount)}  x#{count}\n"

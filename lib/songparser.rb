@@ -31,7 +31,7 @@ class SongParser
   def parse(base_path, raw_yaml_string)
     raw_song_components = hashify_raw_yaml(raw_yaml_string)
 
-    unless raw_song_components[:folder] == nil
+    unless raw_song_components[:folder].nil?
       base_path = raw_song_components[:folder]
     end
 
@@ -39,7 +39,7 @@ class SongParser
 
     # 1.) Set tempo
     begin
-      if raw_song_components[:tempo] != nil
+      unless raw_song_components[:tempo].nil?
         song.tempo = raw_song_components[:tempo]
       end
     rescue InvalidTempoError => detail
@@ -59,7 +59,7 @@ class SongParser
     add_patterns_to_song(song, raw_song_components[:patterns])
 
     # 4.) Set flow
-    if raw_song_components[:flow] == nil
+    if raw_song_components[:flow].nil?
       raise SongParseError, "Song must have a Flow section in the header."
     else
       set_song_flow(song, raw_song_components[:flow])
@@ -82,7 +82,7 @@ private
     raw_song_components = {}
     raw_song_components[:full_definition] = downcase_hash_keys(raw_song_definition)
 
-    if raw_song_components[:full_definition]["song"] != nil
+    unless raw_song_components[:full_definition]["song"].nil?
       raw_song_components[:header] = downcase_hash_keys(raw_song_components[:full_definition]["song"])
     else
       raise SongParseError, NO_SONG_HEADER_ERROR_MSG
@@ -93,10 +93,10 @@ private
 
     raw_flow = raw_song_components[:header]["flow"]
     raw_structure = raw_song_components[:header]["structure"]
-    if raw_flow != nil
+    unless raw_flow.nil?
       raw_song_components[:flow]    = raw_flow
     else
-      if raw_structure != nil
+      unless raw_structure.nil?
         puts DONT_USE_STRUCTURE_WARNING
       end
 
@@ -115,7 +115,7 @@ private
     # Add sounds defined in the Kit section of the song header
     # Converts [{a=>1}, {b=>2}, {c=>3}] from raw YAML to {a=>1, b=>2, c=>3}
     # TODO: Raise error is same name is defined more than once in the Kit
-    unless raw_kit == nil
+    unless raw_kit.nil?
       raw_kit.each do |kit_item|
         kit_items[kit_item.keys.first] = kit_item.values.first
       end
@@ -128,12 +128,12 @@ private
     raw_patterns.keys.each do |key|
       track_list = raw_patterns[key]
 
-      unless track_list == nil
+      unless track_list.nil?
         track_list.each do |track_definition|
           track_name = track_definition.keys.first
           track_path = track_name
 
-          if track_name != Pattern::FLOW_TRACK_NAME && kit_items[track_name] == nil
+          if track_name != Pattern::FLOW_TRACK_NAME && kit_items[track_name].nil?
             kit_items[track_name] = track_path
           end
         end
@@ -151,7 +151,7 @@ private
 
       track_list = raw_patterns[key]
       # TODO Also raise error if only there is only 1 track and it's a flow track
-      if track_list == nil
+      if track_list.nil?
         # TODO: Use correct capitalization of pattern name in error message
         # TODO: Possibly allow if pattern not referenced in the Flow, or has 0 repeats?
         raise SongParseError, "Pattern '#{key}' has no tracks. It needs at least one."
@@ -186,7 +186,7 @@ private
       multiples_str.slice!(0)
       multiples = multiples_str.to_i
 
-      unless multiples_str.match(/[^0-9]/) == nil
+      unless multiples_str.match(/[^0-9]/).nil?
         raise SongParseError,
               "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
       else

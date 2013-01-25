@@ -90,7 +90,7 @@ private
   # used by the next pattern to avoid sounds cutting off when the pattern changes.
   def generate_pattern_sample_data(pattern, incoming_overflow)
     # Unless cached, composite each track's sample data.
-    if @composited_pattern_cache[pattern] == nil
+    if @composited_pattern_cache[pattern].nil?
       primary_sample_data, overflow_sample_data = composite_pattern_tracks(pattern)
       @composited_pattern_cache[pattern] = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
     else

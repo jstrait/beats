@@ -9,7 +9,7 @@ class Beats
   def initialize(input_file_name, output_file_name, options)
     @input_file_name =  input_file_name
 
-    if output_file_name == nil
+    if output_file_name.nil?
       output_file_name = File.basename(input_file_name, File.extname(input_file_name)) + ".wav"
     end
     @output_file_name = output_file_name
@@ -39,7 +39,7 @@ private
   # If the -p option is used, transform the song into one whose flow consists of
   # playing that single pattern once.
   def normalize_for_pattern_option(song)
-    unless @options[:pattern] == nil
+    unless @options[:pattern].nil?
       pattern_name = @options[:pattern].downcase.to_sym
 
       unless song.patterns.has_key?(pattern_name)
