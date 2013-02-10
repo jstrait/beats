@@ -1,3 +1,5 @@
+require 'wavefile'
+
 # Raised when trying to load a sound file which can't be found at the path specified
 class SoundFileNotFoundError < RuntimeError; end
 

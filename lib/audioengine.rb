@@ -9,6 +9,8 @@
 #   engine = AudioEngine.new(song, kit)
 #   engine.write_to_file("my_song.wav")
 #
+require 'wavefile'
+
 class AudioEngine
   SAMPLE_RATE = 44100
   PACK_CODE = "s*"   # All output sample data is assumed to be 16-bit
