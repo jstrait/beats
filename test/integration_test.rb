@@ -20,7 +20,7 @@ class IntegrationTest < Test::Unit::TestCase
 
     invalid_fixtures.each do |fixture_name|
       assert_raise(SongParseError) do
-        beats = Beats.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false})
+        beats = Beats::Beats.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false})
         beats.run()
       end
     end
@@ -55,7 +55,7 @@ class IntegrationTest < Test::Unit::TestCase
       options[:base_path] = base_path
     end
 
-    beats = Beats.new(song_fixture, actual_output_file, options)
+    beats = Beats::Beats.new(song_fixture, actual_output_file, options)
     beats.run()
     assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
@@ -88,7 +88,7 @@ class IntegrationTest < Test::Unit::TestCase
       options[:base_path] = base_path
     end
 
-    beats = Beats.new(song_fixture, actual_output_prefix + ".wav", options)
+    beats = Beats::Beats.new(song_fixture, actual_output_prefix + ".wav", options)
     beats.run()
     TRACK_NAMES.each do |track_name|
       if(track_name.start_with?("tom"))

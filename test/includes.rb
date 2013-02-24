@@ -8,15 +8,8 @@ gem 'wavefile', "=0.4.0"
 require 'wavefile'
 
 # BEATS classes
-require 'beats/audioengine'
-require 'beats/audioutils'
-require 'beats/beats'
+require 'beats'
 require 'wavefile/cachingwriter'
-require 'beats/kit'
-require 'beats/pattern'
-require 'beats/song'
-require 'beats/songparser'
-require 'beats/songoptimizer'
-require 'beats/track'
+include Beats
 
 YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE)
