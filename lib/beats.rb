@@ -1,6 +1,6 @@
 require 'beats/audioengine'
 require 'beats/audioutils'
-require 'beats/beats'
+require 'beats/beatsrunner'
 require 'beats/kit'
 require 'beats/pattern'
 require 'beats/song'

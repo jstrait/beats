@@ -73,7 +73,7 @@ begin
   input_file_name = ARGV[0]
   output_file_name = ARGV[1]
 
-  beats = Beats::Beats.new(input_file_name, output_file_name, options)
+  beats = BeatsRunner.new(input_file_name, output_file_name, options)
 
   output = beats.run()
   duration = output[:duration]
