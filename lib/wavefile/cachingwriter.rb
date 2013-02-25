@@ -30,7 +30,7 @@ module WaveFile
       end
 
       @file.syswrite(packed_buffer_data[:data])
-      @samples_written += packed_buffer_data[:sample_count]
+      @total_sample_frames += packed_buffer_data[:sample_count]
     end
   end
 end

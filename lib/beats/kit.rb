@@ -158,7 +158,7 @@ module Beats
       kit_items.values.flatten.each do |sound_file_name|
         begin
           info = WaveFile::Reader.info(sound_file_name)
-          WaveFile::Reader.new(sound_file_name).each_buffer(info.sample_count) do |buffer|
+          WaveFile::Reader.new(sound_file_name).each_buffer(info.sample_frame_count) do |buffer|
             raw_sounds[sound_file_name] = buffer
             @num_channels = [@num_channels, buffer.channels].max
           end

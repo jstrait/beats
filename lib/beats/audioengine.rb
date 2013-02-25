@@ -52,7 +52,7 @@ module Beats
 
       writer.close()
 
-      AudioUtils.wavefile_duration(output_file_name)
+      writer.total_duration
     end
 
     attr_reader :step_sample_length

@@ -77,7 +77,7 @@ begin
 
   output = beats.run()
   duration = output[:duration]
-  puts "#{duration[:minutes]}:#{duration[:seconds].to_s.rjust(2, '0')} of audio written in #{Time.now - start_time} seconds."
+  puts "#{duration.minutes}:#{duration.seconds.to_s.rjust(2, '0')} of audio written in #{Time.now - start_time} seconds."
 rescue => error
   print_error(error, input_file_name)
   exit(false)

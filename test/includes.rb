@@ -4,7 +4,7 @@ require 'yaml'
 require 'rubygems'
 
 # External gems
-gem 'wavefile', "=0.4.0"
+gem 'wavefile', "=0.5.0"
 require 'wavefile'
 
 # BEATS classes
