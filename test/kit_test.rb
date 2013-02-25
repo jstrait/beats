@@ -36,7 +36,7 @@ class KitTest < Test::Unit::TestCase
     #kits[:mismatched_everything_composite] = Kit.new("test/sounds", {"mono8"  => "bass_mono_8.wav",
     #                                                                 "composite_stereo16" => ["snare_stereo_8.wav", "tom3_mono_16.wav"]})
 
-    return kits
+    kits
   end
 
   def test_valid_initialization

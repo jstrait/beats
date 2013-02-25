@@ -34,7 +34,7 @@ class SongTest < Test::Unit::TestCase
     chorus.track "ride.wav",  "X.....X."
     test_songs[:from_code].flow = [:verse, :chorus, :verse, :chorus, :chorus]
 
-    return test_songs
+    test_songs
   end
 
   def test_initialize

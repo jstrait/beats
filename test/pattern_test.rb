@@ -23,7 +23,7 @@ class PatternTest < Test::Unit::TestCase
     pattern.track "hh_closed.wav", "X."
     test_patterns[:staircase] = pattern
 
-    return test_patterns
+    test_patterns
   end
 
   def test_initialize

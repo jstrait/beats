@@ -2,7 +2,7 @@ require 'includes'
 
 class MockSongOptimizer < SongOptimizer
   def clone_song_ignoring_patterns_and_flow(original_song)
-    return super
+    super
   end
 end
 
@@ -50,7 +50,7 @@ Verse:
   - snare:  ..........X."
 
   def self.load_fixture(fixture_name)
-    return SongParser.new().parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
+    SongParser.new().parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
   end
 
   def test_optimize

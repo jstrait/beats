@@ -28,7 +28,7 @@ module Beats
       # 3.) Prune duplicate patterns
       optimized_song = prune_duplicate_patterns(optimized_song)
 
-      return optimized_song
+      optimized_song
     end
 
   protected
@@ -96,7 +96,7 @@ module Beats
       end
       optimized_song.flow = optimized_flow.flatten
 
-      return optimized_song
+      optimized_song
     end
 
 
@@ -124,7 +124,7 @@ module Beats
       # This isn't strictly necessary, but makes resulting songs easier to read for debugging purposes.
       song.remove_unused_patterns()
 
-      return song
+      song
     end
 
 
@@ -156,7 +156,7 @@ module Beats
         end
       end
 
-      return replacements
+      replacements
     end
   end
 end

@@ -141,8 +141,7 @@ module Beats
         end
       end
 
-      kit = Kit.new(base_path, kit_items)
-      return kit
+      Kit.new(base_path, kit_items)
     end
 
 

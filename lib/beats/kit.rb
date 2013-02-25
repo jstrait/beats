@@ -104,7 +104,7 @@ module Beats
         end
       end
 
-      return yaml
+      yaml
     end
 
     attr_reader :base_path, :label_mappings, :bits_per_sample, :num_channels
@@ -149,7 +149,7 @@ module Beats
         kit_items[label] = sound_file_names
       end
 
-      return kit_items
+      kit_items
     end
 
     # Load all sound files, bailing if any are invalid
@@ -170,7 +170,7 @@ module Beats
         end
       end
 
-      return raw_sounds
+      raw_sounds
     end
 
     def mixdown(sound_file_names, raw_sounds)
@@ -181,7 +181,7 @@ module Beats
 
       composited_sample_data = AudioUtils.composite(sample_arrays, @num_channels)
 
-      return AudioUtils.scale(composited_sample_data, @num_channels, sound_file_names.length)
+      AudioUtils.scale(composited_sample_data, @num_channels, sound_file_names.length)
     end
   end
 end

@@ -21,7 +21,7 @@ module Beats
     # Adds a new pattern to the song, with the specified name.
     def pattern(name)
       @patterns[name] = Pattern.new(name)
-      return @patterns[name]
+      @patterns[name]
     end
 
 
@@ -64,7 +64,7 @@ module Beats
       copy = Song.new()
       copy.tempo = @tempo
 
-      return copy
+      copy
     end
 
     # Splits a Song object into multiple Song objects, where each new
@@ -93,7 +93,7 @@ module Beats
         split_songs[track_name] = new_song
       end
 
-      return split_songs
+      split_songs
     end
 
     # Removes any patterns that aren't referenced in the flow.
@@ -116,7 +116,7 @@ module Beats
       yaml_output += kit.to_yaml(2)
       yaml_output += patterns_to_yaml()
 
-      return yaml_output
+      yaml_output
     end
 
     attr_reader :patterns, :tempo
@@ -125,7 +125,7 @@ module Beats
   private
 
     def longest_length_in_array(arr)
-      return arr.inject(0) {|max_length, name| [name.to_s.length, max_length].max }
+      arr.inject(0) {|max_length, name| [name.to_s.length, max_length].max }
     end
 
     def flow_to_yaml
@@ -144,7 +144,7 @@ module Beats
       end
       yaml_output += "    - #{(previous.to_s.capitalize + ':').ljust(ljust_amount)}  x#{count}\n"
 
-      return yaml_output
+      yaml_output
     end
 
     def patterns_to_yaml
@@ -156,7 +156,7 @@ module Beats
         yaml_output += "\n" + @patterns[pattern_name.to_sym].to_yaml()
       end
 
-      return yaml_output
+      yaml_output
     end
   end
 end

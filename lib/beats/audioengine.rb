@@ -83,7 +83,7 @@ module Beats
 
       overflow_sample_data = (sound == [] || beats.length == 1) ? [] : sound[beat_sample_length...(sound.length)]
 
-      return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+      {:primary => primary_sample_data, :overflow => overflow_sample_data}
     end
 
     # Composites the sample data for each of the pattern's tracks, and returns the overflow sample data
@@ -106,7 +106,7 @@ module Beats
                                                                            overflow_sample_data)
       primary_sample_data = AudioUtils.scale(primary_sample_data, @kit.num_channels, @song.total_tracks)
 
-      return {:primary => primary_sample_data, :overflow => overflow_sample_data}
+      {:primary => primary_sample_data, :overflow => overflow_sample_data}
     end
 
     def composite_pattern_tracks(pattern)

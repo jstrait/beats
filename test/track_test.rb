@@ -11,7 +11,7 @@ class TrackTest < Test::Unit::TestCase
     test_tracks[:placeholder] = Track.new("bass", "....")
     test_tracks[:complicated] = Track.new("bass", "..X...X...X...X.X...X...X...X...")
 
-    return test_tracks
+    test_tracks
   end
 
   def test_initialize

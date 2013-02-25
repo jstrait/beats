@@ -28,7 +28,7 @@ module Beats
         end
       end
 
-      return composited_output
+      composited_output
     end
 
 
@@ -49,7 +49,7 @@ module Beats
         end
       end
 
-      return sample_array
+      sample_array
     end
 
 
@@ -62,13 +62,13 @@ module Beats
        samples_per_quarter_note = samples_per_minute / tempo
 
        # Each step is equivalent to a 16th note
-       return samples_per_quarter_note / 4.0
+       samples_per_quarter_note / 4.0
     end
 
 
     # Returns the sample index that a given step (offset from 0) starts on.
     def self.step_start_sample(step_index, step_sample_length)
-      return (step_index * step_sample_length).floor
+      (step_index * step_sample_length).floor
     end
   end
 end

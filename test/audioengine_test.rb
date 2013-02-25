@@ -36,7 +36,7 @@ class AudioEngineTest < Test::Unit::TestCase
       test_engines[fixture_name] = AudioEngine.new(song, kit)
     end
 
-    return test_engines
+    test_engines
   end
 
   def test_initialize

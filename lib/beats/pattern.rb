@@ -28,7 +28,7 @@ module Beats
         end
       end
 
-      return new_track
+      new_track
     end
 
     def step_count
@@ -46,7 +46,7 @@ module Beats
         end
       end
 
-      return @tracks.length == other_pattern.tracks.length
+      @tracks.length == other_pattern.tracks.length
     end
 
     # Returns a YAML representation of the Pattern. Produces nicer looking output than the default
@@ -64,7 +64,7 @@ module Beats
         yaml += "#{@tracks[track_name].rhythm}\n"
       end
 
-      return yaml
+      yaml
     end
 
     attr_accessor :tracks, :name
@@ -82,7 +82,7 @@ module Beats
         i += 1
       end
 
-      return name_key
+      name_key
     end
   end
 end

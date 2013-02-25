@@ -29,7 +29,7 @@ module Beats
         AudioEngine.new(song, kit).write_to_file(output_file_name)
       end
 
-      return {:duration => durations.last}
+      {:duration => durations.last}
     end
 
   private
@@ -48,7 +48,7 @@ module Beats
         song.remove_unused_patterns()
       end
 
-      return song
+      song
     end
 
     # Returns a hash of file name => song object for each song that should go through the audio engine
@@ -70,7 +70,7 @@ module Beats
         songs_to_generate[@output_file_name] = song
       end
 
-      return songs_to_generate
+      songs_to_generate
     end
   end
 end
