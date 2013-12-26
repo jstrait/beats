@@ -61,6 +61,23 @@ Beats runs from the command-line. Run `beats -h` to see the available options. F
 The Beats wiki also has a [Getting Started](https://github.com/jstrait/beats/wiki/Getting-Started) tutorial which shows how to create an example beat from scratch.
 
 
+Local Development
+-----------------
+
+When developing Beats, first install the required dependencies:
+
+    bundle install
+
+To run Beats locally, use `bundle exec` and run `bin/beats`, to avoid using any install gem executable. For example:
+
+    bundle exec bin/beats -v
+
+To run the tests:
+
+    bundle exec rake test
+
+
+
 Found a Bug? Have a Suggestion? Want to Contribute?
 ---------------------------------------------------
 
