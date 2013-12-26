@@ -34,7 +34,7 @@ def parse_options()
     end
 
     opts.on('-v', '--version', "Display version number and exit") do
-      puts "BEATS v#{Beats::VERSION}"
+      puts "Beats Drum Machine #{Beats::VERSION}"
       exit
     end
 
@@ -64,7 +64,7 @@ def print_error(error, input_file_name)
     puts "An error occured while generating sound for '#{input_file_name}':\n"
     puts "  #{error}\n"
   else
-    puts "An unexpected error occured while running BEATS:"
+    puts "An unexpected error occured while running Beats Drum Machine:"
     puts "  #{error}\n"
   end
 end
