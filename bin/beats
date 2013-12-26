@@ -5,6 +5,7 @@ start_time = Time.now
 $:.unshift File.dirname(__FILE__) + "/../lib"
 require "optparse"
 require "yaml"
+require "syck"
 require "wavefile"
 require "beats"
 require "wavefile/cachingwriter"

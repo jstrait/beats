@@ -1,6 +1,7 @@
 # Standard Ruby libraries
 require 'test/unit'
 require 'yaml'
+require 'syck'
 require 'rubygems'
 
 # External gems
