@@ -9,5 +9,5 @@ require 'beats/songoptimizer'
 require 'beats/track'
 
 module Beats
-  BEATS_VERSION = "1.2.4"
+  VERSION = "1.2.4"
 end

@@ -33,7 +33,7 @@ def parse_options()
     end
 
     opts.on('-v', '--version', "Display version number and exit") do
-      puts "BEATS v#{Beats::BEATS_VERSION}"
+      puts "BEATS v#{Beats::VERSION}"
       exit
     end
 

@@ -1,6 +1,9 @@
+$:.push File.expand_path("../lib", __FILE__)
+require 'beats'
+
 Gem::Specification.new do |s| 
   s.name = "beats"
-  s.version = "1.2.4"
+  s.version = Beats::VERSION 
   s.author = "Joel Strait"
   s.email = "joel dot strait at Google's popular web mail service"
   s.homepage = "http://beatsdrummachine.com/"
