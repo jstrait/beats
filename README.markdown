@@ -64,11 +64,11 @@ The Beats wiki also has a [Getting Started](https://github.com/jstrait/beats/wik
 Local Development
 -----------------
 
-When developing Beats, first install the required dependencies:
+First, install the required dependencies:
 
     bundle install
 
-To run Beats locally, use `bundle exec` and run `bin/beats`, to avoid using any install gem executable. For example:
+To run Beats locally, use `bundle exec` and run `bin/beats`, to avoid using any installed gem executable. For example:
 
     bundle exec bin/beats -v
 
