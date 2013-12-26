@@ -5,7 +5,7 @@ require 'syck'
 require 'rubygems'
 
 # External gems
-gem 'wavefile', "=0.5.0"
+gem 'wavefile', "=0.6.0"
 require 'wavefile'
 
 # BEATS classes
