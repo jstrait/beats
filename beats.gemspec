@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.executables = "beats"
 
   s.add_dependency "wavefile", "= 0.6.0"
-  if RUBY_VERSION[0].to_i >= 2
+  if RUBY_VERSION.chars.first.to_i >= 2
     s.add_dependency "syck"
   end
 
