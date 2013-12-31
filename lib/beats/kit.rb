@@ -166,7 +166,7 @@ module Beats
           raise SoundFileNotFoundError, "Sound file #{sound_file_name} not found."
         rescue StandardError
           raise InvalidSoundFormatError, "Sound file #{sound_file_name} is either not a sound file, " +
-                                         "or is in an unsupported format. BEATS can handle 8, 16, or 32-bit PCM *.wav files."
+                                         "or is in an unsupported format. BEATS can handle 8, 16, 24, or 32-bit PCM *.wav files."
         end
       end
 
