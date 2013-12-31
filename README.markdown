@@ -33,16 +33,19 @@ And [here's what it sounds like](http://beatsdrummachine.com/media/beat.mp3) aft
 Current Status
 --------------
 
-The latest stable version of Beats is 1.2.4, released on December 22, 2012. This is a minor release which includes two improvements:
+The latest stable version of Beats is 1.2.5, released on December 31, 2013. This release includes these improvements: 
 
-* Now works in MRI 1.9.3
-* Now supports 32-bit PCM Wave files, due to upgrading to WaveFile 0.4.0. Previously, only 8-bit and 16-bit PCM files were supported.
+* Tracks that start with a `|` no longer cause an error in Ruby 2.0.0 and 2.1.0.
+* Additional Wave file formats can now be used as samples, due to upgrading to [WaveFile 0.6.0](http://wavefilegem.com) behind the scenes:
+  * 24-bit PCM
+  * 32-bit IEEE Float
+  * 64-bit IEEE Float
 
 
 Installation
 ------------
 
-To install the latest stable version (1.2.4) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (1.2.5) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
