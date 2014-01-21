@@ -66,6 +66,11 @@ module Beats
         set_song_flow(song, raw_song_components[:flow])
       end
 
+      # 5.) Shuffle, if shuffle flag is set
+      if raw_song_components[:shuffle]
+        song = Transforms::SongShuffler.transform(song)
+      end
+
       return song, kit
     end
 
@@ -104,6 +109,7 @@ module Beats
         raw_song_components[:flow]    = raw_structure
       end
 
+      raw_song_components[:shuffle]   = raw_song_components[:header]["shuffle"]
       raw_song_components[:patterns]  = raw_song_components[:full_definition].reject {|k, v| k == "song"}
 
       return raw_song_components

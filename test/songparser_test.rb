@@ -11,7 +11,9 @@ class SongParserTest < Test::Unit::TestCase
                       :example_with_kit,
                       :example_with_empty_track,
                       :multiple_tracks_same_sound,
-                      :with_structure]
+                      :with_structure,
+                      :example_shuffled,
+                      :example_unshuffled]
 
   INVALID_FIXTURES = [:bad_repeat_count,
                       :bad_flow,
@@ -93,6 +95,28 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal(1, song.patterns.length)
     assert_equal(1, song.patterns[:verse].tracks.length)
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
+
+    song = test_songs[:example_shuffled]
+    assert_equal(160, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X.....X.....", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("...X.....X..", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("X.XX.XX.XX.X", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("..X..X..X..X", song.patterns[:chorus].tracks["snare"].rhythm)
+
+    song = test_songs[:example_unshuffled]
+    assert_equal(120, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("..X...X.", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("XXXXXXXX", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["snare"].rhythm)
   end
 
   def test_invalid_parse
