@@ -71,6 +71,12 @@ end
 
 begin
   options = parse_options()
+
+  if ARGV.empty?
+    puts USAGE_INSTRUCTIONS
+    exit
+  end
+
   input_file_name = ARGV[0]
   output_file_name = ARGV[1]
 
