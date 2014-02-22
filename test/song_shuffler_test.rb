@@ -7,7 +7,7 @@ class SongShufflerTest < Test::Unit::TestCase
 
     shuffled_song = Transforms::SongShuffler.transform(song)
 
-    assert_equal(160, shuffled_song.tempo)
+    assert_equal(180, shuffled_song.tempo)
     assert_equal([:verse, :verse, :chorus, :chorus, :chorus, :chorus,
                   :verse, :verse, :chorus, :chorus, :chorus, :chorus],
                  shuffled_song.flow)
@@ -63,7 +63,7 @@ class SongShufflerTest < Test::Unit::TestCase
     song.tempo = 140
     
     song = Transforms::SongShuffler.transform(song)
-    assert_equal(187, song.tempo)   # 186.66666666666666 rounded up
+    assert_equal(210, song.tempo)
   end
 
   def test_fractional_tempo_rounded_down
@@ -71,6 +71,6 @@ class SongShufflerTest < Test::Unit::TestCase
     song.tempo = 145
     
     song = Transforms::SongShuffler.transform(song)
-    assert_equal(193, song.tempo)   # 193.33333333333331 rounded down
+    assert_equal(218, song.tempo)   # 217.5 rounded up
   end
 end
