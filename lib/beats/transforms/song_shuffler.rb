@@ -16,7 +16,7 @@ module Beats
             end
           end
         end
-      
+
         song.tempo = (song.tempo * 1.5).round
 
         song
