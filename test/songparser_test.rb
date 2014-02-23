@@ -97,7 +97,7 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
 
     song = test_songs[:example_shuffled]
-    assert_equal(160, song.tempo)
+    assert_equal(180, song.tempo)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
