@@ -1,6 +1,6 @@
 module Beats
   module Transforms
-    class SongShuffler
+    class SongSwinger
       def self.transform(song, swing_rate)
         song.patterns.values.each do |pattern|
           pattern.tracks.values.each do |track|

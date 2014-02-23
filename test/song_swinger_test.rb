@@ -1,11 +1,11 @@
 require 'includes'
 
-class SongShufflerTest < Test::Unit::TestCase
+class SongSwingerTest < Test::Unit::TestCase
   def test_full_song_swing_rate_8
     base_path = File.dirname(__FILE__) + "/sounds"
     song, kit = SongParser.new.parse(base_path, File.read("test/fixtures/valid/example_mono_16_base_path.txt"))
 
-    shuffled_song = Transforms::SongShuffler.transform(song, 8)
+    shuffled_song = Transforms::SongSwinger.transform(song, 8)
 
     assert_equal(180, shuffled_song.tempo)
     assert_equal([:verse, :verse, :chorus, :chorus, :chorus, :chorus,
@@ -49,7 +49,7 @@ class SongShufflerTest < Test::Unit::TestCase
     base_path = File.dirname(__FILE__) + "/sounds"
     song, kit = SongParser.new.parse(base_path, File.read("test/fixtures/valid/example_mono_16_base_path.txt"))
 
-    shuffled_song = Transforms::SongShuffler.transform(song, 16)
+    shuffled_song = Transforms::SongSwinger.transform(song, 16)
 
     assert_equal(180, shuffled_song.tempo)
     assert_equal([:verse, :verse, :chorus, :chorus, :chorus, :chorus,
@@ -97,7 +97,7 @@ class SongShufflerTest < Test::Unit::TestCase
 
     song.pattern(pattern)
 
-    shuffled_song = Transforms::SongShuffler.transform(song, 16)
+    shuffled_song = Transforms::SongSwinger.transform(song, 16)
     shuffled_pattern = shuffled_song.patterns[:my_pattern]
     assert_equal("X....X...X", shuffled_pattern.tracks["track1"].rhythm)
   end
@@ -107,7 +107,7 @@ class SongShufflerTest < Test::Unit::TestCase
       song = Song.new
       song.tempo = 140
 
-      song = Transforms::SongShuffler.transform(song, swing_rate)
+      song = Transforms::SongSwinger.transform(song, swing_rate)
       assert_equal(210, song.tempo)
     end
   end
@@ -117,7 +117,7 @@ class SongShufflerTest < Test::Unit::TestCase
       song = Song.new
       song.tempo = 145
 
-      song = Transforms::SongShuffler.transform(song, 16)
+      song = Transforms::SongSwinger.transform(song, 16)
       assert_equal(218, song.tempo)   # 217.5 rounded up
     end
   end
