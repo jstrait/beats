@@ -102,6 +102,27 @@ class SongSwingerTest < Test::Unit::TestCase
     assert_equal("X....X...X", shuffled_pattern.tracks["track1"].rhythm)
   end
 
+  def test_swing_8_conversions
+    [["XXXXX.X.", "X.X.XXX...X."],
+     ["XXXXXXX",  "X.X.XXX.X.X"],
+     ["XXXX",     "X.X.XX"],
+     ["....",     "......"],
+     ["XXX",      "X.X.X"],
+     ["XX",       "X.X."],
+     ["X",        "X."]].each do |original_rhythm, expected_rhythm|
+      song = Song.new
+
+      pattern = song.pattern(:my_pattern)
+      pattern.track("track1", original_rhythm)
+
+      song.pattern(pattern)
+
+      shuffled_song = Transforms::SongSwinger.transform(song, 8)
+      shuffled_pattern = shuffled_song.patterns[:my_pattern]
+      assert_equal(expected_rhythm, shuffled_pattern.tracks["track1"].rhythm)
+    end
+  end
+
   def test_fractional_tempo_rounded_up
     [8, 16].each do |swing_rate|
       song = Song.new
