@@ -23,7 +23,12 @@ module Beats
 
       def self.swing_8(original_rhythm)
         original_rhythm.chars.each_slice(4).inject("") do |new_rhythm, slice|
-          new_rhythm << "#{slice[0]}.#{slice[1]}.#{slice[2]}#{slice[3]}"
+          if slice.length == 1
+            new_rhythm << "#{slice[0]}."
+          else
+            new_rhythm << "#{slice[0]}.#{slice[1]}.#{slice[2]}#{slice[3]}"
+          end
+
           new_rhythm
         end
       end
