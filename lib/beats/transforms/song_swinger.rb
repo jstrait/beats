@@ -1,7 +1,11 @@
 module Beats
   module Transforms
+    class InvalidSwingRateError < RuntimeError; end
+
     class SongSwinger
       def self.transform(song, swing_rate)
+        validate_swing_rate(swing_rate)
+
         song.patterns.values.each do |pattern|
           pattern.tracks.values.each do |track|
             original_rhythm = track.rhythm
@@ -20,6 +24,12 @@ module Beats
       end
 
       private
+
+      def self.validate_swing_rate(swing_rate)
+        if swing_rate != 8 && swing_rate != 16
+          raise InvalidSwingRateError, "Invalid swing rate: '#{swing_rate}'. Swing rate must be 8 or 16."
+        end
+      end
 
       def self.swing_8(original_rhythm)
         original_rhythm.chars.each_slice(4).inject("") do |new_rhythm, slice|

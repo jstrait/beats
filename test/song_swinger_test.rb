@@ -130,6 +130,17 @@ class SongSwingerTest < Test::Unit::TestCase
     end
   end
 
+  def test_invalid_swing_rate
+    [7, "abc", "8a", nil, "", [8]].each do |invalid_swing_rate|
+      song = Song.new
+      song.tempo = 100
+
+      assert_raise(Transforms::InvalidSwingRateError) do
+        song = Transforms::SongSwinger.transform(song, invalid_swing_rate)
+      end
+    end
+  end
+
   private
 
   def test_rhythm_conversions(swing_rate, expectations)

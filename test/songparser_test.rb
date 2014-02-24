@@ -19,6 +19,8 @@ class SongParserTest < Test::Unit::TestCase
   INVALID_FIXTURES = [:bad_repeat_count,
                       :bad_flow,
                       :bad_tempo,
+                      :bad_swing_rate_1,
+                      :bad_swing_rate_2,
                       :no_header,
                       :no_flow,
                       :pattern_with_no_tracks,
