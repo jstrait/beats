@@ -110,7 +110,7 @@ class SongSwingerTest < Test::Unit::TestCase
                                  [".",        ".."]])
   end
 
-  def test_fractional_tempo_rounded_up
+  def test_tempo_change
     [8, 16].each do |swing_rate|
       song = Song.new
       song.tempo = 140
@@ -120,7 +120,7 @@ class SongSwingerTest < Test::Unit::TestCase
     end
   end
 
-  def test_fractional_tempo_rounded_down
+  def test_fractional_tempo_rounded_up
     [8, 16].each do |swing_rate|
       song = Song.new
       song.tempo = 145
