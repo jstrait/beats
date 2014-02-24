@@ -66,7 +66,7 @@ module Beats
         set_song_flow(song, raw_song_components[:flow])
       end
 
-      # 5.) Shuffle, if swing flag is set
+      # 5.) Swing, if swing flag is set
       if raw_song_components[:swing]
         begin
           song = Transforms::SongSwinger.transform(song, raw_song_components[:swing])
