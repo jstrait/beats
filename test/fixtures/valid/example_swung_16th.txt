@@ -1,8 +1,8 @@
 # An example song
 
 Song:
-  Shuffle: no
   Tempo: 120
+  Swing: 16
   Kit:
     - bass:     test/sounds/bass_mono_8.wav
     - snare:    test/sounds/snare_mono_8.wav

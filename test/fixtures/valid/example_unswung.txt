@@ -1,7 +1,6 @@
 # An example song
 
 Song:
-  Shuffle: yes
   Tempo: 120
   Kit:
     - bass:     test/sounds/bass_mono_8.wav
