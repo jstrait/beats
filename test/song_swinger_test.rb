@@ -89,19 +89,6 @@ class SongSwingerTest < Test::Unit::TestCase
     assert_equal(".....................X.X", verse_pattern.tracks["agogo"].rhythm)
   end
 
-  def test_odd_pattern_length
-    song = Song.new
-
-    pattern = song.pattern(:my_pattern)
-    pattern.track("track1", "X..X..X")
-
-    song.pattern(pattern)
-
-    shuffled_song = Transforms::SongSwinger.transform(song, 16)
-    shuffled_pattern = shuffled_song.patterns[:my_pattern]
-    assert_equal("X....X...X", shuffled_pattern.tracks["track1"].rhythm)
-  end
-
   def test_swing_8_conversions
     [["XXXXX.X.", "X.X.XXX...X."],
      ["XXXXXXX",  "X.X.XXX.X.X"],
@@ -118,6 +105,28 @@ class SongSwingerTest < Test::Unit::TestCase
       song.pattern(pattern)
 
       shuffled_song = Transforms::SongSwinger.transform(song, 8)
+      shuffled_pattern = shuffled_song.patterns[:my_pattern]
+      assert_equal(expected_rhythm, shuffled_pattern.tracks["track1"].rhythm)
+    end
+  end
+
+  def test_swing_16_conversions
+    [["XXX..X..", "X.XX....X..."],
+     ["X..X..X",  "X....X...X"],
+     ["XX",       "X.X"],
+     ["X.",       "X.."],
+     [".X",       "..X"],
+     ["..",       "..."],
+     ["X",        "X"],
+     [".",        "."]].each do |original_rhythm, expected_rhythm|
+      song = Song.new
+
+      pattern = song.pattern(:my_pattern)
+      pattern.track("track1", original_rhythm)
+
+      song.pattern(pattern)
+
+      shuffled_song = Transforms::SongSwinger.transform(song, 16)
       shuffled_pattern = shuffled_song.patterns[:my_pattern]
       assert_equal(expected_rhythm, shuffled_pattern.tracks["track1"].rhythm)
     end
