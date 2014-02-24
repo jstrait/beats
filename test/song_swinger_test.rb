@@ -101,13 +101,13 @@ class SongSwingerTest < Test::Unit::TestCase
 
   def test_swing_16_rhythm_conversions
     test_rhythm_conversions(16, [["XXX..X..", "X.XX....X..."],
-                                 ["X..X..X",  "X....X...X"],
+                                 ["X..X..X",  "X....X...X."],
                                  ["XX",       "X.X"],
                                  ["X.",       "X.."],
                                  [".X",       "..X"],
                                  ["..",       "..."],
-                                 ["X",        "X"],
-                                 [".",        "."]])
+                                 ["X",        "X."],
+                                 [".",        ".."]])
   end
 
   def test_fractional_tempo_rounded_up

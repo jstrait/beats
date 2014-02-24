@@ -34,12 +34,8 @@ module Beats
       end
 
       def self.swing_16(original_rhythm)
-        original_rhythm.bytes.each_slice(2).inject("") do |new_rhythm, slice|
-          new_rhythm << slice.first
-          if slice.length > 1
-            new_rhythm << '.' << slice.last
-          end
-
+        original_rhythm.chars.each_slice(2).inject("") do |new_rhythm, slice|
+          new_rhythm << "#{slice[0]}.#{slice[1]}"
           new_rhythm
         end
       end
