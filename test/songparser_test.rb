@@ -12,6 +12,7 @@ class SongParserTest < Test::Unit::TestCase
                       :example_with_empty_track,
                       :multiple_tracks_same_sound,
                       :with_structure,
+                      :example_swung_8th,
                       :example_swung_16th,
                       :example_unswung]
 
@@ -95,6 +96,17 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal(1, song.patterns.length)
     assert_equal(1, song.patterns[:verse].tracks.length)
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
+
+    song = test_songs[:example_swung_8th]
+    assert_equal(180, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X.....X.....", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("....X.....X.", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("X.X.XXX.X.XX", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("..X..X..X..X", song.patterns[:chorus].tracks["snare"].rhythm)
 
     song = test_songs[:example_swung_16th]
     assert_equal(180, song.tempo)

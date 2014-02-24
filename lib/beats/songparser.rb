@@ -68,7 +68,7 @@ module Beats
 
       # 5.) Shuffle, if swing flag is set
       if raw_song_components[:swing]
-        song = Transforms::SongSwinger.transform(song, 16)
+        song = Transforms::SongSwinger.transform(song, raw_song_components[:swing])
       end
 
       return song, kit
