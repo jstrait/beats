@@ -120,13 +120,23 @@ class SongSwingerTest < Test::Unit::TestCase
     end
   end
 
-  def test_fractional_tempo_rounded_up
+  def test_conversion_to_fractional_tempo
     [8, 16].each do |swing_rate|
       song = Song.new
       song.tempo = 145
 
-      song = Transforms::SongSwinger.transform(song, 16)
-      assert_equal(218, song.tempo)   # 217.5 rounded up
+      song = Transforms::SongSwinger.transform(song, swing_rate)
+      assert_equal(217.5, song.tempo)
+    end
+  end
+
+  def test_fractional_tempo
+    [8, 16].each do |swing_rate|
+      song = Song.new
+      song.tempo = 145.325
+
+      song = Transforms::SongSwinger.transform(song, swing_rate)
+      assert_equal(217.98749999999998, song.tempo)
     end
   end
 
