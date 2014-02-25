@@ -30,7 +30,7 @@ class SongParserTest < Test::Unit::TestCase
                       :sound_in_track_wrong_format]
 
   def self.load_fixture(fixture_name)
-    SongParser.new().parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
+    SongParser.new.parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
   end
 
   def self.generate_test_data
@@ -48,7 +48,7 @@ class SongParserTest < Test::Unit::TestCase
 
   # TODO: Add somes tests to validate the Kits
   def test_valid_parse
-    test_songs, test_kits = SongParserTest.generate_test_data()
+    test_songs, test_kits = SongParserTest.generate_test_data
 
     assert_equal(120, test_songs[:no_tempo].tempo)
     assert_equal([:verse], test_songs[:no_tempo].flow)

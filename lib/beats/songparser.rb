@@ -36,7 +36,7 @@ module Beats
         base_path = raw_song_components[:folder]
       end
 
-      song = Song.new()
+      song = Song.new
 
       # 1.) Set tempo
       begin

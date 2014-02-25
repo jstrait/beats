@@ -6,7 +6,7 @@ class IntegrationTest < Test::Unit::TestCase
 
   def setup
     # Make sure no output from previous tests is still around
-    clean_output_folder()
+    clean_output_folder
   end
 
   def test_bad_song_errors
@@ -21,7 +21,7 @@ class IntegrationTest < Test::Unit::TestCase
     invalid_fixtures.each do |fixture_name|
       assert_raise(SongParseError) do
         beats = BeatsRunner.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false})
-        beats.run()
+        beats.run
       end
     end
   end
@@ -56,7 +56,7 @@ class IntegrationTest < Test::Unit::TestCase
     end
 
     beats = BeatsRunner.new(song_fixture, actual_output_file, options)
-    beats.run()
+    beats.run
     assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
     # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
@@ -89,7 +89,7 @@ class IntegrationTest < Test::Unit::TestCase
     end
 
     beats = BeatsRunner.new(song_fixture, actual_output_prefix + ".wav", options)
-    beats.run()
+    beats.run
     TRACK_NAMES.each do |track_name|
       if(track_name.start_with?("tom"))
         track_name += "_#{num_channels}_#{bits_per_sample}"
@@ -99,8 +99,8 @@ class IntegrationTest < Test::Unit::TestCase
       assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
       # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
-      expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read() }
-      actual_output_file_contents = File.open(actual_output_file, "rb") {|f| f.read() }
+      expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read }
+      actual_output_file_contents = File.open(actual_output_file, "rb") {|f| f.read }
       assert_equal(expected_output_file_contents, actual_output_file_contents)
 
       # Clean up after ourselves

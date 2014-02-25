@@ -50,14 +50,14 @@ Verse:
   - snare:  ..........X."
 
   def self.load_fixture(fixture_name)
-    SongParser.new().parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
+    SongParser.new.parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
   end
 
   def test_optimize
-    parser = SongParser.new()
+    parser = SongParser.new
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)
 
-    optimizer = SongOptimizer.new()
+    optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
 
     assert_equal(optimized_song.tempo, 135)
@@ -122,11 +122,11 @@ Verse:
                                        :chorus_0, :chorus_4, :chorus_8, :chorus_12])
   end
 
-  def test_optimize_song_nondivisible_max_pattern_length()
-    parser = SongParser.new()
+  def test_optimize_song_nondivisible_max_pattern_length
+    parser = SongParser.new
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
-    optimizer = SongOptimizer.new()
+    optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 7)
 
     pattern = optimized_song.patterns[:verse_0]
@@ -143,17 +143,17 @@ Verse:
 
   def test_pattern_collision
     original_song, kit = SongOptimizerTest.load_fixture("valid/optimize_pattern_collision.txt")
-    optimizer = SongOptimizer.new()
+    optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
 
     assert_equal([:verse2_0, :verse_0, :verse_20], optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
   end
 
-  def test_optimize_song_containing_empty_pattern()
-    parser = SongParser.new()
+  def test_optimize_song_containing_empty_pattern
+    parser = SongParser.new
     original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
-    optimizer = SongOptimizer.new()
+    optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
 
     pattern = optimized_song.patterns[:verse_0]
