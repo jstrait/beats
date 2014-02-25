@@ -39,5 +39,8 @@ class AudioUtilsTest < Test::Unit::TestCase
     assert_equal(6615.0, AudioUtils.step_sample_length(44100, 100))
     assert_equal(3307.5, AudioUtils.step_sample_length(44100, 200))
     assert_equal(3307.5, AudioUtils.step_sample_length(22050, 100))
+
+    assert_equal(6874.612880831729, AudioUtils.step_sample_length(44100, 96.2236))
+    assert_equal(3437.3064404158645, AudioUtils.step_sample_length(22050, 96.2236))
   end
 end
