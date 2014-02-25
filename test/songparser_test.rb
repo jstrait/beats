@@ -5,6 +5,7 @@ class SongParserTest < Test::Unit::TestCase
 
   # TODO: Add fixture for track with no rhythm
   VALID_FIXTURES =   [:no_tempo,
+                      :fractional_tempo,
                       :repeats_not_specified,
                       :pattern_with_overflow,
                       :example_no_kit,
@@ -52,6 +53,9 @@ class SongParserTest < Test::Unit::TestCase
 
     assert_equal(120, test_songs[:no_tempo].tempo)
     assert_equal([:verse], test_songs[:no_tempo].flow)
+
+    assert_equal(95.764, test_songs[:fractional_tempo].tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], test_songs[:fractional_tempo].flow)
 
     assert_equal(100, test_songs[:repeats_not_specified].tempo)
     assert_equal([:verse], test_songs[:repeats_not_specified].flow)
