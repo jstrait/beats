@@ -45,6 +45,32 @@ class SongTest < Test::Unit::TestCase
     assert_equal([:verse, :chorus, :verse, :chorus, :chorus], test_songs[:from_code].flow)
   end
 
+  def test_tempo=
+    song = Song.new
+
+    song.tempo = 150
+    assert_equal(150, song.tempo)
+    
+    song.tempo = 145.854
+    assert_equal(145.854, song.tempo)
+
+    assert_raise(InvalidTempoError) do
+      song.tempo = -1
+    end
+
+    assert_raise(InvalidTempoError) do
+      song.tempo = -1.0
+    end
+
+    assert_raise(InvalidTempoError) do
+      song.tempo = "abc"
+    end
+
+    assert_raise(InvalidTempoError) do
+      song.tempo = "150"
+    end
+  end
+
   def test_pattern
     song = Song.new()
     verse1 = song.pattern :Verse
