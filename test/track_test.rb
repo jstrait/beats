@@ -15,7 +15,7 @@ class TrackTest < Test::Unit::TestCase
   end
 
   def test_initialize
-    test_tracks = generate_test_data()
+    test_tracks = generate_test_data
 
     assert_equal([0], test_tracks[:blank].beats)
     assert_equal("bass", test_tracks[:blank].name)
@@ -40,13 +40,13 @@ class TrackTest < Test::Unit::TestCase
   end
 
   def test_step_count
-    test_tracks = generate_test_data()
+    test_tracks = generate_test_data
 
-    assert_equal(0,  test_tracks[:blank].step_count())
-    assert_equal(1,  test_tracks[:solo].step_count())
-    assert_equal(4,  test_tracks[:with_overflow].step_count())
-    assert_equal(8,  test_tracks[:with_barlines].step_count())
-    assert_equal(4,  test_tracks[:placeholder].step_count())
-    assert_equal(32, test_tracks[:complicated].step_count())
+    assert_equal(0,  test_tracks[:blank].step_count)
+    assert_equal(1,  test_tracks[:solo].step_count)
+    assert_equal(4,  test_tracks[:with_overflow].step_count)
+    assert_equal(8,  test_tracks[:with_barlines].step_count)
+    assert_equal(4,  test_tracks[:placeholder].step_count)
+    assert_equal(32, test_tracks[:complicated].step_count)
   end
 end

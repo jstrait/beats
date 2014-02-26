@@ -40,7 +40,7 @@ class KitTest < Test::Unit::TestCase
   end
 
   def test_valid_initialization
-    kits = generate_test_data()
+    kits = generate_test_data
 
     assert_equal(16, kits[:empty].bits_per_sample)
     assert_equal(1, kits[:empty].num_channels)
@@ -93,7 +93,7 @@ class KitTest < Test::Unit::TestCase
   end
 
   def test_get_sample_data
-    kits = generate_test_data()
+    kits = generate_test_data
     # Should get an error when trying to get a non-existent sound
     assert_raise(StandardError) { kits[:mono8].get_sample_data("nonexistant") }
 

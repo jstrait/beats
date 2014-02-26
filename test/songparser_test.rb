@@ -5,17 +5,23 @@ class SongParserTest < Test::Unit::TestCase
 
   # TODO: Add fixture for track with no rhythm
   VALID_FIXTURES =   [:no_tempo,
+                      :fractional_tempo,
                       :repeats_not_specified,
                       :pattern_with_overflow,
                       :example_no_kit,
                       :example_with_kit,
                       :example_with_empty_track,
                       :multiple_tracks_same_sound,
-                      :with_structure]
+                      :with_structure,
+                      :example_swung_8th,
+                      :example_swung_16th,
+                      :example_unswung]
 
   INVALID_FIXTURES = [:bad_repeat_count,
                       :bad_flow,
                       :bad_tempo,
+                      :bad_swing_rate_1,
+                      :bad_swing_rate_2,
                       :no_header,
                       :no_flow,
                       :pattern_with_no_tracks,
@@ -25,7 +31,7 @@ class SongParserTest < Test::Unit::TestCase
                       :sound_in_track_wrong_format]
 
   def self.load_fixture(fixture_name)
-    SongParser.new().parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
+    SongParser.new.parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
   end
 
   def self.generate_test_data
@@ -43,10 +49,13 @@ class SongParserTest < Test::Unit::TestCase
 
   # TODO: Add somes tests to validate the Kits
   def test_valid_parse
-    test_songs, test_kits = SongParserTest.generate_test_data()
+    test_songs, test_kits = SongParserTest.generate_test_data
 
     assert_equal(120, test_songs[:no_tempo].tempo)
     assert_equal([:verse], test_songs[:no_tempo].flow)
+
+    assert_equal(95.764, test_songs[:fractional_tempo].tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], test_songs[:fractional_tempo].flow)
 
     assert_equal(100, test_songs[:repeats_not_specified].tempo)
     assert_equal([:verse], test_songs[:repeats_not_specified].flow)
@@ -93,6 +102,39 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal(1, song.patterns.length)
     assert_equal(1, song.patterns[:verse].tracks.length)
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
+
+    song = test_songs[:example_swung_8th]
+    assert_equal(180, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X.....X.....", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("....X.....X.", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("X.X.XXX.X.XX", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("..X..X..X..X", song.patterns[:chorus].tracks["snare"].rhythm)
+
+    song = test_songs[:example_swung_16th]
+    assert_equal(180, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X.....X.....", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("...X.....X..", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("X.XX.XX.XX.X", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("..X..X..X..X", song.patterns[:chorus].tracks["snare"].rhythm)
+
+    song = test_songs[:example_unswung]
+    assert_equal(120, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("..X...X.", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("XXXXXXXX", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["snare"].rhythm)
   end
 
   def test_invalid_parse

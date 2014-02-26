@@ -27,7 +27,7 @@ class PatternTest < Test::Unit::TestCase
   end
 
   def test_initialize
-    test_patterns = generate_test_data()
+    test_patterns = generate_test_data
 
     pattern = test_patterns[:blank]
     assert_equal(pattern.name, :blank)
@@ -43,11 +43,11 @@ class PatternTest < Test::Unit::TestCase
   end
 
   def test_step_count
-    test_patterns = generate_test_data()
+    test_patterns = generate_test_data
 
-    assert_equal(0,  test_patterns[:blank].step_count())
-    assert_equal(32, test_patterns[:verse].step_count())
-    assert_equal(4,  test_patterns[:staircase].step_count())
+    assert_equal(0,  test_patterns[:blank].step_count)
+    assert_equal(32, test_patterns[:verse].step_count)
+    assert_equal(4,  test_patterns[:staircase].step_count)
   end
 
   def test_same_tracks_as?

@@ -1,0 +1,17 @@
+# An example song
+
+Song:
+  Tempo: 120
+  Kit:
+    - bass:     test/sounds/bass_mono_8.wav
+    - snare:    test/sounds/snare_mono_8.wav
+  Flow:
+    - Verse:  x2
+    - Chorus: x2
+
+Verse:
+  - bass:      X...X...
+  - snare:     ..X...X.
+Chorus:
+  - bass:      XXXXXXXX
+  - snare:     .X.X.X.X

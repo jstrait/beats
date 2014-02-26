@@ -36,7 +36,7 @@ module Beats
         base_path = raw_song_components[:folder]
       end
 
-      song = Song.new()
+      song = Song.new
 
       # 1.) Set tempo
       begin
@@ -64,6 +64,15 @@ module Beats
         raise SongParseError, "Song must have a Flow section in the header."
       else
         set_song_flow(song, raw_song_components[:flow])
+      end
+
+      # 5.) Swing, if swing flag is set
+      if raw_song_components[:swing]
+        begin
+          song = Transforms::SongSwinger.transform(song, raw_song_components[:swing])
+        rescue Transforms::InvalidSwingRateError => detail
+          raise SongParseError, "#{detail}"
+        end
       end
 
       return song, kit
@@ -104,6 +113,7 @@ module Beats
         raw_song_components[:flow]    = raw_structure
       end
 
+      raw_song_components[:swing]   = raw_song_components[:header]["swing"]
       raw_song_components[:patterns]  = raw_song_components[:full_definition].reject {|k, v| k == "song"}
 
       return raw_song_components

@@ -7,6 +7,7 @@ require 'beats/song'
 require 'beats/songparser'
 require 'beats/songoptimizer'
 require 'beats/track'
+require 'beats/transforms/song_swinger'
 
 module Beats
   VERSION = "1.2.5"

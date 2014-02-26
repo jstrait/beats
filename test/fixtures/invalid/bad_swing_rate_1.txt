@@ -1,0 +1,9 @@
+# Invalid song, since the swing rate is invalid
+Song:
+  Tempo: 100
+  Swing: 7    # Invalid swing rate, not 8 or 16
+  Flow:
+    - Verse:  x2
+
+Verse:
+  - test/sounds/bass_mono_8.wav:  X...X...
