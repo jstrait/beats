@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    beats (1.2.5)
+      wavefile (= 0.6.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (10.1.1)
+    syck (1.0.1)
+    wavefile (0.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  beats!
+  rake
+  syck
