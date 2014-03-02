@@ -39,6 +39,20 @@ This release is for all you swingers out there. A new `Swing` declaration in the
 
     Song:
       Tempo: 120
+      Flow:
+        - Verse: x4
+
+    Verse:
+    - bass.wav:   X...X...X...X...
+    - snare.wav:  ....X.......X...
+    - hihat.wav:  X.X.X.X.X.X.X.X.
+
+It will [sound like this](http://beatsdrummachine.com/media/straight.wav).
+
+You can add an 8th note swing like this (notice the 3rd line):
+
+    Song:
+      Tempo: 120
       Swing: 8   # Or, 16
       Flow:
         - Verse: x4
@@ -48,9 +62,7 @@ This release is for all you swingers out there. A new `Swing` declaration in the
     - snare.wav:  ....X.......X...
     - hihat.wav:  X.X.X.X.X.X.X.X.
 
-Notice the `Swing` declaration on the 3rd line. This will cause the song to be swung like this: <audio file goes here>
-
-If you comment this line out, the song will instead be played straight, like this: <audio file goes here>
+And it will now [sound like this](http://beatsdrummachine.com/media/swing.wav).
 
 This release also includes a small bug fix. When you run the `beats` command with no arguments, it now displays the help screen, rather than an error message.
 
