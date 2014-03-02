@@ -25,7 +25,6 @@ beats -s example_song.txt
 beats -p Verse example_song.txt
 beats --path ~/drum_sounds example_song.txt
 </pre></code></p>
-    <p>Finally, a note about Ruby 1.8.7 vs. 1.9.x. Beats runs fine on both, but is more than 2x faster on 1.9.x. Therefore, it&#8217;s highly recommended that you use 1.9.x if possible.</p>
   </div>
   <div class="content-box">
     <h2>Creating Songs</h2>
