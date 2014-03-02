@@ -33,19 +33,32 @@ And [here's what it sounds like](http://beatsdrummachine.com/media/beat.mp3) aft
 Current Status
 --------------
 
-The latest stable version of Beats is 1.2.5, released on December 31, 2013. This release includes these improvements: 
+The latest stable version of Beats is 1.3.0, released on March 3, 2013.
 
-* Tracks that start with a `|` no longer cause an error in Ruby 2.0.0 and 2.1.0.
-* Additional Wave file formats can now be used as samples, due to upgrading to [WaveFile 0.6.0](http://wavefilegem.com) behind the scenes:
-  * 24-bit PCM
-  * 32-bit IEEE Float
-  * 64-bit IEEE Float
+This release is for all you swingers out there. A new `Swing` declaration in the song header will cause the song to be played with either a swung 8th not or swung 16th note rhythm. For example, take this song:
+
+    Song:
+      Tempo: 120
+      Swing: 8   # Or, 16
+      Flow:
+        - Verse: x4
+
+    Verse:
+    - bass.wav:   X...X...X...X...
+    - snare.wav:  ....X.......X...
+    - hihat.wav:  X.X.X.X.X.X.X.X.
+
+Notice the `Swing` declaration on the 3rd line. This will cause the song to be swung like this: <audio file goes here>
+
+If you comment this line out, the song will instead be played straight, like this: <audio file goes here>
+
+This release also includes a small bug fix. When you run the `beats` command with no arguments, it now displays the help screen, rather than an error message.
 
 
 Installation
 ------------
 
-To install the latest stable version (1.2.5) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (1.3.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
