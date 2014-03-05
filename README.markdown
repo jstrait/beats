@@ -35,7 +35,7 @@ Current Status
 
 The latest stable version of Beats is 1.3.0, released on March 3, 2013.
 
-This release is for all you swingers out there. A new `Swing` declaration in the song header will cause the song to be played with either a swung 8th not or swung 16th note rhythm. For example, take this song:
+This release is for all you swingers out there. A new `Swing` declaration in the song header will cause the song to be played with either a swung 8th note or swung 16th note rhythm. For example, take this song:
 
     Song:
       Tempo: 120
@@ -49,7 +49,7 @@ This release is for all you swingers out there. A new `Swing` declaration in the
 
 It will [sound like this](http://beatsdrummachine.com/media/straight.wav).
 
-You can add an 8th note swing like this (notice the 3rd line):
+You can add an 8th note swing like this (notice the 3rd line, everything else is the same):
 
     Song:
       Tempo: 120
