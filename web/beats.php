@@ -14,7 +14,7 @@
     - hihat:    house_2_5.wav
     - cowbell:  big_beat_5.wav
     - deep:     house_2_2.wav
-    
+
 
 Verse:
   - bass:     X..X...X..X.....
