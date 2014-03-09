@@ -5,14 +5,14 @@
     <p>Run the following from the command line:</p>
     <p><code><pre class="single-line">gem install beats</pre></code></p>
     <p>This will download Beats from <a href="http://rubygems.org/gems/beats">rubygems.org</a> and add a <code>beats</code> command to your path.</p>
-    <p>(Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, try <code>sudo gem install beats</code> instead. If you are using RVM, plain <code>gem install beats</code> should work fine.)</p>
+    <p>(Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, try <code>sudo gem install beats</code> instead. If you are using RVM or rbenv, plain <code>gem install beats</code> should work fine.)</p>
     <p>The current version of Beats is 1.3.0. If you have an older version, you can update with this:</p>
     <p><code><pre class="single-line">gem update beats</pre></code></p>
     <p>Not sure what version you have? Run <code>beats -v</code>.</p>
   </div>
   <div class="content-box" id="drum-kits">
     <h2>Drum Sounds</h2>
-    <p>Beats is not terribly useful unless you have drum sounds to use with it. You can use many 8 and 16-bit wave files as drum sounds. Here are a few collections of sounds to help you get started:</p>
+    <p>Beats is not terribly useful unless you have drum sounds to use with it. You can use many wave files as drum sounds. Here are a few collections of sounds to help you get started:</p>
     <ul>
       <li id="drumkit-hammerhead" class="drumkit">
         <h3><a href="/hammerhead_drum_sounds.zip">Hammerhead</a></h3>
