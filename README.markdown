@@ -64,6 +64,13 @@ You can add an 8th note swing like this (notice the 3rd line, everything else is
 
 And it will now [sound like this](http://beatsdrummachine.com/media/swing.wav).
 
+This release also adds support for fractional tempos. For example:
+
+    Song:
+      Tempo: 100.5
+      Flow:
+        - Verse: x4
+
 This release also includes a small bug fix. When you run the `beats` command with no arguments, it now displays the help screen, rather than an error message.
 
 
