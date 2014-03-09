@@ -27,7 +27,9 @@ Chorus:
   - hihat:    XXXXXXXXXXXXX...
   - cowbell:  ....XX.X..X.X...
   - deep:     .............X..</code></pre></p>
-    <p>And <a href="/media/beat.mp3">here is what it sounds like</a> after getting the Beats treatment. What a glorious groove!</p>
+    <p>And here&rsquo;s what it sounds like after getting the Beats treatment:</p>
+    <p><audio class="home-page" src="/media/beat.mp3" controls>Your browser can't play this audio file.</audio></p>
+    <p>What a glorious groove!</p>
     <p class="last">So go forth and <a href="/download/">install Beats</a>, download some <a href="/download#drum-kits">drum sounds</a>, and <a href="/examples/">listen to some examples</a>. Then read up on <a href="/strategyguide/">how to use it</a>.</p>
   </div>
 <? drawFooter(); ?>
