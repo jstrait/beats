@@ -38,19 +38,19 @@
     - bongo_low:   bongo_2.wav
 
 Verse:
-  - bass:        |X.X.....X.X.....|
-  - deep_bass:   |.....X.X........|
-  - clap:        |....X.......X...|
-  - hihat:       |X.X..X.XX.X.X.X.|
-  - shaker:      |............XXXX|
-  - tom:         |X...............|
+  - bass:        X.X.....X.X.....
+  - deep_bass:   .....X.X........
+  - clap:        ....X.......X...
+  - hihat:       X.X..X.XX.X.X.X.
+  - shaker:      ............XXXX
+  - tom:         X...............
 
 Chorus:
-  - bass:        |X.X..X.XX.X.....|
-  - clap:        |....X.......X...|
-  - hihat:       |X.X..X.XX.X.X.X.|
-  - bongo_high:  |X.X.XX....XX.XX.|
-  - bongo_low:   |.X..............|</code></pre>
+  - bass:        X.X..X.XX.X.....
+  - clap:        ....X.......X...
+  - hihat:       X.X..X.XX.X.X.X.
+  - bongo_high:  X.X.XX....XX.XX.
+  - bongo_low:   .X..............</code></pre>
     </div>
 
     Synth sounds provided by an old <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
