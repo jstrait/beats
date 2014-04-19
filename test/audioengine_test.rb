@@ -14,8 +14,8 @@ class MockAudioEngine < AudioEngine
 end
 
 # Allow setting sample data directly, instead of loading from a file
-class MockKit < Kit
-  attr_accessor :sound_bank, :num_channels
+class MockKit < ImmutableKit
+  attr_accessor :items
 end
 
 class AudioEngineTest < Test::Unit::TestCase
@@ -29,7 +29,7 @@ class AudioEngineTest < Test::Unit::TestCase
     base_path = File.dirname(__FILE__) + "/.."
     song_parser = SongParser.new
 
-    test_engines[:blank] = AudioEngine.new(Song.new, Kit.new(base_path, {}))
+    test_engines[:blank] = AudioEngine.new(Song.new, KitBuilder.new(base_path).build_kit)
 
     FIXTURES.each do |fixture_name|
       song, kit = song_parser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
@@ -56,27 +56,25 @@ class AudioEngineTest < Test::Unit::TestCase
   # TS   A step with no sound, shorter than full sound length
   # Z    A zero sample
 
-  MONO_KIT = MockKit.new(".", {})
-  MONO_KIT.sound_bank = { "S"  => [-100, 200, 300, -400],
-                          "SL" => [-100, 200, 300, -400, 0, 0],
-                          "SS" => [-100, 200],
-                          "SO" => [300, -400],
-                          "TE" => [0, 0, 0, 0],
-                          "TL" => [0, 0, 0, 0, 0, 0],
-                          "TS" => [0, 0],
-                          "Z"  => [0] }
-  MONO_KIT.num_channels = 1
+  MONO_KIT = MockKit.new({}, 1, 16)
+  MONO_KIT.items = { "S"  => [-100, 200, 300, -400],
+                     "SL" => [-100, 200, 300, -400, 0, 0],
+                     "SS" => [-100, 200],
+                     "SO" => [300, -400],
+                     "TE" => [0, 0, 0, 0],
+                     "TL" => [0, 0, 0, 0, 0, 0],
+                     "TS" => [0, 0],
+                     "Z"  => [0] }
 
-  STEREO_KIT = MockKit.new(".", {})
-  STEREO_KIT.sound_bank = { "S"  => [[-100, 800], [200, -700], [300, -600], [-400, 400]],
-                            "SL" => [[-100, 800], [200, -700], [300, -600], [-400, 400], [0, 0], [0, 0]],
-                            "SS" => [[-100, 800], [200, -700]],
-                            "SO" => [[300, -600], [-400, 400]],
-                            "TE" => [[0, 0], [0, 0], [0, 0], [0, 0]],
-                            "TL" => [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
-                            "TS" => [[0, 0], [0, 0]],
-                            "Z"  => [[0, 0]] }
-  STEREO_KIT.num_channels = 2
+  STEREO_KIT = MockKit.new({}, 2, 16)
+  STEREO_KIT.items = { "S"  => [[-100, 800], [200, -700], [300, -600], [-400, 400]],
+                       "SL" => [[-100, 800], [200, -700], [300, -600], [-400, 400], [0, 0], [0, 0]],
+                       "SS" => [[-100, 800], [200, -700]],
+                       "SO" => [[300, -600], [-400, 400]],
+                       "TE" => [[0, 0], [0, 0], [0, 0], [0, 0]],
+                       "TL" => [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
+                       "TS" => [[0, 0], [0, 0]],
+                       "Z"  => [[0, 0]] }
 
 
   # These tests use unrealistically short sounds and step sample lengths, to make tests easier to work with.
