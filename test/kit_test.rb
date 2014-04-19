@@ -26,16 +26,6 @@ class KitTest < Test::Unit::TestCase
                                               "mono16"   => "bass_mono_16.wav",
                                               "stereo16" => "bass_stereo_16.wav"})
 
-    # Kits which contain a composite sound
-    #kits[:basic_composite] = Kit.new("test/sounds", {"mono8"  => "bass_mono_8.wav",
-    #                                                 "composite_mono8" => ["snare_mono_8.wav", "tom3_mono_8.wav"]})
-    #kits[:mismatched_bps_composite] = Kit.new("test/sounds", {"mono8"  => "bass_mono_8.wav",
-    #                                                          "composite_mono16" => ["snare_mono_8.wav", "tom3_mono_16.wav"]})
-    #kits[:mismatched_channels_composite] = Kit.new("test/sounds", {"mono8"  => "bass_mono_8.wav",
-    #                                                               "composite_stereo16" => ["snare_stereo_16.wav", "tom3_mono_16.wav"]})
-    #kits[:mismatched_everything_composite] = Kit.new("test/sounds", {"mono8"  => "bass_mono_8.wav",
-    #                                                                 "composite_stereo16" => ["snare_stereo_8.wav", "tom3_mono_16.wav"]})
-
     kits
   end
 
@@ -56,18 +46,6 @@ class KitTest < Test::Unit::TestCase
 
     assert_equal(16, kits[:stereo16].bits_per_sample)
     assert_equal(2, kits[:stereo16].num_channels)
-
-    #assert_equal(16, kits[:basic_composite].bits_per_sample)
-    #assert_equal(1, kits[:basic_composite].num_channels)
-
-    #assert_equal(16, kits[:mismatched_bps_composite].bits_per_sample)
-    #assert_equal(1, kits[:mismatched_bps_composite].num_channels)
-
-    #assert_equal(16, kits[:mismatched_channels_composite].bits_per_sample)
-    #assert_equal(2, kits[:mismatched_channels_composite].num_channels)
-
-    #assert_equal(16, kits[:mismatched_everything_composite].bits_per_sample)
-    #assert_equal(2, kits[:mismatched_everything_composite].num_channels)
   end
 
   def test_invalid_initialization
@@ -77,19 +55,11 @@ class KitTest < Test::Unit::TestCase
     assert_raise(SoundFileNotFoundError) { Kit.new("test/sounds", {"mono16" => "bass_mono_16.wav",
                                                                    "i_do_not_exist" => "i_do_not_exist.wav"}) }
 
-    #assert_raise(SoundFileNotFoundError) { Kit.new("test/sounds", {"mono16" => "bass_mono_16.wav",
-    #                                                               "composite" => ["bass_mono_16.wav", "snare_mono_16.wav"],
-    #                                                               "i_do_not_exist" => "i_do_not_exist.wav"}) }
-
     # Tests for adding invalid sound files to Kit
     assert_raise(InvalidSoundFormatError) { Kit.new("test", {"bad" => "kit_test.rb"}) }
 
     assert_raise(InvalidSoundFormatError) { Kit.new("test", {"mono16" => "sounds/bass_mono_16.wav",
                                                              "bad" => "kit_test.rb"}) }
-
-    #assert_raise(InvalidSoundFormatError) { Kit.new("test", {"mono16" => "sounds/bass_mono_16.wav",
-    #                                                         "composite" => ["sounds/bass_mono_16.wav", "sounds/snare_mono_16.wav"],
-    #                                                         "bad" => "kit_test.rb"}) }
   end
 
   def test_get_sample_data
@@ -114,21 +84,5 @@ class KitTest < Test::Unit::TestCase
       # Assert it has 2 channels. This is true if every item is an Array.
       assert_equal([], sample_data.select {|sample| sample.class != Array})
     end
-
-    #actual_sample_data = kits[:basic_composite].get_sample_data("composite_mono8")
-    #expected_sample_data = WaveFile.open("test/sounds/composite_snare_mono_8_tom3_mono_8_mono_16.wav").sample_data
-    #assert_equal(expected_sample_data, actual_sample_data)
-
-    #actual_sample_data = kits[:mismatched_bps_composite].get_sample_data("composite_mono16")
-    #expected_sample_data = WaveFile.open("test/sounds/composite_snare_mono_8_tom3_mono_16_mono_16.wav").sample_data
-    #assert_equal(expected_sample_data, actual_sample_data)
-
-    #actual_sample_data = kits[:mismatched_channels_composite].get_sample_data("composite_stereo16")
-    #expected_sample_data = WaveFile.open("test/sounds/composite_snare_stereo_16_tom3_mono_16_stereo_16.wav").sample_data
-    #assert_equal(expected_sample_data, actual_sample_data)
-
-    #actual_sample_data = kits[:mismatched_everything_composite].get_sample_data("composite_stereo16")
-    #expected_sample_data = WaveFile.open("test/sounds/composite_snare_stereo_8_tom3_mono_16_stereo_16.wav").sample_data
-    #assert_equal(expected_sample_data[0..10], actual_sample_data[0..10])
   end
 end
