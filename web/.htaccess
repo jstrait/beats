@@ -15,3 +15,7 @@ RewriteRule ^examples$ /examples/ [r=301]
 RewriteRule ^examples/$ /examples.php
 RewriteRule ^strategyguide$ /strategyguide/ [r=301]
 RewriteRule ^strategyguide/$ /docs.php
+RewriteRule ^tutorial$ /tutorial/ [r=301]
+RewriteRule ^tutorial/$ /tutorial.php
+RewriteRule ^usage$ /usage/ [r=301]
+RewriteRule ^usage/$ /usage.php
