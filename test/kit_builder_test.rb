@@ -20,7 +20,7 @@ class KitBuilderTest < Test::Unit::TestCase
 
     kit = kit_builder.build_kit
 
-    assert_equal(ImmutableKit, kit.class)
+    assert_equal(Kit, kit.class)
     assert_equal(2, kit.num_channels)
     assert_equal(16, kit.bits_per_sample)
     assert_equal(Array, kit.get_sample_data('mono8').class)
@@ -31,7 +31,7 @@ class KitBuilderTest < Test::Unit::TestCase
     kit_builder = KitBuilder.new("test/sounds")
 
     kit = kit_builder.build_kit
-    assert_equal(ImmutableKit, kit.class)
+    assert_equal(Kit, kit.class)
     assert_equal(1, kit.num_channels)
     assert_equal(16, kit.bits_per_sample)
   end
@@ -48,31 +48,5 @@ class KitBuilderTest < Test::Unit::TestCase
     kit_builder.add_item("ruby_file", "../kit_builder_test.rb")
 
     assert_raise(InvalidSoundFormatError) { kit_builder.build_kit }
-  end
-end
-
-class ImmutableKitTest < Test::Unit::TestCase
-  def test_kit_with_items
-    kit = ImmutableKit.new({'label1' => [1,2,3], 'label2' => [4,5,6], 'label3' => [7,8,9]}, 1, 16)
-
-    assert_equal([1,2,3], kit.get_sample_data('label1'))
-    assert_equal([4,5,6], kit.get_sample_data('label2'))
-    assert_raise(StandardError) { kit.get_sample_data('nope') }
-    assert_equal([7,8,9], kit.get_sample_data('label3'))
-  end
-
-  def test_kit_with_no_items
-    kit = ImmutableKit.new({}, 1, 16)
-    assert_raise(StandardError) { kit.get_sample_data('foo') }
-  end
-
-  def test_num_channels
-    kit = ImmutableKit.new({}, 2, 16)
-    assert_equal(2, kit.num_channels)
-  end
-
-  def test_bits_per_sample
-    kit = ImmutableKit.new({}, 2, 16)
-    assert_equal(16, kit.bits_per_sample)
   end
 end

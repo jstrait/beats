@@ -14,7 +14,7 @@ class MockAudioEngine < AudioEngine
 end
 
 # Allow setting sample data directly, instead of loading from a file
-class MockKit < ImmutableKit
+class MockKit < Kit
   attr_accessor :items
 end
 
