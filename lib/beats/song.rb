@@ -102,23 +102,6 @@ module Beats
       @patterns.reject! {|k, pattern| !@flow.member?(pattern.name) }
     end
 
-    # Serializes the current Song to a YAML string. This string can then be used to construct a new Song
-    # using the SongParser class. This lets you save a Song to disk, to be re-loaded later. Produces nicer
-    # looking output than the default version of to_yaml().
-    def to_yaml(kit)
-      # This implementation intentionally builds up a YAML string manually instead of using YAML::dump().
-      # Ruby 1.8 makes it difficult to ensure a consistent ordering of hash keys, which makes the output ugly
-      # and also hard to test.
-
-      yaml_output = "Song:\n"
-      yaml_output += "  Tempo: #{@tempo}\n"
-      yaml_output += flow_to_yaml()
-      yaml_output += kit.to_yaml(2)
-      yaml_output += patterns_to_yaml()
-
-      yaml_output
-    end
-
     attr_reader :patterns, :tempo
     attr_accessor :flow
 
@@ -126,37 +109,6 @@ module Beats
 
     def longest_length_in_array(arr)
       arr.inject(0) {|max_length, name| [name.to_s.length, max_length].max }
-    end
-
-    def flow_to_yaml
-      yaml_output = "  Flow:\n"
-      ljust_amount = longest_length_in_array(@flow) + 1  # The +1 is for the trailing ":"
-      previous = nil
-      count = 0
-      @flow.each do |pattern_name|
-        if pattern_name == previous || previous.nil?
-          count += 1
-        else
-          yaml_output += "    - #{(previous.to_s.capitalize + ':').ljust(ljust_amount)}  x#{count}\n"
-          count = 1
-        end
-        previous = pattern_name
-      end
-      yaml_output += "    - #{(previous.to_s.capitalize + ':').ljust(ljust_amount)}  x#{count}\n"
-
-      yaml_output
-    end
-
-    def patterns_to_yaml
-      yaml_output = ""
-
-      # Sort to ensure a consistent order, to make testing easier
-      pattern_names = @patterns.keys.map {|key| key.to_s}  # Ruby 1.8 can't sort symbols...
-      pattern_names.sort.each do |pattern_name|
-        yaml_output += "\n" + @patterns[pattern_name.to_sym].to_yaml()
-      end
-
-      yaml_output
     end
   end
 end

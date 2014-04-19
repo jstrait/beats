@@ -49,24 +49,6 @@ module Beats
       @tracks.length == other_pattern.tracks.length
     end
 
-    # Returns a YAML representation of the Pattern. Produces nicer looking output than the default
-    # version of to_yaml().
-    def to_yaml
-      longest_track_name_length =
-        @tracks.keys.inject(0) do |max_length, name|
-          (name.to_s.length > max_length) ? name.to_s.length : max_length
-        end
-      ljust_amount = longest_track_name_length + 7
-
-      yaml = "#{@name.to_s.capitalize}:\n"
-      @tracks.keys.sort.each do |track_name|
-        yaml += "  - #{track_name}:".ljust(ljust_amount)
-        yaml += "#{@tracks[track_name].rhythm}\n"
-      end
-
-      yaml
-    end
-
     attr_accessor :tracks, :name
 
   private
