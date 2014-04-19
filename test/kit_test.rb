@@ -131,21 +131,4 @@ class KitTest < Test::Unit::TestCase
     #expected_sample_data = WaveFile.open("test/sounds/composite_snare_stereo_8_tom3_mono_16_stereo_16.wav").sample_data
     #assert_equal(expected_sample_data[0..10], actual_sample_data[0..10])
   end
-
-  def test_scale!
-    sound_bank = {"a" => [-10, 0, 20], "b" => [], "c" => [12346, 9999]}
-
-    kit = MutableKit.new(".", {})
-    kit.sound_bank = sound_bank
-
-    kit.scale!(5)
-    assert_equal([-2, 0, 4], kit.get_sample_data("a"))
-    assert_equal([], kit.get_sample_data("b"))
-    assert_equal([2469, 1999], kit.get_sample_data("c"))
-
-    kit.scale!(2)
-    assert_equal([-1, 0, 2], kit.get_sample_data("a"))
-    assert_equal([], kit.get_sample_data("b"))
-    assert_equal([1234, 999], kit.get_sample_data("c"))
-  end
 end
