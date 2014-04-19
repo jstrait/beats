@@ -119,16 +119,15 @@ module Beats
       return raw_song_components
     end
 
-
     def build_kit(base_path, raw_kit, raw_patterns)
-      kit_items = {}
+      kit_builder = KitBuilder.new(base_path)
 
       # Add sounds defined in the Kit section of the song header
       # Converts [{a=>1}, {b=>2}, {c=>3}] from raw YAML to {a=>1, b=>2, c=>3}
       # TODO: Raise error is same name is defined more than once in the Kit
       unless raw_kit.nil?
         raw_kit.each do |kit_item|
-          kit_items[kit_item.keys.first] = kit_item.values.first
+          kit_builder.add_item(kit_item.keys.first, kit_item.values.first)
         end
       end
 
@@ -144,16 +143,15 @@ module Beats
             track_name = track_definition.keys.first
             track_path = track_name
 
-            if track_name != Pattern::FLOW_TRACK_NAME && kit_items[track_name].nil?
-              kit_items[track_name] = track_path
+            if track_name != Pattern::FLOW_TRACK_NAME && !kit_builder.has_label?(track_name)
+              kit_builder.add_item(track_name, track_path)
             end
           end
         end
       end
 
-      Kit.new(base_path, kit_items)
+      kit_builder.build_kit
     end
-
 
     def add_patterns_to_song(song, raw_patterns)
       raw_patterns.keys.each do |key|
