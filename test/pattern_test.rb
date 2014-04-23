@@ -42,6 +42,60 @@ class PatternTest < Test::Unit::TestCase
     assert_equal(pattern.tracks.length, 3)
   end
 
+  def test_track
+    pattern = Pattern.new("whatevs")
+
+    assert_equal({}, pattern.tracks)
+
+    pattern.track("my_sound", "X...X...")
+    assert_pattern_tracks(pattern, {"my_sound" => {name: "my_sound", rhythm: "X...X..."}})
+
+    # Rhythm is shorter than length of current longer rhythm, so should be made same length
+    pattern.track("my_other_sound", "X...")
+    assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X..."},
+                                    "my_other_sound" => {name: "my_other_sound", rhythm: "X......."}})
+
+    # Track has same name as previous track, and longer rhythm than previous tracks.
+    # Track should have expected name, but pattern key be unique.
+    # The rhythm of other existing tracks should be lengthened.
+    pattern.track("my_sound", ".X..........")
+    assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X......."},
+                                    "my_other_sound" => {name: "my_other_sound", rhythm: "X..........."},
+                                    "my_sound2"      => {name: "my_sound",       rhythm: ".X.........."}})
+
+    pattern.track("my_sound2", "..X.........")
+    assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X......."},
+                                    "my_other_sound" => {name: "my_other_sound", rhythm: "X..........."},
+                                    "my_sound2"      => {name: "my_sound",       rhythm: ".X.........."},
+                                    "my_sound22"     => {name: "my_sound2",      rhythm: "..X........."}})
+
+    pattern.track("my_sound", "..")
+    assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X......."},
+                                    "my_other_sound" => {name: "my_other_sound", rhythm: "X..........."},
+                                    "my_sound2"      => {name: "my_sound",       rhythm: ".X.........."},
+                                    "my_sound22"     => {name: "my_sound2",      rhythm: "..X........."},
+                                    "my_sound3"      => {name: "my_sound",       rhythm: "............"},})
+  end
+
+  def test_track_unique_name_already_taken
+    pattern = Pattern.new("whatevs")
+
+    assert_equal({}, pattern.tracks)
+
+    pattern.track("my_sound2", "X...X...")
+    assert_pattern_tracks(pattern, {"my_sound2" => {name: "my_sound2", rhythm: "X...X..."}})
+
+    pattern.track("my_sound", "X.X.X.X.")
+    assert_pattern_tracks(pattern, {"my_sound2" => {name: "my_sound2", rhythm: "X...X..."},
+                                    "my_sound"  => {name: "my_sound",  rhythm: "X.X.X.X."}})
+
+    # The first attempt at a unique name would be "my_sound2", but that is already taken
+    pattern.track("my_sound", "XXXXXXXX")
+    assert_pattern_tracks(pattern, {"my_sound2" => {name: "my_sound2", rhythm: "X...X..."},
+                                    "my_sound"  => {name: "my_sound",  rhythm: "X.X.X.X."},
+                                    "my_sound3" => {name: "my_sound",  rhythm: "XXXXXXXX"}})
+  end
+
   def test_step_count
     test_patterns = generate_test_data
 
@@ -95,5 +149,16 @@ class PatternTest < Test::Unit::TestCase
     something_extra.track("extra",     "X..X..X.")
     assert_equal(false, left_pattern.same_tracks_as?(something_extra))
     assert_equal(false, something_extra.same_tracks_as?(left_pattern))
+  end
+
+  private
+
+  def assert_pattern_tracks(pattern, expected_pattern_structure)
+    assert_equal(expected_pattern_structure.keys, pattern.tracks.keys)
+
+    expected_pattern_structure.each do |pattern_key, expected_track|
+      assert_equal(expected_track[:name],   pattern.tracks[pattern_key].name)
+      assert_equal(expected_track[:rhythm], pattern.tracks[pattern_key].rhythm)
+    end
   end
 end
