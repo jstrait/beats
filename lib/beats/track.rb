@@ -21,6 +21,19 @@ module Beats
     #   track.rhythm[x..y] = whatever
     def rhythm=(rhythm)
       @rhythm = rhythm.delete(BARLINE)
+      @beats = calculate_beats
+    end
+
+    def step_count
+      @rhythm.length
+    end
+
+    attr_accessor :name
+    attr_reader :rhythm, :beats
+
+    private
+
+    def calculate_beats
       beats = []
 
       beat_length = 0
@@ -41,14 +54,8 @@ module Beats
       if beats == []
         beats = [0]
       end
-      @beats = beats
-    end
 
-    def step_count
-      @rhythm.length
+      beats
     end
-
-    attr_accessor :name
-    attr_reader :rhythm, :beats
   end
 end
