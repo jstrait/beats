@@ -61,27 +61,27 @@ module Beats
 
     # Generates the sample data for a single track, using the specified sound's sample data.
     def generate_track_sample_data(track, sound)
-      beats = track.beats
-      if beats == [0]
+      trigger_step_lengths = track.trigger_step_lengths
+      if trigger_step_lengths == [0]
         return {:primary => [], :overflow => []}    # Is this really what should happen? Why throw away overflow?
       end
 
       fill_value = (@kit.num_channels == 1) ? 0 : [0, 0]
       primary_sample_data = [].fill(fill_value, 0, AudioUtils.step_start_sample(track.step_count, @step_sample_length))
 
-      step_index = beats[0]
-      beat_sample_length = 0
-      beats[1...(beats.length)].each do |beat_step_length|
+      step_index = trigger_step_lengths[0]
+      trigger_sample_length = 0
+      trigger_step_lengths[1...(trigger_step_lengths.length)].each do |trigger_step_length|
         start_sample = AudioUtils.step_start_sample(step_index, @step_sample_length)
         end_sample = [(start_sample + sound.length), primary_sample_data.length].min
-        beat_sample_length = end_sample - start_sample
+        trigger_sample_length = end_sample - start_sample
 
-        primary_sample_data[start_sample...end_sample] = sound[0...beat_sample_length]
+        primary_sample_data[start_sample...end_sample] = sound[0...trigger_sample_length]
 
-        step_index += beat_step_length
+        step_index += trigger_step_length
       end
 
-      overflow_sample_data = (sound == [] || beats.length == 1) ? [] : sound[beat_sample_length...(sound.length)]
+      overflow_sample_data = (sound == [] || trigger_step_lengths.length == 1) ? [] : sound[trigger_sample_length...(sound.length)]
 
       {:primary => primary_sample_data, :overflow => overflow_sample_data}
     end
@@ -143,8 +143,8 @@ module Beats
         if pattern_track_names.member?(incoming_track_name)
           track = pattern.tracks[incoming_track_name]
 
-          if track.beats.length > 1
-            intro_length = (pattern.tracks[incoming_track_name].beats[0] * step_sample_length).floor
+          if track.trigger_step_lengths.length > 1
+            intro_length = (pattern.tracks[incoming_track_name].trigger_step_lengths[0] * step_sample_length).floor
             end_sample = [end_sample, intro_length].min
           end
         end

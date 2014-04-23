@@ -21,7 +21,7 @@ module Beats
     #   track.rhythm[x..y] = whatever
     def rhythm=(rhythm)
       @rhythm = rhythm.delete(BARLINE)
-      @beats = calculate_beats
+      @trigger_step_lengths = calculate_trigger_step_lengths
     end
 
     def step_count
@@ -29,33 +29,33 @@ module Beats
     end
 
     attr_accessor :name
-    attr_reader :rhythm, :beats
+    attr_reader :rhythm, :trigger_step_lengths
 
     private
 
-    def calculate_beats
-      beats = []
+    def calculate_trigger_step_lengths
+      trigger_step_lengths = []
 
-      beat_length = 0
+      trigger_step_length = 0
       @rhythm.each_char do |ch|
         if ch == BEAT
-          beats << beat_length
-          beat_length = 1
+          trigger_step_lengths << trigger_step_length
+          trigger_step_length = 1
         elsif ch == REST
-          beat_length += 1
+          trigger_step_length += 1
         else
           raise InvalidRhythmError, "Track #{@name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}' or '#{BARLINE}'"
         end
       end
 
-      if beat_length > 0
-        beats << beat_length
+      if trigger_step_length > 0
+        trigger_step_lengths << trigger_step_length
       end
-      if beats == []
-        beats = [0]
+      if trigger_step_lengths == []
+        trigger_step_lengths = [0]
       end
 
-      beats
+      trigger_step_lengths
     end
   end
 end
