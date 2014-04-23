@@ -39,6 +39,15 @@ class TrackTest < Test::Unit::TestCase
     assert_equal("..X...X...X...X.X...X...X...X...", test_tracks[:complicated].rhythm)
   end
 
+  def test_invalid_rhythm
+    assert_raise(InvalidRhythmError) { Track.new("bad_rhythm", "abcde") }
+    assert_raise(InvalidRhythmError) { Track.new("bad_rhythm", "X.X.e.X") }
+
+    track = Track.new("test", "X...")
+    assert_raise(InvalidRhythmError) { track.rhythm = "abcde" }
+    assert_raise(InvalidRhythmError) { track.rhythm = "X.X.e.X" }
+  end
+
   def test_step_count
     test_tracks = generate_test_data
 

@@ -13,7 +13,6 @@ module Beats
     BARLINE = "|"
 
     def initialize(name, rhythm)
-      # TODO: Add validation for input parameters
       @name = name
       self.rhythm = rhythm
     end
