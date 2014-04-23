@@ -27,8 +27,7 @@ module Beats
       @rhythm.length
     end
 
-    attr_accessor :name
-    attr_reader :rhythm, :trigger_step_lengths
+    attr_reader :name, :rhythm, :trigger_step_lengths
 
     private
 
