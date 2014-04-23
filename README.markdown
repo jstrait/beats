@@ -47,7 +47,7 @@ This release is for all you swingers out there. A new `Swing` declaration in the
     - snare.wav:  ....X.......X...
     - hihat.wav:  X.X.X.X.X.X.X.X.
 
-It will [sound like this](http://beatsdrummachine.com/media/straight.wav).
+It will [sound like this](http://beatsdrummachine.com/media/straight.wav). <audio src="http://beatsdrummachine.com/media/straight.wav" controls></audio>
 
 You can add an 8th note swing like this (notice the 3rd line, everything else is the same):
 
