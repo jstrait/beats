@@ -9,7 +9,7 @@ class TrackTest < Test::Unit::TestCase
     test_tracks[:with_overflow] = Track.new("bass", "...X")
     test_tracks[:with_barlines] = Track.new("bass", "|X.X.|X.X.|")
     test_tracks[:placeholder] = Track.new("bass", "....")
-    test_tracks[:complicated] = Track.new("bass", "..X...X...X...X.X...X...X...X...")
+    test_tracks[:complicated] = Track.new("bass", "..XX..X...X...X.X...X...X...X...")
 
     test_tracks
   end
@@ -35,8 +35,8 @@ class TrackTest < Test::Unit::TestCase
     assert_equal([4], test_tracks[:placeholder].trigger_step_lengths)
     assert_equal("....", test_tracks[:placeholder].rhythm)
 
-    assert_equal([2, 4, 4, 4, 2, 4, 4, 4, 4], test_tracks[:complicated].trigger_step_lengths)
-    assert_equal("..X...X...X...X.X...X...X...X...", test_tracks[:complicated].rhythm)
+    assert_equal([2, 1, 3, 4, 4, 2, 4, 4, 4, 4], test_tracks[:complicated].trigger_step_lengths)
+    assert_equal("..XX..X...X...X.X...X...X...X...", test_tracks[:complicated].rhythm)
   end
 
   def test_invalid_rhythm
