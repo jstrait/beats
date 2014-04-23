@@ -25,9 +25,7 @@ module Beats
       beats = []
 
       beat_length = 0
-      #rhythm.each_char{|ch|
-      @rhythm.each_byte do |ch|
-        ch = ch.chr
+      @rhythm.each_char do |ch|
         if ch == BEAT
           beats << beat_length
           beat_length = 1
