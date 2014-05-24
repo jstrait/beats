@@ -126,5 +126,37 @@ Chorus:
   - cowbell_high.wav: ................|..............X.</code></pre></p>
   <p><audio class="home-page" src="/media/tutorial_5.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
+  <div class="content-box">
+  <h2>Swing Beats</h2>
+  <p>These days you&#8217;re nobody if your beats don&#8217;t swing. Fortunately Beats lets you either swing 8th notes (i.e. every two <code>X</code>s or <code>.</code>s) or 16th notes (i.e. every X or <code>.</code>).</p>
+  <p>To do this, just add a <code>Swing</code> to the song header. The value can either be 8 or 16. The song below shows an example.</p>
+  <p><pre><code>Song:
+  Tempo: 120
+  Kit:
+    - bass:  bass.wav
+    - snare: snare.wav
+    - hihat: hh_closed.wav
+  Flow:
+    - Verse:  x4
+    - Chorus: x4
+  Swing: 8
+
+Verse:
+  - bass:             X...X...X...X...
+  - snare:            ....X.......X...
+  - hihat:            X.X.X.X.XX.XXXXX
+
+Chorus:
+  - bass:             XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
+  - snare:            ....X.......X...|....X.......X...
+  - hihat:            XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
+  - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
+  - conga_high.wav:   ....X....X......|................
+  - cowbell_high.wav: ................|..............X.</code></pre></p>
+  <p>Here is the song above with swung 8th notes:</p>
+  <p><audio class="home-page" src="/media/tutorial_7_swing8.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p>And with swung 16th notes:</p>
+  <p><audio class="home-page" src="/media/tutorial_7_swing16.wav" controls>Your browser can't play this audio file.</audio></p>
+  </div>
   </div>
 <? drawFooter(); ?>
