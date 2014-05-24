@@ -18,7 +18,8 @@ Verse:
     <p><pre><code>beats song.txt song.wav</code></pre></p>
     <p>If Beats ran successfully, it should print something like the following:</p>
     <p><pre><code>0:02 of audio written in 0.052459 seconds.</code></pre></p>
-    <p>There should now be a file called <code>song.wav</code> in the current directory. Play it in whatever media player you like. Pretty sweet!</p>
+    <p>There should now be a file called <code>song.wav</code> in the current directory. Play it in whatever media player you like. It should sound like this:</p>
+    <p><audio class="home-page" src="/media/tutorial_1.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Changing the Tempo</h2>
@@ -30,6 +31,7 @@ Verse:
 
 Verse:
   - bass.wav:  X...X...X...X...</code></pre></p>
+  <p><audio class="home-page" src="/media/tutorial_2_fast.wav" controls>Your browser can't play this audio file.</audio></p>
   <p>And this will play more slowly:</p>
   <p><pre><code>Song:
   Tempo: 60
@@ -38,6 +40,7 @@ Verse:
 
 Verse:
   - bass.wav:  X...X...X...X...</code></pre></p>
+  <p><audio class="home-page" src="/media/tutorial_2_slow.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Adding More Tracks</h2>
@@ -53,6 +56,7 @@ Verse:
   - hh_closed.wav:  X.X.X.X.XX.XXXXX
 
 </code></pre></p>
+  <p><audio class="home-page" src="/media/tutorial_3.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Repeating Patterns</h2>
@@ -68,6 +72,7 @@ Verse:
   - hh_closed.wav:  X.X.X.X.XX.XXXXX
 
 </code></pre></p>
+  <p><audio class="home-page" src="/media/tutorial_4.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Adding a New Pattern</h2>
@@ -90,5 +95,6 @@ Chorus:
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
   - cowbell_high.wav: ................|..............X.</code></pre></p>
+  <p><audio class="home-page" src="/media/tutorial_5.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
 <? drawFooter(); ?>
