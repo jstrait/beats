@@ -158,5 +158,41 @@ Chorus:
   <p>And with swung 16th notes:</p>
   <p><audio class="home-page" src="/media/tutorial_7_swing16.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
+    <div class="content-box">
+  <h2>Writing Each Track To a Separate Wave File</h2>
+  <p>If you want to use your beat in music editing software such as Logic, GarageBand, etc., you'll probably want to save each track as a separate Wave file. This way you can independently adjust the volume of each track, add effects to individual sounds, etc.</p>
+  <p>To do this, just add the <code>-s</code> option when running Beats. For example:</p>
+  <p><pre><code>beats -s song.txt song.wav</code></pre></p>
+  <p>If you add this option when running Beats for the following song:</p>
+  <p><pre><code>Song:
+  Tempo: 120
+  Kit:
+    - bass:  bass.wav
+    - snare: snare.wav
+    - hihat: hh_closed.wav
+  Flow:
+    - Verse:  x4
+    - Chorus: x4
+
+Verse:
+  - bass:             X...X...X...X...
+  - snare:            ....X.......X...
+  - hihat:            X.X.X.X.XX.XXXXX
+
+Chorus:
+  - bass:             XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
+  - snare:            ....X.......X...|....X.......X...
+  - hihat:            XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
+  - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
+  - conga_high.wav:   ....X....X......|................
+  - cowbell_high.wav: ................|..............X.</code></pre></p>
+  <p>Beats will create the Wave files below. Note how the bass tracks (for example) for the verse and chorus patterns are combined into one wave file.</p>
+  <p><label>song-bass.wav</label><audio class="home-page" src="/media/tutorial_8-bass.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><label>song-snare.wav</label><audio class="home-page" src="/media/tutorial_8-snare.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><label>song-hh_closed.wav</label><audio class="home-page" src="/media/tutorial_8-hh_closed.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><label>song-conga_low.wav</label><audio class="home-page" src="/media/tutorial_8-conga_low.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><label>song-conga_high.wav</label><audio class="home-page" src="/media/tutorial_8-conga_high.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><label>song-cowbell_high.wav</label><audio class="home-page" src="/media/tutorial_8-cowbell_high.wav" controls>Your browser can't play this audio file.</audio></p>
+  </div>
   </div>
 <? drawFooter(); ?>
