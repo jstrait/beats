@@ -150,6 +150,10 @@ audio.home-page {
   vertical-align: baseline;
 }
 
+audio.tutorial {
+  width: 100%;
+}
+
 audio.example-song {
   width: 55%;
 }

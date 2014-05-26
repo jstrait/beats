@@ -19,7 +19,7 @@ Verse:
     <p>If Beats ran successfully, it should print something like the following:</p>
     <p><pre><code>0:02 of audio written in 0.052459 seconds.</code></pre></p>
     <p>There should now be a file called <code>song.wav</code> in the current directory. Play it in whatever media player you like. It should sound like this:</p>
-    <p><audio class="home-page" src="/media/tutorial_1.wav" controls>Your browser can't play this audio file.</audio></p>
+    <p><audio class="tutorial" src="/media/tutorial_1.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Changing the Tempo</h2>
@@ -30,8 +30,10 @@ Verse:
     - Verse
 
 Verse:
-  - bass.wav:  X...X...X...X...</code></pre></p>
-  <p><audio class="home-page" src="/media/tutorial_2_fast.wav" controls>Your browser can't play this audio file.</audio></p>
+  - bass.wav:  X...X...X...X...
+
+</code></pre></p>
+  <p><audio class="tutorial" src="/media/tutorial_2_fast.wav" controls>Your browser can't play this audio file.</audio></p>
   <p>And this will play more slowly:</p>
   <p><pre><code>Song:
   Tempo: 60
@@ -39,8 +41,10 @@ Verse:
     - Verse
 
 Verse:
-  - bass.wav:  X...X...X...X...</code></pre></p>
-  <p><audio class="home-page" src="/media/tutorial_2_slow.wav" controls>Your browser can't play this audio file.</audio></p>
+  - bass.wav:  X...X...X...X...
+
+</code></pre></p>
+  <p><audio class="tutorial" src="/media/tutorial_2_slow.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Adding More Tracks</h2>
@@ -56,7 +60,7 @@ Verse:
   - hh_closed.wav:  X.X.X.X.XX.XXXXX
 
 </code></pre></p>
-  <p><audio class="home-page" src="/media/tutorial_3.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><audio class="tutorial" src="/media/tutorial_3.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Repeating Patterns</h2>
@@ -72,7 +76,7 @@ Verse:
   - hh_closed.wav:  X.X.X.X.XX.XXXXX
 
 </code></pre></p>
-  <p><audio class="home-page" src="/media/tutorial_4.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><audio class="tutorial" src="/media/tutorial_4.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Adding a New Pattern</h2>
@@ -95,7 +99,7 @@ Chorus:
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
   - cowbell_high.wav: ................|..............X.</code></pre></p>
-  <p><audio class="home-page" src="/media/tutorial_5.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><audio class="tutorial" src="/media/tutorial_5.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Adding a Kit</h2>
@@ -124,7 +128,7 @@ Chorus:
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
   - cowbell_high.wav: ................|..............X.</code></pre></p>
-  <p><audio class="home-page" src="/media/tutorial_5.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p><audio class="tutorial" src="/media/tutorial_5.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
   <h2>Swing Beats</h2>
@@ -152,11 +156,11 @@ Chorus:
   - hihat:            XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
-  - cowbell_high.wav: ................|..............X.</code></pre></p>
-  <p>Here is the song above with swung 8th notes:</p>
-  <p><audio class="home-page" src="/media/tutorial_7_swing8.wav" controls>Your browser can't play this audio file.</audio></p>
-  <p>And with swung 16th notes:</p>
-  <p><audio class="home-page" src="/media/tutorial_7_swing16.wav" controls>Your browser can't play this audio file.</audio></p>
+  - cowbell_high.wav: ................|..............X.
+
+</code></pre></p>
+  <p>Here is the song above with swung 8th notes: <audio class="tutorial" src="/media/tutorial_7_swing8.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p>And with swung 16th notes: <audio class="tutorial" src="/media/tutorial_7_swing16.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
     <div class="content-box">
   <h2>Writing Each Track To a Separate Wave File</h2>
@@ -185,14 +189,16 @@ Chorus:
   - hihat:            XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
-  - cowbell_high.wav: ................|..............X.</code></pre></p>
+  - cowbell_high.wav: ................|..............X.
+
+</code></pre></p>
   <p>Beats will create the Wave files below. Note how the bass tracks (for example) for the verse and chorus patterns are combined into one wave file.</p>
-  <p><label>song-bass.wav</label><audio class="home-page" src="/media/tutorial_8-bass.wav" controls>Your browser can't play this audio file.</audio></p>
-  <p><label>song-snare.wav</label><audio class="home-page" src="/media/tutorial_8-snare.wav" controls>Your browser can't play this audio file.</audio></p>
-  <p><label>song-hh_closed.wav</label><audio class="home-page" src="/media/tutorial_8-hh_closed.wav" controls>Your browser can't play this audio file.</audio></p>
-  <p><label>song-conga_low.wav</label><audio class="home-page" src="/media/tutorial_8-conga_low.wav" controls>Your browser can't play this audio file.</audio></p>
-  <p><label>song-conga_high.wav</label><audio class="home-page" src="/media/tutorial_8-conga_high.wav" controls>Your browser can't play this audio file.</audio></p>
-  <p><label>song-cowbell_high.wav</label><audio class="home-page" src="/media/tutorial_8-cowbell_high.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p class="last"><label>song-bass.wav</label><audio class="tutorial" src="/media/tutorial_8-bass.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p class="last"><label>song-snare.wav</label><audio class="tutorial" src="/media/tutorial_8-snare.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p class="last"><label>song-hh_closed.wav</label><audio class="tutorial" src="/media/tutorial_8-hh_closed.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p class="last"><label>song-conga_low.wav</label><audio class="tutorial" src="/media/tutorial_8-conga_low.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p class="last"><label>song-conga_high.wav</label><audio class="tutorial" src="/media/tutorial_8-conga_high.wav" controls>Your browser can't play this audio file.</audio></p>
+  <p class="last"><label>song-cowbell_high.wav</label><audio class="tutorial" src="/media/tutorial_8-cowbell_high.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   </div>
 <? drawFooter(); ?>
