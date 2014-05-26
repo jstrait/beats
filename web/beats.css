@@ -95,6 +95,8 @@ pre {
   font-size: 0.5em;
   line-height: 1.5em;
   letter-spacing: 0.45em;
+  max-width: 100%;
+  overflow: scroll;
 }
 
 pre.single-line {
