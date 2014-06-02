@@ -1,5 +1,6 @@
 require 'beats/audioengine'
 require 'beats/audioutils'
+require 'beats/remote_resource'
 require 'beats/beatsrunner'
 require 'beats/kit'
 require 'beats/kit_builder'
@@ -11,5 +12,5 @@ require 'beats/track'
 require 'beats/transforms/song_swinger'
 
 module Beats
-  VERSION = "1.3.0"
+  VERSION = "1.4.0"
 end
