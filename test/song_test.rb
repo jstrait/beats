@@ -54,36 +54,24 @@ class SongTest < Test::Unit::TestCase
     song.tempo = 145.854
     assert_equal(145.854, song.tempo)
 
-    assert_raise(InvalidTempoError) do
-      song.tempo = -1
-    end
-
-    assert_raise(InvalidTempoError) do
-      song.tempo = -1.0
-    end
-
-    assert_raise(InvalidTempoError) do
-      song.tempo = "abc"
-    end
-
-    assert_raise(InvalidTempoError) do
-      song.tempo = "150"
+    [-1, -1.0, "abc", "150"].each do |invalid_tempo|
+      assert_raise(InvalidTempoError) { song.tempo = invalid_tempo }
     end
   end
 
   def test_pattern
     song = Song.new
-    verse1 = song.pattern :Verse
+    verse1 = song.pattern(:Verse)
 
     assert_equal(:Verse, verse1.name)
     assert_equal({:Verse => verse1}, song.patterns)
 
-    verse2 = song.pattern :Verse
+    verse2 = song.pattern(:Verse)
     assert_equal(:Verse, verse2.name)
     assert_equal({:Verse => verse2}, song.patterns)
     assert_not_equal(verse1, verse2)
 
-    chorus = song.pattern :Chorus
+    chorus = song.pattern(:Chorus)
     assert_equal(2, song.patterns.length)
     assert_equal({:Chorus => chorus, :Verse => verse2}, song.patterns)
   end
