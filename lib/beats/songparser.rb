@@ -132,9 +132,6 @@ module Beats
       end
 
       # Add sounds not defined in Kit section, but used in individual tracks
-      # TODO Investigate detecting duplicate keys already defined in the Kit section, as this could possibly
-      # result in a performance improvement when the sound has to be converted to a different bit rate/num channels,
-      # as well as use less memory.
       raw_patterns.keys.each do |key|
         track_list = raw_patterns[key]
 
