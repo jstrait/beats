@@ -32,7 +32,7 @@ module Beats
       @labels_to_filenames.each do |label, filename|
         labels_to_buffers[label] = filenames_to_buffers[filename].samples
       end
-      labels_to_buffers['placeholder'] = []
+      labels_to_buffers[Kit::PLACEHOLDER_TRACK_NAME] = []
 
       Kit.new(labels_to_buffers, num_channels, BITS_PER_SAMPLE)
     end

@@ -82,7 +82,7 @@ module Beats
           # Otherwise, this pattern will have no steps, and no sound will be generated,
           # causing the pattern to be "compacted away".
           if new_pattern.tracks.empty?
-            new_pattern.track("placeholder", blank_track_pattern)
+            new_pattern.track(Kit::PLACEHOLDER_TRACK_NAME, blank_track_pattern)
           end
 
           step_index += max_pattern_length
