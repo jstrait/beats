@@ -18,12 +18,12 @@ module Beats
 
     def run
       base_path = @options[:base_path] || File.dirname(@input_file_name)
-      song, kit = SongParser.new().parse(base_path, File.read(@input_file_name))
+      song, kit = SongParser.new.parse(base_path, File.read(@input_file_name))
 
       song = normalize_for_pattern_option(song)
       songs_to_generate = normalize_for_split_option(song)
 
-      song_optimizer = SongOptimizer.new()
+      song_optimizer = SongOptimizer.new
       durations = songs_to_generate.collect do |output_file_name, song|
         song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
         AudioEngine.new(song, kit).write_to_file(output_file_name)
