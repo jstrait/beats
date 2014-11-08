@@ -36,10 +36,6 @@ module Beats
     #
     # Returns the sample data Array for the sound bound to label.
     def get_sample_data(label)
-      if label == "placeholder"
-        return []
-      end
-
       sample_data = @items[label]
 
       if sample_data.nil?
