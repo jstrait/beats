@@ -7,7 +7,7 @@ module Beats
   class InvalidSoundFormatError < RuntimeError; end
 
   class Kit
-    PLACEHOLDER_TRACK_NAME = 'placeholder'
+    PLACEHOLDER_TRACK_NAME = 'empty_track_placeholder_name_234hkj32hjk4hjkhds23'
 
     def initialize(items, num_channels, bits_per_sample)
       @items = items

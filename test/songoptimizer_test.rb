@@ -161,8 +161,8 @@ Verse:
     assert_equal("X...", pattern.tracks["bass"].rhythm)
 
     pattern = optimized_song.patterns[:verse_4]
-    assert_equal(["placeholder"], pattern.tracks.keys.sort)
-    assert_equal("....", pattern.tracks["placeholder"].rhythm)
+    assert_equal([Kit::PLACEHOLDER_TRACK_NAME], pattern.tracks.keys.sort)
+    assert_equal("....", pattern.tracks[Kit::PLACEHOLDER_TRACK_NAME].rhythm)
 
     pattern = optimized_song.patterns[:verse_8]
     assert_equal(["bass", "snare"], pattern.tracks.keys.sort)
