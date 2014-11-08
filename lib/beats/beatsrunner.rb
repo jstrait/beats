@@ -58,7 +58,6 @@ module Beats
       if @options[:split]
         split_songs = song.split()
         split_songs.each do |track_name, split_song|
-          # TODO: Move building the output file name into its own method?
           extension = File.extname(@output_file_name)
           file_name = File.dirname(@output_file_name) + "/" +
                       File.basename(@output_file_name, extension) + "-" + File.basename(track_name, extension) +
