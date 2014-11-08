@@ -140,7 +140,7 @@ module Beats
             track_name = track_definition.keys.first
             track_path = track_name
 
-            if track_name != Pattern::FLOW_TRACK_NAME && !kit_builder.has_label?(track_name)
+            if !kit_builder.has_label?(track_name)
               kit_builder.add_item(track_name, track_path)
             end
           end

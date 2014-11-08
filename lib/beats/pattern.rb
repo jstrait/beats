@@ -5,8 +5,6 @@ module Beats
   # This object is like sheet music; the AudioEngine is responsible creating actual
   # audio data for a Pattern (with the help of a Kit).
   class Pattern
-    FLOW_TRACK_NAME = "flow"
-
     def initialize(name)
       @name = name
       @tracks = {}
