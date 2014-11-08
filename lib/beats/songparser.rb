@@ -155,14 +155,13 @@ module Beats
         new_pattern = song.pattern key.to_sym
 
         track_list = raw_patterns[key]
-        # TODO Also raise error if only there is only 1 track and it's a flow track
+
         if track_list.nil?
           # TODO: Use correct capitalization of pattern name in error message
           # TODO: Possibly allow if pattern not referenced in the Flow, or has 0 repeats?
           raise SongParseError, "Pattern '#{key}' has no tracks. It needs at least one."
         end
 
-        # TODO: What if there is more than one flow? Raise error, or have last one win?
         track_list.each do |track_definition|
           track_name = track_definition.keys.first
 
