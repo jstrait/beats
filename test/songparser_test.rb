@@ -96,6 +96,14 @@ class SongParserTest < Test::Unit::TestCase
     assert_equal("..............X.", song.patterns[:verse].tracks["snare"].rhythm)
     assert_equal("X.XXX.XXX.X.X.X.", song.patterns[:verse].tracks["hh_closed"].rhythm)
     assert_equal("..............XX", song.patterns[:verse].tracks["agogo"].rhythm)
+    assert_equal(["bass", "bass2", "hh_closed", "snare", "test/sounds/tom2_mono_16.wav", "test/sounds/tom4_mono_16.wav"],
+                 song.patterns[:chorus].tracks.keys.sort)
+    assert_equal("X...X...XX..X...", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("....X.......X...", song.patterns[:chorus].tracks["snare"].rhythm)
+    assert_equal("X.XXX.XXX.XX..X.", song.patterns[:chorus].tracks["hh_closed"].rhythm)
+    assert_equal("..X..X..X..X..X.", song.patterns[:chorus].tracks["bass2"].rhythm)
+    assert_equal("...........X....", song.patterns[:chorus].tracks["test/sounds/tom4_mono_16.wav"].rhythm)
+    assert_equal("..............X.", song.patterns[:chorus].tracks["test/sounds/tom2_mono_16.wav"].rhythm)
 
     song = test_songs[:with_structure]
     assert_equal([:verse, :verse], song.flow)
