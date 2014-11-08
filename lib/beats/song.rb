@@ -21,7 +21,6 @@ module Beats
     # Adds a new pattern to the song, with the specified name.
     def pattern(name)
       @patterns[name] = Pattern.new(name)
-      @patterns[name]
     end
 
 
