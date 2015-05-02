@@ -9,16 +9,25 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+a {
+  color: #00b12e;
+}
+
+a.toggle {
+  margin-bottom: 1.5em;
+  display: inline-block;
+}
+
 .menubar {
   background: #fff;
   width: 576px;
   margin: 1.5em auto;
-  padding: 0.0em 1.5em;
+  padding: 0 1.5em;
 }
 
 .menubar ul {
-  margin: 0.0em;
-  padding: 0.0em;
+  margin: 0;
+  padding: 0;
   overflow: auto;
 }
 
@@ -29,63 +38,54 @@ body {
   font-weight: bold;
 }
 
-.menubar li a {
-  color: #00b12e;
-}
-
 .content-box {
   background: #fff;
   width: 576px;
   margin: 3.0em auto;
-  padding: 0.0em 1.5em;
+  padding: 0 1.5em;
 }
 
 .content-box h1 {
-  font-family: eurostile;
   font-size: 3.0em;
   line-height: 1.0em;
-  margin: 0.0em;
+  margin: 0;
   color: #00b12e;
 	
   background: url(logo.png) center left no-repeat;
   text-indent: -5000px;
   height: 72px;
-  outline: 0px;
+  outline: 0;
   
   /* Following added to fix IE bug with text-indent property */
-  font-size: 0px;
+  font-size: 0;
   display: block;
-  line-height: 0px;
+  line-height: 0;
 }
 
 .content-box h2 {
   color: #00b12e;
-  margin: 0.0em 0.0em 1.0em 0.0em;
+  margin: 0 0 1.0em 0;
   font-size: 1.5em;
   line-height: 1.0em;
 }
 
 .content-box h3 {
-  margin: 0.0em 0.0em 0.0em 0.0em;
+  margin: 0;
   font-size: 1.0em;
   line-height: 1.5em;
 }
 
-.content-box a {
-  color: #00b12e;
-}
-
 .content-box p {
-  margin: 0.0em 0.0em 1.5em 0.0em;
+  margin: 0 0 1.5em 0;
   font-weight: bold;
 }
 
 .content-box p.last {
-  margin-bottom: 0.0em;
+  margin-bottom: 0;
 }
 
 pre {
-  margin: 0.0em 0.0em 3.0em 0.0em;
+  margin: 0 0 3.0em 0;
   font-size: 0.5em;
   line-height: 1.5em;
   letter-spacing: 0.45em;
@@ -102,15 +102,15 @@ pre code {
 }
 
 code {
-  margin: 0.0em;
+  margin: 0;
   font-family: menlo, consolas, monaco, courier, monospace;
   font-weight: normal;
   line-height: 16px;
 }
 
 ul {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 ol {
@@ -166,24 +166,14 @@ audio.example-song {
 
 div#about {
   text-align: center;
-  padding-bottom: 0.0em;
+  padding-bottom: 0;
 }
 
 h2#strategy-guide {
-  margin-bottom: 0.0em;
-}
-
-p#hot-tips {
-  font-style: italic;
-  color: #ccc;
+  margin-bottom: 0;
 }
 
 .note {
   font-style: italic;
   color: #ccc;
-}
-
-a.toggle {
-  margin-bottom: 1.5em;
-  display: inline-block;
 }
