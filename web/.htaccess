@@ -19,3 +19,5 @@ RewriteRule ^tutorial$ /tutorial/ [r=301]
 RewriteRule ^tutorial/$ /tutorial.php
 RewriteRule ^usage$ /usage/ [r=301]
 RewriteRule ^usage/$ /usage.php
+RewriteRule ^how_it_works$ /how_it_works/ [r=301]
+RewriteRule ^how_it_works/$ /how_it_works.php
