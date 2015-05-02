@@ -14,7 +14,6 @@ function drawHeader() {
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
-  <a href="http://github.com/jstrait/beats"><img id="github-banner" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   <div class="menubar">
     <ul>
       <li><a href="/">Home</a></li>
