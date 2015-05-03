@@ -25,7 +25,7 @@ Verse:
   <h2>Changing the Tempo</h2>
   <p>By default, your song will play at 120 beats per minute. You can also specify your own tempo in the song header. This will play faster:</p>
   <p><pre><code>Song:
-  Tempo: 200
+<span class="difference">  Tempo: 200</span>
   Flow:
     - Verse
 
@@ -36,7 +36,7 @@ Verse:
   <p><audio class="tutorial" src="/media/tutorial_2_fast.wav" controls>Your browser can't play this audio file.</audio></p>
   <p>And this will play more slowly:</p>
   <p><pre><code>Song:
-  Tempo: 60
+<span class="difference">  Tempo: 60</span>
   Flow:
     - Verse
 
@@ -56,8 +56,8 @@ Verse:
 
 Verse:
   - bass.wav:       X...X...X...X...
-  - snare.wav:      ....X.......X...
-  - hh_closed.wav:  X.X.X.X.XX.XXXXX
+<span class="difference">  - snare.wav:      ....X.......X...
+  - hh_closed.wav:  X.X.X.X.XX.XXXXX</span>
 
 </code></pre></p>
   <p><audio class="tutorial" src="/media/tutorial_3.wav" controls>Your browser can't play this audio file.</audio></p>
@@ -68,7 +68,7 @@ Verse:
   <p><pre><code>Song:
   Tempo: 120
   Flow:
-    - Verse:  x4
+    - Verse<span class="difference">:  x4</span>
 
 Verse:
   - bass.wav:       X...X...X...X...
@@ -85,20 +85,20 @@ Verse:
   Tempo: 120
   Flow:
     - Verse:  x4
-    - Chorus: x4
+<span class="difference">    - Chorus: x4</span>
 
 Verse:
   - bass.wav:         X...X...X...X...
   - snare.wav:        ....X.......X...
   - hh_closed.wav:    X.X.X.X.XX.XXXXX
 
-Chorus:
+<span class="difference">Chorus:
   - bass.wav:         XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
   - snare.wav:        ....X.......X...|....X.......X...
   - hh_closed.wav:    XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
-  - cowbell_high.wav: ................|..............X.</code></pre></p>
+  - cowbell_high.wav: ................|..............X.</span></code></pre></p>
   <p><audio class="tutorial" src="/media/tutorial_5.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
   <div class="content-box">
@@ -108,23 +108,23 @@ Chorus:
   <p>Notice how the patterns in this song use both sounds that are defined in the kit, as well as sounds that aren&#8217;t:</p>
   <p><pre><code>Song:
   Tempo: 120
-  Kit:
+<span class="difference">  Kit:
     - bass:  bass.wav
     - snare: snare.wav
-    - hihat: hh_closed.wav
+    - hihat: hh_closed.wav</span>
   Flow:
     - Verse:  x4
     - Chorus: x4
 
 Verse:
-  - bass:             X...X...X...X...
-  - snare:            ....X.......X...
-  - hihat:            X.X.X.X.XX.XXXXX
+  - <span class="difference">bass</span>:             X...X...X...X...
+  - <span class="difference">snare</span>:            ....X.......X...
+  - <span class="difference">hihat</span>:            X.X.X.X.XX.XXXXX
 
 Chorus:
-  - bass:             XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
-  - snare:            ....X.......X...|....X.......X...
-  - hihat:            XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
+  - <span class="difference">bass</span>:             XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
+  - <span class="difference">snare</span>:            ....X.......X...|....X.......X...
+  - <span class="difference">hihat</span>:            XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
   - cowbell_high.wav: ................|..............X.</code></pre></p>
@@ -143,7 +143,7 @@ Chorus:
   Flow:
     - Verse:  x4
     - Chorus: x4
-  Swing: 8
+<span class="difference">  Swing: 8</span>
 
 Verse:
   - bass:             X...X...X...X...

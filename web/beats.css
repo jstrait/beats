@@ -177,3 +177,7 @@ h2#strategy-guide {
   font-style: italic;
   color: #ccc;
 }
+
+.difference {
+  background: yellow;
+}
