@@ -40,4 +40,57 @@
     <h2>Source Code</h2>
     <p>It&#8217;s <a href="http://github.com/jstrait/beats">over at GitHub</a>.</p>
   </div>
+  <div class="content-box">
+    <h2>Release History</h2>
+    <h3 class="mt">1.3.0 &ndash; March 4, 2014</h3>
+    <ul class="bulleted">
+      <li>Songs can be swung (either by 8th note or 16th note), using the new <code>Swing</code> declaration in the song header.</li>
+      <li>Support for fractional tempos, such as 100.5</li>
+      <li>Bug fix: When you run the <code>beats</code> command with no arguments, it now displays the help screen, rather than an error message.</li>
+    </ul>
+    <h3 class="mt">1.2.5 &ndash; December 31, 2013</h3>
+    <ul class="bulleted">
+      <li>Tracks that start with a | no longer cause an error in Ruby 2.0.0 and 2.1.0.</li>
+      <li>Additional Wave file formats can now be used as samples, due to upgrading to WaveFile 0.6.0 behind the scenes: 24-bit PCM, 32-bit IEEE Float, 64-bit IEEE Float</li>
+    </ul>
+    <h3 class="mt">1.2.4 &ndash; December 22, 2012</h3>
+    <ul class="bulleted">
+      <li>Now fully supports MRI 1.9.3</li>
+      <li>Now supports 32-bit PCM Wave files, due to upgrading to WaveFile 0.4.0. Previously, only 8-bit and 16-bit PCM files were supported.</li>
+    </ul>
+    <h3 class="mt">1.2.3 &ndash; December 31, 2011</h3>
+    <ul class="bulleted">
+      <li>Bug fix: You can now use <code>~</code> in sound file paths, and it will correctly expand to your home folder. (At least on UNIX OSes, I'm not sure if that works on Windows).</li>
+      <li>The new <code>--path</code> option allows setting the base path from which relative sound file paths are searched for.</li>
+    </ul>
+    <h3 class="mt">1.2.2 &ndash; June 13, 2011</h3>
+    <ul class="bulleted">
+      <li>Bug fix: Compatibility issues with Windows. Thanks to Luis Lavena for mentioning the problem and how to fix it.</li>
+      <li>Bug fix: Return the correct status code when Beats terminates, to improve scriptability.</li>
+    </ul>
+    <h3 class="mt">1.2.1 &ndash; March 6, 2011</h3>
+    <ul class="bulleted">
+      <li>You can use the <code>|</code> character to represent bar lines in a track rhythm. This is optional, but often makes longer rhythms easier to read.</li>
+      <li>The "Structure" section of the song header is now called "Flow". (You can still use "Structure" for now, but you'll get a warning).</li>
+      <li>A pattern can contain multiple tracks that use the same sound. Previously, Beats would pick one of those tracks as the 'winner', and the other tracks wouldn't be played.</li>
+      <li>Bug fix: A better error message is displayed if a sound file is in an unsupported format (such as MP3), or is not even a sound file.</li>
+    </ul>
+    <h3 class="mt">1.2.0 &ndash; July 12, 2010</h3>
+    <ul class="bulleted">
+      <li>Major performance improvements. Up to 19x faster.</li>
+    </ul>
+    <h3 class="mt">1.1.0 &ndash; April 12, 2010</h3>
+    <ul class="bulleted">
+      <li>Performance improvement: about a 2x speedup. (When using the <code>-s</code> option, no speedup).</li>
+      <li>Added support for a <code>Kit</code> section in song headers.</li>
+      <li>Improved error messages displayed when song files have errors.</li>
+    </ul>
+    <h3 class="mt">1.0.0 &ndash; February 13, 2010</h3>
+    <ul class="bulleted">
+      <li>Initial version</li>
+      <li>Support for using 8 or 16-bit, mono or stereo sounds.</li>
+      <li>Support for the <code>-s</code> option, which saves each track to a separate file.</li>
+      <li>Support for the <code>-p</code> option, which only generates a single pattern.</li>
+    </ul>
+  </div>
 <? drawFooter(); ?>

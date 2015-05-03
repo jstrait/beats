@@ -123,6 +123,11 @@ ul li {
   line-height: 1.5em;
 }
 
+ul.bulleted li {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
 ol li {
   line-height: 1.5em;
   font-weight: bold;
@@ -180,4 +185,8 @@ h2#strategy-guide {
 
 .difference {
   background: yellow;
+}
+
+.content-box h3.mt {
+  margin-top: 1.5em;
 }
