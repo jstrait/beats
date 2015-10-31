@@ -2,7 +2,7 @@
    drawHeader(); ?>
   <div class="content-box">
     <h2>Getting Started</h2>
-    <p>Let&#8217;s make some beats! First thing, you gotta <a href="/download">download and install Beats</a>.</p>
+    <p>Let&#8217;s make some beats! First thing, you gotta <a href="/download/">download and install Beats</a>.</p>
     <p>Next, you&#8217;ll need some <code>*.wav</code> sound files. Download this set of <a href="/casio_sa20_drum_sounds.zip">sounds sampled from an ancient Casio keyboard</a>. Unzip that file to a folder.</p>
   </div>
   <div class="content-box">
