@@ -40,7 +40,7 @@
     <h2>Source Code</h2>
     <p>It&#8217;s <a href="http://github.com/jstrait/beats">over at GitHub</a>.</p>
   </div>
-  <div class="content-box">
+  <div id="release-history" class="content-box">
     <h2>Release History</h2>
     <h3 class="mt">1.3.0 &ndash; March 4, 2014</h3>
     <ul class="bulleted">
