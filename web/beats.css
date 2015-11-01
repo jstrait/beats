@@ -52,6 +52,7 @@ a.toggle {
   color: #00b12e;
 	
   background: url(logo.png) center left no-repeat;
+  background-size: auto 50px;
   text-indent: -5000px;
   height: 72px;
   outline: 0;
