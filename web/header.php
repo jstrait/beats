@@ -1,15 +1,13 @@
 <?
 function drawHeader() {
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <title>Beats Drum Machine</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="description" content="A drum machine written in Ruby." />
-  <meta name="keywords" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="A command-line drum machine written in Ruby." />
   <link rel="stylesheet" type="text/css" media="all" href="/beats.css" />
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
@@ -26,7 +24,7 @@ function drawHeader() {
 
 function drawFooter() {
 ?>
-<div id="about" class="content-box">
+  <div id="about" class="content-box">
     <p>Copyright &copy; 2010-15 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
   </div>
 </body>
