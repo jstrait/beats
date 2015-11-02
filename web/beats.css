@@ -20,7 +20,7 @@ a.toggle {
 
 .menubar {
   background: #fff;
-  width: 576px;
+  max-width: 576px;
   margin: 1.5em auto;
   padding: 0 1.5em;
 }
@@ -40,7 +40,7 @@ a.toggle {
 
 .content-box {
   background: #fff;
-  width: 576px;
+  max-width: 576px;
   margin: 3.0em auto;
   padding: 0 1.5em;
 }
