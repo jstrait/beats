@@ -19,7 +19,7 @@ class IntegrationTest < Test::Unit::TestCase
                         "sound_in_track_not_found.txt"]
 
     invalid_fixtures.each do |fixture_name|
-      assert_raise(SongParseError) do
+      assert_raise(SongParser::ParseError) do
         beats = BeatsRunner.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false})
         beats.run
       end

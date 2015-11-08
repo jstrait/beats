@@ -147,12 +147,12 @@ class SongParserTest < Test::Unit::TestCase
 
   def test_invalid_parse
     INVALID_FIXTURES.each do |fixture|
-      assert_raise(SongParseError) do
+      assert_raise(SongParser::ParseError) do
         song = SongParserTest.load_fixture("invalid/#{fixture}.txt")
       end
     end
 
-    assert_raise(InvalidRhythmError) do
+    assert_raise(Track::InvalidRhythmError) do
       song = SongParserTest.load_fixture("invalid/bad_rhythm.txt")
     end
   end

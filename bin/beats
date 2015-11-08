@@ -57,7 +57,7 @@ def print_error(error, input_file_name)
     puts USAGE_INSTRUCTIONS
   when Errno::ENOENT
     puts "Song file '#{input_file_name}' not found.\n"
-  when SongParseError
+  when SongParser::ParseError
     puts "Song file '#{input_file_name}' has an error:\n"
     puts "  #{error}\n"
   when StandardError

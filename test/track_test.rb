@@ -40,12 +40,12 @@ class TrackTest < Test::Unit::TestCase
   end
 
   def test_invalid_rhythm
-    assert_raise(InvalidRhythmError) { Track.new("bad_rhythm", "abcde") }
-    assert_raise(InvalidRhythmError) { Track.new("bad_rhythm", "X.X.e.X") }
+    assert_raise(Track::InvalidRhythmError) { Track.new("bad_rhythm", "abcde") }
+    assert_raise(Track::InvalidRhythmError) { Track.new("bad_rhythm", "X.X.e.X") }
 
     track = Track.new("test", "X...")
-    assert_raise(InvalidRhythmError) { track.rhythm = "abcde" }
-    assert_raise(InvalidRhythmError) { track.rhythm = "X.X.e.X" }
+    assert_raise(Track::InvalidRhythmError) { track.rhythm = "abcde" }
+    assert_raise(Track::InvalidRhythmError) { track.rhythm = "X.X.e.X" }
   end
 
   def test_step_count

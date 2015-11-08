@@ -1,7 +1,4 @@
 module Beats
-  class SongParseError < RuntimeError; end
-
-
   # This class is used to parse a raw YAML song definition into domain objects (i.e.
   # Song, Pattern, Track, and Kit). These domain objects can then be used by AudioEngine
   # to generate the actual audio data that is saved to disk.
@@ -9,6 +6,8 @@ module Beats
   # The sole public method is parse(). It takes a raw YAML string and returns a Song and
   # Kit object (or raises an error if the YAML string couldn't be parsed correctly).
   class SongParser
+    class ParseError < RuntimeError; end
+
     DONT_USE_STRUCTURE_WARNING =
         "\n" +
         "WARNING! This song contains a 'Structure' section in the header.\n" +
@@ -44,16 +43,16 @@ module Beats
           song.tempo = raw_song_components[:tempo]
         end
       rescue InvalidTempoError => detail
-        raise SongParseError, "#{detail}"
+        raise ParseError, "#{detail}"
       end
 
       # 2.) Build the kit
       begin
         kit = build_kit(base_path, raw_song_components[:kit], raw_song_components[:patterns])
       rescue KitBuilder::SoundFileNotFoundError => detail
-        raise SongParseError, "#{detail}"
+        raise ParseError, "#{detail}"
       rescue KitBuilder::InvalidSoundFormatError => detail
-        raise SongParseError, "#{detail}"
+        raise ParseError, "#{detail}"
       end
 
       # 3.) Load patterns
@@ -61,7 +60,7 @@ module Beats
 
       # 4.) Set flow
       if raw_song_components[:flow].nil?
-        raise SongParseError, "Song must have a Flow section in the header."
+        raise ParseError, "Song must have a Flow section in the header."
       else
         set_song_flow(song, raw_song_components[:flow])
       end
@@ -71,7 +70,7 @@ module Beats
         begin
           song = Transforms::SongSwinger.transform(song, raw_song_components[:swing])
         rescue Transforms::InvalidSwingRateError => detail
-          raise SongParseError, "#{detail}"
+          raise ParseError, "#{detail}"
         end
       end
 
@@ -86,7 +85,7 @@ module Beats
       begin
         raw_song_definition = YAML.load(raw_yaml_string)
       rescue ArgumentError => detail
-        raise SongParseError, "Syntax error in YAML file"
+        raise ParseError, "Syntax error in YAML file"
       end
 
       raw_song_components = {}
@@ -95,7 +94,7 @@ module Beats
       unless raw_song_components[:full_definition]["song"].nil?
         raw_song_components[:header] = downcase_hash_keys(raw_song_components[:full_definition]["song"])
       else
-        raise SongParseError, NO_SONG_HEADER_ERROR_MSG
+        raise ParseError, NO_SONG_HEADER_ERROR_MSG
       end
       raw_song_components[:tempo]     = raw_song_components[:header]["tempo"]
       raw_song_components[:folder]    = raw_song_components[:header]["folder"]
@@ -159,7 +158,7 @@ module Beats
         if track_list.nil?
           # TODO: Use correct capitalization of pattern name in error message
           # TODO: Possibly allow if pattern not referenced in the Flow, or has 0 repeats?
-          raise SongParseError, "Pattern '#{key}' has no tracks. It needs at least one."
+          raise ParseError, "Pattern '#{key}' has no tracks. It needs at least one."
         end
 
         track_list.each do |track_definition|
@@ -191,16 +190,16 @@ module Beats
         multiples = multiples_str.to_i
 
         unless multiples_str.match(/[^0-9]/).nil?
-          raise SongParseError,
+          raise ParseError,
                 "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats should be a whole number."
         else
           if multiples < 0
-            raise SongParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
+            raise ParseError, "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Must be 0 or greater."
           elsif multiples > 0 && !song.patterns.has_key?(pattern_name_sym)
             # This test is purposefully designed to only throw an error if the number of repeats is greater
             # than 0. This allows you to specify an undefined pattern in the flow with "x0" repeats.
             # This can be convenient for defining the flow before all patterns have been added to the song file.
-            raise SongParseError, "Song flow includes non-existent pattern: #{pattern_name}."
+            raise ParseError, "Song flow includes non-existent pattern: #{pattern_name}."
           end
         end
 
