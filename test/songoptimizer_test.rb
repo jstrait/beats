@@ -18,10 +18,10 @@ Song:
     - Verse:   x2
     - Chorus:  x4
   Kit:
-    - bass:       sounds/bass.wav
-    - snare:      sounds/snare.wav
-    - hh_closed:  sounds/hh_closed.wav
-    - agogo:      sounds/agogo_high.wav
+    - bass:       sounds/bass_mono_8.wav
+    - snare:      sounds/snare_mono_8.wav
+    - hh_closed:  sounds/hh_closed_mono_8.wav
+    - agogo:      sounds/agogo_high_mono_8.wav
 
 Verse:
   - bass:             X...X...X...X...
@@ -33,8 +33,8 @@ Chorus:
   - bass:             X...X...XX..X...
   - snare:            ....X.......X...
   - hh_closed:        X.XXX.XXX.XX..X.
-  - sounds/tom4.wav:  ...........X....
-  - sounds/tom2.wav:  ..............X."
+  - sounds/tom4_mono_8.wav:  ...........X....
+  - sounds/tom2_mono_8.wav:  ..............X."
 
   EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN = "
 Song:
@@ -42,8 +42,8 @@ Song:
   Flow:
     - Verse:   x1
   Kit:
-    - bass:   sounds/bass.wav
-    - snare:  sounds/snare.wav
+    - bass:   sounds/bass_mono_8.wav
+    - snare:  sounds/snare_mono_8.wav
 
 Verse:
   - bass:   X.......X...
@@ -55,7 +55,7 @@ Verse:
 
   def test_optimize
     parser = SongParser.new
-    original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML)
+    original_song, kit = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
@@ -96,17 +96,17 @@ Verse:
     assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
 
     pattern = optimized_song.patterns[:chorus_8]
-    assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "sounds/tom4.wav"])
+    assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "sounds/tom4_mono_8.wav"])
     assert_equal(pattern.tracks["bass"].rhythm, "XX..")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "X.XX")
-    assert_equal(pattern.tracks["sounds/tom4.wav"].rhythm, "...X")
+    assert_equal(pattern.tracks["sounds/tom4_mono_8.wav"].rhythm, "...X")
 
     pattern = optimized_song.patterns[:chorus_12]
-    assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "snare", "sounds/tom2.wav"])
+    assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed", "snare", "sounds/tom2_mono_8.wav"])
     assert_equal(pattern.tracks["bass"].rhythm, "X...")
     assert_equal(pattern.tracks["snare"].rhythm, "X...")
     assert_equal(pattern.tracks["hh_closed"].rhythm, "..X.")
-    assert_equal(pattern.tracks["sounds/tom2.wav"].rhythm, "..X.")
+    assert_equal(pattern.tracks["sounds/tom2_mono_8.wav"].rhythm, "..X.")
 
     assert_equal(optimized_song.flow, [:chorus_0, :chorus_0, :verse_8, :verse_12,
                                        :chorus_0, :chorus_0, :verse_8, :verse_12,
@@ -124,7 +124,7 @@ Verse:
 
   def test_optimize_song_nondivisible_max_pattern_length
     parser = SongParser.new
-    original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, kit = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 7)
@@ -151,7 +151,7 @@ Verse:
 
   def test_optimize_song_containing_empty_pattern
     parser = SongParser.new
-    original_song, kit = parser.parse(File.dirname(__FILE__) + "/..", EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, kit = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
