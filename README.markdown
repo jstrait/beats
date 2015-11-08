@@ -29,9 +29,33 @@ Beats is a command-line drum machine written in pure Ruby. Feed it a song notate
 
 And [here's what it sounds like](http://beatsdrummachine.com/media/beat.mp3) after getting the Beats treatment. What a glorious groove!
 
+For more, check out [beatsdrummachine.com](http://beatsdrummachine.com)
 
-Current Status
---------------
+
+Installation
+------------
+
+To install the latest stable version (1.3.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+
+    gem install beats
+
+Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, use `sudo gem install beats` instead. If you are using RVM, plain `gem install beats` should work fine.
+
+Once installed, you can then run Beats from the command-line using the `beats` command.
+
+Beats is not very useful unless you have some sounds to use with it. You can download some example sounds from [http://beatsdrummachine.com](http://beatsdrummachine.com/download#drum-kits).
+
+
+Usage
+-----
+
+Beats runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit [https://github.com/jstrait/beats/wiki/Usage](https://github.com/jstrait/beats/wiki/Usage) on the [Beats Wiki](https://github.com/jstrait/beats/wiki).
+
+Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from sratch.
+
+
+What's New
+----------
 
 The latest stable version of Beats is 1.3.0, released on March 4, 2014.
 
@@ -74,28 +98,6 @@ This release also adds support for fractional tempos. For example:
 This release also includes a small bug fix. When you run the `beats` command with no arguments, it now displays the help screen, rather than an error message.
 
 
-Installation
-------------
-
-To install the latest stable version (1.3.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
-
-    gem install beats
-
-Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, use `sudo gem install beats` instead. If you are using RVM, plain `gem install beats` should work fine.
-
-Once installed, you can then run Beats from the command-line using the `beats` command.
-
-Beats is not very useful unless you have some sounds to use with it. You can download some example sounds from [http://beatsdrummachine.com](http://beatsdrummachine.com/download#drum-kits).
-
-
-Usage
------
-
-Beats runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit [https://github.com/jstrait/beats/wiki/Usage](https://github.com/jstrait/beats/wiki/Usage) on the [Beats Wiki](https://github.com/jstrait/beats/wiki).
-
-The Beats wiki also has a [Getting Started](https://github.com/jstrait/beats/wiki/Getting-Started) tutorial which shows how to create an example beat from scratch.
-
-
 Local Development
 -----------------
 
@@ -121,5 +123,5 @@ Contact me (Joel Strait) by sending a GitHub message or opening a GitHub issue.
 
 License
 -------
-Beats is released under the MIT license.
+Beats Drum Machine is released under the MIT license.
 
