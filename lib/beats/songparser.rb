@@ -42,7 +42,7 @@ module Beats
         unless raw_song_components[:tempo].nil?
           song.tempo = raw_song_components[:tempo]
         end
-      rescue InvalidTempoError => detail
+      rescue Song::InvalidTempoError => detail
         raise ParseError, "#{detail}"
       end
 
@@ -69,7 +69,7 @@ module Beats
       if raw_song_components[:swing]
         begin
           song = Transforms::SongSwinger.transform(song, raw_song_components[:swing])
-        rescue Transforms::InvalidSwingRateError => detail
+        rescue Transforms::SongSwinger::InvalidSwingRateError => detail
           raise ParseError, "#{detail}"
         end
       end

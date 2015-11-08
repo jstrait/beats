@@ -1,7 +1,4 @@
 module Beats
-  class InvalidTempoError < RuntimeError; end
-
-
   # Domain object which models the 'sheet music' for a full song. Models the Patterns
   # that should be played, in which order (i.e. the flow), and at which tempo.
   #
@@ -10,6 +7,8 @@ module Beats
   # A Kit provides the sample data for each of these sounds. With a Song and a Kit
   # the AudioEngine can produce the audio data that is saved to disk.
   class Song
+    class InvalidTempoError < RuntimeError; end
+
     DEFAULT_TEMPO = 120
 
     def initialize

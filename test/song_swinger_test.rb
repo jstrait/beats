@@ -145,7 +145,7 @@ class SongSwingerTest < Test::Unit::TestCase
       song = Song.new
       song.tempo = 100
 
-      assert_raise(Transforms::InvalidSwingRateError) do
+      assert_raise(Transforms::SongSwinger::InvalidSwingRateError) do
         song = Transforms::SongSwinger.transform(song, invalid_swing_rate)
       end
     end

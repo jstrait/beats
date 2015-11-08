@@ -55,7 +55,7 @@ class SongTest < Test::Unit::TestCase
     assert_equal(145.854, song.tempo)
 
     [-1, -1.0, "abc", "150"].each do |invalid_tempo|
-      assert_raise(InvalidTempoError) { song.tempo = invalid_tempo }
+      assert_raise(Song::InvalidTempoError) { song.tempo = invalid_tempo }
     end
   end
 
