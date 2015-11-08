@@ -1,12 +1,12 @@
 module Beats
-  # Raised when trying to load a sound file which can't be found at the path specified
-  class SoundFileNotFoundError < RuntimeError; end
-
-  # Raised when trying to load a sound file which either isn't actually a sound file, or
-  # is in an unsupported format.
-  class InvalidSoundFormatError < RuntimeError; end
-
   class KitBuilder
+    # Raised when trying to load a sound file which can't be found at the path specified
+    class SoundFileNotFoundError < RuntimeError; end
+
+    # Raised when trying to load a sound file which either isn't actually a sound file, or
+    # is in an unsupported format.
+    class InvalidSoundFormatError < RuntimeError; end
+
     BITS_PER_SAMPLE = 16
     SAMPLE_RATE = 44100
 

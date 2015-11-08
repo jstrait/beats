@@ -40,13 +40,13 @@ class KitBuilderTest < Test::Unit::TestCase
     kit_builder = KitBuilder.new("test/sounds")
     kit_builder.add_item("fake", "i_do_not_exist.wav")
 
-    assert_raise(SoundFileNotFoundError) { kit_builder.build_kit }
+    assert_raise(KitBuilder::SoundFileNotFoundError) { kit_builder.build_kit }
   end
 
   def test_build_kit_with_invalid_sound_file
     kit_builder = KitBuilder.new("test/sounds")
     kit_builder.add_item("ruby_file", "../kit_builder_test.rb")
 
-    assert_raise(InvalidSoundFormatError) { kit_builder.build_kit }
+    assert_raise(KitBuilder::InvalidSoundFormatError) { kit_builder.build_kit }
   end
 end

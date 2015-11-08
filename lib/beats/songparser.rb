@@ -50,9 +50,9 @@ module Beats
       # 2.) Build the kit
       begin
         kit = build_kit(base_path, raw_song_components[:kit], raw_song_components[:patterns])
-      rescue SoundFileNotFoundError => detail
+      rescue KitBuilder::SoundFileNotFoundError => detail
         raise SongParseError, "#{detail}"
-      rescue InvalidSoundFormatError => detail
+      rescue KitBuilder::InvalidSoundFormatError => detail
         raise SongParseError, "#{detail}"
       end
 
