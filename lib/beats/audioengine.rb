@@ -50,7 +50,7 @@ module Beats
       final_overflow_composite = AudioUtils.scale(final_overflow_composite, format.channels, num_tracks_in_song)
       writer.write(WaveFile::Buffer.new(final_overflow_composite, format))
 
-      writer.close()
+      writer.close
 
       writer.total_duration
     end

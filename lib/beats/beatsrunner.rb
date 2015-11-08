@@ -45,7 +45,7 @@ module Beats
         end
 
         song.flow = [pattern_name]
-        song.remove_unused_patterns()
+        song.remove_unused_patterns
       end
 
       song
@@ -56,7 +56,7 @@ module Beats
       songs_to_generate = {}
 
       if @options[:split]
-        split_songs = song.split()
+        split_songs = song.split
         split_songs.each do |track_name, split_song|
           extension = File.extname(@output_file_name)
           file_name = File.dirname(@output_file_name) + "/" +

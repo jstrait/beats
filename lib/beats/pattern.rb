@@ -19,7 +19,7 @@ module Beats
       # If the new track is longer than any of the previously added tracks,
       # pad the other tracks with trailing . to make them all the same length.
       # Necessary to prevent incorrect overflow calculations for tracks.
-      longest_track_length = step_count()
+      longest_track_length = step_count
       @tracks.values.each do |track|
         if track.rhythm.length < longest_track_length
           track.rhythm += "." * (longest_track_length - track.rhythm.length)

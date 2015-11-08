@@ -20,7 +20,7 @@ module Beats
     # generated faster.
     def optimize(original_song, max_pattern_length)
       # 1.) Create a new song, cloned from the original
-      optimized_song = original_song.copy_ignoring_patterns_and_flow()
+      optimized_song = original_song.copy_ignoring_patterns_and_flow
 
       # 2.) Subdivide patterns
       optimized_song = subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
@@ -122,7 +122,7 @@ module Beats
       song.flow = new_flow
 
       # This isn't strictly necessary, but makes resulting songs easier to read for debugging purposes.
-      song.remove_unused_patterns()
+      song.remove_unused_patterns
 
       song
     end

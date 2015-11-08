@@ -59,7 +59,7 @@ module Beats
 
     # Returns a new Song that is identical but with no patterns or flow.
     def copy_ignoring_patterns_and_flow
-      copy = Song.new()
+      copy = Song.new
       copy.tempo = @tempo
 
       copy
@@ -73,7 +73,7 @@ module Beats
       track_names = track_names()
 
       track_names.each do |track_name|
-        new_song = copy_ignoring_patterns_and_flow()
+        new_song = copy_ignoring_patterns_and_flow
 
         @patterns.each do |name, original_pattern|
           new_pattern = new_song.pattern(name)
