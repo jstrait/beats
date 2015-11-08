@@ -1,5 +1,7 @@
 module Beats
   class Kit
+    class LabelNotFoundError < RuntimeError; end
+
     PLACEHOLDER_TRACK_NAME = 'empty_track_placeholder_name_234hkj32hjk4hjkhds23'
 
     def initialize(items, num_channels, bits_per_sample)
@@ -31,14 +33,11 @@ module Beats
     #
     # Returns the sample data Array for the sound bound to label.
     def get_sample_data(label)
-      sample_data = @items[label]
-
-      if sample_data.nil?
-        # TODO: Should we really throw an exception here rather than just returning nil?
-        raise StandardError, "Kit doesn't contain sound '#{label}'."
+      unless @items.has_key?(label)
+        raise LabelNotFoundError, "Kit doesn't contain sound '#{label}'."
       end
 
-      sample_data
+      @items[label]
     end
   end
 end
