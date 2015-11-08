@@ -47,7 +47,7 @@ module Beats
       @tracks.length == other_pattern.tracks.length
     end
 
-    attr_accessor :tracks, :name
+    attr_reader :tracks, :name
 
   private
 
