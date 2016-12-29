@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.executables = "beats"
 
   s.add_dependency "wavefile", "= 0.6.0"
+  s.add_dependency "httparty"
   # Syck is also a dependency for Ruby 2 environments.
   # It is installed at install-time if necessary,
   # via ext/mkrf_conf.rb
