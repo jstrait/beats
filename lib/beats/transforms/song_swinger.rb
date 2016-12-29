@@ -8,8 +8,6 @@ module Beats
 
         song.patterns.values.each do |pattern|
           pattern.tracks.values.each do |track|
-            original_rhythm = track.rhythm
-
             if swing_rate == 8
               track.rhythm = swing_8(track.rhythm)
             elsif swing_rate == 16
