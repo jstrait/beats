@@ -24,9 +24,9 @@ module Beats
       songs_to_generate = normalize_for_split_option(song)
 
       song_optimizer = SongOptimizer.new
-      durations = songs_to_generate.collect do |output_file_name, song|
-        song = song_optimizer.optimize(song, OPTIMIZED_PATTERN_LENGTH)
-        AudioEngine.new(song, kit).write_to_file(output_file_name)
+      durations = songs_to_generate.collect do |output_file_name, song_to_generate|
+        optimized_song = song_optimizer.optimize(song_to_generate, OPTIMIZED_PATTERN_LENGTH)
+        AudioEngine.new(optimized_song, kit).write_to_file(output_file_name)
       end
 
       {:duration => durations.last}
