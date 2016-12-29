@@ -50,7 +50,7 @@ module Beats
     end
 
     def tempo=(new_tempo)
-      unless (new_tempo.class == Integer || new_tempo.class == Float) && new_tempo > 0
+      unless (new_tempo.is_a?(Integer) || new_tempo.class == Float) && new_tempo > 0
         raise InvalidTempoError, "Invalid tempo: '#{new_tempo}'. Tempo must be a number greater than 0."
       end
 
