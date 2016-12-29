@@ -57,7 +57,7 @@ class IntegrationTest < Test::Unit::TestCase
 
     beats = BeatsRunner.new(song_fixture, actual_output_file, options)
     beats.run
-    assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
+    assert(File.exist?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
     # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
     expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read() }
@@ -96,7 +96,7 @@ class IntegrationTest < Test::Unit::TestCase
       end
       actual_output_file = "#{actual_output_prefix}-#{track_name}.wav"
       expected_output_file = "#{expected_output_prefix}-#{track_name}.wav"
-      assert(File.exists?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
+      assert(File.exist?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
       # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
       expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read }
@@ -114,7 +114,7 @@ class IntegrationTest < Test::Unit::TestCase
 
   def clean_output_folder()
     # Make the folder if it doesn't already exist
-    Dir.mkdir(OUTPUT_FOLDER) unless File.exists?(OUTPUT_FOLDER)
+    Dir.mkdir(OUTPUT_FOLDER) unless File.exist?(OUTPUT_FOLDER)
 
     dir = Dir.new(OUTPUT_FOLDER)
     file_names = dir.entries
