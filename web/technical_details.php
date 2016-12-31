@@ -83,7 +83,7 @@ Verse:
 
 <p>Replacing two patterns that have the same tracks with a single pattern allow for better caching by the audio engine. The audio engine will only ever generate the audio data for a pattern once, and will rely on a cached version each subsequent time it is played. If you have two patterns that are identical, the audio engine can end up generating audio data from scratch more often than is necessary.</p>
 
-<p>Humans are probably not too likely to define identical patterns in a song. However, breaking patterns into smaller pieces can often allow pattern consolidation to "detect" duplicated rhythms inside (or across) patterns. So, these two optimizations actually work in concert. The nice thing about this is that caching algorithm is really dumb and simple to implement, but is effective.</p>
+<p>Humans are probably not too likely to define identical patterns in a song. However, breaking patterns into smaller pieces can often allow pattern consolidation to &#8220;detect&#8221; duplicated rhythms inside (or across) patterns. So, these two optimizations actually work in concert. The nice thing about this is that caching algorithm is really dumb and simple to implement, but is effective.</p>
 
 <p>The <code>SongOptimizer</code> class is used to perform optimization. It contains a single public method, <code>optimize()</code>, which takes a <code>Song</code> object and returns a <code>Song</code> object that is optimized.</p>
 </div>
@@ -95,7 +95,7 @@ Verse:
 
 <p>At a high level, generating the song consists of iterating through the flow, generating the sample data for each pattern (or pulling it from cache), and then writing it to disk. The two main classes involved in this are <code>AudioEngine</code> and <code>AudioUtils</code>. <code>AudioEngine</code> is the main driver for generating audio data for each pattern, and writing it to disk. <code>AudioUtils</code>, as the name suggests, contains some general utility methods for working with audio data.</p>
 
-<p>Audio generation begins at the track level. First, an array is created with enough samples for each step in the track at the specified tempo. Each sample is initialized to 0. Then, the sample data for the track&rsquo;s sound is "painted" onto the array at the appropriate places. The method that does all this is <code>AudioEngine.generate_track_sample_data()</code>.</p>
+<p>Audio generation begins at the track level. First, an array is created with enough samples for each step in the track at the specified tempo. Each sample is initialized to 0. Then, the sample data for the track&rsquo;s sound is &#8220;painted&#8221; onto the array at the appropriate places. The method that does all this is <code>AudioEngine.generate_track_sample_data()</code>.</p>
 
 <p>Generating the sample data for a pattern consists of generating the sample data for each of it&rsquo;s tracks, and then mixing them into a single sample array. This is done using <code>AudioUtils.composite()</code>, which sums the corresponding samples from each array together. Each sample in the resulting array is then divided by a certain amount to prevent clipping.</p>
 
