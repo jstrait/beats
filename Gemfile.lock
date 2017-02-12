@@ -8,7 +8,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     rake (10.1.1)
-    syck (1.0.1)
+    syck (1.2.0)
     wavefile (0.6.0)
 
 PLATFORMS
@@ -18,3 +18,6 @@ DEPENDENCIES
   beats!
   rake
   syck
+
+BUNDLED WITH
+   1.14.3
