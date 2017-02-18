@@ -1,6 +1,6 @@
 require 'includes'
 
-class SongParserTest < Test::Unit::TestCase
+class SongParserTest < Minitest::Test
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
 
   # TODO: Add fixture for track with no rhythm
@@ -147,12 +147,12 @@ class SongParserTest < Test::Unit::TestCase
 
   def test_invalid_parse
     INVALID_FIXTURES.each do |fixture|
-      assert_raise(SongParser::ParseError) do
+      assert_raises(SongParser::ParseError) do
         song = SongParserTest.load_fixture("invalid/#{fixture}.txt")
       end
     end
 
-    assert_raise(Track::InvalidRhythmError) do
+    assert_raises(Track::InvalidRhythmError) do
       song = SongParserTest.load_fixture("invalid/bad_rhythm.txt")
     end
   end

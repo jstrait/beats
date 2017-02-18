@@ -7,6 +7,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    minitest (5.10.1)
     rake (12.0.0)
     syck (1.2.0)
     wavefile (0.6.0)
@@ -16,6 +17,7 @@ PLATFORMS
 
 DEPENDENCIES
   beats!
+  minitest (~> 5)
   rake
   syck
 

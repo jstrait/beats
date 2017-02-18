@@ -1,6 +1,6 @@
 require 'includes'
 
-class SongSwingerTest < Test::Unit::TestCase
+class SongSwingerTest < Minitest::Test
   def test_full_song_swing_rate_8
     base_path = File.dirname(__FILE__) + "/sounds"
     song, kit = SongParser.new.parse(base_path, File.read("test/fixtures/valid/example_mono_16_base_path.txt"))
@@ -145,7 +145,7 @@ class SongSwingerTest < Test::Unit::TestCase
       song = Song.new
       song.tempo = 100
 
-      assert_raise(Transforms::SongSwinger::InvalidSwingRateError) do
+      assert_raises(Transforms::SongSwinger::InvalidSwingRateError) do
         song = Transforms::SongSwinger.transform(song, invalid_swing_rate)
       end
     end

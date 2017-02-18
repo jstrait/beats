@@ -1,6 +1,6 @@
 require 'includes'
 
-class PatternTest < Test::Unit::TestCase
+class PatternTest < Minitest::Test
   SAMPLE_RATE = 44100
   SECONDS_IN_MINUTE = 60.0
 

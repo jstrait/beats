@@ -1,6 +1,6 @@
 require 'includes'
 
-class SongTest < Test::Unit::TestCase
+class SongTest < Minitest::Test
   FIXTURES = [:repeats_not_specified,
               :pattern_with_overflow,
               :example_no_kit,
@@ -55,7 +55,7 @@ class SongTest < Test::Unit::TestCase
     assert_equal(145.854, song.tempo)
 
     [-1, -1.0, "abc", "150"].each do |invalid_tempo|
-      assert_raise(Song::InvalidTempoError) { song.tempo = invalid_tempo }
+      assert_raises(Song::InvalidTempoError) { song.tempo = invalid_tempo }
     end
   end
 
@@ -69,7 +69,7 @@ class SongTest < Test::Unit::TestCase
     verse2 = song.pattern(:Verse)
     assert_equal(:Verse, verse2.name)
     assert_equal({:Verse => verse2}, song.patterns)
-    assert_not_equal(verse1, verse2)
+    refute_equal(verse1, verse2)
 
     chorus = song.pattern(:Chorus)
     assert_equal(2, song.patterns.length)
@@ -116,7 +116,7 @@ class SongTest < Test::Unit::TestCase
     original_song = test_songs[:example_no_kit]
     cloned_song = original_song.copy_ignoring_patterns_and_flow
 
-    assert_not_equal(cloned_song, original_song)
+    refute_equal(cloned_song, original_song)
     assert_equal(cloned_song.tempo, original_song.tempo)
     assert_equal([], cloned_song.flow)
     assert_equal({}, cloned_song.patterns)

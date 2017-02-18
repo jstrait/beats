@@ -1,6 +1,6 @@
 require 'includes'
 
-class IntegrationTest < Test::Unit::TestCase
+class IntegrationTest < Minitest::Test
   TRACK_NAMES =  ["bass", "snare", "hh_closed", "hh_closed2", "agogo", "tom4", "tom2"]
   OUTPUT_FOLDER = "test/integration_output"
 
@@ -19,7 +19,7 @@ class IntegrationTest < Test::Unit::TestCase
                         "sound_in_track_not_found.txt"]
 
     invalid_fixtures.each do |fixture_name|
-      assert_raise(SongParser::ParseError) do
+      assert_raises(SongParser::ParseError) do
         beats = BeatsRunner.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false})
         beats.run
       end

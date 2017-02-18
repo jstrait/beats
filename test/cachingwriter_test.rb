@@ -6,7 +6,7 @@ class StringCachingWriter < WaveFile::CachingWriter
 end
 
 # Basic tests for CachingWriter; the integration tests test it more thoroughly.
-class CachingWriterTest < Test::Unit::TestCase
+class CachingWriterTest < Minitest::Test
   def test_mono
     buffer1_bytes = [0, 0, 1, 0, 2, 0]
     buffer2_bytes = [3, 0, 4, 0, 5, 0]

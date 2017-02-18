@@ -6,7 +6,7 @@ class MockSongOptimizer < SongOptimizer
   end
 end
 
-class SongOptimizerTest < Test::Unit::TestCase
+class SongOptimizerTest < Minitest::Test
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
 
   EXAMPLE_SONG_YAML = "

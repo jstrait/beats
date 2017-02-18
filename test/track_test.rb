@@ -1,6 +1,6 @@
 require 'includes'
 
-class TrackTest < Test::Unit::TestCase
+class TrackTest < Minitest::Test
   def generate_test_data
     test_tracks = {}
 
@@ -40,12 +40,12 @@ class TrackTest < Test::Unit::TestCase
   end
 
   def test_invalid_rhythm
-    assert_raise(Track::InvalidRhythmError) { Track.new("bad_rhythm", "abcde") }
-    assert_raise(Track::InvalidRhythmError) { Track.new("bad_rhythm", "X.X.e.X") }
+    assert_raises(Track::InvalidRhythmError) { Track.new("bad_rhythm", "abcde") }
+    assert_raises(Track::InvalidRhythmError) { Track.new("bad_rhythm", "X.X.e.X") }
 
     track = Track.new("test", "X...")
-    assert_raise(Track::InvalidRhythmError) { track.rhythm = "abcde" }
-    assert_raise(Track::InvalidRhythmError) { track.rhythm = "X.X.e.X" }
+    assert_raises(Track::InvalidRhythmError) { track.rhythm = "abcde" }
+    assert_raises(Track::InvalidRhythmError) { track.rhythm = "X.X.e.X" }
   end
 
   def test_step_count

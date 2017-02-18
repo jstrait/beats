@@ -18,7 +18,7 @@ class MockKit < Kit
   attr_accessor :items
 end
 
-class AudioEngineTest < Test::Unit::TestCase
+class AudioEngineTest < Minitest::Test
   FIXTURES = [:repeats_not_specified,
               :pattern_with_overflow,
               :example_no_kit,

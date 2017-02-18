@@ -1,5 +1,5 @@
 # Standard Ruby libraries
-require 'test/unit'
+require 'minitest/autorun'
 require 'yaml'
 require 'syck'
 require 'rubygems'

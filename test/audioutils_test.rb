@@ -1,6 +1,6 @@
 require 'includes'
 
-class AudioUtilsTest < Test::Unit::TestCase
+class AudioUtilsTest < Minitest::Test
   def test_composite
     # Mono empty arrays
     assert_equal([], AudioUtils.composite([], 1))
