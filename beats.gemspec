@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.executables = "beats"
   s.required_ruby_version = ">= 1.9.3"
+  s.license = "MIT"
 
   s.add_dependency "wavefile", "= 0.8.1"
 
