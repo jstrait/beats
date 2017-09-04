@@ -1,10 +1,5 @@
 require 'includes'
 
-# Makes @file writable so it can be replaced with StringIO for testing
-class StringCachingWriter < WaveFile::CachingWriter
-  attr_writer :io
-end
-
 # Basic tests for CachingWriter; the integration tests test it more thoroughly.
 class CachingWriterTest < Minitest::Test
   def test_mono
@@ -12,9 +7,12 @@ class CachingWriterTest < Minitest::Test
     buffer2_bytes = [3, 0, 4, 0, 5, 0]
 
     format = WaveFile::Format.new(:mono, :pcm_16, 44100)
-    writer = StringCachingWriter.new("does_not_matter", format)
     string_io = StringIO.new
-    writer.io = string_io
+    writer = WaveFile::CachingWriter.new(string_io, format)
+
+    # Remove WaveFile header to make test assertions simpler
+    string_io.truncate(0)
+    string_io.rewind
 
     assert_equal(format, writer.format)
 
@@ -36,9 +34,12 @@ class CachingWriterTest < Minitest::Test
     buffer2_bytes = [9, 0, 6, 0, 8, 0, 7, 0]
 
     format = WaveFile::Format.new(:stereo, :pcm_16, 44100)
-    writer = StringCachingWriter.new("does_not_matter", format)
     string_io = StringIO.new
-    writer.io = string_io
+    writer = WaveFile::CachingWriter.new(string_io, format)
+
+    # Remove WaveFile header to make test assertions simpler
+    string_io.truncate(0)
+    string_io.rewind
 
     assert_equal(format, writer.format)
 
