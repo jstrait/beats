@@ -35,7 +35,7 @@ For more, check out [beatsdrummachine.com](http://beatsdrummachine.com)
 Installation
 ------------
 
-To install the latest stable version (1.3.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (2.0.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
@@ -57,45 +57,17 @@ Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tu
 What's New
 ----------
 
-The latest stable version of Beats is 1.3.0, released on March 4, 2014.
+The latest stable version of Beats is 2.0.0, released on _________.
 
-This release is for all you swingers out there. A new `Swing` declaration in the song header will cause the song to be played with either a swung 8th note or swung 16th note rhythm. For example, take this song:
+This release only has minor user visible changes. It is primarily a modernization release, and contains some backwards incompatible changes.
 
-    Song:
-      Tempo: 120
-      Flow:
-        - Verse: x4
-
-    Verse:
-    - bass.wav:   X...X...X...X...
-    - snare.wav:  ....X.......X...
-    - hihat.wav:  X.X.X.X.X.X.X.X.
-
-It will [sound like this](http://beatsdrummachine.com/media/straight.wav).
-
-You can add an 8th note swing like this (notice the 3rd line, everything else is the same):
-
-    Song:
-      Tempo: 120
-      Swing: 8   # Or, 16
-      Flow:
-        - Verse: x4
-
-    Verse:
-    - bass.wav:   X...X...X...X...
-    - snare.wav:  ....X.......X...
-    - hihat.wav:  X.X.X.X.X.X.X.X.
-
-And it will now [sound like this](http://beatsdrummachine.com/media/swing.wav).
-
-This release also adds support for fractional tempos. For example:
-
-    Song:
-      Tempo: 100.5
-      Flow:
-        - Verse: x4
-
-This release also includes a small bug fix. When you run the `beats` command with no arguments, it now displays the help screen, rather than an error message.
+* Track rhythms can now have spaces in them. For example, this is now a valid rhythm: `X... .... X... ....`
+* Installing the gem is now simpler, since it no longer requires installing `syck` via an extension.
+* Wave files using `WAVEFORMAT_EXTENSIBLE` format can now be used, due to upgrading the WaveFile gem to v0.8.1 behind the scenes.
+* Backwards incompatible changes:
+  * Song files containing a "Structure" section are no longer supported. a "Flow" section should be used instead. Support for the "Structure" section has been deprecated since v1.2.1, released in 2011.
+  * Track rhythms can no longer start with a "|" character. For example, this is no longer a valid rhythm: "|X...X...". However, bar lines are still allowed to appear elsewherein the rhyhtm. For example, this is a valid rhythm: "X...X...|X...X...|". The reason for this change is that a rhythm starting with "|" is parsed as a YAML scalar now that Beats is using the Psych YAML library behind the scenes. The fact that Syck didn't treat rhythms starting with a "|" as a YAML scalar appears to have been a bug?
+* The minimum supported Ruby version is now ____, instead of 1.8.7
 
 
 Local Development
