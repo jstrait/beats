@@ -1,5 +1,5 @@
 # Header contains a "Structure" section instead of a "Flow" section.
-# This is valid for now, but is deprecated.
+# Support for this section was removed in v2.0.0.
 
 Song:
   Tempo: 100

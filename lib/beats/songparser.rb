@@ -8,12 +8,6 @@ module Beats
   class SongParser
     class ParseError < RuntimeError; end
 
-    DONT_USE_STRUCTURE_WARNING =
-        "\n" +
-        "WARNING! This song contains a 'Structure' section in the header.\n" +
-        "As of BEATS 1.2.1, the 'Structure' section should be renamed 'Flow'.\n" +
-        "You should change your song file, in a future version using 'Structure' will cause an error.\n"
-
     NO_SONG_HEADER_ERROR_MSG =
   "Song must have a header. Here's an example:
 
@@ -100,17 +94,7 @@ module Beats
       raw_song_components[:folder]    = raw_song_components[:header]["folder"]
       raw_song_components[:kit]       = raw_song_components[:header]["kit"]
 
-      raw_flow = raw_song_components[:header]["flow"]
-      raw_structure = raw_song_components[:header]["structure"]
-      unless raw_flow.nil?
-        raw_song_components[:flow]    = raw_flow
-      else
-        unless raw_structure.nil?
-          puts DONT_USE_STRUCTURE_WARNING
-        end
-
-        raw_song_components[:flow]    = raw_structure
-      end
+      raw_song_components[:flow] = raw_song_components[:header]["flow"]
 
       raw_song_components[:swing]   = raw_song_components[:header]["swing"]
       raw_song_components[:patterns]  = raw_song_components[:full_definition].reject {|k, v| k == "song"}
