@@ -14,7 +14,7 @@ include Beats
 
 USAGE_INSTRUCTIONS = ""
 
-def parse_options()
+def parse_options
   options = {:split => false}
 
   optparse = OptionParser.new do |opts|
@@ -44,9 +44,9 @@ def parse_options()
   end
 
   USAGE_INSTRUCTIONS << optparse.to_s
-  optparse.parse!()
+  optparse.parse!
 
-  return options
+  options
 end
 
 def print_error(error, input_file_name)
@@ -69,7 +69,7 @@ def print_error(error, input_file_name)
 end
 
 begin
-  options = parse_options()
+  options = parse_options
 
   if ARGV.empty?
     puts USAGE_INSTRUCTIONS
