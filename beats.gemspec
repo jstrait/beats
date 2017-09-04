@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://beatsdrummachine.com/"
   s.platform = Gem::Platform::RUBY
   s.executables = "beats"
+  s.required_ruby_version = ">= 1.9.3"
 
   s.add_dependency "wavefile", "= 0.8.1"
 

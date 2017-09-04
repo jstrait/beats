@@ -67,7 +67,7 @@ This release only has minor user visible changes. It is primarily a modernizatio
 * Backwards incompatible changes:
   * Song files containing a "Structure" section are no longer supported. a "Flow" section should be used instead. Support for the "Structure" section has been deprecated since v1.2.1, released in 2011.
   * Track rhythms can no longer start with a "|" character. For example, this is no longer a valid rhythm: "|X...X...". However, bar lines are still allowed to appear elsewherein the rhyhtm. For example, this is a valid rhythm: "X...X...|X...X...|". The reason for this change is that a rhythm starting with "|" is parsed as a YAML scalar now that Beats is using the Psych YAML library behind the scenes. The fact that Syck didn't treat rhythms starting with a "|" as a YAML scalar appears to have been a bug?
-* The minimum supported Ruby version is now ____, instead of 1.8.7
+* The minimum supported Ruby version is now 1.9.3, instead of 1.8.7
 
 
 Local Development
