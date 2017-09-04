@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    beats (2.0.0.pre.dev)
+    beats (2.0.0)
       wavefile (= 0.8.1)
 
 GEM
@@ -20,4 +20,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   1.14.3
+   1.15.4
