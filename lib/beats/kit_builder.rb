@@ -8,6 +8,7 @@ module Beats
     class InvalidSoundFormatError < RuntimeError; end
 
     BITS_PER_SAMPLE = 16
+    SAMPLE_FORMAT = "pcm_#{BITS_PER_SAMPLE}".to_sym
     SAMPLE_RATE = 44100
 
     def initialize(base_path)
@@ -32,7 +33,7 @@ module Beats
 
       # Convert each buffer to the same sample format
       num_channels = filenames_to_buffers.values.map(&:channels).max || 1
-      canonical_format = WaveFile::Format.new(num_channels, BITS_PER_SAMPLE, SAMPLE_RATE)
+      canonical_format = WaveFile::Format.new(num_channels, SAMPLE_FORMAT, SAMPLE_RATE)
       filenames_to_buffers.values.each {|buffer| buffer.convert!(canonical_format) }
 
       labels_to_buffers = {}
@@ -56,8 +57,8 @@ module Beats
       sample_buffer = nil
 
       begin
-        info = WaveFile::Reader.info(filename)
-        WaveFile::Reader.new(filename).each_buffer(info.sample_frame_count) do |buffer|
+        reader = WaveFile::Reader.new(filename)
+        reader.each_buffer(reader.total_sample_frames) do |buffer|
           sample_buffer = buffer
         end
       rescue Errno::ENOENT

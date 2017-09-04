@@ -11,7 +11,7 @@ module WaveFile
 
     def write(buffer)
       packed_buffer_data = {}
-      
+
       key = buffer.hash
       if @buffer_cache.member?(key)
         packed_buffer_data = @buffer_cache[key]
@@ -29,7 +29,7 @@ module WaveFile
         @buffer_cache[key] = packed_buffer_data
       end
 
-      @file.syswrite(packed_buffer_data[:data])
+      @io.write(packed_buffer_data[:data])
       @total_sample_frames += packed_buffer_data[:sample_count]
     end
   end

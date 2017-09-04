@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.executables = "beats"
 
-  s.add_dependency "wavefile", "= 0.6.0"
+  s.add_dependency "wavefile", "= 0.8.1"
 
   s.summary = "A command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel."
   s.description = "A command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel."

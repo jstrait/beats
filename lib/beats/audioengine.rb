@@ -27,7 +27,7 @@ module Beats
       num_tracks_in_song = @song.total_tracks
 
       # Open output wave file and prepare it for writing sample data.
-      format = WaveFile::Format.new(@kit.num_channels, @kit.bits_per_sample, SAMPLE_RATE)
+      format = WaveFile::Format.new(@kit.num_channels, "pcm_#{@kit.bits_per_sample}".to_sym, SAMPLE_RATE)
       writer = WaveFile::CachingWriter.new(output_file_name, format)
 
       # Generate each pattern's sample data, or pull it from cache, and append it to the wave file.

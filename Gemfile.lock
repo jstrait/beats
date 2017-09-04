@@ -2,14 +2,14 @@ PATH
   remote: .
   specs:
     beats (2.0.0.pre.dev)
-      wavefile (= 0.6.0)
+      wavefile (= 0.8.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
     minitest (5.10.1)
     rake (12.0.0)
-    wavefile (0.6.0)
+    wavefile (0.8.1)
 
 PLATFORMS
   ruby
