@@ -13,13 +13,13 @@ Beats is a command-line drum machine written in pure Ruby. Feed it a song notate
         - snare:    roland_tr_909_2.wav
         - hihat:    house_2_5.wav
         - cowbell:  big_beat_5.wav
-        - deep:     house_2_2.wav  
-    
+        - deep:     house_2_2.wav
+
     Verse:
       - bass:     X..X...X..X.....
       - snare:    ....X.......X...
       - hihat:    ..X...X...X...X.
-    
+
     Chorus:
       - bass:     X..X...X..X.....
       - snare:    ....X.......X...

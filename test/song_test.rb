@@ -50,7 +50,7 @@ class SongTest < Minitest::Test
 
     song.tempo = 150
     assert_equal(150, song.tempo)
-    
+
     song.tempo = 145.854
     assert_equal(145.854, song.tempo)
 
