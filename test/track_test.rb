@@ -8,6 +8,7 @@ class TrackTest < Minitest::Test
     test_tracks[:solo] = Track.new("bass", "X")
     test_tracks[:with_overflow] = Track.new("bass", "...X")
     test_tracks[:with_barlines] = Track.new("bass", "|X.X.|X.X.|")
+    test_tracks[:with_spaces] = Track.new("bass", "  X... X.X.   ")
     test_tracks[:placeholder] = Track.new("bass", "....")
     test_tracks[:complicated] = Track.new("bass", "..XX..X...X...X.X...X...X...X...")
 
@@ -31,6 +32,10 @@ class TrackTest < Minitest::Test
     assert_equal([0, 2, 2, 2, 2], test_tracks[:with_barlines].trigger_step_lengths)
     # Bar lines should be removed from rhythm:
     assert_equal("X.X.X.X.", test_tracks[:with_barlines].rhythm)
+
+    assert_equal([0, 4, 2, 2], test_tracks[:with_spaces].trigger_step_lengths)
+    # Spaces should be removed from rhythm:
+    assert_equal("X...X.X.", test_tracks[:with_spaces].rhythm)
 
     assert_equal([4], test_tracks[:placeholder].trigger_step_lengths)
     assert_equal("....", test_tracks[:placeholder].rhythm)

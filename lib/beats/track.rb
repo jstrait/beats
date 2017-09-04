@@ -10,6 +10,7 @@ module Beats
     REST = "."
     BEAT = "X"
     BARLINE = "|"
+    SPACE = " "
     DISALLOWED_CHARACTERS = /[^X\.]/   # I.e., anything not an 'X' or a '.'
 
     def initialize(name, rhythm)
@@ -19,6 +20,7 @@ module Beats
 
     def rhythm=(rhythm)
       @rhythm = rhythm.delete(BARLINE)
+      @rhythm = @rhythm.delete(SPACE)
       @trigger_step_lengths = calculate_trigger_step_lengths
     end
 
@@ -32,7 +34,7 @@ module Beats
 
     def calculate_trigger_step_lengths
       if @rhythm.match(DISALLOWED_CHARACTERS)
-        raise InvalidRhythmError, "Track #{@name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}' or '#{BARLINE}'"
+        raise InvalidRhythmError, "Track #{@name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
       end
 
       trigger_step_lengths = @rhythm.scan(/X?\.*/)[0..-2].map(&:length)

@@ -1,0 +1,13 @@
+# An example song that has tracks with the space character in them
+
+Song:
+  Tempo: 120
+  Flow:
+    - Verse:   x2
+  Kit:
+    - bass:       test/sounds/bass_stereo_16.wav
+    - snare:      test/sounds/snare_stereo_16.wav
+
+Verse:
+  - bass:       X... X...|X... X...
+  - snare:      .... X...|.... X...

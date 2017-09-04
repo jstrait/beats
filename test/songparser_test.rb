@@ -11,6 +11,7 @@ class SongParserTest < Minitest::Test
                       :example_no_kit,
                       :example_with_kit,
                       :example_with_empty_track,
+                      :track_with_spaces,
                       :multiple_tracks_same_sound,
                       :example_swung_8th,
                       :example_swung_16th,
@@ -84,6 +85,12 @@ class SongParserTest < Minitest::Test
     assert_equal(2, song.patterns[:verse].tracks.length)
     assert_equal("........", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
     assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/snare_mono_8.wav"].rhythm)
+
+    song = test_songs[:track_with_spaces]
+    assert_equal(1, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...X...X...", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("....X.......X...", song.patterns[:verse].tracks["snare"].rhythm)
 
     song = test_songs[:multiple_tracks_same_sound]
     assert_equal(2, song.patterns.length)
