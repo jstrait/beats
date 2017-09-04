@@ -14,6 +14,8 @@ Gem::Specification.new do |s|
 
   s.summary = "A command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel."
   s.description = "A command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel."
+  s.post_install_message = "Thanks for installing Beats Drum Machine! For information on how to use Beats, or to download some drum sounds to use with Beats, visit http://beatsdrummachine.com"
+
   s.files = ["LICENSE", "README.markdown", "Rakefile"] + Dir["lib/**/*.rb"] + Dir["bin/*"] + Dir["test/**/*"]
   s.test_files = Dir["test/**/*"]
   s.require_path = "lib"
