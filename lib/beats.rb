@@ -11,5 +11,5 @@ require 'beats/track'
 require 'beats/transforms/song_swinger'
 
 module Beats
-  VERSION = "1.3.0"
+  VERSION = "2.0.0-dev"
 end
