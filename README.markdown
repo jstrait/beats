@@ -57,15 +57,15 @@ Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tu
 What's New
 ----------
 
-The latest stable version of Beats is 2.0.0, released on _________. It is primarily a modernization release, and contains some relatively small backwards incompatible changes.
+The latest stable version of Beats is 2.0.0, released on September 4, 2017. It is primarily a modernization release, and contains some relatively small backwards incompatible changes.
 
-* Track rhythms can now have spaces in them. For example, `X... .... X... ....` is now a valid rhythm.
-* Installing the gem is now simpler, since it no longer requires installing `syck` via an extension.
-* Wave files using `WAVEFORMATEXTENSIBLE` format can now be used, due to upgrading the WaveFile gem to v0.8.1 behind the scenes.
-* A "Fixnum is deprecated" message is no longer shown when using Ruby 2.4
-* Backwards incompatible changes:
-  * Song files containing a `Structure` section are no longer supported. a `Flow` section should be used instead. Support for the `Structure` section has been deprecated since v1.2.1, released in 2011.
-  * Track rhythms can no longer start with a `|` character. For example, `|X...X...` is no longer a valid rhythm. However, bar lines are still allowed to appear elsewherein the rhythm. For example, `X...X...|X...X...|` _is_ a valid rhythm. The reason for this change is that a rhythm starting with `|` is parsed as a YAML scalar block now that Beats is using the Psych YAML library behind the scenes. The fact that Syck didn't treat rhythms starting with a `|` as a YAML scalar block appears to have been a bug in Syck.
+* Track rhythms can now have spaces in them. For example, `X... .... X... ....` is now a valid rhythm. Spaces are ignored, and don't affect the rhythm. For example, `X...    X...` is treated as the same rhythm as `X...X...`
+* Wave files using `WAVEFORMATEXTENSIBLE` format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.
+* Installing the gem is now simpler, since it no longer requires installing the legacy `syck` YAML parser via an extension.
+* A `Fixnum is deprecated` message is no longer shown when using Ruby 2.4
+* **Backwards incompatible changes**:
+  * Song files containing a `Structure` section are no longer supported. A `Flow` section should be used instead. Support for the `Structure` section has been deprecated since v1.2.1 (released in 2011).
+  * Track rhythms can no longer start with a `|` character. For example, `|X...X...` is no longer a valid rhythm. However, bar lines are still allowed to appear elsewhere in the rhythm. For example, `X...X...|X...X...|` _is_ a valid rhythm. The reason for this change is that a rhythm starting with `|` is parsed as a YAML scalar block now that Beats is using the Psych YAML library behind the scenes. The fact that the old Syck YAML library didn't treat rhythms starting with a `|` as a YAML scalar block appears to have been a bug in Syck?
 * The minimum supported Ruby version is now 1.9.3, instead of 1.8.7
 
 
