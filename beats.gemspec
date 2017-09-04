@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 1.9.3"
   s.license = "MIT"
 
-  s.add_dependency "wavefile", "= 0.8.1"
+  s.add_runtime_dependency "wavefile", "= 0.8.1"
 
   s.summary = "A command-line drum machine. Takes a song notated in a YAML file as input, and outputs a *.wav sound file."
   s.description = "A command-line drum machine. Takes a song notated in a YAML file as input, and outputs a *.wav sound file."
