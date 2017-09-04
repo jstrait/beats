@@ -79,9 +79,9 @@ module Beats
       begin
         raw_song_definition = YAML.load(raw_yaml_string)
       rescue Psych::SyntaxError => detail
-        raise ParseError, "Syntax error in YAML file"
+        raise ParseError, "Syntax error in YAML file: #{detail}"
       rescue ArgumentError => detail
-        raise ParseError, "Syntax error in YAML file"
+        raise ParseError, "Syntax error in YAML file: #{detail}"
       end
 
       raw_song_components = {}
