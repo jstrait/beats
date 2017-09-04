@@ -5,7 +5,6 @@ start_time = Time.now
 $:.unshift File.dirname(__FILE__) + "/../lib"
 require "optparse"
 require "yaml"
-require "syck"
 require "wavefile"
 require "beats"
 require "wavefile/cachingwriter"
@@ -13,7 +12,6 @@ require "wavefile/cachingwriter"
 include Beats
 
 USAGE_INSTRUCTIONS = ""
-YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE)
 
 def parse_options()
   options = {:split => false}

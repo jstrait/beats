@@ -25,6 +25,7 @@ class SongParserTest < Minitest::Test
                       :no_flow,
                       :with_structure,
                       :pattern_with_no_tracks,
+                      :leading_bar_line,
                       :sound_in_kit_not_found,
                       :sound_in_track_not_found,
                       :sound_in_kit_wrong_format,

@@ -78,6 +78,8 @@ module Beats
     def hashify_raw_yaml(raw_yaml_string)
       begin
         raw_song_definition = YAML.load(raw_yaml_string)
+      rescue Psych::SyntaxError => detail
+        raise ParseError, "Syntax error in YAML file"
       rescue ArgumentError => detail
         raise ParseError, "Syntax error in YAML file"
       end

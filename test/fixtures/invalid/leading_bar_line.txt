@@ -1,0 +1,15 @@
+# Support for tracks that start with a | character are no longer supported
+# as of v2.0.0. The reason is that this is not valid YAML, and only worked
+# due to a bug in Syck. Now that Beats is using Psych, this is invalid.
+
+Song:
+  Tempo: 120
+  Kit:
+    - bass:     test/sounds/bass_mono_8.wav
+    - snare:    test/sounds/snare_mono_8.wav
+  Flow:
+    - Verse:  x1
+
+Verse:
+  - bass:    X...X...
+  - snare:  |..X...X.

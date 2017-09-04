@@ -6,7 +6,7 @@
 # the other one leading to incorrect song output.
 #
 # In the example below, when sub-dividing patterns with a max size of 4 steps, the new patterns
-# highlighted with !!!! would both be called Verse20, causing a collision. 
+# highlighted with !!!! would both be called Verse20, causing a collision.
 
 
 Song:
@@ -18,11 +18,10 @@ Song:
 Verse:
 #                                 0    4    8    12   16   20
 #                                                          !!!!
-  - test/sounds/bass_mono_8.wav: |X...|X...|X...|X...|X...|X.XX|
+  - test/sounds/bass_mono_8.wav:  X...|X...|X...|X...|X...|X.XX|
 
 
-Verse2:                       
+Verse2:
 #                                 0    4    8    12   16   20
 #                                 !!!!
-  - test/sounds/bass_mono_8.wav: |X..X|X..X|X..X|X..X|X..X|X..X|
-
+  - test/sounds/bass_mono_8.wav:  X..X|X..X|X..X|X..X|X..X|X..X|
