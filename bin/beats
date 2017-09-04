@@ -3,6 +3,7 @@
 start_time = Time.now
 
 $:.unshift File.dirname(__FILE__) + "/../lib"
+gem "wavefile", "=0.8.1"
 require "optparse"
 require "yaml"
 require "wavefile"
