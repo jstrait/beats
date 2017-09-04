@@ -72,7 +72,7 @@ Verse:
   <h2>Song Optimization</h2>
   <p>After the <code>Song</code> object is normalized, the normalized <code>Song</code>(s) are further transformed into equivalent <code>Song</code> objects whose audio data can be generated more quickly by the audio engine.</p>
 
-<p>As of version 1.3.0, optimization consists of two steps:</p>
+<p>As of version 2.0.0, optimization consists of two steps:</p>
 
 <ol>
   <li>Breaking patterns into smaller pieces</li>
