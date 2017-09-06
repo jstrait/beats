@@ -212,12 +212,12 @@ class SongParserTest < Minitest::Test
   def test_invalid_parse
     INVALID_FIXTURES.each do |fixture|
       assert_raises(SongParser::ParseError) do
-        song = load_fixture("invalid/#{fixture}.txt")
+        song, kit = load_fixture("invalid/#{fixture}.txt")
       end
     end
 
     assert_raises(Track::InvalidRhythmError) do
-      song = load_fixture("invalid/bad_rhythm.txt")
+      song, kit = load_fixture("invalid/bad_rhythm.txt")
     end
   end
 
