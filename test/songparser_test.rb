@@ -3,7 +3,6 @@ require 'includes'
 class SongParserTest < Minitest::Test
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
 
-  # TODO: Add fixture for track with no rhythm
   VALID_FIXTURES =   [:no_tempo,
                       :fractional_tempo,
                       :repeats_not_specified,
