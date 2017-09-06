@@ -151,6 +151,10 @@ module Beats
             track_names = [track_names]
           end
 
+          if track_names.empty?
+            raise ParseError, "Pattern '#{pattern_name}' has an empty composite pattern (i.e. \"[]\"), which is not valid."
+          end
+
           track_names.each do |track_name|
             new_pattern.track track_name, rhythm
           end
