@@ -12,6 +12,7 @@ class SongParserTest < Minitest::Test
                       :no_flow,
                       :with_structure,
                       :pattern_with_no_tracks,
+                      :track_with_composite_non_existent_sound,
                       :track_with_composite_empty_sound,
                       :leading_bar_line,
                       :sound_in_kit_not_found,
