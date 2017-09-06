@@ -40,32 +40,32 @@ module Beats
         raise ParseError, "#{detail}"
       end
 
-      # 2.) Build the kit
-      begin
-        kit = build_kit(base_path, raw_song_components[:kit], raw_song_components[:patterns])
-      rescue KitBuilder::SoundFileNotFoundError => detail
-        raise ParseError, "#{detail}"
-      rescue KitBuilder::InvalidSoundFormatError => detail
-        raise ParseError, "#{detail}"
-      end
-
-      # 3.) Load patterns
+      # 2.) Load patterns
       add_patterns_to_song(song, raw_song_components[:patterns])
 
-      # 4.) Set flow
+      # 3.) Set flow
       if raw_song_components[:flow].nil?
         raise ParseError, "Song must have a Flow section in the header."
       else
         set_song_flow(song, raw_song_components[:flow])
       end
 
-      # 5.) Swing, if swing flag is set
+      # 4.) Swing, if swing flag is set
       if raw_song_components[:swing]
         begin
           song = Transforms::SongSwinger.transform(song, raw_song_components[:swing])
         rescue Transforms::SongSwinger::InvalidSwingRateError => detail
           raise ParseError, "#{detail}"
         end
+      end
+
+      # 5.) Build the kit
+      begin
+        kit = build_kit(base_path, raw_song_components[:kit], song.patterns)
+      rescue KitBuilder::SoundFileNotFoundError => detail
+        raise ParseError, "#{detail}"
+      rescue KitBuilder::InvalidSoundFormatError => detail
+        raise ParseError, "#{detail}"
       end
 
       return song, kit
@@ -104,7 +104,7 @@ module Beats
       return raw_song_components
     end
 
-    def build_kit(base_path, raw_kit, raw_patterns)
+    def build_kit(base_path, raw_kit, patterns)
       kit_builder = KitBuilder.new(base_path)
 
       # Add sounds defined in the Kit section of the song header
@@ -117,17 +117,12 @@ module Beats
       end
 
       # Add sounds not defined in Kit section, but used in individual tracks
-      raw_patterns.keys.each do |key|
-        track_list = raw_patterns[key]
+      patterns.each do |pattern_name, pattern|
+        pattern.tracks.each do |track_name, track|
+          track_path = track.name
 
-        unless track_list.nil?
-          track_list.each do |track_definition|
-            track_name = track_definition.keys.first
-            track_path = track_name
-
-            if !kit_builder.has_label?(track_name)
-              kit_builder.add_item(track_name, track_path)
-            end
+          if !kit_builder.has_label?(track.name)
+            kit_builder.add_item(track.name, track_path)
           end
         end
       end
@@ -136,24 +131,29 @@ module Beats
     end
 
     def add_patterns_to_song(song, raw_patterns)
-      raw_patterns.keys.each do |key|
-        new_pattern = song.pattern key.to_sym
-
-        track_list = raw_patterns[key]
-
-        if track_list.nil?
+      raw_patterns.each do |pattern_name, raw_tracks|
+        if raw_tracks.nil?
           # TODO: Use correct capitalization of pattern name in error message
           # TODO: Possibly allow if pattern not referenced in the Flow, or has 0 repeats?
-          raise ParseError, "Pattern '#{key}' has no tracks. It needs at least one."
+          raise ParseError, "Pattern '#{pattern_name}' has no tracks. It needs at least one."
         end
 
-        track_list.each do |track_definition|
-          track_name = track_definition.keys.first
+        new_pattern = song.pattern(pattern_name.to_sym)
+
+        raw_tracks.each do |raw_track|
+          track_names = raw_track.keys.first
+          rhythm = raw_track.values.first
 
           # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
-          track_definition[track_name] ||= ""
+          rhythm = "" if rhythm.nil?
 
-          new_pattern.track track_name, track_definition[track_name]
+          unless track_names.is_a?(Array)
+            track_names = [track_names]
+          end
+
+          track_names.each do |track_name|
+            new_pattern.track track_name, rhythm
+          end
         end
       end
     end
