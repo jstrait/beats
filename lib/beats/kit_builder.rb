@@ -14,10 +14,19 @@ module Beats
     def initialize(base_path)
       @base_path = base_path
       @labels_to_filenames = {}
+      @composite_replacements = {}
     end
 
-    def add_item(label, filename)
-      @labels_to_filenames[label] = absolute_file_name(filename)
+    def add_item(label, filenames)
+      if filenames.is_a?(Array)
+        @composite_replacements[label] = filenames.map {|filename| "#{label}-#{File.basename(filename, ".*")}" }
+
+        filenames.each do |filename|
+          @labels_to_filenames["#{label}-#{File.basename(filename, ".*")}"] = absolute_file_name(filename)
+        end
+      else
+        @labels_to_filenames[label] = absolute_file_name(filenames)
+      end
     end
 
     def has_label?(label)
@@ -44,6 +53,8 @@ module Beats
 
       Kit.new(labels_to_buffers, num_channels, BITS_PER_SAMPLE)
     end
+
+    attr_reader :composite_replacements
 
     private
 

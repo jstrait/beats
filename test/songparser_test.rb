@@ -209,6 +209,23 @@ class SongParserTest < Minitest::Test
     assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["snare"].rhythm)
   end
 
+  def test_kit_with_composite_sounds
+    song, kit = load_fixture("valid/kit_with_composite_sounds.txt")
+
+    assert_equal(100, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(3, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...", song.patterns[:verse].tracks["hihat-hh_closed_mono_8"].rhythm)
+    assert_equal("X...X...", song.patterns[:verse].tracks["hihat-hh_open_mono_8"].rhythm)
+    assert_equal("..X...X.", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(4, song.patterns[:chorus].tracks.length)
+    assert_equal("XXXXXXXX", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["snare"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["hihat-hh_closed_mono_8"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["hihat-hh_open_mono_8"].rhythm)
+  end
+
   def test_invalid_parse
     INVALID_FIXTURES.each do |fixture|
       assert_raises(SongParser::ParseError) do

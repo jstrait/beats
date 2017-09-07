@@ -30,8 +30,9 @@ module Beats
       end
 
       song = Song.new
+      kit_builder = KitBuilder.new(base_path)
 
-      # 1.) Set tempo
+      # Set tempo
       begin
         unless raw_song_components[:tempo].nil?
           song.tempo = raw_song_components[:tempo]
@@ -40,17 +41,20 @@ module Beats
         raise ParseError, "#{detail}"
       end
 
-      # 2.) Load patterns
-      add_patterns_to_song(song, raw_song_components[:patterns])
+      # Add sounds defined in the Kit section
+      add_kit_sounds_from_kit(kit_builder, raw_song_components[:kit])
 
-      # 3.) Set flow
+      # Load patterns
+      add_patterns_to_song(song, kit_builder, raw_song_components[:patterns])
+
+      # Set flow
       if raw_song_components[:flow].nil?
         raise ParseError, "Song must have a Flow section in the header."
       else
         set_song_flow(song, raw_song_components[:flow])
       end
 
-      # 4.) Swing, if swing flag is set
+      # Swing, if swing flag is set
       if raw_song_components[:swing]
         begin
           song = Transforms::SongSwinger.transform(song, raw_song_components[:swing])
@@ -59,9 +63,10 @@ module Beats
         end
       end
 
-      # 5.) Build the kit
+      # Build the final kit
       begin
-        kit = build_kit(base_path, raw_song_components[:kit], song.patterns)
+        add_kit_sounds_from_patterns(kit_builder, song.patterns)
+        kit = kit_builder.build_kit
       rescue KitBuilder::SoundFileNotFoundError => detail
         raise ParseError, "#{detail}"
       rescue KitBuilder::InvalidSoundFormatError => detail
@@ -104,9 +109,7 @@ module Beats
       return raw_song_components
     end
 
-    def build_kit(base_path, raw_kit, patterns)
-      kit_builder = KitBuilder.new(base_path)
-
+    def add_kit_sounds_from_kit(kit_builder, raw_kit)
       # Add sounds defined in the Kit section of the song header
       # Converts [{a=>1}, {b=>2}, {c=>3}] from raw YAML to {a=>1, b=>2, c=>3}
       # TODO: Raise error is same name is defined more than once in the Kit
@@ -115,7 +118,9 @@ module Beats
           kit_builder.add_item(kit_item.keys.first, kit_item.values.first)
         end
       end
+    end
 
+    def add_kit_sounds_from_patterns(kit_builder, patterns)
       # Add sounds not defined in Kit section, but used in individual tracks
       patterns.each do |pattern_name, pattern|
         pattern.tracks.each do |track_name, track|
@@ -126,11 +131,9 @@ module Beats
           end
         end
       end
-
-      kit_builder.build_kit
     end
 
-    def add_patterns_to_song(song, raw_patterns)
+    def add_patterns_to_song(song, kit_builder, raw_patterns)
       raw_patterns.each do |pattern_name, raw_tracks|
         if raw_tracks.nil?
           # TODO: Use correct capitalization of pattern name in error message
@@ -154,6 +157,11 @@ module Beats
           if track_names.empty?
             raise ParseError, "Pattern '#{pattern_name}' has an empty composite pattern (i.e. \"[]\"), which is not valid."
           end
+
+          track_names.map! do |track_name|
+            kit_builder.composite_replacements[track_name] || track_name
+          end
+          track_names.flatten!
 
           track_names.each do |track_name|
             new_pattern.track track_name, rhythm
