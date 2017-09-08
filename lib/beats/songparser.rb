@@ -156,10 +156,7 @@ module Beats
           # Handle case where no track rhythm is specified (i.e. "- foo.wav:" instead of "- foo.wav: X.X.X.X.")
           rhythm = "" if rhythm.nil?
 
-          unless track_names.is_a?(Array)
-            track_names = [track_names]
-          end
-
+          track_names = Array(track_names)
           if track_names.empty?
             raise ParseError, "Pattern '#{pattern_name}' has an empty composite pattern (i.e. \"[]\"), which is not valid."
           end
