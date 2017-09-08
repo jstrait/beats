@@ -1,0 +1,16 @@
+Song:
+  Tempo: 100
+  Kit:
+    - bass:      test/sounds/bass_mono_8.wav
+    - snare:     test/sounds/snare_mono_8.wav
+    - hh_closed: [test/sounds/hh_closed_mono_8.wav, [test/sounds/hh_open_mono_8.wav]]
+  Flow:
+    - Verse:  x2
+    - Chorus: x2
+
+Verse:
+  - bass:   X...X...
+  - snare:  ..X...X.
+Chorus:
+  - bass:       XXXXXXXX
+  - hh_closed:  .X.X.X.X

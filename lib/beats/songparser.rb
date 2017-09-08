@@ -162,6 +162,9 @@ module Beats
           end
 
           track_names.map! do |track_name|
+            unless track_name.is_a?(String)
+              raise ParseError, "'#{track_name}' in pattern '#{pattern_name}' is not a valid track sound"
+            end
             kit_builder.composite_replacements[track_name] || track_name
           end
           track_names.flatten!

@@ -23,11 +23,14 @@ module Beats
           raise SoundFileNotFoundError, "Kit has an empty composite pattern (i.e. \"[]\"), which is not valid."
         end
 
-        @composite_replacements[label] = filenames.map {|filename| "#{label}-#{File.basename(filename, ".*")}" }
-
         filenames.each do |filename|
+          unless filename.is_a?(String)
+            raise SoundFileNotFoundError, "The Kit sound '#{label}' contains an invalid file: '#{filename}'"
+          end
           @labels_to_filenames["#{label}-#{File.basename(filename, ".*")}"] = absolute_file_name(filename)
         end
+
+        @composite_replacements[label] = filenames.map {|filename| "#{label}-#{File.basename(filename, ".*")}" }
       else
         @labels_to_filenames[label] = absolute_file_name(filenames)
       end
