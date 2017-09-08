@@ -1,0 +1,20 @@
+# The patterns in the Flow have different capitalization from how the patterns are defined
+
+Song:
+  Tempo: 100
+  Flow:
+    - verse:   x1
+    - CHORUS:  x2
+    - VeRsE:   x1
+    - ChoRUS:  x2
+  Kit:
+    - bass:       test/sounds/bass_mono_8.wav
+    - snare:      test/sounds/snare_mono_8.wav
+
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+
+Chorus:
+  - bass:       X...X...XX..X...
+  - snare:      ....X.......X...
