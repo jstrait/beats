@@ -1,0 +1,16 @@
+Song:
+  Tempo: 100
+  Kit:
+    - bass:   test/sounds/bass_mono_8.wav
+    - snare:  test/sounds/snare_mono_8.wav
+    - hihat:  [test/sounds/hh_closed_mono_8.wav, test/sounds/hh_open_mono_8.wav]
+  Flow:
+    - Verse:  x2
+    - Chorus: x2
+
+Verse:
+  - hihat:  X...X...
+  - snare:  ..X...X.
+Chorus:
+  - bass:            XXXXXXXX
+  - [test/sounds/agogo_high_mono_8.wav, hihat, test/sounds/agogo_low_mono_8.wav]:  .X.X.X.X
