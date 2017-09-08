@@ -59,9 +59,9 @@ What's New
 
 The latest version of Beats is 2.1.0, released on ______.
 
-This version adds support for "composite sounds". That is, sounds that are made from combining two or more sounds together. It is a more succinct way of writing songs where more than one track plays the same rhythm.
+This version adds support for *composite sounds*. That is, sounds that are made by combining two or more sounds together. They are a more succinct way of writing songs where multiple tracks play the same rhythm.
 
-Composite sounds can now be defined in the Kit:
+Composite sounds can be defined in the Kit by putting multiple sound files in an array:
 
     Kit:
       - bass:         bass.wav                    # A traditional non-composite sound
@@ -85,7 +85,7 @@ This is equivalent to the following song:
       - clap:   ....X.......X...
       - snare:  ....X.......X...
 
-When using the `-s` command-line option to write each track to it's own *.wav file, each sub-sound in a composite sound will be written to its own file. For example, this song:
+When using the `-s` command-line option to write each track to its own *.wav file, each sub-sound in a composite sound will be written to its own file. For example, this song:
 
     Kit:
       - combo_snare:  [clap.wav, 808_snare.wav]
@@ -93,9 +93,9 @@ When using the `-s` command-line option to write each track to it's own *.wav fi
     Verse:
       - combo_snare:  X...X...X...X...
 
-Will be written to two different files, `combo_snare-clap.wav` and `combo_snare-808_snare.wav`, when using the `-s` option.
+...will be written to two different files, `combo_snare-clap.wav` and `combo_snare-808_snare.wav`, when using the `-s` option.
 
-Finally, composite sounds can be used within track definitions themselves. Kit sounds and non-Kit sounds can be used together in a composite Track sound:
+Finally, when defining a track in a pattern, multiple sounds can be given in array as a composite sound. Kit sounds and non-Kit sounds can be used together:
 
     Kit:
       - bass:         bass.wav
