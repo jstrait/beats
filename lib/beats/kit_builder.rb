@@ -19,6 +19,10 @@ module Beats
 
     def add_item(label, filenames)
       if filenames.is_a?(Array)
+        if filenames.empty?
+          raise SoundFileNotFoundError, "Kit has an empty composite pattern (i.e. \"[]\"), which is not valid."
+        end
+
         @composite_replacements[label] = filenames.map {|filename| "#{label}-#{File.basename(filename, ".*")}" }
 
         filenames.each do |filename|

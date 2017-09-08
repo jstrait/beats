@@ -42,7 +42,13 @@ module Beats
       end
 
       # Add sounds defined in the Kit section
-      add_kit_sounds_from_kit(kit_builder, raw_song_components[:kit])
+      begin
+        add_kit_sounds_from_kit(kit_builder, raw_song_components[:kit])
+      rescue KitBuilder::SoundFileNotFoundError => detail
+        raise ParseError, "#{detail}"
+      rescue KitBuilder::InvalidSoundFormatError => detail
+        raise ParseError, "#{detail}"
+      end
 
       # Load patterns
       add_patterns_to_song(song, kit_builder, raw_song_components[:patterns])

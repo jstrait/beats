@@ -1,0 +1,16 @@
+Song:
+  Tempo: 100
+  Kit:
+    - bass:   test/sounds/bass_mono_8.wav
+    - snare:  test/sounds/snare_mono_8.wav
+    - hihat:  []   # Empty composite sounds aren't allowed
+  Flow:
+    - Verse:  x2
+    - Chorus: x2
+
+Verse:
+  - bass:    X...X...
+  - snare:   ..X...X.
+Chorus:
+  - bass:    XXXXXXXX
+  - hihat:   .X.X.X.X
