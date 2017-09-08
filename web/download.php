@@ -44,13 +44,13 @@
     <h2>Release History</h2>
     <h3 class="mt">2.0.0 &ndash; September 4, 2017</h3>
     <ul class="bulleted">
-      <li>Track rhythms can now have spaces in them. For example, <code>X... .... X... ....</code> is now a valid rhythm. Spaces are ignored, and don't affect the rhythm.</li>
+      <li>Track rhythms can now have spaces in them. For example, <code>X... .... X... ....</code> is now a valid rhythm. Spaces are ignored, and don&rsquo;t affect the rhythm.</li>
       <li>Wave files using WAVEFORMATEXTENSIBLE format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.</li>
       <li>Installing the gem is now simpler, since it no longer requires installing the legacy <code>syck</code> YAML parser via an extension.</li>
-      <li>A "Fixnum is deprecated" message is no longer shown when using Ruby 2.4</li>
+      <li>A &lquo;Fixnum is deprecated&rquo; message is no longer shown when using Ruby 2.4</li>
       <li>The minimum supported Ruby version is now 1.9.3, instead of 1.8.7</li>
-      <li>Backwards incompatible: Song files containing a "Structure" section are no longer supported. A "Flow" section should be used instead.</li>
-      <li>Backwards incompatible: Track rhythms can no longer start with a <code>|</code> character. For example, <code>|X...X...</code> is no longer a valid rhythm. However, bar lines are still allowed to appear elsewhere in the rhythm. For example, <code>X...X...|X...X...|</code> *is* a valid rhythm.</li>
+      <li><em>Backwards incompatible:</em> Song files containing a <code>Structure</code> section are no longer supported. A <code>Flow</code> section should be used instead.</li>
+      <li><em>Backwards incompatible:</em> Track rhythms can no longer start with a <code>|</code> character. For example, <code>|X...X...</code> is no longer a valid rhythm. However, bar lines are still allowed to appear elsewhere in the rhythm. For example, <code>X...X...|X...X...|</code> <em>is</em> a valid rhythm.</li>
     </ul>
     <h3 class="mt">1.3.0 &ndash; March 4, 2014</h3>
     <ul class="bulleted">
