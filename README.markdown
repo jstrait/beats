@@ -57,7 +57,72 @@ Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tu
 What's New
 ----------
 
-The latest stable version of Beats is 2.0.0, released on September 4, 2017. It is primarily a modernization release, and contains some relatively small backwards incompatible changes.
+The latest version of Beats is 2.1.0, released on ______.
+
+This version adds support for "composite sounds". That is, sounds that are made from combining two or more sounds together. It is a more succinct way of writing songs where more than one track plays the same rhythm.
+
+Composite sounds can now be defined in the Kit:
+
+    Kit:
+      - bass:         bass.wav                    # A traditional non-composite sound
+      - combo_snare:  [clap.wav, 808_snare.wav]   # A composite sound
+
+The `combo_snare` sound above is a composite sound made by combining `clap.wav` and `808_snare.wav` together. It can then be used in a pattern:
+
+    Verse:
+      - bass:         X.......X.......
+      - combo_snare:  ....X.......X...
+
+This is equivalent to the following song:
+
+    Kit:
+      - bass:   bass.wav
+      - clap:   clap.wav
+      - snare:  808_snare.wav
+
+    Verse:
+      - bass:   X.......X.......
+      - clap:   ....X.......X...
+      - snare:  ....X.......X...
+
+When using the `-s` command-line option to write each track to it's own *.wav file, each sub-sound in a composite sound will be written to its own file. For example, this song:
+
+    Kit:
+      - combo_snare:  [clap.wav, 808_snare.wav]
+
+    Verse:
+      - combo_snare:  X...X...X...X...
+
+Will be written to two different files, `combo_snare-clap.wav` and `combo_snare-808_snare.wav`, when using the `-s` option.
+
+Finally, composite sounds can be used within track definitions themselves. Kit sounds and non-Kit sounds can be used together in a composite Track sound:
+
+    Kit:
+      - bass:         bass.wav
+      - combo_snare:  [clap.wav, 808_snare.wav]
+
+    Verse:
+      - [bass, combo_snare, other_sound.wav]:   X...X...X...X...
+
+This is a equivalent to:
+
+    Kit:
+      - bass:   bass.wav
+      - clap:   clap.wav
+      - snare:  808_snare.wav
+
+    Verse:
+      - bass:             X...X...X...X...
+      - clap:             X...X...X...X...
+      - snare:            X...X...X...X...
+      - other_sound.wav:  X...X...X...X...
+
+
+
+What's Slightly Less New
+------------------------
+
+The previous version of Beats is 2.0.0, released on September 4, 2017. It is primarily a modernization release, and contains some relatively small backwards incompatible changes.
 
 * Track rhythms can now have spaces in them. For example, `X... .... X... ....` is now a valid rhythm. Spaces are ignored, and don't affect the rhythm. For example, `X...    X...` is treated as the same rhythm as `X...X...`
 * Wave files using `WAVEFORMATEXTENSIBLE` format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.
