@@ -137,8 +137,7 @@ module Beats
       replacements = {}
 
       # Pattern names are sorted to ensure predictable pattern replacement. Makes tests easier to write.
-      # Sort function added manually because Ruby 1.8 doesn't know how to sort symbols...
-      pattern_names = patterns.keys.sort {|x, y| x.to_s <=> y.to_s }
+      pattern_names = patterns.keys.sort
 
       # Detect duplicates
       pattern_names.each do |pattern_name|
