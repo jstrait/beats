@@ -42,6 +42,10 @@
   </div>
   <div id="release-history" class="content-box">
     <h2>Release History</h2>
+    <h3 class="mt">2.1.0 &ndash; September 9, 2017</h3>
+    <ul class="bulleted">
+      <li>Multiple sound files can be used together as a "composite sound". Composite sounds can be defined in the Kit, or in an individual track.</li>
+    </ul>
     <h3 class="mt">2.0.0 &ndash; September 4, 2017</h3>
     <ul class="bulleted">
       <li>Track rhythms can now have spaces in them. For example, <code>X... .... X... ....</code> is now a valid rhythm. Spaces are ignored, and don&rsquo;t affect the rhythm.</li>
