@@ -35,7 +35,7 @@ For more, check out [beatsdrummachine.com](http://beatsdrummachine.com)
 Installation
 ------------
 
-To install the latest stable version (2.0.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (2.1.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
@@ -57,7 +57,7 @@ Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tu
 What's New
 ----------
 
-The latest version of Beats is 2.1.0, released on ______.
+The latest version of Beats is 2.1.0, released on September 9, 2017.
 
 This version adds support for *composite sounds*. That is, sounds that are made by combining two or more sounds together. They are a more succinct way of writing songs where multiple tracks play the same rhythm.
 
