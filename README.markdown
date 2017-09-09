@@ -95,7 +95,7 @@ When using the `-s` command-line option to write each track to its own *.wav fil
 
 ...will be written to two different files, `combo_snare-clap.wav` and `combo_snare-808_snare.wav`, when using the `-s` option.
 
-Finally, when defining a track in a pattern, multiple sounds can be given in array as a composite sound. Kit sounds and non-Kit sounds can be used together:
+Finally, when defining a track in a pattern, multiple sounds can be given in an array as a composite sound. Kit sounds and non-Kit sounds can be used together:
 
     Kit:
       - bass:         bass.wav
