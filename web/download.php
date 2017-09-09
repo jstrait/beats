@@ -64,7 +64,7 @@
     </ul>
     <h3 class="mt">1.2.5 &ndash; December 31, 2013</h3>
     <ul class="bulleted">
-      <li>Tracks that start with a | no longer cause an error in Ruby 2.0.0 and 2.1.0.</li>
+      <li>Tracks that start with a | no longer cause an error in Ruby 2.0 and above.</li>
       <li>Additional Wave file formats can now be used as samples, due to upgrading to WaveFile 0.6.0 behind the scenes: 24-bit PCM, 32-bit IEEE Float, 64-bit IEEE Float</li>
     </ul>
     <h3 class="mt">1.2.4 &ndash; December 22, 2012</h3>
