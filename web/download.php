@@ -47,7 +47,7 @@
       <li>Track rhythms can now have spaces in them. For example, <code>X... .... X... ....</code> is now a valid rhythm. Spaces are ignored, and don&rsquo;t affect the rhythm.</li>
       <li>Wave files using WAVEFORMATEXTENSIBLE format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.</li>
       <li>Installing the gem is now simpler, since it no longer requires installing the legacy <code>syck</code> YAML parser via an extension.</li>
-      <li>A &lquo;Fixnum is deprecated&rquo; message is no longer shown when using Ruby 2.4</li>
+      <li>A &#8220;Fixnum is deprecated&#8221; message is no longer shown when using Ruby 2.4</li>
       <li>The minimum supported Ruby version is now 1.9.3, instead of 1.8.7</li>
       <li><em>Backwards incompatible:</em> Song files containing a <code>Structure</code> section are no longer supported. A <code>Flow</code> section should be used instead.</li>
       <li><em>Backwards incompatible:</em> Track rhythms can no longer start with a <code>|</code> character. For example, <code>|X...X...</code> is no longer a valid rhythm. However, bar lines are still allowed to appear elsewhere in the rhythm. For example, <code>X...X...|X...X...|</code> <em>is</em> a valid rhythm.</li>
