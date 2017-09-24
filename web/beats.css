@@ -25,7 +25,7 @@ a.toggle {
   background: #fff;
   max-width: 576px;
   margin: 1.5em auto;
-  padding: 0 1.5em;
+  padding: 0 0.5em;
 }
 
 .menubar ul {
@@ -41,11 +41,22 @@ a.toggle {
   font-weight: bold;
 }
 
+
 .content-box {
   background: #fff;
   max-width: 576px;
-  margin: 3.0em auto;
-  padding: 0 1.5em;
+  margin: 3.0rem auto;
+  padding: 0 0.5rem;
+}
+
+@media (min-width: 744px) {
+  .menubar {
+    padding: 0 1.5rem;
+  }
+
+  .content-box {
+    padding: 0 1.5rem;
+  }
 }
 
 .content-box h1 {
