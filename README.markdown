@@ -54,8 +54,8 @@ Beats runs from the command-line. Run `beats -h` to see the available options. F
 Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from sratch.
 
 
-What's New
-----------
+What's New in v2.1
+------------------
 
 The latest version of Beats is 2.1.0, released on September 9, 2017.
 
@@ -119,8 +119,8 @@ This is a equivalent to:
 
 
 
-What's Slightly Less New
-------------------------
+What's New in v2.0
+------------------
 
 The previous version of Beats is 2.0.0, released on September 4, 2017. It is primarily a modernization release, and contains some relatively small backwards incompatible changes.
 
