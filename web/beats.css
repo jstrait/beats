@@ -12,6 +12,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+.display-none { display: none; }
+
 a {
   color: #00b12e;
 }

@@ -21,7 +21,7 @@
     </audio>
     <div>
       <a id="toggle-synth-groove" class="toggle" href="#" onclick="toggleSource('toggle-synth-groove', 'source-synth-groove'); return false;">Show Source</a>
-      <pre id="source-synth-groove" style="display: none;"><code>Song:
+      <pre id="source-synth-groove" class="display-none"><code>Song:
   Tempo: 105
   Flow:
     - Verse:   x4
@@ -55,16 +55,4 @@ Chorus:
 
     Synth sounds provided by an old <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>
-<script type="text/javascript">
-function toggleSource(toggleId, elementId) {
-  var toggler = $(toggleId);
-  var element = $(elementId);  
-
-  element.toggle();
-  toggler.innerText = (element.visible()) ? "Hide Source" : "Show source";
-
-  return false;
-}
-</script>
 <? drawFooter(); ?>

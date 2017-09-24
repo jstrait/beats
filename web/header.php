@@ -27,6 +27,17 @@ function drawFooter() {
   <div id="about" class="content-box">
     <p>Copyright &copy; 2010-17 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
   </div>
+  <script type="text/javascript">
+  function toggleSource(toggleId, elementId) {
+    var toggler = document.getElementById(toggleId);
+    var element = document.getElementById(elementId);
+
+    element.classList.toggle("display-none");
+    toggler.innerText = (element.classList.contains("display-none")) ? "Show Source" : "Hide source";
+
+    return false;
+  };
+  </script>
 </body>
 </html>
 <? } ?>
