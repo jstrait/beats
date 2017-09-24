@@ -1,8 +1,11 @@
+html {
+  font-size: 24px;
+}
+
 body {
   background: #fff url('dot.png');
   background-size: 24px 36px;
   margin: 0;
-  font-size: 24px;
   line-height: 1.5em;
   font-family: eurostile, "helvetica neue", arial, sans-serif;
   color: #535353;
@@ -50,13 +53,13 @@ a.toggle {
   line-height: 1.0em;
   margin: 0;
   color: #00b12e;
-	
+
   background: url(logo.png) center left no-repeat;
   background-size: auto 50px;
   text-indent: -5000px;
   height: 72px;
   outline: 0;
-  
+
   /* Following added to fix IE bug with text-indent property */
   font-size: 0;
   display: block;
