@@ -15,9 +15,9 @@
 Verse:
   - bass.wav:  X...X...X...X...</code></pre></p>
     <p>This is about the most minimal song you can create. To turn it into a Wave file, run the following from the command line:</p>
-    <p><pre><code>beats song.txt song.wav</code></pre></p>
+    <p><pre class="single-line"><code>beats song.txt song.wav</code></pre></p>
     <p>If Beats ran successfully, it should print something like the following:</p>
-    <p><pre><code>0:02 of audio written in 0.052459 seconds.</code></pre></p>
+    <p><pre class="single-line"><code>0:02 of audio written in 0.052459 seconds.</code></pre></p>
     <p>There should now be a file called <code>song.wav</code> in the current directory. Play it in whatever media player you like. It should sound like this:</p>
     <p><audio class="tutorial" src="/media/tutorial_1.wav" controls>Your browser can't play this audio file.</audio></p>
   </div>
@@ -166,7 +166,7 @@ Chorus:
   <h2>Writing Each Track To a Separate Wave File</h2>
   <p>If you want to use your beat in music editing software such as Logic, GarageBand, etc., you'll probably want to save each track as a separate Wave file. This way you can independently adjust the volume of each track, add effects to individual sounds, etc.</p>
   <p>To do this, just add the <code>-s</code> option when running Beats. For example:</p>
-  <p><pre><code>beats -s song.txt song.wav</code></pre></p>
+  <p><pre class="single-line"><code>beats -s song.txt song.wav</code></pre></p>
   <p>If you add this option when running Beats for the following song:</p>
   <p><pre><code>Song:
   Tempo: 120
@@ -189,9 +189,7 @@ Chorus:
   - hihat:            XXXXXXXXXXXXX...|XXXXXXXXXXXXX...
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
-  - cowbell_high.wav: ................|..............X.
-
-</code></pre></p>
+  - cowbell_high.wav: ................|..............X.</code></pre></p>
   <p>Beats will create the Wave files below. Note how the bass tracks (for example) for the verse and chorus patterns are combined into one wave file.</p>
   <p class="last"><label>song-bass.wav</label><audio class="tutorial" src="/media/tutorial_8-bass.wav" controls>Your browser can't play this audio file.</audio></p>
   <p class="last"><label>song-snare.wav</label><audio class="tutorial" src="/media/tutorial_8-snare.wav" controls>Your browser can't play this audio file.</audio></p>
