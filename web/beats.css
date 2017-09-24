@@ -6,7 +6,7 @@ body {
   background: #fff url('dot.png');
   background-size: 24px 36px;
   margin: 0;
-  line-height: 1.5em;
+  line-height: 1.5rem;
   font-family: eurostile, "helvetica neue", arial, sans-serif;
   color: #535353;
   text-rendering: optimizeLegibility;
@@ -17,15 +17,15 @@ a {
 }
 
 a.toggle {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.5rem;
   display: inline-block;
 }
 
 .menubar {
   background: #fff;
   max-width: 576px;
-  margin: 1.5em auto;
-  padding: 0 0.5em;
+  margin: 1.5rem auto;
+  padding: 0 0.5rem;
 }
 
 .menubar ul {
@@ -37,7 +37,7 @@ a.toggle {
 .menubar li {
   list-style: none;
   float: left;
-  margin-right: 1.0em;
+  margin-right: 1.0rem;
   font-weight: bold;
 }
 
@@ -60,7 +60,7 @@ a.toggle {
 }
 
 .content-box h1 {
-  font-size: 3.0em;
+  font-size: 3.0rem;
   line-height: 1.0em;
   margin: 0;
   color: #00b12e;
@@ -79,19 +79,19 @@ a.toggle {
 
 .content-box h2 {
   color: #00b12e;
-  margin: 0 0 1.0em 0;
-  font-size: 1.5em;
-  line-height: 1.0em;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
 }
 
 .content-box h3 {
   margin: 0;
-  font-size: 1.0em;
-  line-height: 1.5em;
+  font-size: 1.0rem;
+  line-height: 1.5rem;
 }
 
 .content-box p {
-  margin: 0 0 1.5em 0;
+  margin: 0 0 1.5rem 0;
   font-weight: bold;
 }
 
@@ -100,27 +100,28 @@ a.toggle {
 }
 
 pre {
-  margin: 0 0 3.0em 0;
-  font-size: 0.5em;
-  line-height: 1.5em;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.5rem;
+  line-height: 0.75rem;
   letter-spacing: 0.45em;
   max-width: 100%;
   overflow: auto;
 }
 
 pre.single-line {
-  line-height: 36px;
+  line-height: 1.5rem;
+  margin-bottom: 0;
 }
 
 pre code {
-  line-height: 16px;
+  line-height: 0.6666666667rem;
 }
 
 code {
   margin: 0;
   font-family: menlo, consolas, monaco, courier, monospace;
   font-weight: normal;
-  line-height: 16px;
+  line-height: 0.6666666667rem;
 }
 
 ul {
@@ -130,12 +131,12 @@ ul {
 
 ol {
   margin-top: 0;
-  margin-bottom: 1.5em;
+  margin-bottom: 1.5rem;
 }
 
 ul li {
   list-style-type: none;
-  line-height: 1.5em;
+  line-height: 1.5rem;
 }
 
 ul.bulleted li {
@@ -144,17 +145,17 @@ ul.bulleted li {
 }
 
 ol li {
-  line-height: 1.5em;
+  line-height: 1.5rem;
   font-weight: bold;
 }
 
 ul li.drumkit {
-  margin-bottom: 3.0em;
+  margin-bottom: 3.0rem;
 }
 
 ul.sample-list li {
-  font-size: 1.0em;
-  line-height: 1.5em;
+  font-size: 1.0rem;
+  line-height: 1.5rem;
 }
 
 label {
@@ -203,5 +204,5 @@ h2#strategy-guide {
 }
 
 .content-box h3.mt {
-  margin-top: 1.5em;
+  margin-top: 1.5rem;
 }
