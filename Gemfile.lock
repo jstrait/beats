@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    beats (2.0.0)
+    beats (2.1.0)
       wavefile (= 0.8.1)
 
 GEM
