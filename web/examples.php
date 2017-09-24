@@ -7,18 +7,24 @@
   <div class="content-box">
     <h2>Synth Groove</h2>
     <p>Drum kit: <a href="/download#drumkit-hammerhead">Hammerhead</a></p>
-    <label class="example-song">Raw Beats</label>
-    <audio class="example-song" controls>
-      <source src="/media/beats_drum_machine_synth_groove_raw.mp3" />
-      <source src="/media/beats_drum_machine_synth_groove_raw.ogg" />
-      Your browser can't play this audio file.
-    </audio>
-    <label class="example-song">Full Song</label>
-    <audio class="example-song" controls>
-      <source src="/media/beats_drum_machine_synth_groove.mp3" />
-      <source src="/media/beats_drum_machine_synth_groove.ogg" />
-      Your browser can't play this audio file.
-    </audio>
+    <ul>
+      <li class="flex">
+        <label class="example-label">Raw Beats</label>
+        <audio class="flex-fill" controls>
+          <source src="/media/beats_drum_machine_synth_groove_raw.mp3" />
+          <source src="/media/beats_drum_machine_synth_groove_raw.ogg" />
+          Your browser can't play this audio file.
+        </audio>
+      </li>
+      <li class="flex">
+        <label class="example-label">Full Song</label>
+        <audio class="flex-fill" controls>
+          <source src="/media/beats_drum_machine_synth_groove.mp3" />
+          <source src="/media/beats_drum_machine_synth_groove.ogg" />
+          Your browser can't play this audio file.
+        </audio>
+      </li>
+    </ul>
     <div>
       <a id="toggle-synth-groove" class="toggle" href="#" onclick="toggleSource('toggle-synth-groove', 'source-synth-groove'); return false;">Show Source</a>
       <pre id="source-synth-groove" class="display-none"><code>Song:

@@ -13,6 +13,8 @@ body {
 }
 
 .display-none { display: none; }
+.flex { display: flex; }
+.flex-fill { flex: 1; }
 
 a {
   color: #00b12e;
@@ -168,8 +170,8 @@ label {
   display: inline-block;
 }
 
-label.example-song {
-  width: 35%;
+.example-label {
+  width: 6.0rem;
 }
 
 audio {
@@ -184,10 +186,6 @@ audio.home-page {
 
 audio.tutorial {
   width: 100%;
-}
-
-audio.example-song {
-  width: 55%;
 }
 
 div#about {
