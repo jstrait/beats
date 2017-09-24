@@ -26,7 +26,7 @@
       </li>
       <li id="drumkit-casio" class="drumkit">
         <h3><a href="/casio_sa20_drum_sounds.zip">Casio SA-20</a></h3>
-        <p>20 <span style="text-decoration: line-through;">high quality</span> sounds sampled from a <a href="http://kepfeltoltes.hu/100407/Sa20_01_www.kepfeltoltes.hu_.jpg">Casio SA-20 keyboard</a> I got when I was 8 years old.</p>
+        <p>20 <span style="text-decoration: line-through;">high quality</span> sounds sampled from a <a href="https://static.kupindoslike.com/Sintisajzer-CASIO-SA-20_slika_XL_69005915.jpg">Casio SA-20 keyboard</a> I got when I was 8 years old.</p>
         <ul class="sample-list">
           <li><label>bass.wav</label><audio src="/media/bass.wav" controls>Your browser can't play this audio file.</audio></li>
           <li><label>snare.wav</label><audio src="/media/snare.wav" controls>Your browser can't play this audio file.</audio></li>
