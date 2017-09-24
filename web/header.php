@@ -25,7 +25,7 @@ function drawHeader() {
 function drawFooter() {
 ?>
   <div id="about" class="content-box">
-    <p>Copyright &copy; 2010-17 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
+    <p>&copy; 2010-17 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
   </div>
   <script type="text/javascript">
   function toggleSource(toggleId, elementId) {
