@@ -181,11 +181,14 @@ audio {
 
 audio.home-page {
   width: 100%;
-  vertical-align: baseline;
+  height: 1.5rem;
+  display: block;
 }
 
 audio.tutorial {
   width: 100%;
+  height: 1.5rem;
+  display: block;
 }
 
 div#about {
