@@ -15,6 +15,8 @@ body {
 .flex { display: flex; }
 .flex-fill { flex: 1; }
 
+.bold { font-weight: bold; }
+
 a {
   color: #00b12e;
 }
@@ -24,28 +26,30 @@ a.toggle {
   display: inline-block;
 }
 
-.menubar {
-  background: #fff;
-  max-width: 576px;
-  margin: 1.5rem auto;
-  padding: 0 0.5rem;
+.menu-header {
+  border-bottom: 1px solid #535353;
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+#menu-mobile-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hamburger {
+  text-decoration: none;
+  color: #535353;
 }
 
 .menubar ul {
   margin: 0;
   padding: 0;
-  overflow: auto;
 }
 
 .menubar li {
   list-style: none;
-  float: left;
-  margin-right: 1.0rem;
   font-weight: bold;
-}
-
-.menubar li:last-child {
-  margin-right: 0;
 }
 
 .content-box {
@@ -59,6 +63,40 @@ a.toggle {
   body {
     background-image: url('dot.png');
     background-size: 24px 36px;
+  }
+
+  #menu-mobile-header {
+    display: none;
+  }
+
+  .menu-header {
+    border-bottom: 0;
+    padding: 0;
+  }
+
+  .menubar {
+    background: #fff;
+    display: block;
+    max-width: 576px;
+    margin: 1.5rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .menubar ul {
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+  }
+
+  .menubar li {
+    list-style: none;
+    float: left;
+    margin-right: 1.0rem;
+    font-weight: bold;
+  }
+
+  .menubar li:last-child {
+    margin-right: 0;
   }
 }
 

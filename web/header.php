@@ -12,13 +12,19 @@ function drawHeader() {
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
-  <div class="menubar">
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/download/">Download</a></li>
-      <li><a href="/examples/">Examples</a></li>
-      <li><a href="/strategyguide/">Strategy Guide</a></li>
-    </ul>
+  <div class="menu-header">
+    <div id="menu-mobile-header">
+      <span class="bold">Beats Drum Machine</span>
+      <a href="#" class="hamburger" onclick="toggleMenu(); return false;">☰</a>
+    </div>
+    <div id="menubar" class="menubar display-none">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/download/">Download</a></li>
+        <li><a href="/examples/">Examples</a></li>
+        <li><a href="/strategyguide/">Strategy Guide</a></li>
+      </ul>
+    </div>
   </div>
 <? }
 
@@ -28,6 +34,11 @@ function drawFooter() {
     <p>&copy; 2010-17 <a href="http://www.joelstrait.com/">Joel Strait</a></p>
   </div>
   <script type="text/javascript">
+  function toggleMenu() {
+    var menubar = document.getElementById("menubar");
+    menubar.classList.toggle("display-none");
+  };
+
   function toggleSource(toggleId, elementId) {
     var toggler = document.getElementById(toggleId);
     var element = document.getElementById(elementId);
