@@ -3,8 +3,7 @@ html {
 }
 
 body {
-  background: #fff url('dot.png');
-  background-size: 24px 36px;
+  background: #fff;
   margin: 0;
   line-height: 1.5rem;
   font-family: eurostile, "helvetica neue", arial, sans-serif;
@@ -54,6 +53,13 @@ a.toggle {
   max-width: 576px;
   margin: 3.0rem auto;
   padding: 0 0.5rem;
+}
+
+@media (min-width: 648px) {   /* 576 + (12px padding * 2) + (24 * 2) */
+  body {
+    background-image: url('dot.png');
+    background-size: 24px 36px;
+  }
 }
 
 @media (min-width: 744px) {
