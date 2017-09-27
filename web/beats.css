@@ -238,6 +238,7 @@ audio.tutorial {
 div#about {
   text-align: center;
   padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 h2#strategy-guide {
