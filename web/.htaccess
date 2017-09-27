@@ -17,6 +17,8 @@ RewriteRule ^strategyguide$ /strategyguide/ [r=301]
 RewriteRule ^strategyguide/$ /docs.php
 RewriteRule ^tutorial$ /tutorial/ [r=301]
 RewriteRule ^tutorial/$ /tutorial.php
+RewriteRule ^using_with_macvim$ /using_with_macvim/ [r=301]
+RewriteRule ^using_with_macvim/$ /using_with_macvim.php
 RewriteRule ^usage$ /usage/ [r=301]
 RewriteRule ^usage/$ /usage.php
 RewriteRule ^technical_details$ /technical_details/ [r=301]
