@@ -14,7 +14,7 @@ function drawHeader() {
 <body>
   <div class="menu-header">
     <div id="menu-mobile-header">
-      <span class="bold">Beats Drum Machine</span>
+      <a href="/" class="mobile-logo"><span class="bold">Beats</span> Drum Machine</span></a>
       <a href="#" class="hamburger" onclick="toggleMenu(); return false;">☰</a>
     </div>
     <div id="menubar" class="menubar display-none">

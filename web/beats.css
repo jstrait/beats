@@ -26,30 +26,42 @@ a.toggle {
   display: inline-block;
 }
 
-.menu-header {
-  border-bottom: 1px solid #535353;
-  box-sizing: border-box;
-  padding: 0.5rem;
-}
-
 #menu-mobile-header {
   display: flex;
   justify-content: space-between;
+  background: #00b12e;
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: 2px solid #fff;
+  box-sizing: border-box;
+}
+
+.mobile-logo {
+  text-decoration: none;
+  color: #fff;
 }
 
 .hamburger {
   text-decoration: none;
-  color: #535353;
+  color: #fff;
 }
 
 .menubar ul {
   margin: 0;
-  padding: 0;
+  padding: 0.5rem 0;
+  background: #00b12e;
 }
 
 .menubar li {
+  color: #fff;
+  background: #00b12e;
   list-style: none;
   font-weight: bold;
+  padding: 0 0.5rem;
+}
+
+.menubar li a {
+  color: #fff;
 }
 
 .content-box {
@@ -86,13 +98,20 @@ a.toggle {
     margin: 0;
     padding: 0;
     overflow: auto;
+    background: none;
   }
 
   .menubar li {
     list-style: none;
     float: left;
+    padding: 0;
     margin-right: 1.0rem;
     font-weight: bold;
+    background: none;
+  }
+
+  .menubar li a {
+    color: #00b12e;
   }
 
   .menubar li:last-child {
