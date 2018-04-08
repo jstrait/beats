@@ -125,7 +125,7 @@ What's New in v2.0
 The previous version of Beats is 2.0.0, released on September 4, 2017. It is primarily a modernization release, and contains some relatively small backwards incompatible changes.
 
 * Track rhythms can now have spaces in them. For example, `X... .... X... ....` is now a valid rhythm. Spaces are ignored, and don't affect the rhythm. For example, `X...    X...` is treated as the same rhythm as `X...X...`
-* Wave files using `WAVEFORMATEXTENSIBLE` format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.
+* Wave files using `WAVE_FORMAT_EXTENSIBLE` format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.
 * Installing the gem is now simpler, since it no longer requires installing the legacy `syck` YAML parser via an extension.
 * A `Fixnum is deprecated` message is no longer shown when using Ruby 2.4
 * **Backwards incompatible changes**:

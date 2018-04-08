@@ -49,7 +49,7 @@
     <h3 class="mt">2.0.0 &ndash; September 4, 2017</h3>
     <ul class="bulleted">
       <li>Track rhythms can now have spaces in them. For example, <code>X... .... X... ....</code> is now a valid rhythm. Spaces are ignored, and don&rsquo;t affect the rhythm.</li>
-      <li>Wave files using WAVEFORMATEXTENSIBLE format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.</li>
+      <li>Wave files using WAVE_FORMAT_EXTENSIBLE format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.</li>
       <li>Installing the gem is now simpler, since it no longer requires installing the legacy <code>syck</code> YAML parser via an extension.</li>
       <li>A &#8220;Fixnum is deprecated&#8221; message is no longer shown when using Ruby 2.4</li>
       <li>The minimum supported Ruby version is now 1.9.3, instead of 1.8.7</li>
