@@ -39,7 +39,7 @@ To install the latest stable version (2.1.0) from [rubygems.org](http://rubygems
 
     gem install beats
 
-Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, use `sudo gem install beats` instead. If you are using RVM, plain `gem install beats` should work fine.
+Note: if you're installing using the default version of Ruby that comes with macOS, you might get a file permission error. If that happens, use `sudo gem install beats` instead. If you're using a version manager such as rbenv, chruby, or RVM, plain `gem install beats` should work fine.
 
 Once installed, you can then run Beats from the command-line using the `beats` command.
 
