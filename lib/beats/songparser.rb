@@ -156,7 +156,7 @@ module Beats
 
           track_names = Array(track_names)
           if track_names.empty?
-            raise ParseError, "Pattern '#{pattern_name}' has an empty composite pattern (i.e. \"[]\"), which is not valid."
+            raise ParseError, "Pattern '#{pattern_name}' uses an empty composite sound (i.e. \"[]\"), which is not valid."
           end
 
           track_names.map! do |track_name|
