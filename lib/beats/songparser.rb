@@ -178,7 +178,7 @@ module Beats
     def set_song_flow(song, raw_flow)
       flow = []
 
-      raw_flow.each{|pattern_item|
+      raw_flow.each do |pattern_item|
         if pattern_item.class == String
           pattern_item = {pattern_item => "x1"}
         end
@@ -206,7 +206,8 @@ module Beats
         end
 
         multiples.times { flow << pattern_name_sym }
-      }
+      end
+
       song.flow = flow
     end
 
