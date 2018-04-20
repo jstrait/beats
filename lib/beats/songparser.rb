@@ -112,7 +112,7 @@ module Beats
       raw_song_components[:swing]   = header["swing"]
       raw_song_components[:patterns]  = full_definition.reject {|k, v| k == "song"}
 
-      return raw_song_components
+      raw_song_components
     end
 
     def add_kit_sounds_from_kit(kit_builder, raw_kit)
@@ -215,7 +215,7 @@ module Beats
 
     # Converts all hash keys to be lowercase
     def downcase_hash_keys(hash)
-      return hash.inject({}) do |new_hash, pair|
+      hash.inject({}) do |new_hash, pair|
           new_hash[pair.first.downcase] = pair.last
           new_hash
       end
