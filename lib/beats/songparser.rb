@@ -95,7 +95,6 @@ module Beats
         raise ParseError, "Syntax error in YAML file: #{detail}"
       end
 
-      raw_song_components = {}
       full_definition = downcase_hash_keys(raw_song_definition)
 
       unless full_definition["song"].nil?
@@ -103,16 +102,15 @@ module Beats
       else
         raise ParseError, NO_SONG_HEADER_ERROR_MSG
       end
-      raw_song_components[:tempo]     = header["tempo"]
-      raw_song_components[:folder]    = header["folder"]
-      raw_song_components[:kit]       = header["kit"]
 
-      raw_song_components[:flow] = header["flow"]
-
-      raw_song_components[:swing]   = header["swing"]
-      raw_song_components[:patterns]  = full_definition.reject {|k, v| k == "song"}
-
-      raw_song_components
+      {
+        tempo: header["tempo"],
+        folder: header["folder"],
+        kit: header["kit"],
+        flow: header["flow"],
+        swing: header["swing"],
+        patterns: full_definition.reject {|k, v| k == "song"},
+      }
     end
 
     def add_kit_sounds_from_kit(kit_builder, raw_kit)
