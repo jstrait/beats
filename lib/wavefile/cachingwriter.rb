@@ -3,7 +3,7 @@ module WaveFile
   # If the Buffer is written again, it will write the version from cache instead of re-doing
   # a String.pack() call.
   class CachingWriter < Writer
-    def initialize(file_name, format)
+    def initialize(io_or_file_name, format)
       super
 
       @buffer_cache = {}
