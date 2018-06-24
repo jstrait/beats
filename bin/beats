@@ -2,7 +2,6 @@
 
 start_time = Time.now
 
-gem "wavefile", "=0.8.1"
 require "optparse"
 require "yaml"
 require "wavefile"
