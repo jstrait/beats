@@ -44,8 +44,10 @@ module Beats
           sample_array = sample_array.map {|sample| sample / scale }
         elsif num_channels == 2
           sample_array = sample_array.map {|sample_frame| [sample_frame[0] / scale, sample_frame[1] / scale]}
-        else
-          raise StandardError, "Invalid sample data array in AudioUtils.normalize()"
+        elsif num_channels > 2
+          sample_array = sample_array.map do |sample_frame|
+            sample_frame.map {|sample| sample / scale }
+          end
         end
       end
 
