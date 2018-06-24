@@ -80,10 +80,11 @@ module Beats
           sample_buffer = buffer
         end
       rescue Errno::ENOENT
-        raise SoundFileNotFoundError, "Sound file #{filename} not found."
-      rescue StandardError
-        raise InvalidSoundFormatError, "Sound file #{filename} is either not a sound file, " +
-                                       "or is in an unsupported format. BEATS can handle 8, 16, 24, or 32-bit PCM *.wav files."
+        raise SoundFileNotFoundError, "Sound file `#{filename}` not found."
+      rescue WaveFile::UnsupportedFormatError
+        raise InvalidSoundFormatError, "Sound file `#{filename}` is not a supported *.wav format. Beats can use *.wav files with a sample format of 8/16/24/32 PCM or floating point."
+      rescue WaveFile::InvalidFormatError
+        raise InvalidSoundFormatError, "Sound file `#{filename}` is either not a sound file, or is in an unsupported format. Beats can use *.wav files with a sample format of 8/16/24/32 PCM or floating point."
       end
 
       sample_buffer
