@@ -10,17 +10,17 @@ class PatternTest < Minitest::Test
     pattern = Pattern.new :blank
     test_patterns[:blank] = pattern
 
-    pattern = Pattern.new :verse
-    pattern.track "bass.wav",      "X...X...X...XX..X...X...XX..X..."
-    pattern.track "snare.wav",     "..X...X...X...X.X...X...X...X..."
-    pattern.track "hh_closed.wav", "X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X."
-    pattern.track "hh_open.wav",   "X...............X..............X"
+    pattern = Pattern.new(:verse)
+    pattern.track("bass.wav",      "X...X...X...XX..X...X...XX..X...")
+    pattern.track("snare.wav",     "..X...X...X...X.X...X...X...X...")
+    pattern.track("hh_closed.wav", "X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.")
+    pattern.track("hh_open.wav",   "X...............X..............X")
     test_patterns[:verse] = pattern
 
-    pattern = Pattern.new :staircase
-    pattern.track "bass.wav",      "X..."
-    pattern.track "snare.wav",     "X.."
-    pattern.track "hh_closed.wav", "X."
+    pattern = Pattern.new(:staircase)
+    pattern.track("bass.wav",      "X...")
+    pattern.track("snare.wav",     "X..")
+    pattern.track("hh_closed.wav", "X.")
     test_patterns[:staircase] = pattern
 
     test_patterns

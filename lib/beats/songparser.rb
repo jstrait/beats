@@ -168,7 +168,7 @@ module Beats
           track_names.flatten!
 
           track_names.each do |track_name|
-            new_pattern.track track_name, rhythm
+            new_pattern.track(track_name, rhythm)
           end
         end
       end
