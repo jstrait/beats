@@ -36,6 +36,9 @@ class AudioUtilsTest < Minitest::Test
 
     assert_equal([[10, 20, 30], [100, 200, 300], [1000, 2000, 3000]], AudioUtils.scale([[10, 20, 30], [100, 200, 300], [1000, 2000, 3000]], 3, 1))
     assert_equal([[5, 10, 15], [50, 100, 150], [500, 1000, 1500]], AudioUtils.scale([[10, 20, 30], [100, 200, 300], [1000, 2000, 3000]], 3, 2))
+
+    assert_raises(ArgumentError) { AudioUtils.scale([[100, 200], [300, 400], [500, 600]], 0, 5) }
+    assert_raises(ArgumentError) { AudioUtils.scale([[100, 200], [300, 400], [500, 600]], -1, 5) }
   end
 
   def test_step_sample_length

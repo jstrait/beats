@@ -35,6 +35,10 @@ module Beats
     # Scales the amplitude of the incoming sample array by *scale* amount. Can be used in conjunction
     # with composite() to make sure composited sample arrays don't have an amplitude greater than 1.0.
     def self.scale(sample_array, num_channels, scale)
+      if num_channels < 1
+        raise ArgumentError, "`num_channels` must be 1 or greater"
+      end
+
       if sample_array == []
         return sample_array
       end
