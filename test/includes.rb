@@ -1,7 +1,6 @@
 # Standard Ruby libraries
 require 'minitest/autorun'
 require 'yaml'
-require 'rubygems'
 
 # External gems
 require 'wavefile'
