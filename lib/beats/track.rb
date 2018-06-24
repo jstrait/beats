@@ -19,8 +19,7 @@ module Beats
     end
 
     def rhythm=(rhythm)
-      @rhythm = rhythm.delete(BARLINE)
-      @rhythm = @rhythm.delete(SPACE)
+      @rhythm = rhythm.delete(BARLINE + SPACE)
       @trigger_step_lengths = calculate_trigger_step_lengths
     end
 
