@@ -25,7 +25,7 @@ module WaveFile
           data = samples.pack(@pack_code)
         end
 
-        packed_buffer_data = { :data => data, :sample_count => samples.length }
+        packed_buffer_data = { data: data, sample_count: samples.length }
         @buffer_cache[key] = packed_buffer_data
       end
 

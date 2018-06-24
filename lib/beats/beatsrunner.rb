@@ -29,7 +29,7 @@ module Beats
         AudioEngine.new(optimized_song, kit).write_to_file(output_file_name)
       end
 
-      {:duration => durations.last}
+      {duration: durations.last}
     end
 
   private

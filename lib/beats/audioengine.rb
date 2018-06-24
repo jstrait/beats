@@ -36,8 +36,8 @@ module Beats
         unless packed_pattern_cache.member?(key)
           sample_data = generate_pattern_sample_data(@song.patterns[pattern_name], incoming_overflow)
 
-          packed_pattern_cache[key] = { :primary => WaveFile::Buffer.new(sample_data[:primary], format),
-                                        :overflow => WaveFile::Buffer.new(sample_data[:overflow], format) }
+          packed_pattern_cache[key] = { primary:  WaveFile::Buffer.new(sample_data[:primary], format),
+                                        overflow: WaveFile::Buffer.new(sample_data[:overflow], format) }
         end
 
         writer.write(packed_pattern_cache[key][:primary])
@@ -62,7 +62,7 @@ module Beats
     def generate_track_sample_data(track, sound)
       trigger_step_lengths = track.trigger_step_lengths
       if trigger_step_lengths == [0]
-        return {:primary => [], :overflow => []}    # Is this really what should happen? Why throw away overflow?
+        return {primary: [], overflow: []}    # Is this really what should happen? Why throw away overflow?
       end
 
       fill_value = (@kit.num_channels == 1) ? 0 : Array.new(@kit.num_channels, 0)
@@ -82,7 +82,7 @@ module Beats
 
       overflow_sample_data = (sound == [] || trigger_step_lengths.length == 1) ? [] : sound[trigger_sample_length...(sound.length)]
 
-      {:primary => primary_sample_data, :overflow => overflow_sample_data}
+      {primary: primary_sample_data, overflow: overflow_sample_data}
     end
 
     # Composites the sample data for each of the pattern's tracks, and returns the overflow sample data
@@ -92,7 +92,7 @@ module Beats
       # Unless cached, composite each track's sample data.
       if @composited_pattern_cache[pattern].nil?
         primary_sample_data, overflow_sample_data = composite_pattern_tracks(pattern)
-        @composited_pattern_cache[pattern] = {:primary => primary_sample_data.dup, :overflow => overflow_sample_data.dup}
+        @composited_pattern_cache[pattern] = {primary: primary_sample_data.dup, overflow: overflow_sample_data.dup}
       else
         primary_sample_data = @composited_pattern_cache[pattern][:primary].dup
         overflow_sample_data = @composited_pattern_cache[pattern][:overflow].dup
@@ -105,7 +105,7 @@ module Beats
                                                                            overflow_sample_data)
       primary_sample_data = AudioUtils.scale(primary_sample_data, @kit.num_channels, @song.total_tracks)
 
-      {:primary => primary_sample_data, :overflow => overflow_sample_data}
+      {primary: primary_sample_data, overflow: overflow_sample_data}
     end
 
     def composite_pattern_tracks(pattern)
