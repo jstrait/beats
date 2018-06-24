@@ -3,10 +3,7 @@
 start_time = Time.now
 
 require "optparse"
-require "yaml"
-require "wavefile"
 require "beats"
-require "wavefile/cachingwriter"
 
 include Beats
 

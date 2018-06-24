@@ -1,3 +1,9 @@
+require 'yaml'
+
+gem "wavefile", "=0.8.1"
+require 'wavefile'
+require 'wavefile/cachingwriter'
+
 require 'beats/audioengine'
 require 'beats/audioutils'
 require 'beats/beatsrunner'
