@@ -39,23 +39,19 @@ module Beats
         raise ArgumentError, "`num_channels` must be 1 or greater"
       end
 
-      if sample_array == []
+      if scale == 1 || sample_array == []
         return sample_array
       end
 
-      if scale > 1
-        if num_channels == 1
-          sample_array = sample_array.map {|sample| sample / scale }
-        elsif num_channels == 2
-          sample_array = sample_array.map {|sample_frame| [sample_frame[0] / scale, sample_frame[1] / scale]}
-        elsif num_channels > 2
-          sample_array = sample_array.map do |sample_frame|
-            sample_frame.map {|sample| sample / scale }
-          end
+      if num_channels == 1
+        sample_array.map {|sample| sample / scale }
+      elsif num_channels == 2
+        sample_array.map {|sample_frame| [sample_frame[0] / scale, sample_frame[1] / scale]}
+      elsif num_channels > 2
+        sample_array.map do |sample_frame|
+          sample_frame.map {|sample| sample / scale }
         end
       end
-
-      sample_array
     end
 
 
