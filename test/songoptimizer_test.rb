@@ -55,7 +55,7 @@ Verse:
 
   def test_optimize
     parser = SongParser.new
-    original_song, kit = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML)
+    original_song, _ = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
@@ -124,7 +124,7 @@ Verse:
 
   def test_optimize_song_nondivisible_max_pattern_length
     parser = SongParser.new
-    original_song, kit = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, _ = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 7)
@@ -142,7 +142,7 @@ Verse:
   end
 
   def test_pattern_collision
-    original_song, kit = SongOptimizerTest.load_fixture("valid/optimize_pattern_collision.txt")
+    original_song, _ = SongOptimizerTest.load_fixture("valid/optimize_pattern_collision.txt")
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
 
@@ -151,7 +151,7 @@ Verse:
 
   def test_optimize_song_containing_empty_pattern
     parser = SongParser.new
-    original_song, kit = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, _ = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)

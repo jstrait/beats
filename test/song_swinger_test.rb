@@ -3,7 +3,7 @@ require 'includes'
 class SongSwingerTest < Minitest::Test
   def test_full_song_swing_rate_8
     base_path = File.dirname(__FILE__) + "/sounds"
-    song, kit = SongParser.new.parse(base_path, File.read("test/fixtures/valid/example_mono_16_base_path.txt"))
+    song, _ = SongParser.new.parse(base_path, File.read("test/fixtures/valid/example_mono_16_base_path.txt"))
 
     shuffled_song = Transforms::SongSwinger.transform(song, 8)
 
@@ -47,7 +47,7 @@ class SongSwingerTest < Minitest::Test
 
   def test_full_song_swing_rate_16
     base_path = File.dirname(__FILE__) + "/sounds"
-    song, kit = SongParser.new.parse(base_path, File.read("test/fixtures/valid/example_mono_16_base_path.txt"))
+    song, _ = SongParser.new.parse(base_path, File.read("test/fixtures/valid/example_mono_16_base_path.txt"))
 
     shuffled_song = Transforms::SongSwinger.transform(song, 16)
 
