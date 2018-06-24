@@ -74,9 +74,9 @@ begin
   input_file_name = ARGV[0]
   output_file_name = ARGV[1]
 
-  beats = BeatsRunner.new(input_file_name, output_file_name, options)
+  beats_runner = BeatsRunner.new(input_file_name, output_file_name, options)
 
-  output = beats.run()
+  output = beats_runner.run()
   duration = output[:duration]
   puts "#{duration.minutes}:#{duration.seconds.to_s.rjust(2, '0')} of audio written in #{Time.now - start_time} seconds."
 rescue => error
