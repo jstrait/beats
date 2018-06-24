@@ -65,7 +65,7 @@ module Beats
         return {:primary => [], :overflow => []}    # Is this really what should happen? Why throw away overflow?
       end
 
-      fill_value = (@kit.num_channels == 1) ? 0 : [0, 0]
+      fill_value = (@kit.num_channels == 1) ? 0 : Array.new(@kit.num_channels, 0)
       primary_sample_data = [].fill(fill_value, 0, AudioUtils.step_start_sample(track.step_count, @step_sample_length))
 
       step_index = trigger_step_lengths[0]
