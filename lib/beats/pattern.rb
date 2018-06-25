@@ -12,6 +12,8 @@ module Beats
       tracks.each do |track|
         add_track(track.name, track.rhythm)
       end
+
+      @tracks.freeze
     end
 
     def step_count

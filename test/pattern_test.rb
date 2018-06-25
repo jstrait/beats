@@ -71,6 +71,17 @@ class PatternTest < Minitest::Test
                                     "my_sound3"      => {name: "my_sound",       rhythm: "............"},})
   end
 
+  def test_track_array_is_frozen
+    tracks = [
+      Track.new("my_sound1", "X...X..."),
+      Track.new("my_sound2", "X.X.X.X."),
+      Track.new("my_sound3", "XXXXXXXX"),
+    ]
+    pattern = Pattern.new("whatevs", tracks)
+
+    assert_raises(FrozenError) { pattern.tracks["my_sound4"] = Track.new("my_sound4", "X...X...") }
+  end
+
   def test_track_unique_name_already_taken
     tracks = [
       Track.new("my_sound2", "X...X..."),
