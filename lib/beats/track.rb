@@ -16,6 +16,11 @@ module Beats
     def initialize(name, rhythm)
       @name = name.dup.freeze
       @rhythm = rhythm.delete(BARLINE + SPACE).freeze
+
+      if @rhythm.match(DISALLOWED_CHARACTERS)
+        raise InvalidRhythmError, "Track #{@name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
+      end
+
       @step_count = @rhythm.length
       @trigger_step_lengths = calculate_trigger_step_lengths.freeze
     end
@@ -25,10 +30,6 @@ module Beats
     private
 
     def calculate_trigger_step_lengths
-      if @rhythm.match(DISALLOWED_CHARACTERS)
-        raise InvalidRhythmError, "Track #{@name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
-      end
-
       trigger_step_lengths = @rhythm.scan(/X?\.*/)[0..-2].map(&:length)
       trigger_step_lengths.unshift(0) unless @rhythm.start_with?(REST)
 
