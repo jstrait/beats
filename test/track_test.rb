@@ -44,13 +44,52 @@ class TrackTest < Minitest::Test
     assert_equal("..XX..X...X...X.X...X...X...X...", test_tracks[:complicated].rhythm)
   end
 
+  def test_name_is_frozen
+    original_name = "Verse"
+    track = Track.new(original_name, "X...X...|X...X...")
+
+    # Track is initialized properly
+    assert_equal("Verse", track.name)
+    assert_equal("Verse", original_name)
+
+    # Name is frozen
+    assert_raises(FrozenError) { track.name << "X" }
+
+    # Changing the original string doesn't modify the track name
+    original_name << "2"
+    assert_equal("Verse", track.name)
+    assert_equal("Verse2", original_name)
+  end
+
+  def test_rhythm_is_frozen
+    original_rhythm = "X...X...|X...X..."
+    track = Track.new("my_track", original_rhythm)
+
+    # Track is initialized properly
+    assert_equal("X...X...X...X...", track.rhythm)
+    assert_equal("X...X...|X...X...", original_rhythm)
+
+    # Rhythm is frozen
+    assert_raises(FrozenError) { track.rhythm << "X" }
+
+    # Changing the original string doesn't modify the rhythm
+    original_rhythm << "X"
+    assert_equal("X...X...X...X...", track.rhythm)
+    assert_equal("X...X...|X...X...X", original_rhythm)
+  end
+
   def test_invalid_rhythm
     assert_raises(Track::InvalidRhythmError) { Track.new("bad_rhythm", "abcde") }
     assert_raises(Track::InvalidRhythmError) { Track.new("bad_rhythm", "X.X.e.X") }
+  end
 
-    track = Track.new("test", "X...")
-    assert_raises(Track::InvalidRhythmError) { track.rhythm = "abcde" }
-    assert_raises(Track::InvalidRhythmError) { track.rhythm = "X.X.e.X" }
+  def test_trigger_step_lengths_is_frozen
+    track = Track.new("my_track", "X...X...|X...X...")
+
+    assert_equal([0, 4, 4, 4, 4], track.trigger_step_lengths)
+
+    assert_raises(FrozenError) { track.trigger_step_lengths[2] = 5 }
+    assert_raises(FrozenError) { track.trigger_step_lengths << [1] }
   end
 
   def test_step_count

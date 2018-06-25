@@ -14,20 +14,13 @@ module Beats
     DISALLOWED_CHARACTERS = /[^X\.]/   # I.e., anything not an 'X' or a '.'
 
     def initialize(name, rhythm)
-      @name = name
-      self.rhythm = rhythm
+      @name = name.dup.freeze
+      @rhythm = rhythm.delete(BARLINE + SPACE).freeze
+      @step_count = @rhythm.length
+      @trigger_step_lengths = calculate_trigger_step_lengths.freeze
     end
 
-    def rhythm=(rhythm)
-      @rhythm = rhythm.delete(BARLINE + SPACE)
-      @trigger_step_lengths = calculate_trigger_step_lengths
-    end
-
-    def step_count
-      @rhythm.length
-    end
-
-    attr_reader :name, :rhythm, :trigger_step_lengths
+    attr_reader :name, :rhythm, :step_count, :trigger_step_lengths
 
     private
 
