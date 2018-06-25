@@ -6,14 +6,16 @@ module Beats
       def self.transform(song, swing_rate)
         validate_swing_rate(swing_rate)
 
-        song.patterns.values.each do |pattern|
-          pattern.tracks.values.each do |track|
+        song.patterns.each do |pattern_name, pattern|
+          swung_tracks = pattern.tracks.map do |track_name, track|
             if swing_rate == 8
-              track.rhythm = swing_8(track.rhythm)
+              Track.new(track.name, swing_8(track.rhythm))
             elsif swing_rate == 16
-              track.rhythm = swing_16(track.rhythm)
+              Track.new(track.name, swing_16(track.rhythm))
             end
           end
+
+          song.patterns[pattern_name] = Pattern.new(pattern_name, swung_tracks)
         end
 
         song.tempo *= 1.5
