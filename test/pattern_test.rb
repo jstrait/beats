@@ -54,36 +54,16 @@ class PatternTest < Minitest::Test
     assert_equal(pattern.tracks.length, 2)
     assert_pattern_tracks(pattern, {:track1 => {name: :track1, rhythm: "X...X..."},
                                     :track2  => {name: :track2,  rhythm: "X......."}})
-  end
 
-  def test_track
-    pattern = Pattern.new("whatevs")
+    tracks = [
+      Track.new("my_sound", "X...X..."),
+      Track.new("my_other_sound", "X..."),
+      Track.new("my_sound", ".X.........."),
+      Track.new("my_sound2", "..X........."),
+      Track.new("my_sound", ".."),
+    ]
+    pattern = Pattern.new("whatevs", tracks)
 
-    assert_equal({}, pattern.tracks)
-
-    pattern.track("my_sound", "X...X...")
-    assert_pattern_tracks(pattern, {"my_sound" => {name: "my_sound", rhythm: "X...X..."}})
-
-    # Rhythm is shorter than length of current longer rhythm, so should be made same length
-    pattern.track("my_other_sound", "X...")
-    assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X..."},
-                                    "my_other_sound" => {name: "my_other_sound", rhythm: "X......."}})
-
-    # Track has same name as previous track, and longer rhythm than previous tracks.
-    # Track should have expected name, but pattern key be unique.
-    # The rhythm of other existing tracks should be lengthened.
-    pattern.track("my_sound", ".X..........")
-    assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X......."},
-                                    "my_other_sound" => {name: "my_other_sound", rhythm: "X..........."},
-                                    "my_sound2"      => {name: "my_sound",       rhythm: ".X.........."}})
-
-    pattern.track("my_sound2", "..X.........")
-    assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X......."},
-                                    "my_other_sound" => {name: "my_other_sound", rhythm: "X..........."},
-                                    "my_sound2"      => {name: "my_sound",       rhythm: ".X.........."},
-                                    "my_sound22"     => {name: "my_sound2",      rhythm: "..X........."}})
-
-    pattern.track("my_sound", "..")
     assert_pattern_tracks(pattern, {"my_sound"       => {name: "my_sound",       rhythm: "X...X......."},
                                     "my_other_sound" => {name: "my_other_sound", rhythm: "X..........."},
                                     "my_sound2"      => {name: "my_sound",       rhythm: ".X.........."},
