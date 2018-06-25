@@ -44,6 +44,12 @@ class TrackTest < Minitest::Test
     assert_equal("..XX..X...X...X.X...X...X...X...", test_tracks[:complicated].rhythm)
   end
 
+  def test_invalid_name
+    assert_raises(ArgumentError) { Track.new(:verse, "X...X...|X...X...") }
+    assert_raises(ArgumentError) { Track.new([], "X...X...|X...X...") }
+    assert_raises(ArgumentError) { Track.new({ :foo => :bar }, "X...X...|X...X...") }
+  end
+
   def test_name_is_frozen
     original_name = "Verse"
     track = Track.new(original_name, "X...X...|X...X...")

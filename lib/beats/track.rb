@@ -14,6 +14,10 @@ module Beats
     DISALLOWED_CHARACTERS = /[^X\.]/   # I.e., anything not an 'X' or a '.'
 
     def initialize(name, rhythm)
+      unless name.is_a?(String)
+        raise ArgumentError, "`name` must be a String"
+      end
+
       @name = name.dup.freeze
       @rhythm = rhythm.delete(BARLINE + SPACE).freeze
 
