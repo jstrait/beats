@@ -53,7 +53,7 @@ class TrackTest < Minitest::Test
     assert_equal("Verse", original_name)
 
     # Name is frozen
-    assert_raises(FrozenError) { track.name << "X" }
+    assert_raises(RuntimeError) { track.name << "X" }
 
     # Changing the original string doesn't modify the track name
     original_name << "2"
@@ -70,7 +70,7 @@ class TrackTest < Minitest::Test
     assert_equal("X...X...|X...X...", original_rhythm)
 
     # Rhythm is frozen
-    assert_raises(FrozenError) { track.rhythm << "X" }
+    assert_raises(RuntimeError) { track.rhythm << "X" }
 
     # Changing the original string doesn't modify the rhythm
     original_rhythm << "X"
@@ -88,8 +88,8 @@ class TrackTest < Minitest::Test
 
     assert_equal([0, 4, 4, 4, 4], track.trigger_step_lengths)
 
-    assert_raises(FrozenError) { track.trigger_step_lengths[2] = 5 }
-    assert_raises(FrozenError) { track.trigger_step_lengths << [1] }
+    assert_raises(RuntimeError) { track.trigger_step_lengths[2] = 5 }
+    assert_raises(RuntimeError) { track.trigger_step_lengths << [1] }
   end
 
   def test_step_count

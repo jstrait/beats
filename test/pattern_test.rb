@@ -79,7 +79,7 @@ class PatternTest < Minitest::Test
     ]
     pattern = Pattern.new("whatevs", tracks)
 
-    assert_raises(FrozenError) { pattern.tracks["my_sound4"] = Track.new("my_sound4", "X...X...") }
+    assert_raises(RuntimeError) { pattern.tracks["my_sound4"] = Track.new("my_sound4", "X...X...") }
   end
 
   def test_track_unique_name_already_taken
