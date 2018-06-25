@@ -40,6 +40,16 @@ class PatternTest < Minitest::Test
     pattern = test_patterns[:staircase]
     assert_equal(pattern.name, :staircase)
     assert_equal(pattern.tracks.length, 3)
+
+    tracks = [
+      Track.new(:track1, "X...X..."),
+      Track.new(:track2, "X..."),
+    ]
+    pattern = Pattern.new(:tracks_provided_in_constructor, tracks)
+    assert_equal(pattern.name, :tracks_provided_in_constructor)
+    assert_equal(pattern.tracks.length, 2)
+    assert_pattern_tracks(pattern, {:track1 => {name: :track1, rhythm: "X...X..."},
+                                    :track2  => {name: :track2,  rhythm: "X......."}})
   end
 
   def test_track

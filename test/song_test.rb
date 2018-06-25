@@ -74,6 +74,19 @@ class SongTest < Minitest::Test
     chorus = song.pattern(:Chorus)
     assert_equal(2, song.patterns.length)
     assert_equal({:Chorus => chorus, :Verse => verse2}, song.patterns)
+
+    tracks = [
+      Track.new(:track1, "X...X..."),
+      Track.new(:track2, "X..."),
+    ]
+    tracks_provided = song.pattern(:Tracks_Provided, tracks)
+    assert_equal(3, song.patterns.length)
+    assert_equal({:Chorus => chorus, :Tracks_Provided => tracks_provided, :Verse => verse2}, song.patterns)
+    assert_equal([:track1, :track2], song.track_names)
+    assert_equal(tracks_provided.tracks[:track1].rhythm, "X...X...")
+    assert_equal(tracks_provided.tracks[:track1].name, :track1)
+    assert_equal(tracks_provided.tracks[:track2].rhythm, "X.......")
+    assert_equal(tracks_provided.tracks[:track2].name, :track2)
   end
 
   def test_total_tracks

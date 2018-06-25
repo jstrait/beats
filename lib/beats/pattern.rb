@@ -5,9 +5,13 @@ module Beats
   # This object is like sheet music; the AudioEngine is responsible creating actual
   # audio data for a Pattern (with the help of a Kit).
   class Pattern
-    def initialize(name)
+    def initialize(name, tracks=[])
       @name = name
       @tracks = {}
+
+      tracks.each do |track|
+        self.track(track.name, track.rhythm)
+      end
     end
 
     # Adds a new track to the pattern.

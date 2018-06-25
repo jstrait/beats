@@ -145,7 +145,7 @@ module Beats
           raise ParseError, "Pattern '#{pattern_name}' has no tracks. It needs at least one."
         end
 
-        new_pattern = song.pattern(pattern_name.to_sym)
+        tracks = []
 
         raw_tracks.each do |raw_track|
           track_names = raw_track.keys.first
@@ -168,9 +168,11 @@ module Beats
           track_names.flatten!
 
           track_names.each do |track_name|
-            new_pattern.track(track_name, rhythm)
+            tracks << Track.new(track_name, rhythm)
           end
         end
+
+        song.pattern(pattern_name.to_sym, tracks)
       end
     end
 

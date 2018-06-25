@@ -18,8 +18,8 @@ module Beats
     end
 
     # Adds a new pattern to the song, with the specified name.
-    def pattern(name)
-      @patterns[name] = Pattern.new(name)
+    def pattern(name, tracks=[])
+      @patterns[name] = Pattern.new(name, tracks)
     end
 
 
