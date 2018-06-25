@@ -57,7 +57,7 @@ module Beats
     # Note that if a track in a sub-divided pattern has no triggers (such as track2 in the
     # 2nd pattern above), it will not be included in the new pattern.
     def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
-      blank_track_pattern = '.' * max_pattern_length
+      blank_track_pattern = Track::REST * max_pattern_length
 
       # For each pattern, add a new pattern to new song every max_pattern_length steps
       optimized_flow = {}
