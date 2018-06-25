@@ -9,8 +9,12 @@ module Beats
       @name = name
       @tracks = {}
 
+      longest_track_length = tracks.map {|track| track.rhythm.length }.max
+
       tracks.each do |track|
-        add_track(track.name, track.rhythm)
+        track_key = unique_track_name(track.name)
+        new_track = Track.new(track.name, track.rhythm.ljust(longest_track_length, Track::REST))
+        @tracks[track_key] = new_track
       end
 
       @tracks.freeze
@@ -37,25 +41,6 @@ module Beats
     attr_reader :tracks, :name
 
   private
-
-    # Adds a new track to the pattern.
-    def add_track(name, rhythm)
-      track_key = unique_track_name(name)
-      new_track = Track.new(name, rhythm)
-      @tracks[track_key] = new_track
-
-      # If the new track is longer than any of the previously added tracks,
-      # pad the other tracks with trailing . to make them all the same length.
-      # Necessary to prevent incorrect overflow calculations for tracks.
-      longest_track_length = step_count
-      @tracks.values.each do |track|
-        if track.rhythm.length < longest_track_length
-          track.rhythm += "." * (longest_track_length - track.rhythm.length)
-        end
-      end
-
-      new_track
-    end
 
     # Returns a unique track name that is not already in use by a track in
     # this pattern. Used to help support having multiple tracks with the same
