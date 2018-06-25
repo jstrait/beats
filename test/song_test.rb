@@ -31,7 +31,7 @@ class SongTest < Minitest::Test
       Track.new("snare.wav",     "....X.......X..."),
       Track.new("hh_closed.wav", "X.X.X.X.X.X.X.X."),
     ]
-    verse = test_songs[:from_code].pattern(:verse, verse_tracks)
+    test_songs[:from_code].pattern(:verse, verse_tracks)
     chorus_tracks = [
       Track.new("bass.wav",  "X......."),
       Track.new("snare.wav", "....X..X"),
