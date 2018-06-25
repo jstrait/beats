@@ -79,7 +79,7 @@ module Beats
           if original_pattern.tracks.has_key?(track_name)
             new_track = original_pattern.tracks[track_name]
           else
-            new_track = Track.new(track_name, '.' * original_pattern.step_count)
+            new_track = Track.new(track_name, Track::REST * original_pattern.step_count)
           end
 
           new_song.pattern(name, [new_track])
