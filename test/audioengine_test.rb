@@ -168,15 +168,19 @@ class AudioEngineTest < Minitest::Test
   end
 
   def test_composite_pattern_tracks
-    no_overflow_pattern = Pattern.new("no_overflow")
-    no_overflow_pattern.track("S",  "X...")
-    no_overflow_pattern.track("SO", "X.X.")
-    no_overflow_pattern.track("S",  "X.XX")
+    no_overflow_tracks = [
+      Track.new("S",  "X..."),
+      Track.new("SO", "X.X."),
+      Track.new("S",  "X.XX"),
+    ]
+    no_overflow_pattern = Pattern.new("no_overflow", no_overflow_tracks)
 
-    overflow_pattern = Pattern.new("overflow")
-    overflow_pattern.track("S",  "X..X")
-    overflow_pattern.track("SO", "XX.X")
-    overflow_pattern.track("SL", ".X.X")
+    overflow_tracks = [
+      Track.new("S",  "X..X"),
+      Track.new("SO", "XX.X"),
+      Track.new("SL", ".X.X"),
+    ]
+    overflow_pattern = Pattern.new("overflow", overflow_tracks)
 
 
     # Simple case, no overflow (stereo)

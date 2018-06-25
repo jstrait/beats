@@ -13,10 +13,12 @@ class SongTest < Minitest::Test
     test_songs[:blank] = Song.new
 
     test_songs[:no_flow] = Song.new
-    verse = test_songs[:no_flow].pattern(:verse)
-    verse.track("bass.wav",      "X.......X.......")
-    verse.track("snare.wav",     "....X.......X...")
-    verse.track("hh_closed.wav", "X.X.X.X.X.X.X.X.")
+    verse_tracks = [
+      Track.new("bass.wav",      "X.......X......."),
+      Track.new("snare.wav",     "....X.......X..."),
+      Track.new("hh_closed.wav", "X.X.X.X.X.X.X.X."),
+    ]
+    test_songs[:no_flow].pattern(:verse, verse_tracks)
 
     song_parser = SongParser.new
     FIXTURES.each do |fixture_name|
@@ -24,14 +26,18 @@ class SongTest < Minitest::Test
     end
 
     test_songs[:from_code] = Song.new
-    verse = test_songs[:from_code].pattern(:verse)
-    verse.track("bass.wav",      "X.......X.......")
-    verse.track("snare.wav",     "....X.......X...")
-    verse.track("hh_closed.wav", "X.X.X.X.X.X.X.X.")
-    chorus = test_songs[:from_code].pattern(:chorus)
-    chorus.track("bass.wav",  "X.......")
-    chorus.track("snare.wav", "....X..X")
-    chorus.track("ride.wav",  "X.....X.")
+    verse_tracks = [
+      Track.new("bass.wav",      "X.......X......."),
+      Track.new("snare.wav",     "....X.......X..."),
+      Track.new("hh_closed.wav", "X.X.X.X.X.X.X.X."),
+    ]
+    verse = test_songs[:from_code].pattern(:verse, verse_tracks)
+    chorus_tracks = [
+      Track.new("bass.wav",  "X......."),
+      Track.new("snare.wav", "....X..X"),
+      Track.new("ride.wav",  "X.....X."),
+    ]
+    test_songs[:from_code].pattern(:chorus, chorus_tracks)
     test_songs[:from_code].flow = [:verse, :chorus, :verse, :chorus, :chorus]
 
     test_songs

@@ -157,8 +157,10 @@ class SongSwingerTest < Minitest::Test
     expectations.each do |original_rhythm, expected_rhythm|
       song = Song.new
 
-      pattern = song.pattern(:my_pattern)
-      pattern.track("track1", original_rhythm)
+      pattern_tracks = [
+        Track.new("track1", original_rhythm),
+      ]
+      pattern = song.pattern(:my_pattern, pattern_tracks)
 
       song.pattern(pattern)
 

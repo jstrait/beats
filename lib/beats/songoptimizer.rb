@@ -68,22 +68,25 @@ module Beats
         while(pattern.tracks.values.first.rhythm[step_index] != nil) do
           # TODO: Is this pattern 100% sufficient to prevent collisions between subdivided
           #       pattern names and existing patterns with numeric suffixes?
-          new_pattern = optimized_song.pattern("#{pattern.name}_#{step_index}".to_sym)
-          optimized_flow[pattern.name] << new_pattern.name
+          new_pattern_name = "#{pattern.name}_#{step_index}".to_sym
+          new_tracks = []
+          optimized_flow[pattern.name] << new_pattern_name
           pattern.tracks.values.each do |track|
             sub_track_pattern = track.rhythm[step_index...(step_index + max_pattern_length)]
 
             if sub_track_pattern != blank_track_pattern
-              new_pattern.track(track.name, sub_track_pattern)
+              new_tracks << Track.new(track.name, sub_track_pattern)
             end
           end
 
           # If no track has a trigger during this step pattern, add a blank track.
           # Otherwise, this pattern will have no steps, and no sound will be generated,
           # causing the pattern to be "compacted away".
-          if new_pattern.tracks.empty?
-            new_pattern.track(Kit::PLACEHOLDER_TRACK_NAME, blank_track_pattern)
+          if new_tracks.empty?
+            new_tracks << Track.new(Kit::PLACEHOLDER_TRACK_NAME, blank_track_pattern)
           end
+
+          optimized_song.pattern(new_pattern_name, new_tracks)
 
           step_index += max_pattern_length
         end

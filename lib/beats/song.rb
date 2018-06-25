@@ -76,14 +76,13 @@ module Beats
         new_song = copy_ignoring_patterns_and_flow
 
         @patterns.each do |name, original_pattern|
-          new_pattern = new_song.pattern(name)
-
           if original_pattern.tracks.has_key?(track_name)
-            original_track = original_pattern.tracks[track_name]
-            new_pattern.track(original_track.name, original_track.rhythm)
+            new_track = original_pattern.tracks[track_name]
           else
-            new_pattern.track(track_name, "." * original_pattern.step_count)
+            new_track = Track.new(track_name, '.' * original_pattern.step_count)
           end
+
+          new_song.pattern(name, [new_track])
         end
 
         new_song.flow = @flow
