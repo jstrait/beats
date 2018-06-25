@@ -6,7 +6,7 @@ module Beats
   # The sole public method is parse(). It takes a raw YAML string and returns a Song and
   # Kit object (or raises an error if the YAML string couldn't be parsed correctly).
   class SongParser
-    class ParseError < RuntimeError; end
+    class ParseError < StandardError; end
 
     NO_SONG_HEADER_ERROR_MSG =
   "Song must have a header. Here's an example:

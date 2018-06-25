@@ -5,7 +5,7 @@ module Beats
   # This object is like sheet music; the AudioEngine is responsible creating actual
   # audio data for a Track (with the help of a Kit).
   class Track
-    class InvalidRhythmError < RuntimeError; end
+    class InvalidRhythmError < ArgumentError; end
 
     REST = "."
     BEAT = "X"

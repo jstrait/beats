@@ -1,7 +1,7 @@
 module Beats
   module Transforms
     class SongSwinger
-      class InvalidSwingRateError < RuntimeError; end
+      class InvalidSwingRateError < ArgumentError; end
 
       def self.transform(song, swing_rate)
         validate_swing_rate(swing_rate)
