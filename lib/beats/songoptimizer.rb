@@ -57,7 +57,7 @@ module Beats
     # Note that if a track in a sub-divided pattern has no triggers (such as track2 in the
     # 2nd pattern above), it will not be included in the new pattern.
     def subdivide_song_patterns(original_song, optimized_song, max_pattern_length)
-      blank_track_pattern = Track::REST * max_pattern_length
+      blank_track_rhythm = Track::REST * max_pattern_length
 
       # For each pattern, add a new pattern to new song every max_pattern_length steps
       optimized_flow = {}
@@ -72,10 +72,10 @@ module Beats
           new_tracks = []
           optimized_flow[pattern.name] << new_pattern_name
           pattern.tracks.values.each do |track|
-            sub_track_pattern = track.rhythm[step_index...(step_index + max_pattern_length)]
+            sub_track_rhythm = track.rhythm[step_index...(step_index + max_pattern_length)]
 
-            if sub_track_pattern != blank_track_pattern
-              new_tracks << Track.new(track.name, sub_track_pattern)
+            if sub_track_rhythm != blank_track_rhythm
+              new_tracks << Track.new(track.name, sub_track_rhythm)
             end
           end
 
@@ -83,7 +83,7 @@ module Beats
           # Otherwise, this pattern will have no steps, and no sound will be generated,
           # causing the pattern to be "compacted away".
           if new_tracks.empty?
-            new_tracks << Track.new(Kit::PLACEHOLDER_TRACK_NAME, blank_track_pattern)
+            new_tracks << Track.new(Kit::PLACEHOLDER_TRACK_NAME, blank_track_rhythm)
           end
 
           optimized_song.pattern(new_pattern_name, new_tracks)
