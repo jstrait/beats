@@ -13,8 +13,8 @@ module Beats
     attr_reader :num_channels, :bits_per_sample
 
     # Returns the sample data for a sound contained in the Kit. If the all sounds in the
-    # kit are mono, then this will be a flat Array of Fixnums between -32768 and 32767.
-    # Otherwise, this will be an Array of Fixnums pairs between -32768 and 32767.
+    # kit are mono, then this will be a flat Array of Integers between -32768 and 32767.
+    # Otherwise, this will be an Array of Integers pairs between -32768 and 32767.
     #
     # label - The name of the sound to get sample data for. If the sound was defined in
     #         the Kit section of a song file, this will generally be a descriptive label
@@ -23,11 +23,11 @@ module Beats
     #
     # Examples
     #
-    #   # If @num_channels is 1, a flat Array of Fixnums:
+    #   # If @num_channels is 1, a flat Array of Integers:
     #   get_sample_data("bass")
     #   # => [154, 7023, 8132, 2622, -132, 34, ..., -6702]
     #
-    #   # If @num_channels is 2, a Array of Fixnums pairs:
+    #   # If @num_channels is 2, a Array of Integers pairs:
     #   get_sample_data("snare")
     #   # => [[57, 1265], [-452, 10543], [-2531, 12643], [-6372, 11653], ..., [5482, 25673]]
     #
