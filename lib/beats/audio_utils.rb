@@ -16,14 +16,12 @@ module Beats
 
       composited_output = sample_arrays.slice!(0)
       sample_arrays.each do |sample_array|
-        unless sample_array == []
-          if num_channels == 1
-            sample_array.length.times {|i| composited_output[i] += sample_array[i] }
-          elsif num_channels == 2
-            sample_array.length.times do |i|
-              composited_output[i] = [composited_output[i][0] + sample_array[i][0],
-                                      composited_output[i][1] + sample_array[i][1]]
-            end
+        if num_channels == 1
+          sample_array.length.times {|i| composited_output[i] += sample_array[i] }
+        elsif num_channels == 2
+          sample_array.length.times do |i|
+            composited_output[i] = [composited_output[i][0] + sample_array[i][0],
+                                    composited_output[i][1] + sample_array[i][1]]
           end
         end
       end
