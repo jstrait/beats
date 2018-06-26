@@ -33,6 +33,7 @@ module Beats
         @composite_replacements[label] = filenames.map {|filename| "#{label}-#{File.basename(filename, ".*")}" }
       else
         @labels_to_filenames[label] = absolute_file_name(filenames)
+        @composite_replacements.delete(label)
       end
     end
 

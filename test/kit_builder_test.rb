@@ -25,6 +25,10 @@ class KitBuilderTest < Minitest::Test
     kit_builder.add_item("snare", ["hhclosed_mono_8.wav", "ride_mono_8.wav"])
     assert_equal({"snare" => ["snare-hhclosed_mono_8", "snare-ride_mono_8"]}, kit_builder.composite_replacements)
 
+    # Re-adding the same label with a non-composite sounds removes the value from `composite_replacments`
+    kit_builder.add_item("snare", "snare_mono_8.wav")
+    assert_equal({}, kit_builder.composite_replacements)
+
     assert_raises(KitBuilder::SoundFileNotFoundError) { kit_builder.add_item("bass", []) }
   end
 
