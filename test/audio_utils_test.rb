@@ -49,4 +49,16 @@ class AudioUtilsTest < Minitest::Test
     assert_equal(6874.612880831729, AudioUtils.step_sample_length(44100, 96.2236))
     assert_equal(3437.3064404158645, AudioUtils.step_sample_length(22050, 96.2236))
   end
+
+  def test_step_start_sample
+    assert_equal(0, AudioUtils.step_start_sample(0, 100))
+    assert_equal(100, AudioUtils.step_start_sample(1, 100))
+    assert_equal(200, AudioUtils.step_start_sample(2, 100))
+    assert_equal(1500, AudioUtils.step_start_sample(15, 100))
+
+    assert_equal(0, AudioUtils.step_start_sample(0, 64.8))
+    assert_equal(64, AudioUtils.step_start_sample(1, 64.8))
+    assert_equal(129, AudioUtils.step_start_sample(2, 64.8))
+    assert_equal(972, AudioUtils.step_start_sample(15, 64.8))
+  end
 end
