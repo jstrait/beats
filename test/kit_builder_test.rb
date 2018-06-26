@@ -12,6 +12,22 @@ class KitBuilderTest < Minitest::Test
     assert_equal(false, kit_builder.has_label?("label2"))
   end
 
+  def test_add_item
+    kit_builder = KitBuilder.new("test/sounds")
+
+    kit_builder.add_item("bass", "bass_mono_8.wav")
+    assert_equal({}, kit_builder.composite_replacements)
+
+    kit_builder.add_item("snare", ["snare_mono_8.wav", "rim_mono_8.wav"])
+    assert_equal({"snare" => ["snare-snare_mono_8", "snare-rim_mono_8"]}, kit_builder.composite_replacements)
+
+    # Re-adding the same label with different sounds replaces the value in `composite_replacments`
+    kit_builder.add_item("snare", ["hhclosed_mono_8.wav", "ride_mono_8.wav"])
+    assert_equal({"snare" => ["snare-hhclosed_mono_8", "snare-ride_mono_8"]}, kit_builder.composite_replacements)
+
+    assert_raises(KitBuilder::SoundFileNotFoundError) { kit_builder.add_item("bass", []) }
+  end
+
   def test_build_kit_happy_path
     kit_builder = KitBuilder.new("test/sounds")
 
