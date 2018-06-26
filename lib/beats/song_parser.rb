@@ -8,15 +8,6 @@ module Beats
   class SongParser
     class ParseError < StandardError; end
 
-    NO_SONG_HEADER_ERROR_MSG =
-  "Song must have a header. Here's an example:
-
-  Song:
-    Tempo: 120
-    Flow:
-      - Verse: x2
-      - Chorus: x2"
-
     def initialize
     end
 
@@ -85,6 +76,14 @@ module Beats
 
   private
 
+    NO_SONG_HEADER_ERROR_MSG =
+"Song must have a header. Here's an example:
+
+Song:
+  Tempo: 120
+  Flow:
+    - Verse: x2
+    - Chorus: x2"
 
     def hashify_raw_yaml(raw_yaml_string)
       begin
