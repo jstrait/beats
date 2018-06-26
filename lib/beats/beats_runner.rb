@@ -18,7 +18,7 @@ module Beats
 
     def run
       base_path = @options[:base_path] || File.dirname(@input_file_name)
-      song, kit = SongParser.new.parse(base_path, File.read(@input_file_name))
+      song, kit = SongParser.parse(base_path, File.read(@input_file_name))
 
       song = normalize_for_pattern_option(song)
       songs_to_generate = normalize_for_split_option(song)

@@ -27,12 +27,11 @@ class AudioEngineTest < Minitest::Test
   def load_fixtures
     test_engines = {}
     base_path = File.dirname(__FILE__) + "/.."
-    song_parser = SongParser.new
 
     test_engines[:blank] = AudioEngine.new(Song.new, KitBuilder.new(base_path).build_kit)
 
     FIXTURES.each do |fixture_name|
-      song, kit = song_parser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
+      song, kit = SongParser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
       test_engines[fixture_name] = AudioEngine.new(song, kit)
     end
 

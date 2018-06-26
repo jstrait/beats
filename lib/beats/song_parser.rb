@@ -8,12 +8,8 @@ module Beats
   class SongParser
     class ParseError < StandardError; end
 
-    def initialize
-    end
-
-
     # Parses a raw YAML song definition and converts it into a Song and Kit object.
-    def parse(base_path, raw_yaml_string)
+    def self.parse(base_path, raw_yaml_string)
       raw_song_components = hashify_raw_yaml(raw_yaml_string)
 
       unless raw_song_components[:folder].nil?
@@ -85,7 +81,7 @@ Song:
     - Verse: x2
     - Chorus: x2"
 
-    def hashify_raw_yaml(raw_yaml_string)
+    def self.hashify_raw_yaml(raw_yaml_string)
       begin
         raw_song_definition = YAML.load(raw_yaml_string)
       rescue Psych::SyntaxError => detail
@@ -112,7 +108,7 @@ Song:
       }
     end
 
-    def add_kit_sounds_from_kit(kit_builder, raw_kit)
+    def self.add_kit_sounds_from_kit(kit_builder, raw_kit)
       return if raw_kit.nil?
 
       # Add sounds defined in the Kit section of the song header
@@ -122,7 +118,7 @@ Song:
       end
     end
 
-    def add_kit_sounds_from_patterns(kit_builder, patterns)
+    def self.add_kit_sounds_from_patterns(kit_builder, patterns)
       # Add sounds not defined in Kit section, but used in individual tracks
       patterns.each do |pattern_name, pattern|
         pattern.tracks.each do |track_name, track|
@@ -135,7 +131,7 @@ Song:
       end
     end
 
-    def add_patterns_to_song(song, kit_builder, raw_patterns)
+    def self.add_patterns_to_song(song, kit_builder, raw_patterns)
       raw_patterns.each do |pattern_name, raw_tracks|
         if raw_tracks.nil?
           # TODO: Use correct capitalization of pattern name in error message
@@ -175,7 +171,7 @@ Song:
     end
 
 
-    def set_song_flow(song, raw_flow)
+    def self.set_song_flow(song, raw_flow)
       flow = []
 
       raw_flow.each do |pattern_item|
@@ -213,7 +209,7 @@ Song:
 
 
     # Converts all hash keys to be lowercase
-    def downcase_hash_keys(hash)
+    def self.downcase_hash_keys(hash)
       hash.inject({}) do |new_hash, pair|
           new_hash[pair.first.downcase] = pair.last
           new_hash

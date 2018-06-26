@@ -292,6 +292,6 @@ class SongParserTest < Minitest::Test
 private
 
   def load_fixture(fixture_name)
-    SongParser.new.parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
+    SongParser.parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
   end
 end

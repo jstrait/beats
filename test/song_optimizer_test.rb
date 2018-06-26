@@ -50,12 +50,11 @@ Verse:
   - snare:  ..........X."
 
   def self.load_fixture(fixture_name)
-    SongParser.new.parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
+    SongParser.parse(FIXTURE_BASE_PATH, File.read("test/fixtures/#{fixture_name}"))
   end
 
   def test_optimize
-    parser = SongParser.new
-    original_song, _ = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML)
+    original_song, _ = SongParser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
@@ -123,8 +122,7 @@ Verse:
   end
 
   def test_optimize_song_nondivisible_max_pattern_length
-    parser = SongParser.new
-    original_song, _ = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, _ = SongParser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 7)
@@ -150,8 +148,7 @@ Verse:
   end
 
   def test_optimize_song_containing_empty_pattern
-    parser = SongParser.new
-    original_song, _ = parser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
+    original_song, _ = SongParser.parse(File.dirname(__FILE__), EXAMPLE_SONG_YAML_EMPTY_SUB_PATTERN)
 
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
