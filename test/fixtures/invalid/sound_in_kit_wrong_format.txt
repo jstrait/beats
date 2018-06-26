@@ -4,7 +4,7 @@ Song:
   Flow:
     - Verse: x1
   Kit:
-    - bad: test/songparser_test.rb
+    - bad: test/song_test.rb
 
 Verse:
   - bad: X...X...
