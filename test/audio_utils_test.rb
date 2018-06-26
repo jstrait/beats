@@ -15,14 +15,20 @@ class AudioUtilsTest < Minitest::Test
     # Mono
     assert_equal([10, 20, 30, 40], AudioUtils.composite([[10, 20, 30, 40]], 1))
     assert_equal([10, 20, 30, 40], AudioUtils.composite([[10, 20, 30, 40], []], 1))
+    assert_equal([10, 20, 30, 40], AudioUtils.composite([[], [10, 20, 30, 40]], 1))
     assert_equal([30, 50, 70, -10], AudioUtils.composite([[10, 20, 30, 40], [20, 30, 40, -50]], 1))
+    assert_equal([30, 50, 70, -10], AudioUtils.composite([[20, 30, 40, -50], [10, 20, 30, 40]], 1))
     assert_equal([70, 80, 60], AudioUtils.composite([[20, 30], [10], [40, 50, 60]], 1))
+    assert_equal([70, 80, 60], AudioUtils.composite([[40, 50, 60], [20, 30], [10]], 1))
 
     # Stereo
     assert_equal([[10, 20], [30, 40]], AudioUtils.composite([[[10, 20], [30, 40]]], 2))
     assert_equal([[10, 20], [30, 40]], AudioUtils.composite([[[10, 20], [30, 40]], []], 2))
+    assert_equal([[10, 20], [30, 40]], AudioUtils.composite([[], [[10, 20], [30, 40]]], 2))
     assert_equal([[30, 50], [70, -10]], AudioUtils.composite([[[10, 20], [30, 40]], [[20, 30], [40, -50]]], 2))
+    assert_equal([[30, 50], [70, -10]], AudioUtils.composite([[[20, 30], [40, -50]], [[10, 20], [30, 40]]], 2))
     assert_equal([[90, 120], [120, 140], [100, 110]], AudioUtils.composite([[[20, 30], [40, 50]], [[10, 20]], [[60, 70], [80, 90], [100, 110]]], 2))
+    assert_equal([[90, 120], [120, 140], [100, 110]], AudioUtils.composite([[[60, 70], [80, 90], [100, 110]], [[10, 20]], [[20, 30], [40, 50]]], 2))
   end
 
   def test_scale
