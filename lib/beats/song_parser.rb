@@ -201,7 +201,7 @@ Song:
             # This test is purposefully designed to only throw an error if the number of repeats is greater
             # than 0. This allows you to specify an undefined pattern in the flow with "x0" repeats.
             # This can be convenient for defining the flow before all patterns have been added to the song file.
-            raise ParseError, "Song flow includes non-existent pattern: #{pattern_name}."
+            raise ParseError, "Song flow includes non-existent pattern: '#{pattern_name}'"
           end
         end
 
