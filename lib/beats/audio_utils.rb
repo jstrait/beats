@@ -7,6 +7,10 @@ module Beats
     # of the longest input array.
     # WARNING: Incoming arrays can be modified.
     def self.composite(sample_arrays, num_channels)
+      if num_channels < 1
+        raise ArgumentError, "`num_channels` must be 1 or greater"
+      end
+
       if sample_arrays == []
         return []
       end

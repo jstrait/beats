@@ -2,6 +2,9 @@ require 'includes'
 
 class AudioUtilsTest < Minitest::Test
   def test_composite
+    assert_raises(ArgumentError) { AudioUtils.composite([[100, 200], [300, 400], [500, 600]], 0, 5) }
+    assert_raises(ArgumentError) { AudioUtils.composite([[100, 200], [300, 400], [500, 600]], -1, 5) }
+
     # Mono empty arrays
     assert_equal([], AudioUtils.composite([], 1))
     assert_equal([], AudioUtils.composite([[]], 1))
