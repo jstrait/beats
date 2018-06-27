@@ -23,6 +23,15 @@ module Beats
             composited_output[i] = [composited_output[i][0] + sample_array[i][0],
                                     composited_output[i][1] + sample_array[i][1]]
           end
+        elsif num_channels > 2
+          sample_array.each_with_index do |sub_array, i|
+            composited_sub_array = []
+            sub_array.each_with_index do |sample, j|
+              composited_sub_array << composited_output[i][j] + sample
+            end
+
+            composited_output[i] = composited_sub_array
+          end
         end
       end
 
