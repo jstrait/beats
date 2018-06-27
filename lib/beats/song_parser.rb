@@ -108,7 +108,7 @@ Song:
         kit: header["kit"],
         flow: header["flow"],
         swing: header["swing"],
-        patterns: downcase_hash_keys(raw_song_definition),
+        patterns: raw_song_definition,
       }
     end
 
@@ -138,7 +138,6 @@ Song:
     def self.add_patterns_to_song(song, kit_builder, raw_patterns)
       raw_patterns.each do |pattern_name, raw_tracks|
         if raw_tracks.nil?
-          # TODO: Use correct capitalization of pattern name in error message
           # TODO: Possibly allow if pattern not referenced in the Flow, or has 0 repeats?
           raise ParseError, "Pattern '#{pattern_name}' has no tracks. It needs at least one."
         end
@@ -170,7 +169,7 @@ Song:
           end
         end
 
-        song.pattern(pattern_name.to_sym, tracks)
+        song.pattern(pattern_name.downcase.to_sym, tracks)
       end
     end
 
