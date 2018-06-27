@@ -24,13 +24,12 @@ class SongParserTest < Minitest::Test
                       :sound_in_kit_wrong_format,
                       :sound_in_track_wrong_format]
 
-  # TODO: Add somes tests to validate the Kits
-
   def test_song_header_different_capitalization
     song, kit = load_fixture("valid/example_song_header_different_capitalization.txt")
 
     assert_equal(100, song.tempo)
     assert_equal([:verse, :chorus, :chorus, :verse, :chorus, :chorus], song.flow)
+    assert_equal(["bass", "snare", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
     assert_equal("X...X...X...X...", song.patterns[:verse].tracks["bass"].rhythm)
@@ -45,6 +44,7 @@ class SongParserTest < Minitest::Test
 
     assert_equal(200, song.tempo)
     assert_equal([:chorus, :chorus, :chorus, :chorus], song.flow)
+    assert_equal(["bass", "snare", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
     assert_equal("X...X...X...X...", song.patterns[:verse].tracks["bass"].rhythm)
@@ -76,9 +76,10 @@ class SongParserTest < Minitest::Test
   end
 
   def test_flow_patterns_different_capitalization
-    song, _ = load_fixture("valid/example_flow_patterns_different_capitalization.txt")
+    song, kit = load_fixture("valid/example_flow_patterns_different_capitalization.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass", "snare", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :chorus, :chorus, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
@@ -90,8 +91,22 @@ class SongParserTest < Minitest::Test
   end
 
   def test_song_with_unused_kit
-    no_kit_song, _ = load_fixture("valid/example_no_kit.txt")
-    kit_song, _ = load_fixture("valid/example_with_kit.txt")
+    no_kit_song, no_kit_kit = load_fixture("valid/example_no_kit.txt")
+    kit_song, kit_kit = load_fixture("valid/example_with_kit.txt")
+
+    assert_equal(["test/sounds/bass_mono_8.wav",
+                  "test/sounds/snare_mono_8.wav",
+                  "test/sounds/hh_closed_mono_8.wav",
+                  "test/sounds/hh_open_mono_8.wav",
+                  "test/sounds/ride_mono_8.wav",
+                  "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], no_kit_kit.labels)
+    assert_equal(["bass",
+                  "snare",
+                  "hhclosed",
+                  "hhopen",
+                  "test/sounds/hh_closed_mono_8.wav",
+                  "test/sounds/ride_mono_8.wav",
+                  "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit_kit.labels)
 
     # These two songs should be the same, except that one uses a kit in the song header
     # and the other doesn't.
@@ -196,9 +211,10 @@ class SongParserTest < Minitest::Test
   end
 
   def test_track_with_composite_kit_sounds
-    song, _ = load_fixture("valid/track_with_composite_kit_sounds.txt")
+    song, kit = load_fixture("valid/track_with_composite_kit_sounds.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass", "snare", "hh_closed", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(3, song.patterns[:verse].tracks.length)
@@ -212,9 +228,15 @@ class SongParserTest < Minitest::Test
   end
 
   def test_track_with_composite_non_kit_sound
-    song, _ = load_fixture("valid/track_with_composite_non_kit_sound.txt")
+    song, kit = load_fixture("valid/track_with_composite_non_kit_sound.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass",
+                  "snare",
+                  "hh_closed",
+                  "test/sounds/agogo_high_mono_8.wav",
+                  "test/sounds/hh_open_mono_8.wav",
+                  "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
@@ -227,9 +249,14 @@ class SongParserTest < Minitest::Test
   end
 
   def test_track_with_composite_mix_kit_and_not_kit_sound
-    song, _ = load_fixture("valid/track_with_composite_mix_kit_and_not_kit_sound.txt")
+    song, kit = load_fixture("valid/track_with_composite_mix_kit_and_not_kit_sound.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass",
+                  "snare",
+                  "hh_closed",
+                  "test/sounds/hh_open_mono_8.wav",
+                  "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
@@ -242,9 +269,16 @@ class SongParserTest < Minitest::Test
   end
 
   def test_track_with_composite_mix_kit_and_not_kit_sound_2
-    song, _ = load_fixture("valid/track_with_composite_mix_kit_and_not_kit_sound_2.txt")
+    song, kit = load_fixture("valid/track_with_composite_mix_kit_and_not_kit_sound_2.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass",
+                  "snare",
+                  "hihat-hh_closed_mono_8",
+                  "hihat-hh_open_mono_8",
+                  "test/sounds/agogo_high_mono_8.wav",
+                  "test/sounds/agogo_low_mono_8.wav",
+                  "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(3, song.patterns[:verse].tracks.length)
@@ -260,9 +294,10 @@ class SongParserTest < Minitest::Test
   end
 
   def test_track_with_composite_single_sound
-    song, _ = load_fixture("valid/track_with_composite_single_sound.txt")
+    song, kit = load_fixture("valid/track_with_composite_single_sound.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass", "snare", "hh_closed", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)
@@ -274,9 +309,10 @@ class SongParserTest < Minitest::Test
   end
 
   def test_kit_with_composite_sounds
-    song, _ = load_fixture("valid/kit_with_composite_sounds.txt")
+    song, kit = load_fixture("valid/kit_with_composite_sounds.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass", "snare", "hihat-hh_closed_mono_8", "hihat-hh_open_mono_8", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(3, song.patterns[:verse].tracks.length)
@@ -291,9 +327,10 @@ class SongParserTest < Minitest::Test
   end
 
   def test_kit_with_composite_single_sound
-    song, _ = load_fixture("valid/kit_with_composite_single_sound.txt")
+    song, kit = load_fixture("valid/kit_with_composite_single_sound.txt")
 
     assert_equal(100, song.tempo)
+    assert_equal(["bass", "snare", "hihat-hh_closed_mono_8", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
     assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
     assert_equal(2, song.patterns.length)
     assert_equal(2, song.patterns[:verse].tracks.length)

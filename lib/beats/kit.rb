@@ -6,11 +6,12 @@ module Beats
 
     def initialize(items, num_channels, bits_per_sample)
       @items = items
+      @labels = @items.keys.freeze
       @num_channels = num_channels
       @bits_per_sample = bits_per_sample
     end
 
-    attr_reader :num_channels, :bits_per_sample
+    attr_reader :labels, :num_channels, :bits_per_sample
 
     # Returns the sample data for a sound contained in the Kit. If the all sounds in the
     # kit are mono, then this will be a flat Array of Integers between -32768 and 32767.
