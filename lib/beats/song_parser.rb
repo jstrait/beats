@@ -90,12 +90,16 @@ Song:
         raise ParseError, "Syntax error in YAML file: #{detail}"
       end
 
-      full_definition = downcase_hash_keys(raw_song_definition)
+      header_keys = raw_song_definition.keys.select {|key| key.downcase == "song" }
 
-      unless full_definition["song"].nil?
-        header = downcase_hash_keys(full_definition["song"])
-      else
+      if header_keys.empty?
         raise ParseError, NO_SONG_HEADER_ERROR_MSG
+      elsif header_keys.length > 1
+        # In theory, this branch should never be reached, due the YAML hash mappings
+        # not allowing duplicate keys?
+        raise ParseError, "Song has multiple 'Song' sections, it should only have 1."
+      else
+        header = downcase_hash_keys(raw_song_definition.delete(header_keys.first))
       end
 
       {
@@ -104,7 +108,7 @@ Song:
         kit: header["kit"],
         flow: header["flow"],
         swing: header["swing"],
-        patterns: full_definition.reject {|k, v| k == "song"},
+        patterns: downcase_hash_keys(raw_song_definition),
       }
     end
 
