@@ -20,6 +20,11 @@ module Beats
           sample_array.length.times {|i| composited_output[i] += sample_array[i] }
         elsif num_channels == 2
           sample_array.length.times do |i|
+            # Setting composited_output[i][<channel_index>] won't necessary work,
+            # because each sub array might point to the same array, causing more
+            # samples to be set than expected. For example, a sample buffer initialized
+            # using `[].fill([0, 0], 0, 1000)` will result in an array where each index
+            # is a pointer to the same array instance.
             composited_output[i] = [composited_output[i][0] + sample_array[i][0],
                                     composited_output[i][1] + sample_array[i][1]]
           end
