@@ -1,0 +1,21 @@
+# The elements in the "Song" header have different capitalization from the normal examples
+# The element keys should be case-insensitive, so this should be valid.
+
+SONg:
+  TeMpO: 100
+  fLoW:
+    - Verse:   x1
+    - Chorus:  x2
+    - Verse:   x1
+    - Chorus:  x2
+  kIT:
+    - bass:       test/sounds/bass_mono_8.wav
+    - snare:      test/sounds/snare_mono_8.wav
+
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+
+Chorus:
+  - bass:       X...X...XX..X...
+  - snare:      ....X.......X...

@@ -26,6 +26,20 @@ class SongParserTest < Minitest::Test
 
   # TODO: Add somes tests to validate the Kits
 
+  def test_song_header_different_capitalization
+    song, kit = load_fixture("valid/example_song_header_different_capitalization.txt")
+
+    assert_equal(100, song.tempo)
+    assert_equal([:verse, :chorus, :chorus, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...X...X...", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("..............X.", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("X...X...XX..X...", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("....X.......X...", song.patterns[:chorus].tracks["snare"].rhythm)
+  end
+
   def test_no_tempo
     song, _ = load_fixture("valid/no_tempo.txt")
 
