@@ -11,19 +11,19 @@ module Beats
     BEAT = "X"
     BARLINE = "|"
     SPACE = " "
-    DISALLOWED_CHARACTERS = /[^X\.]/   # I.e., anything not an 'X' or a '.'
+    DISALLOWED_CHARACTERS = /[^X\.| ]/   # I.e., anything not an 'X', '.', '|', or ' '
 
     def initialize(name, rhythm)
       unless name.is_a?(String)
         raise ArgumentError, "`name` must be a String"
       end
 
+      unless rhythm.is_a?(String) && !rhythm.match(DISALLOWED_CHARACTERS)
+        raise InvalidRhythmError, "Track #{name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
+      end
+
       @name = name.dup.freeze
       @rhythm = rhythm.delete(BARLINE + SPACE).freeze
-
-      if @rhythm.match(DISALLOWED_CHARACTERS)
-        raise InvalidRhythmError, "Track #{@name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
-      end
 
       @step_count = @rhythm.length
       @trigger_step_lengths = calculate_trigger_step_lengths.freeze

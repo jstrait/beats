@@ -85,8 +85,9 @@ class TrackTest < Minitest::Test
   end
 
   def test_invalid_rhythm
-    assert_raises(Track::InvalidRhythmError) { Track.new("bad_rhythm", "abcde") }
-    assert_raises(Track::InvalidRhythmError) { Track.new("bad_rhythm", "X.X.e.X") }
+    [nil, 12, [], {}, :"X...X...", "abcde", "X.X.e.X"].each do |bad_rhythm|
+      assert_raises(Track::InvalidRhythmError) { Track.new("bad_rhythm", bad_rhythm) }
+    end
   end
 
   def test_trigger_step_lengths_is_frozen
