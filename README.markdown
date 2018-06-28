@@ -27,15 +27,15 @@ Beats is a command-line drum machine written in pure Ruby. Feed it a song notate
       - cowbell:  ....XX.X..X.X...
       - deep:     .............X..
 
-And [here's what it sounds like](http://beatsdrummachine.com/media/beat.mp3) after getting the Beats treatment. What a glorious groove!
+And [here's what it sounds like](https://beatsdrummachine.com/media/beat.mp3) after getting the Beats treatment. What a glorious groove!
 
-For more, check out [beatsdrummachine.com](http://beatsdrummachine.com)
+For more, check out [beatsdrummachine.com](https://beatsdrummachine.com)
 
 
 Installation
 ------------
 
-To install the latest stable version (2.1.1) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (2.1.1) from [rubygems.org](https://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
@@ -43,7 +43,7 @@ Note: if you're installing using the default version of Ruby that comes with mac
 
 Once installed, you can then run Beats from the command-line using the `beats` command.
 
-Beats is not very useful unless you have some sounds to use with it. You can download some example sounds from [http://beatsdrummachine.com](http://beatsdrummachine.com/download#drum-kits).
+Beats is not very useful unless you have some sounds to use with it. You can download some example sounds from [https://beatsdrummachine.com](https://beatsdrummachine.com/download#drum-kits).
 
 
 Usage
@@ -51,7 +51,7 @@ Usage
 
 Beats runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit [https://github.com/jstrait/beats/wiki/Usage](https://github.com/jstrait/beats/wiki/Usage) on the [Beats Wiki](https://github.com/jstrait/beats/wiki).
 
-Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from sratch.
+Check out [this tutorial at beatsdrummachine.com](https://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from sratch.
 
 
 What's New in v2.1.1
