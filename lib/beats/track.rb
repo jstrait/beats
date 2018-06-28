@@ -15,7 +15,7 @@ module Beats
 
     def initialize(name, rhythm)
       unless name.is_a?(String)
-        raise ArgumentError, "Track `name` argument must be a String"
+        raise ArgumentError, "Track name '#{name.inspect}' is invalid, must be a String"
       end
 
       unless rhythm.is_a?(String) && rhythm.match(DISALLOWED_CHARACTERS) == nil
