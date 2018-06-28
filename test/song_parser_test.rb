@@ -54,6 +54,22 @@ class SongParserTest < Minitest::Test
     assert_equal("....X.......X...", song.patterns[:chorus].tracks["snare"].rhythm)
   end
 
+  def test_multiple_patterns_same_name
+    song, kit = load_fixture("valid/multiple_patterns_same_name.txt")
+
+    assert_equal(120, song.tempo)
+    assert_equal([:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(["bass", "snare", "hh_closed", "agogo", "test/sounds/tom4_mono_8.wav", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
+    assert_equal(2, song.patterns.length)
+    assert_equal(3, song.patterns[:verse].tracks.length)
+    assert_equal("X.X.X.X.", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal("XXXXXX..", song.patterns[:verse].tracks["test/sounds/tom4_mono_8.wav"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("X...X...XX..X...", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("....X.......X...", song.patterns[:chorus].tracks["snare"].rhythm)
+  end
+
   def test_no_tempo
     song, _ = load_fixture("valid/no_tempo.txt")
 

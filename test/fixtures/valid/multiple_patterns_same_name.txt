@@ -1,0 +1,31 @@
+Song:
+  Tempo: 120
+  Flow:
+    - Verse:   x2
+    - Chorus:  x2
+    - Verse:   x2
+    - Chorus:  x2
+  Kit:
+    - bass:       test/sounds/bass_mono_8.wav
+    - snare:      test/sounds/snare_mono_8.wav
+    - hh_closed:  test/sounds/hh_closed_mono_8.wav
+    - agogo:      test/sounds/agogo_high_mono_8.wav
+
+# This pattern will be ignored because it is overridden by a different
+# 'Verse' pattern later in the file.
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+  - hh_closed:  X.XXX.XX........
+  - hh_closed:  ........X.X.X.X.
+  - agogo:      ..............XX
+
+Chorus:
+  - bass:                         X...X...XX..X...
+  - snare:                        ....X.......X...
+
+# This is the winner, and should override the earlier 'Verse' definition
+Verse:
+  - bass:                        X.X.X.X.
+  - snare:                       .X.X.X.X
+  - test/sounds/tom4_mono_8.wav: XXXXXX..
