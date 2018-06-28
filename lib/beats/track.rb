@@ -19,7 +19,7 @@ module Beats
       end
 
       unless rhythm.is_a?(String) && !rhythm.match(DISALLOWED_CHARACTERS)
-        raise InvalidRhythmError, "Track '#{name}' has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
+        raise InvalidRhythmError, "Track '#{name}' has an invalid rhythm: '#{rhythm.inspect}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
       end
 
       @name = name.dup.freeze
