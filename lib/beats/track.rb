@@ -15,11 +15,11 @@ module Beats
 
     def initialize(name, rhythm)
       unless name.is_a?(String)
-        raise ArgumentError, "`name` must be a String"
+        raise ArgumentError, "Track `name` argument must be a String"
       end
 
       unless rhythm.is_a?(String) && !rhythm.match(DISALLOWED_CHARACTERS)
-        raise InvalidRhythmError, "Track #{name} has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
+        raise InvalidRhythmError, "Track '#{name}' has an invalid rhythm: '#{rhythm}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
       end
 
       @name = name.dup.freeze
