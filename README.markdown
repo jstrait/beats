@@ -59,9 +59,15 @@ What's New in v2.1.1
 
 The latest version of Beats is 2.1.1, released on TBD.
 
-* **Bug fix**: The relevant pattern name will now be capitalized correctly in certain error messages - previously they were always shown lowercase. For example, if you have a pattern named "Verse", then certain error messages will now use this capitalization instead of "verse". This hopefully makes the error messages easier to understand.
+* Several error messages are improved to be more accurate or specific.
 * **Bug fix**: Songs can now use *.wav files with more than 2 channels. Previously, using a sound with more than 2 channels would cause a fatal `Invalid sample data array in AudioUtils.normalize()` error.
-* **Bug fix**: If a sound is defined multiple times in a Kit, the final definition should be used as the winner. However, this did not occur if the earlier definition was for a composite sound. That has now be fixed.
+* **Bug fix**: If a sound is defined multiple times in a Kit, the final definition should be used as the winner. However, previously this did not occur if the earlier definition was for a composite sound. That has now be fixed. For example, in this Kit:
+
+    Kit:
+      - sound: [sound1.wav, sound2.wav]
+      - sound: sound3.wav
+
+`sound` should be bound to `sound3.wav`, not `[sound1.wav, sound2.wav]`. In v2.1.0, however, this was reversed.
 
 For info about previous releases, visit https://github.com/jstrait/beats/releases.
 
