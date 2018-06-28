@@ -35,7 +35,7 @@ For more, check out [beatsdrummachine.com](http://beatsdrummachine.com)
 Installation
 ------------
 
-To install the latest stable version (2.1.0) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (2.1.1) from [rubygems.org](http://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
@@ -54,84 +54,16 @@ Beats runs from the command-line. Run `beats -h` to see the available options. F
 Check out [this tutorial at beatsdrummachine.com](http://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from sratch.
 
 
-What's New in v2.1
-------------------
+What's New in v2.1.1
+--------------------
 
-The latest version of Beats is 2.1.0, released on September 9, 2017.
+The latest version of Beats is 2.1.1, released on TBD.
 
-This version adds support for *composite sounds*. That is, sounds that are made by combining two or more sounds together. They are a more succinct way of writing songs where multiple tracks play the same rhythm.
+* **Bug fix**: The relevant pattern name will now be capitalized correctly in certain error messages - previously they were always shown lowercase. For example, if you have a pattern named "Verse", then certain error messages will now use this capitalization instead of "verse". This hopefully makes the error messages easier to understand.
+* **Bug fix**: Songs can now use *.wav files with more than 2 channels. Previously, using a sound with more than 2 channels would cause a fatal `Invalid sample data array in AudioUtils.normalize()` error.
+* **Bug fix**: If a sound is defined multiple times in a Kit, the final definition should be used as the winner. However, this did not occur if the earlier definition was for a composite sound. That has now be fixed.
 
-Composite sounds can be defined in the Kit by putting multiple sound files in an array:
-
-    Kit:
-      - bass:         bass.wav                    # A traditional non-composite sound
-      - combo_snare:  [clap.wav, 808_snare.wav]   # A composite sound
-
-The `combo_snare` sound above is a composite sound made by combining `clap.wav` and `808_snare.wav` together. It can then be used in a pattern:
-
-    Verse:
-      - bass:         X.......X.......
-      - combo_snare:  ....X.......X...
-
-This is equivalent to the following song:
-
-    Kit:
-      - bass:   bass.wav
-      - clap:   clap.wav
-      - snare:  808_snare.wav
-
-    Verse:
-      - bass:   X.......X.......
-      - clap:   ....X.......X...
-      - snare:  ....X.......X...
-
-When using the `-s` command-line option to write each track to its own *.wav file, each sub-sound in a composite sound will be written to its own file. For example, this song:
-
-    Kit:
-      - combo_snare:  [clap.wav, 808_snare.wav]
-
-    Verse:
-      - combo_snare:  X...X...X...X...
-
-...will be written to two different files, `combo_snare-clap.wav` and `combo_snare-808_snare.wav`, when using the `-s` option.
-
-Finally, when defining a track in a pattern, multiple sounds can be given in an array as a composite sound. Kit sounds and non-Kit sounds can be used together:
-
-    Kit:
-      - bass:         bass.wav
-      - combo_snare:  [clap.wav, 808_snare.wav]
-
-    Verse:
-      - [bass, combo_snare, other_sound.wav]:   X...X...X...X...
-
-This is a equivalent to:
-
-    Kit:
-      - bass:   bass.wav
-      - clap:   clap.wav
-      - snare:  808_snare.wav
-
-    Verse:
-      - bass:             X...X...X...X...
-      - clap:             X...X...X...X...
-      - snare:            X...X...X...X...
-      - other_sound.wav:  X...X...X...X...
-
-
-
-What's New in v2.0
-------------------
-
-The previous version of Beats is 2.0.0, released on September 4, 2017. It is primarily a modernization release, and contains some relatively small backwards incompatible changes.
-
-* Track rhythms can now have spaces in them. For example, `X... .... X... ....` is now a valid rhythm. Spaces are ignored, and don't affect the rhythm. For example, `X...    X...` is treated as the same rhythm as `X...X...`
-* Wave files using `WAVE_FORMAT_EXTENSIBLE` format can now be used, due to upgrading the WaveFile gem dependency to v0.8.1 behind the scenes.
-* Installing the gem is now simpler, since it no longer requires installing the legacy `syck` YAML parser via an extension.
-* A `Fixnum is deprecated` message is no longer shown when using Ruby 2.4
-* **Backwards incompatible changes**:
-  * Song files containing a `Structure` section are no longer supported. A `Flow` section should be used instead. Support for the `Structure` section has been deprecated since v1.2.1 (released in 2011).
-  * Track rhythms can no longer start with a `|` character. For example, `|X...X...` is no longer a valid rhythm. However, bar lines are still allowed to appear elsewhere in the rhythm. For example, `X...X...|X...X...|` _is_ a valid rhythm. The reason for this change is that a rhythm starting with `|` is parsed as a YAML scalar block now that Beats is using the Psych YAML library behind the scenes. The fact that the old Syck YAML library didn't treat rhythms starting with a `|` as a YAML scalar block appears to have been a bug in Syck?
-* The minimum supported Ruby version is now 1.9.3, instead of 1.8.7
+For info about previous releases, visit https://github.com/jstrait/beats/releases.
 
 
 Local Development
