@@ -1,0 +1,14 @@
+Song:
+  Tempo: 100 
+  # Kit is defined, but has no sounds. This is valid.
+  Kit:
+  Flow:
+    - Verse:  x2
+    - Chorus: x2
+
+Verse:
+  - test/sounds/bass_mono_8.wav:   X...X...
+  - test/sounds/snare_mono_8.wav:  ..X...X.
+Chorus:
+  - test/sounds/bass_mono_8.wav:   XXXXXXXX
+  - test/sounds/snare_mono_8.wav:  .X.X.X.X

@@ -106,6 +106,21 @@ class SongParserTest < Minitest::Test
     assert_equal("....X.......X...", song.patterns[:chorus].tracks["snare"].rhythm)
   end
 
+  def test_song_with_empty_kit
+    song, kit = load_fixture("valid/empty_kit.txt")
+
+    assert_equal(100, song.tempo)
+    assert_equal(["test/sounds/bass_mono_8.wav", "test/sounds/snare_mono_8.wav", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...", song.patterns[:verse].tracks["test/sounds/bass_mono_8.wav"].rhythm)
+    assert_equal("..X...X.", song.patterns[:verse].tracks["test/sounds/snare_mono_8.wav"].rhythm)
+    assert_equal(2, song.patterns[:chorus].tracks.length)
+    assert_equal("XXXXXXXX", song.patterns[:chorus].tracks["test/sounds/bass_mono_8.wav"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["test/sounds/snare_mono_8.wav"].rhythm)
+  end
+
   def test_song_with_unused_kit
     no_kit_song, no_kit_kit = load_fixture("valid/example_no_kit.txt")
     kit_song, kit_kit = load_fixture("valid/example_with_kit.txt")
