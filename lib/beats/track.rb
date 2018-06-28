@@ -18,7 +18,7 @@ module Beats
         raise ArgumentError, "Track `name` argument must be a String"
       end
 
-      unless rhythm.is_a?(String) && !rhythm.match(DISALLOWED_CHARACTERS)
+      unless rhythm.is_a?(String) && rhythm.match(DISALLOWED_CHARACTERS) == nil
         raise InvalidRhythmError, "Track '#{name}' has an invalid rhythm: '#{rhythm.inspect}'. Can only contain '#{BEAT}', '#{REST}', '#{BARLINE}', or ' '"
       end
 
