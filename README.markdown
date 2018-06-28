@@ -92,4 +92,3 @@ Contact me (Joel Strait) by sending a GitHub message or opening a GitHub issue.
 License
 -------
 Beats Drum Machine is released under the MIT license.
-
