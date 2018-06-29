@@ -57,7 +57,7 @@ Check out [this tutorial at beatsdrummachine.com](https://beatsdrummachine.com/t
 What's New in v2.1.1
 --------------------
 
-The latest version of Beats is 2.1.1, released on TBD. It contains these changes:
+The latest version of Beats is 2.1.1, released on June 29, 2018. It contains these changes:
 
 * Several error messages are improved to be more accurate or specific.
 * **Bug fix**: Songs can now use *.wav files with more than 2 channels. Previously, using a sound with more than 2 channels would cause a fatal `Invalid sample data array in AudioUtils.normalize()` error.
