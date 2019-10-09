@@ -1,0 +1,15 @@
+# Invalid song, since one of the flow sections is not a Hash
+Song:
+  Tempo: 100
+  Flow:
+  - Verse:  x2
+  - 6    # Invalid, since this is not a pattern name String, or a Hash
+  - Verse:  x2
+  - Chorus: x2
+
+
+Verse:
+  - test/sounds/bass_mono_8.wav:  X...X...
+
+Chorus:
+  - test/sounds/snare_mono_8.wav:  X...X...

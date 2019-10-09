@@ -186,8 +186,12 @@ Song:
       end
 
       raw_flow.each do |pattern_item|
-        if pattern_item.class == String
-          pattern_item = {pattern_item => "x1"}
+        if !pattern_item.is_a?(Hash)
+          if pattern_item.class == String
+            pattern_item = {pattern_item => "x1"}
+          else
+            raise ParseError, "'#{pattern_item}' is invalid flow section; must be in form '- <pattern name>: <repeat count>'"
+          end
         end
 
         pattern_name = pattern_item.keys.first
