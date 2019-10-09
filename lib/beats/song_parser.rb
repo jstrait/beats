@@ -185,23 +185,23 @@ Song:
         pattern_name = pattern_item.keys.first
         pattern_name_sym = pattern_name.downcase.to_sym
 
-        multiples_str = pattern_item[pattern_name]
+        repeat_count_str = pattern_item[pattern_name]
 
-        unless multiples_str.is_a?(String) && multiples_str.match(/^x[0-9]+$/) != nil
+        unless repeat_count_str.is_a?(String) && repeat_count_str.match(/^x[0-9]+$/) != nil
           raise ParseError,
-                "'#{multiples_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats must be a whole number >= 0, prefixed with 'x'."
+                "'#{repeat_count_str}' is an invalid number of repeats for pattern '#{pattern_name}'. Number of repeats must be a whole number >= 0, prefixed with 'x'."
         end
 
-        multiples = multiples_str[1..-1].to_i
+        repeat_count = repeat_count_str[1..-1].to_i
 
-        if multiples > 0 && !song.patterns.has_key?(pattern_name_sym)
+        if repeat_count > 0 && !song.patterns.has_key?(pattern_name_sym)
           # This test is purposefully designed to only throw an error if the number of repeats is greater
           # than 0. This allows you to specify an undefined pattern in the flow with "x0" repeats.
           # This can be convenient for defining the flow before all patterns have been added to the song file.
           raise ParseError, "Song flow includes non-existent pattern: '#{pattern_name}'"
         end
 
-        multiples.times { flow << pattern_name_sym }
+        repeat_count.times { flow << pattern_name_sym }
       end
 
       song.flow = flow
