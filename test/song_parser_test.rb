@@ -21,6 +21,7 @@ class SongParserTest < Minitest::Test
                       :pattern_with_no_tracks,
                       :pattern_with_nil_track,
                       :pattern_with_incomplete_track,
+                      :pattern_not_an_array,
                       :track_with_composite_non_existent_sound,
                       :kit_with_composite_non_existent_sound,
                       :track_with_composite_empty_sound,

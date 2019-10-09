@@ -146,6 +146,10 @@ Song:
           raise ParseError, "Pattern '#{pattern_name}' has no tracks. It needs at least one."
         end
 
+        if !raw_tracks.is_a?(Array)
+          raise ParseError, "Tracks in pattern '#{pattern_name}' are not an Array. Make sure each track is placed on new indented line prefixed with a '-'"
+        end
+
         tracks = []
 
         raw_tracks.each_with_index do |raw_track, index|
