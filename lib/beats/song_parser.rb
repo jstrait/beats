@@ -144,7 +144,11 @@ Song:
 
         tracks = []
 
-        raw_tracks.each do |raw_track|
+        raw_tracks.each_with_index do |raw_track, index|
+          if !raw_track.is_a?(Hash)
+            raise ParseError, "Track ##{index + 1} in pattern '#{pattern_name}' is incomplete. Must be in form '- <kit/file name>: <rhythm>'"
+          end
+
           track_names = raw_track.keys.first
           rhythm = raw_track.values.first
 

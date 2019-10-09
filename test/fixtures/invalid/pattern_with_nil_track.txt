@@ -1,0 +1,10 @@
+# Invalid song, since it contains a pattern with a nil track
+
+Song:
+  Tempo: 100
+  Flow:
+    - Verse: x1
+
+Verse:
+  - test/sounds/bass_mono_8.wav:  X...X...
+  -
