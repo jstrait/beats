@@ -1,0 +1,15 @@
+# Invalid song, since the flow is not an array (i.e., each line is not prefixed with "-")
+Song:
+  Tempo: 100
+  Flow:
+    Verse:  x2
+    Chorus: x2
+    Verse:  x2
+    Chorus: x2
+
+
+Verse:
+  - test/sounds/bass_mono_8.wav:  X...X...
+
+Chorus:
+  - test/sounds/snare_mono_8.wav:  X...X...

@@ -181,6 +181,10 @@ Song:
     def self.set_song_flow(song, raw_flow)
       flow = []
 
+      if !raw_flow.is_a?(Array)
+        raise ParseError, "Song flow is not an array. Make sure each section of the flow is placed on new indented line prefixed with a '-'"
+      end
+
       raw_flow.each do |pattern_item|
         if pattern_item.class == String
           pattern_item = {pattern_item => "x1"}
