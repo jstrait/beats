@@ -3,8 +3,8 @@ require 'includes'
 class SongParserTest < Minitest::Test
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
 
-  INVALID_FIXTURES = [:bad_repeat_count,
-                      :bad_flow,
+  INVALID_FIXTURES = [:flow_invalid_character_in_repeat_count,
+                      :flow_non_existent_pattern,
                       :bad_tempo,
                       :bad_swing_rate_1,
                       :bad_swing_rate_2,

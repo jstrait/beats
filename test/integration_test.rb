@@ -11,8 +11,8 @@ class IntegrationTest < Minitest::Test
 
   def test_bad_song_errors
     invalid_fixtures = ["bad_tempo.txt",
-                        "bad_repeat_count.txt",
-                        "bad_flow.txt",
+                        "flow_invalid_character_in_repeat_count.txt",
+                        "flow_non_existent_pattern.txt",
                         "no_header.txt",
                         "no_flow.txt",
                         "sound_in_kit_not_found.txt",
