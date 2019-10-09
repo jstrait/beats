@@ -1,0 +1,8 @@
+# Invalid song, since the flow repeat count is not a String like "x4"
+Song:
+  Tempo: 100
+  Flow:
+    - Verse:  [1, 2, 3]
+
+Verse:
+  - test/sounds/bass_mono_8.wav:  X...X...X...XX..X...X...XX..X...

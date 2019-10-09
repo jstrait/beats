@@ -6,6 +6,8 @@ class SongParserTest < Minitest::Test
   INVALID_FIXTURES = [:flow_invalid_character_in_repeat_count,
                       :flow_non_existent_pattern,
                       :flow_negative_repeat_count,
+                      :flow_non_string_repeat_count,
+                      :flow_repeat_count_is_missing_prefix,
                       :bad_tempo,
                       :bad_swing_rate_1,
                       :bad_swing_rate_2,
