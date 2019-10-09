@@ -206,6 +206,18 @@ class SongParserTest < Minitest::Test
     assert_equal("..............X.", song.patterns[:chorus].tracks["test/sounds/tom2_mono_16.wav"].rhythm)
   end
 
+  def test_track_sound_with_mixed_capitalization
+    song, kit = load_fixture("valid/track_sound_has_mixed_capitalization.txt")
+
+    assert_equal(120, song.tempo)
+    assert_equal([:verse], song.flow)
+    assert_equal(["bass", "test/sounds/MiXeD_CaPiTaLiZaTiOn.wav", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
+    assert_equal(1, song.patterns.length)
+    assert_equal(2, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...........", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("........X...X...", song.patterns[:verse].tracks["test/sounds/MiXeD_CaPiTaLiZaTiOn.wav"].rhythm)
+  end
+
   def test_swung_8
     song, _ = load_fixture("valid/example_swung_8th.txt")
 

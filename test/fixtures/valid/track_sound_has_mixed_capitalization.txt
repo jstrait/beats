@@ -1,0 +1,13 @@
+# "MiXeD_CaPiTaLiZaTiOn.wav" should be the valid name for a track sound.
+# That is, there's no requirement that file names have all lowercase or uppercase letters.
+
+Song:
+  Tempo: 120
+  Flow:
+    - Verse: x1
+  Kit:
+    - bass:  test/sounds/MiXeD_CaPiTaLiZaTiOn.wav
+
+Verse:
+  - bass:                                  X...X...........
+  - test/sounds/MiXeD_CaPiTaLiZaTiOn.wav:  ........X...X...
