@@ -115,6 +115,10 @@ Song:
     def self.add_kit_sounds_from_kit(kit_builder, raw_kit)
       return if raw_kit.nil?
 
+      unless raw_kit.is_a?(Array)
+        raise ParseError, "Kit is not an array. Make sure each sound in the Kit is placed on new indented line prefixed with a '-'"
+      end
+
       # Add sounds defined in the Kit section of the song header
       # Converts [{a=>1}, {b=>2}, {c=>3}] from raw YAML to {a=>1, b=>2, c=>3}
       raw_kit.each do |kit_item|

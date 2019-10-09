@@ -1,0 +1,17 @@
+# Invalid song, since the Kit is not an array (i.e., each line is not prefixed with "-")
+Song:
+  Tempo: 120
+  Flow:
+    - Verse:   x2
+  Kit:
+    bass:       ../../sounds/bass_mono_8.wav
+    snare:      ../../sounds/snare_mono_8.wav
+    hh_closed:  ../../sounds/hh_closed_mono_8.wav
+    agogo:      ../../sounds/agogo_high_mono_8.wav
+
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+  - hh_closed:  X.XXX.XX........
+  - hh_closed:  ........X.X.X.X.
+  - agogo:      ..............XX

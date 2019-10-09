@@ -27,6 +27,7 @@ class SongParserTest < Minitest::Test
                       :kit_with_composite_empty_sound,
                       :track_with_composite_nested_sounds,
                       :kit_with_composite_nested_sounds,
+                      :kit_not_an_array,
                       :leading_bar_line,
                       :sound_in_kit_not_found,
                       :sound_in_track_not_found,
