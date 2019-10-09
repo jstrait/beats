@@ -9,6 +9,7 @@ class SongParserTest < Minitest::Test
                       :flow_negative_repeat_count,
                       :flow_non_string_repeat_count,
                       :flow_repeat_count_is_missing_prefix,
+                      :flow_missing_repeat_count,
                       :bad_tempo,
                       :bad_swing_rate_1,
                       :bad_swing_rate_2,

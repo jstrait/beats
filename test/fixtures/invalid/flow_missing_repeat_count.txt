@@ -1,0 +1,8 @@
+# Invalid song, since the number of repeats for pattern Verse is missing
+Song:
+  Tempo: 100
+  Flow:
+    - Verse:
+
+Verse:
+  - test/sounds/bass_mono_8.wav:  X...X...X...XX..X...X...XX..X...
