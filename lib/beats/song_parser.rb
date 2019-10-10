@@ -90,7 +90,7 @@ Song:
         raise ParseError, "Syntax error in YAML file: #{detail}"
       end
 
-      header_keys = raw_song_definition.keys.select {|key| key.downcase == "song" }
+      header_keys = raw_song_definition.keys.select {|key| key.is_a?(String) && key.downcase == "song" }
 
       if header_keys.empty?
         raise ParseError, NO_SONG_HEADER_ERROR_MSG
@@ -141,6 +141,10 @@ Song:
 
     def self.add_patterns_to_song(song, kit_builder, raw_patterns)
       raw_patterns.each do |pattern_name, raw_tracks|
+        if !pattern_name.is_a?(String)
+          raise ParseError, "Pattern name '#{pattern_name}' is not valid. It must be a YAML value that will be parsed as a String."
+        end
+
         if raw_tracks.nil?
           # TODO: Possibly allow if pattern not referenced in the Flow, or has 0 repeats?
           raise ParseError, "Pattern '#{pattern_name}' has no tracks. It needs at least one."
