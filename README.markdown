@@ -35,7 +35,7 @@ For more, check out [beatsdrummachine.com](https://beatsdrummachine.com)
 Installation
 ------------
 
-To install the latest stable version (2.1.1) from [rubygems.org](https://rubygems.org/gems/beats), run the following from the command line:
+To install the latest stable version (2.1.2) from [rubygems.org](https://rubygems.org/gems/beats), run the following from the command line:
 
     gem install beats
 
@@ -54,20 +54,12 @@ Beats runs from the command-line. Run `beats -h` to see the available options. F
 Check out [this tutorial at beatsdrummachine.com](https://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from sratch.
 
 
-What's New in v2.1.1
+What's New in v2.1.2
 --------------------
 
-The latest version of Beats is 2.1.1, released on June 29, 2018. It contains these changes:
+The latest version of Beats is 2.1.2, released on ___TBD___. It contains these changes:
 
-* Several error messages are improved to be more accurate or specific.
-* **Bug fix**: Songs can now use *.wav files with more than 2 channels. Previously, using a sound with more than 2 channels would cause a fatal `Invalid sample data array in AudioUtils.normalize()` error.
-* **Bug fix**: If a sound is defined multiple times in a Kit, the final definition should be used as the winner. However, previously this did not occur if the earlier definition was for a composite sound. For example, with this Kit:
-
-      Kit:
-        - sound: [sound1.wav, sound2.wav]
-        - sound: sound3.wav
-
-  `sound` will now be bound to `sound3.wav`, not `[sound1.wav, sound2.wav]`.
+* Several confusing/unhelpful errors shown due to syntax error in input files have been improved. For example, if a pattern has the invalid name "4", the error message will now be `Pattern name '4' is not valid. It must be a YAML value that will be parsed as a String.`, instead of `undefined method 'downcase' for 4:Integer`.
 
 For info about previous releases, visit https://github.com/jstrait/beats/releases.
 
