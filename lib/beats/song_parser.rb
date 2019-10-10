@@ -207,6 +207,9 @@ Song:
         end
 
         pattern_name = pattern_item.keys.first
+        if !pattern_name.is_a?(String)
+          raise ParseError, "Pattern name '#{pattern_name}' in flow is not valid. It must be a YAML value that will be parsed as a String."
+        end
         pattern_name_sym = pattern_name.downcase.to_sym
 
         repeat_count_str = pattern_item[pattern_name]

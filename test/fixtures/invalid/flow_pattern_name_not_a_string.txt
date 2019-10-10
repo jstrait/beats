@@ -1,0 +1,15 @@
+# Invalid song, a pattern used in the flow has a name which will not be parsed as a String
+Song:
+  Tempo: 120
+  Flow:
+    - Verse: x2
+    - 4: x2       # Invalid pattern name!
+  Kit:
+    - bass:       ../../sounds/bass_mono_8.wav
+    - snare:      ../../sounds/snare_mono_8.wav
+    - hh_closed:  ../../sounds/hh_closed_mono_8.wav
+    - agogo:      ../../sounds/agogo_high_mono_8.wav
+
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.

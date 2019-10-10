@@ -12,6 +12,7 @@ class SongParserTest < Minitest::Test
                       :flow_missing_repeat_count,
                       :flow_not_an_array,
                       :flow_section_not_a_string_or_hash,
+                      :flow_pattern_name_not_a_string,
                       :bad_tempo,
                       :bad_swing_rate_1,
                       :bad_swing_rate_2,
