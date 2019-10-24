@@ -84,7 +84,7 @@ To run the tests:
 Found a Bug? Have a Suggestion? Want to Contribute?
 ---------------------------------------------------
 
-Contact me (Joel Strait) by sending a GitHub message or opening a GitHub issue.
+Contact me (Joel Strait) by opening a GitHub issue.
 
 
 License
