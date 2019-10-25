@@ -418,6 +418,24 @@ class SongParserTest < Minitest::Test
     assert_equal("....X...........", song.patterns[:chorus].tracks["test/sounds/ride_mono_8.wav"].rhythm)
   end
 
+  def test_composite_sounds_with_trailing_comma
+    song, kit = load_fixture("valid/composite_sounds_trailing_comma.txt")
+
+    assert_equal(100, song.tempo)
+    assert_equal(["bass", "snare-snare_mono_8", "hihat-hh_closed_mono_8", "hihat-hh_open_mono_8", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
+    assert_equal([:verse, :verse, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(3, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...", song.patterns[:verse].tracks["hihat-hh_closed_mono_8"].rhythm)
+    assert_equal("X...X...", song.patterns[:verse].tracks["hihat-hh_open_mono_8"].rhythm)
+    assert_equal("..X...X.", song.patterns[:verse].tracks["snare-snare_mono_8"].rhythm)
+    assert_equal(4, song.patterns[:chorus].tracks.length)
+    assert_equal("XXXXXXXX", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["snare-snare_mono_8"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["hihat-hh_closed_mono_8"].rhythm)
+    assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["hihat-hh_open_mono_8"].rhythm)
+  end
+
   def test_invalid_parse
     INVALID_FIXTURES.each do |fixture|
       assert_raises(SongParser::ParseError) do
