@@ -3,11 +3,11 @@
   <div class="content-box">
     <h2>Usage Instructions</h2>
     <p>Beats runs from the command-line. The syntax:</p>
-    <p><code><pre class="single-line">beats [options] INPUT [OUTPUT]</pre></code></p>
+    <p><pre class="single-line"><code>beats [options] INPUT [OUTPUT]</code></pre></p>
     <p><code>INPUT</code> is the YAML file for your song. <code>OUTPUT</code> is the <code>*.wav</code> file where Beats will place the generated sound. If omitted, it will default to <code>INPUT</code> but with a <code>.wav</code> extension. (For example, the sound for <code>my_song.txt</code> would be saved to <code>my_song.wav</code>).</p>
-    <p><code><pre class="single-line">beats example_song.txt beat.wav</pre></code></p>
+    <p><pre class="single-line"><code>beats example_song.txt beat.wav</code></pre></p>
     <p>Beats supports the following command-line options, which can be used together or separately:</p>
-    <p><code><pre>-s, --split
+    <p><pre><code>-s, --split
     Save each track to a separate Wave file,
     instead of combining them into one.
 
@@ -31,7 +31,7 @@
 beats -s example_song.txt
 beats -p Verse example_song.txt
 beats --path ~/drum_sounds example_song.txt
-</pre></code></p>
+</code></pre></p>
   </div>
   <div class="content-box">
     <h2>Creating Songs</h2>
