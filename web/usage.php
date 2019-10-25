@@ -20,6 +20,14 @@
     relative to BASE_PATH, instead of relative
     to the song file's path.
 
+-v, --version
+    Displays the Beats version number,
+    and exits.
+
+-h, --help
+    Displays a list of possible command-line
+    options, and exits.
+
 beats -s example_song.txt
 beats -p Verse example_song.txt
 beats --path ~/drum_sounds example_song.txt
