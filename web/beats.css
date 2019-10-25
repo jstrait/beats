@@ -184,11 +184,14 @@ pre.single-line {
 }
 
 pre code {
+  background: none;
   line-height: 0.6666666667rem;
 }
 
 code {
+  background: #ebebeb;
   margin: 0;
+  padding: 0 0.25rem;
   font-family: menlo, consolas, monaco, courier, monospace;
   font-weight: normal;
   line-height: 0.6666666667rem;
