@@ -399,6 +399,25 @@ class SongParserTest < Minitest::Test
     assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["hihat-hh_closed_mono_8"].rhythm)
   end
 
+  def test_kit_with_composite_single_sound
+    song, kit = load_fixture("valid/example_alternate_array_syntax.txt")
+
+    assert_equal(120, song.tempo)
+    assert_equal(["bass", "snare", "hhclosed", "hhopen", "test/sounds/ride_mono_8.wav", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
+    assert_equal([:verse, :verse, :chorus, :chorus, :verse, :verse, :chorus, :chorus, :chorus, :chorus], song.flow)
+    assert_equal(2, song.patterns.length)
+    assert_equal(4, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...X...X...", song.patterns[:verse].tracks["bass"].rhythm)
+    assert_equal("....X.......X...", song.patterns[:verse].tracks["snare"].rhythm)
+    assert_equal("X.X.X.X.X.X.X...", song.patterns[:verse].tracks["hhclosed"].rhythm)
+    assert_equal("..............X.", song.patterns[:verse].tracks["hhopen"].rhythm)
+    assert_equal(4, song.patterns[:chorus].tracks.length)
+    assert_equal("X...X...XXXXXXXX", song.patterns[:chorus].tracks["bass"].rhythm)
+    assert_equal("X...X...X...X...", song.patterns[:chorus].tracks["snare"].rhythm)
+    assert_equal("........X.......", song.patterns[:chorus].tracks["hhopen"].rhythm)
+    assert_equal("....X...........", song.patterns[:chorus].tracks["test/sounds/ride_mono_8.wav"].rhythm)
+  end
+
   def test_invalid_parse
     INVALID_FIXTURES.each do |fixture|
       assert_raises(SongParser::ParseError) do
