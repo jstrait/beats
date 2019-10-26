@@ -51,7 +51,7 @@ Usage
 
 Beats runs from the command-line. Run `beats -h` to see the available options. For more detailed instructions, visit <https://beatsdrummachine.com/usage/>.
 
-Check out [this tutorial at beatsdrummachine.com](https://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from sratch.
+Check out [this tutorial at beatsdrummachine.com](https://beatsdrummachine.com/tutorial/) to see an example of how to create a beat from scratch.
 
 
 What's New in v2.1.2
