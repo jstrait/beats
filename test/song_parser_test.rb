@@ -399,7 +399,7 @@ class SongParserTest < Minitest::Test
     assert_equal(".X.X.X.X", song.patterns[:chorus].tracks["hihat-hh_closed_mono_8"].rhythm)
   end
 
-  def test_kit_with_composite_single_sound
+  def test_alternate_array_syntax
     song, kit = load_fixture("valid/example_alternate_array_syntax.txt")
 
     assert_equal(120, song.tempo)
