@@ -89,7 +89,7 @@ Verse:
 </div>
 <div class="content-box">
   <h2>Audio Generation</h2>
-  <p class="note">Before reading this section, it might be helpful to read up on the <a href="http://www.joelstrait.com/blog/2009/10/12/a_digital_audio_primer">basics on digital audio</a>, if you aren&rsquo;t already familiar.</p>
+  <p class="note">Before reading this section, it might be helpful to read up on the <a href="https://www.joelstrait.com/digital_audio_primer/">basics on digital audio</a>, if you aren&rsquo;t already familiar.</p>
 
 <p>All right! We&rsquo;ve now parsed our YAML file into <code>Song</code> and <code>Kit</code> domain objects, converted the <code>Song</code> into a canonical format, and optimized it. Now we&rsquo;re ready to actually generate some audio data.</p>
 
