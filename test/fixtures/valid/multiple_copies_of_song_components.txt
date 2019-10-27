@@ -1,0 +1,53 @@
+# This example includes multiple copies of song components such as the Flow, Kit, etc.
+# In general, multiple copies of the same song component are allowed (due to the Song
+# header being a YAML hash), but the final definition should be chosen as the winner.
+
+
+# This song header is ignored, because it is overridden by a subsequent song
+# header at the end of the file
+Song:
+  Tempo: 90
+  Flow:
+    - Verse:   x1
+    - Chorus:  x2
+  Kit:
+    - bass:       test/sounds/bass_mono_8.wav
+    - snare:      test/sounds/snare_mono_8.wav
+
+Verse:
+  - bass:       X...X...X...X...
+
+Chorus:
+  - bass:       X...X...XX..X...
+  - snare:      ....X.......X...
+
+
+
+
+
+# This is the actual song header that should be used
+Song:
+  Kit:
+    - bass2:   test/sounds/tom2_mono_8.wav
+    - snare2:  test/sounds/tom4_mono_8.wav
+  Tempo: 200
+  Flow:
+    - Verse:  x4
+  Flow:
+    - Chorus:  x4
+  Tempo: 100
+  Tempo: 120
+  Kit:
+    - bass:   test/sounds/ride_mono_8.wav
+    - snare:  test/sounds/snare2_mono_8.wav
+  Flow:
+    - Verse:   x2
+    - Chorus:  x2
+
+Verse:
+  - bass:       X.......X...X...
+  - snare:      ....X.......X...
+
+Chorus:
+  - bass:       X.X.X.X.X.X.X.X.
+  - snare:      X...X...X...X...
