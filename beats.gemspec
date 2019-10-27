@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "wavefile", "= 0.8.1"
 
-  s.summary = "A command-line drum machine. Takes a song notated in a YAML file as input, and outputs a *.wav sound file."
+  s.summary = "A command-line drum machine"
   s.description = "A command-line drum machine. Takes a song notated in a YAML file as input, and outputs a *.wav sound file."
   s.post_install_message = "Thanks for installing Beats Drum Machine! For information on how to use Beats, or to download some drum sounds to use with Beats, visit https://beatsdrummachine.com"
 
