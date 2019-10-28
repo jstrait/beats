@@ -4,7 +4,7 @@
     <h2>Installing Beats</h2>
     <p>Run the following from the command line:</p>
     <p><pre class="single-line"><code>gem install beats</code></pre></p>
-    <p>This will download Beats from <a href="http://rubygems.org/gems/beats">rubygems.org</a> and add a <code>beats</code> command to your path.</p>
+    <p>This will download Beats from <a href="https://rubygems.org/gems/beats">rubygems.org</a> and add a <code>beats</code> command to your path.</p>
     <p>(Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, try <code>sudo gem install beats</code> instead. If you are using RVM or rbenv, plain <code>gem install beats</code> should work fine.)</p>
     <p>The current version of Beats is 2.1.1. If you have an older version, you can update with this:</p>
     <p><pre class="single-line"><code>gem update beats</code></pre></p>
@@ -38,7 +38,7 @@
   </div>
   <div class="content-box">
     <h2>Source Code</h2>
-    <p>It&#8217;s <a href="http://github.com/jstrait/beats">over at GitHub</a>.</p>
+    <p>It&#8217;s <a href="https://github.com/jstrait/beats">over at GitHub</a>.</p>
   </div>
   <div id="release-history" class="content-box">
     <h2>Release History</h2>

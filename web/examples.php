@@ -59,6 +59,6 @@ Chorus:
   - bongo_low:   .X..............</code></pre>
     </div>
 
-    Synth sounds provided by an old <a href="http://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
+    Synth sounds provided by an old <a href="https://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>
 <? drawFooter(); ?>
