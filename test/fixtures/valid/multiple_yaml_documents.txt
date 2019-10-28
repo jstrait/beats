@@ -1,0 +1,33 @@
+# This file contains multiple YAML documents (demarcated by "---")
+# The first document should be chosen as the song to use, and the
+# second document should be ignored.
+
+---
+Song:
+  Tempo: 150
+  Flow:
+    - Verse: x2
+  Kit:
+    - bass:  test/sounds/bass_mono_8.wav
+
+Verse:
+  - bass: X...X...X...X...
+
+
+---
+Song:
+  Tempo: 200
+  Flow:
+    - Verse:  x3
+    - Chorus: x1
+  Kit:
+    - snare: test/sounds/snare_mono_8.wav
+    - tom:   test/sounds/tom4_mono_8.wav
+
+Verse:
+  - snare:  X...X...........
+  - tom:    ........X...X...
+
+Chorus:
+  - snare:  X.X.X.X.X.X.X.X.
+  - tom:    XXXXXXXXXXXXXXXX

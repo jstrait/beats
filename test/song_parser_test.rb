@@ -84,6 +84,17 @@ class SongParserTest < Minitest::Test
     assert_equal("....X.......X...", song.patterns[:chorus].tracks["snare"].rhythm)
   end
 
+  def test_multiple_yaml_documents
+    song, kit = load_fixture("valid/multiple_yaml_documents.txt")
+
+    assert_equal(150, song.tempo)
+    assert_equal([:verse, :verse], song.flow)
+    assert_equal(["bass", "empty_track_placeholder_name_234hkj32hjk4hjkhds23"], kit.labels)
+    assert_equal(1, song.patterns.length)
+    assert_equal(1, song.patterns[:verse].tracks.length)
+    assert_equal("X...X...X...X...", song.patterns[:verse].tracks["bass"].rhythm)
+  end
+
   def test_no_tempo
     song, _ = load_fixture("valid/no_tempo.txt")
 
