@@ -31,7 +31,7 @@ function drawHeader() {
 function drawFooter() {
 ?>
   <div id="about" class="content-box">
-    <p>&copy; 2010-18 <a href="https://www.joelstrait.com/">Joel Strait</a></p>
+    <p>&copy; 2010-19 <a href="https://www.joelstrait.com/">Joel Strait</a></p>
   </div>
   <script type="text/javascript">
   function toggleMenu() {
