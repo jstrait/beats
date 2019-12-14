@@ -1,21 +1,21 @@
-require 'includes'
+require "includes"
 
 class KitTest < Minitest::Test
   def test_kit_with_items
-    kit = Kit.new({'label1' => [1,2,3], 'label2' => [4,5,6], 'label3' => [7,8,9]}, 1, 16)
+    kit = Kit.new({"label1" => [1,2,3], "label2" => [4,5,6], "label3" => [7,8,9]}, 1, 16)
 
     assert_equal(["label1", "label2", "label3"], kit.labels)
-    assert_equal([1,2,3], kit.get_sample_data('label1'))
-    assert_equal([4,5,6], kit.get_sample_data('label2'))
-    assert_raises(Kit::LabelNotFoundError) { kit.get_sample_data('nope') }
-    assert_equal([7,8,9], kit.get_sample_data('label3'))
+    assert_equal([1,2,3], kit.get_sample_data("label1"))
+    assert_equal([4,5,6], kit.get_sample_data("label2"))
+    assert_raises(Kit::LabelNotFoundError) { kit.get_sample_data("nope") }
+    assert_equal([7,8,9], kit.get_sample_data("label3"))
   end
 
   def test_kit_with_no_items
     kit = Kit.new({}, 1, 16)
 
     assert_equal([], kit.labels)
-    assert_raises(Kit::LabelNotFoundError) { kit.get_sample_data('foo') }
+    assert_raises(Kit::LabelNotFoundError) { kit.get_sample_data("foo") }
   end
 
   def test_num_channels

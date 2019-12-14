@@ -1,4 +1,4 @@
-require 'includes'
+require "includes"
 
 class SongParserTest < Minitest::Test
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."

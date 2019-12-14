@@ -1,5 +1,5 @@
 $:.push File.expand_path("../lib", __FILE__)
-require 'beats'
+require "beats"
 
 Gem::Specification.new do |s|
   s.name = "beats"

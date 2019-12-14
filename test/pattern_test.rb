@@ -1,4 +1,4 @@
-require 'includes'
+require "includes"
 
 class PatternTest < Minitest::Test
   SAMPLE_RATE = 44100

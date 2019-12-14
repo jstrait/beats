@@ -1,4 +1,4 @@
-require 'includes'
+require "includes"
 
 # Basic tests for CachingWriter; the integration tests test it more thoroughly.
 class CachingWriterTest < Minitest::Test

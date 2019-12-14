@@ -1,4 +1,4 @@
-require 'includes'
+require "includes"
 
 # Make private methods public for testing
 class MockAudioEngine < AudioEngine

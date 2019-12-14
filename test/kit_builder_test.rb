@@ -1,4 +1,4 @@
-require 'includes'
+require "includes"
 
 class KitBuilderTest < Minitest::Test
   def test_has_label?
@@ -43,8 +43,8 @@ class KitBuilderTest < Minitest::Test
     assert_equal(Kit, kit.class)
     assert_equal(2, kit.num_channels)
     assert_equal(16, kit.bits_per_sample)
-    assert_equal(Array, kit.get_sample_data('mono8').class)
-    assert_equal(Array, kit.get_sample_data('bass_mono_16.wav').class)
+    assert_equal(Array, kit.get_sample_data("mono8").class)
+    assert_equal(Array, kit.get_sample_data("bass_mono_16.wav").class)
   end
 
   def test_build_kit_no_sounds

@@ -1,3 +1,3 @@
-require 'minitest/autorun'
-require 'beats'
+require "minitest/autorun"
+require "beats"
 include Beats
