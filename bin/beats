@@ -19,7 +19,7 @@ def parse_options
       options[:split] = true
     end
 
-    opts.on("-p", "--pattern PATTERN_NAME", "Output a single pattern instead of the whole song" ) do |p|
+    opts.on("-p", "--pattern PATTERN_NAME", "Output a single pattern instead of the whole song") do |p|
       options[:pattern] = p
     end
 
@@ -32,7 +32,7 @@ def parse_options
       exit
     end
 
-    opts.on( "-h", "--help", "Display this screen and exit" ) do
+    opts.on("-h", "--help", "Display this screen and exit") do
       puts opts
       exit
     end
