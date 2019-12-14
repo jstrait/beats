@@ -15,24 +15,24 @@ def parse_options
   optparse = OptionParser.new do |opts|
     opts.banner = "usage: beats [options] input_file [output_file]"
 
-    opts.on('-s', '--split', "Save each track to an individual wave file") do
+    opts.on("-s", "--split", "Save each track to an individual wave file") do
       options[:split] = true
     end
 
-    opts.on('-p', '--pattern PATTERN_NAME', "Output a single pattern instead of the whole song" ) do |p|
+    opts.on("-p", "--pattern PATTERN_NAME", "Output a single pattern instead of the whole song" ) do |p|
       options[:pattern] = p
     end
 
-    opts.on('--path BASE_PATH', "The base path used to load sound files with relative paths.") do |base_path|
+    opts.on("--path BASE_PATH", "The base path used to load sound files with relative paths.") do |base_path|
       options[:base_path] = base_path
     end
 
-    opts.on('-v', '--version', "Display version number and exit") do
+    opts.on("-v", "--version", "Display version number and exit") do
       puts "Beats Drum Machine #{Beats::VERSION}"
       exit
     end
 
-    opts.on( '-h', '--help', "Display this screen and exit" ) do
+    opts.on( "-h", "--help", "Display this screen and exit" ) do
       puts opts
       exit
     end
