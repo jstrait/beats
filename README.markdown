@@ -59,7 +59,7 @@ What's New in v2.1.2
 
 The latest version of Beats is 2.1.2, released on ___TBD___. It contains these changes:
 
-* Several confusing/unhelpful errors shown due to syntax error in input files have been improved. For example, if a pattern has the invalid name "4", the error message will now be `Pattern name '4' is not valid. It must be a YAML value that will be parsed as a String.`, instead of `undefined method 'downcase' for 4:Integer`.
+* Several confusing/unhelpful errors shown due to an error in an input file have been improved. For example, if a pattern has the invalid name "4", the error message will now be `Pattern name '4' is not valid. It must be a YAML value that will be parsed as a String.`, instead of `undefined method 'downcase' for 4:Integer`.
 
 For info about previous releases, visit https://github.com/jstrait/beats/releases.
 
