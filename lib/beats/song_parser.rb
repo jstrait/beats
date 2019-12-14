@@ -142,7 +142,7 @@ Song:
     def self.add_patterns_to_song(song, kit_builder, raw_patterns)
       raw_patterns.each do |pattern_name, raw_tracks|
         if !pattern_name.is_a?(String)
-          raise ParseError, "Pattern name '#{pattern_name}' is not valid. It must be a YAML value that will be parsed as a String."
+          raise ParseError, "Pattern name '#{pattern_name}' is not valid. It must be a value that will be parsed from YAML as a String."
         end
 
         if raw_tracks.nil?
@@ -208,7 +208,7 @@ Song:
 
         pattern_name = pattern_item.keys.first
         if !pattern_name.is_a?(String)
-          raise ParseError, "Pattern name '#{pattern_name}' in flow is not valid. It must be a YAML value that will be parsed as a String."
+          raise ParseError, "Pattern name '#{pattern_name}' in flow is not valid. It must be a value that will be parsed from YAML as a String."
         end
         pattern_name_sym = pattern_name.downcase.to_sym
 
