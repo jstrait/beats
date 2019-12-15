@@ -86,8 +86,6 @@ Song:
         raw_song_definition = YAML.load(raw_yaml_string)
       rescue Psych::SyntaxError => detail
         raise ParseError, "Syntax error in YAML file: #{detail}"
-      rescue ArgumentError => detail
-        raise ParseError, "Syntax error in YAML file: #{detail}"
       end
 
       header_keys = raw_song_definition.keys.select {|key| key.is_a?(String) && key.downcase == "song" }
