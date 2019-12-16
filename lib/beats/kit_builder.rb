@@ -27,7 +27,7 @@ module Beats
 
         filenames.each do |filename|
           unless filename.is_a?(String)
-            raise SoundFileNotFoundError, "The Kit sound '#{label}' contains an invalid file: '#{filename}'"
+            raise SoundFileNotFoundError, "Kit sound '#{label}' contains an invalid filename: '#{filename}'. It must be a value that will be parsed from YAML as a String."
           end
           composite_replacement = "#{label}-#{File.basename(filename, ".*")}"
           @labels_to_filenames[composite_replacement] = absolute_file_name(filename)

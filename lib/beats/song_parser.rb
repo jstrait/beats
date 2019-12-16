@@ -172,7 +172,7 @@ Song:
 
           track_names.map! do |track_name|
             unless track_name.is_a?(String)
-              raise ParseError, "'#{track_name}' in pattern '#{pattern_name}' is not a valid track sound"
+              raise ParseError, "'#{track_name}' in pattern '#{pattern_name}' is not a valid filename/kit sound. It must be a value that will be parsed from YAML as a String."
             end
             kit_builder.composite_replacements[track_name] || track_name
           end
