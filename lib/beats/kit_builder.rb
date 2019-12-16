@@ -34,6 +34,10 @@ module Beats
           @composite_replacements[label] << composite_replacement
         end
       else
+        unless filenames.is_a?(String)
+          raise SoundFileNotFoundError, "Kit sound '#{label}' has an invalid filename: '#{filenames}'. It must be a value that will be parsed from YAML as a String."
+        end
+
         @labels_to_filenames[label] = absolute_file_name(filenames)
         @composite_replacements.delete(label)
       end

@@ -1,0 +1,17 @@
+# Invalid song, the 'snare' Kit sound has an invalid filename
+Song:
+  Tempo: 120
+  Flow:
+    - Verse:   x2
+  Kit:
+    - bass:       test/sounds/bass_mono_8.wav
+    - snare:      3
+    - hh_closed:  test/sounds/hh_closed_mono_8.wav
+    - agogo:      test/sounds/agogo_high_mono_8.wav
+
+Verse:
+  - bass:       X...X...X...X...
+  - snare:      ..............X.
+  - hh_closed:  X.XXX.XX........
+  - hh_closed:  ........X.X.X.X.
+  - agogo:      ..............XX
