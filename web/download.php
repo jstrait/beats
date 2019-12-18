@@ -6,7 +6,7 @@
     <p><pre class="single-line"><code>gem install beats</code></pre></p>
     <p>This will download Beats from <a href="https://rubygems.org/gems/beats">rubygems.org</a> and add a <code>beats</code> command to your path.</p>
     <p>(Note that if you are installing using the default version of Ruby that comes with MacOS X, you might get a file permission error. If that happens, try <code>sudo gem install beats</code> instead. If you are using RVM or rbenv, plain <code>gem install beats</code> should work fine.)</p>
-    <p>The current version of Beats is 2.1.1. If you have an older version, you can update with this:</p>
+    <p>The current version of Beats is 2.1.2. If you have an older version, you can update with this:</p>
     <p><pre class="single-line"><code>gem update beats</code></pre></p>
     <p>Not sure what version you have? Run <code>beats -v</code>.</p>
   </div>
