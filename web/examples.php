@@ -25,9 +25,8 @@
         </audio>
       </li>
     </ul>
-    <div>
-      <a id="toggle-synth-groove" class="toggle" href="#" onclick="toggleSource('toggle-synth-groove', 'source-synth-groove'); return false;">Show Source</a>
-      <pre id="source-synth-groove" class="display-none"><code>Song:
+    <p>
+      <pre><code>Song:
   Tempo: 105
   Flow:
     - Verse:   x4
@@ -57,7 +56,7 @@ Chorus:
   - hihat:       X.X..X.XX.X.X.X.
   - bongo_high:  X.X.XX....XX.XX.
   - bongo_low:   .X..............</code></pre>
-    </div>
+    </p>
 
     Synth sounds provided by an old <a href="https://commons.wikimedia.org/wiki/File:Korg_poly800.jpg">Korg Poly-800</a>.
   </div>

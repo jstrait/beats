@@ -38,16 +38,6 @@ function drawFooter() {
     var menubar = document.getElementById("menubar");
     menubar.classList.toggle("display-none");
   };
-
-  function toggleSource(toggleId, elementId) {
-    var toggler = document.getElementById(toggleId);
-    var element = document.getElementById(elementId);
-
-    element.classList.toggle("display-none");
-    toggler.innerText = (element.classList.contains("display-none")) ? "Show Source" : "Hide source";
-
-    return false;
-  };
   </script>
 </body>
 </html>
