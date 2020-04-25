@@ -238,6 +238,7 @@ label {
 audio {
   width: 50%;
   vertical-align: top;
+  outline: none;  /* Prevent outline when selected in Chrome */
 }
 
 audio.home-page {
