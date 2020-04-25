@@ -180,6 +180,7 @@ pre.single-line {
 
 pre code {
   background: none;
+  padding: 0;
   line-height: 0.6666666667rem;
 }
 
