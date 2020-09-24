@@ -1,4 +1,18 @@
-# An example song
+# An example Beats Drum Machine song!
+#
+# First, install Beats Drum Machine, using the instructions at
+# `https://beatsdrummachine.com/download/`.
+#
+# Next, download the Casio SA-20 sound files from the link at
+# `https://beatsdrummachine.com/download/#drumkit-casio` and add
+# them to a `sounds/` folder inside the same folder as this file.
+#
+# Finally, run the following command:
+#
+#   beats example_song.txt
+#
+# This should create an `example_song.wav` file in the current
+# folder.
 
 Song:
   Tempo: 120
