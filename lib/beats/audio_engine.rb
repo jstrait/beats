@@ -66,7 +66,8 @@ module Beats
       end
 
       fill_value = (@kit.num_channels == 1) ? 0 : Array.new(@kit.num_channels, 0)
-      primary_sample_data = [].fill(fill_value, 0, AudioUtils.step_start_sample(track.step_count, @step_sample_length))
+      track_sample_length = AudioUtils.step_start_sample(track.step_count, @step_sample_length)
+      primary_sample_data = [].fill(fill_value, 0, track_sample_length)
 
       step_index = trigger_step_lengths[0]
       trigger_sample_length = 0
