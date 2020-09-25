@@ -37,11 +37,11 @@ module Beats
           sample_data = generate_pattern_sample_data(@song.patterns[pattern_name], incoming_overflow)
 
           packed_pattern_cache[key] = { primary:  WaveFile::Buffer.new(sample_data[:primary], format),
-                                        overflow: WaveFile::Buffer.new(sample_data[:overflow], format) }
+                                        overflow: sample_data[:overflow] }
         end
 
         writer.write(packed_pattern_cache[key][:primary])
-        incoming_overflow = packed_pattern_cache[key][:overflow].samples
+        incoming_overflow = packed_pattern_cache[key][:overflow]
       end
 
       # Write any remaining overflow from the final pattern
