@@ -113,9 +113,9 @@ module Beats
 
       raw_track_sample_arrays = []
       pattern.tracks.each do |track_name, track|
-        temp = generate_track_sample_data(track, @kit.get_sample_data(track.name))
-        raw_track_sample_arrays << temp[:primary]
-        overflow_sample_data[track_name] = temp[:overflow]
+        track_sample_data = generate_track_sample_data(track, @kit.get_sample_data(track.name))
+        raw_track_sample_arrays << track_sample_data[:primary]
+        overflow_sample_data[track_name] = track_sample_data[:overflow]
       end
 
       primary_sample_data = AudioUtils.composite(raw_track_sample_arrays, @kit.num_channels)
