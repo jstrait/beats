@@ -60,15 +60,15 @@ module Beats
 
     # Generates the sample data for a single track, using the specified sound's sample data.
     def generate_track_sample_data(track, sound)
-      trigger_step_lengths = track.trigger_step_lengths
-      if trigger_step_lengths == [0]
-        return {primary: [], overflow: []}    # Is this really what should happen? Why throw away overflow?
+      if track.step_count == 0
+        return {primary: [], overflow: []}
       end
 
       fill_value = (@kit.num_channels == 1) ? 0 : Array.new(@kit.num_channels, 0)
       track_sample_length = AudioUtils.step_start_sample(track.step_count, @step_sample_length)
       primary_sample_data = [].fill(fill_value, 0, track_sample_length)
 
+      trigger_step_lengths = track.trigger_step_lengths
       step_index = trigger_step_lengths[0]
       trigger_sample_length = 0
       trigger_step_lengths[1...(trigger_step_lengths.length)].each do |trigger_step_length|
