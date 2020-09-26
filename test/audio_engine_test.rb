@@ -13,11 +13,6 @@ class MockAudioEngine < AudioEngine
   attr_accessor :step_sample_length
 end
 
-# Allow setting sample data directly, instead of loading from a file
-class MockKit < Kit
-  attr_accessor :items
-end
-
 class AudioEngineTest < Minitest::Test
   FIXTURES = [:repeats_not_specified,
               :pattern_with_overflow,
@@ -55,8 +50,7 @@ class AudioEngineTest < Minitest::Test
   # T_SHORT     Sample data for a step with no sound, shorter than full sound length
   # ZERO        A single zero sample
 
-  MONO_KIT = MockKit.new({}, 1, 16)
-  MONO_KIT.items = { "S" => [-100, 200, 300, -400],
+  MONO_KIT_ITEMS = { "S" => [-100, 200, 300, -400],
                      "S_LONG" => [-100, 200, 300, -400, 0, 0],
                      "S_SHORT" => [-100, 200],
                      "S_OVERFLOW" => [300, -400],
@@ -64,9 +58,9 @@ class AudioEngineTest < Minitest::Test
                      "T_LONG" => [0, 0, 0, 0, 0, 0],
                      "T_SHORT" => [0, 0],
                      "ZERO" => [0] }
+  MONO_KIT = Kit.new(MONO_KIT_ITEMS, 1, 16)
 
-  STEREO_KIT = MockKit.new({}, 2, 16)
-  STEREO_KIT.items = { "S" => [[-100, 800], [200, -700], [300, -600], [-400, 400]],
+  STEREO_KIT_ITEMS = { "S" => [[-100, 800], [200, -700], [300, -600], [-400, 400]],
                        "S_LONG" => [[-100, 800], [200, -700], [300, -600], [-400, 400], [0, 0], [0, 0]],
                        "S_SHORT" => [[-100, 800], [200, -700]],
                        "S_OVERFLOW" => [[300, -600], [-400, 400]],
@@ -74,6 +68,7 @@ class AudioEngineTest < Minitest::Test
                        "T_LONG" => [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
                        "T_SHORT" => [[0, 0], [0, 0]],
                        "ZERO" => [[0, 0]] }
+  STEREO_KIT = Kit.new(STEREO_KIT_ITEMS, 2, 16)
 
 
   # These tests use unrealistically short sounds and step sample lengths, to make tests easier to work with.
