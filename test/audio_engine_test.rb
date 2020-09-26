@@ -136,7 +136,7 @@ class AudioEngineTest < Minitest::Test
       # 3B.) Tick sample length is shorter than sound sample data, such that a beat other than the final one
       #      would extend past the end of the rhythm if not cut off. Make sure that the sample data array doesn't
       #      inadvertently lengthen as a result.
-      #helper_generate_track_sample_data kit, "XX", 1, [-100, -100], [200, 300, -400]
+      helper_generate_track_sample_data(kit, "XX", 1, [s[0], s[0]], s[1..3])
 
       # 3C.) Tick sample length is shorter than the sound sample data, but not by an integer amount.
       #
