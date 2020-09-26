@@ -126,7 +126,7 @@ class AudioEngineTest < Minitest::Test
       helper_generate_track_sample_data(kit, ".X",     2, ts + ss,         so)
       helper_generate_track_sample_data(kit, "...X.",  2, (ts * 3) + s,    [])
       helper_generate_track_sample_data(kit, ".X.XX.", 2, ts + s + ss + s, [])
-      helper_generate_track_sample_data(kit, "...",    2, z * 6,         [])
+      helper_generate_track_sample_data(kit, "...",    2, z * 6,           [])
 
       # 3B.) Tick sample length is shorter than sound sample data, such that a beat other than the final one
       #      would extend past the end of the rhythm if not cut off. Make sure that the sample data array doesn't
@@ -139,13 +139,13 @@ class AudioEngineTest < Minitest::Test
       # Tick:               1,    2,    3,    4,    5,     6
       # Raw:        0.0, 1.83, 3.66, 5.49, 7.32, 9.15, 10.98
       # Quantized:    0,    1,    3,    5,    7,    9,    10
-      helper_generate_track_sample_data(kit, "",       1.83,                         [])
-      helper_generate_track_sample_data(kit, "X",      1.83, s[0..0],                s[1..3])
-      helper_generate_track_sample_data(kit, "X.",     1.83, s[0..2],                s[3..3])
-      helper_generate_track_sample_data(kit, ".X",     1.83, z + s[0..1],            s[2..3])
-      helper_generate_track_sample_data(kit, "...X.",  1.83, (z * 5) + s,            [])
-      helper_generate_track_sample_data(kit, ".X.XX.", 1.83, z + s + ss + s[0..2],   s[3..3])
-      helper_generate_track_sample_data(kit, "...",    1.83, z * 5,                  [])
+      helper_generate_track_sample_data(kit, "",       1.83,                       [])
+      helper_generate_track_sample_data(kit, "X",      1.83, s[0..0],              s[1..3])
+      helper_generate_track_sample_data(kit, "X.",     1.83, s[0..2],              s[3..3])
+      helper_generate_track_sample_data(kit, ".X",     1.83, z + s[0..1],          s[2..3])
+      helper_generate_track_sample_data(kit, "...X.",  1.83, (z * 5) + s,          [])
+      helper_generate_track_sample_data(kit, ".X.XX.", 1.83, z + s + ss + s[0..2], s[3..3])
+      helper_generate_track_sample_data(kit, "...",    1.83, z * 5,                [])
     end
   end
 
