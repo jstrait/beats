@@ -20,24 +20,24 @@ class AudioEngineTest < Minitest::Test
               :example_with_kit]
 
   def load_fixtures
-    test_engines = {}
+    test_audio_engines = {}
     base_path = File.dirname(__FILE__) + "/.."
 
-    test_engines[:blank] = AudioEngine.new(Song.new, KitBuilder.new(base_path).build_kit)
+    test_audio_engines[:blank] = AudioEngine.new(Song.new, KitBuilder.new(base_path).build_kit)
 
     FIXTURES.each do |fixture_name|
       song, kit = SongParser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
-      test_engines[fixture_name] = AudioEngine.new(song, kit)
+      test_audio_engines[fixture_name] = AudioEngine.new(song, kit)
     end
 
-    test_engines
+    test_audio_engines
   end
 
   def test_initialize
-    test_engines = load_fixtures
+    test_audio_engines = load_fixtures
 
-    assert_equal(5512.5, test_engines[:blank].step_sample_length)
-    assert_equal(6615.0, test_engines[:repeats_not_specified].step_sample_length)
+    assert_equal(5512.5, test_audio_engines[:blank].step_sample_length)
+    assert_equal(6615.0, test_audio_engines[:repeats_not_specified].step_sample_length)
   end
 
 
@@ -151,9 +151,9 @@ class AudioEngineTest < Minitest::Test
 
   def helper_generate_track_sample_data(kit, rhythm, step_sample_length, expected_primary, expected_overflow = [])
     track = Track.new("foo", rhythm)
-    engine = MockAudioEngine.new(Song.new, kit)
-    engine.step_sample_length = step_sample_length
-    actual = engine.generate_track_sample_data(track, kit.get_sample_data("S"))
+    audio_engine = MockAudioEngine.new(Song.new, kit)
+    audio_engine.step_sample_length = step_sample_length
+    actual = audio_engine.generate_track_sample_data(track, kit.get_sample_data("S"))
 
     assert_equal(Hash,                     actual.class)
     assert_equal(["overflow", "primary"],  actual.keys.map{|key| key.to_s}.sort)
@@ -178,9 +178,9 @@ class AudioEngineTest < Minitest::Test
 
 
     # Simple case, no overflow (stereo)
-    engine = MockAudioEngine.new(Song.new, MONO_KIT)
-    engine.step_sample_length = 4
-    primary, overflow = engine.composite_pattern_tracks(no_overflow_pattern)
+    audio_engine = MockAudioEngine.new(Song.new, MONO_KIT)
+    audio_engine.step_sample_length = 4
+    primary, overflow = audio_engine.composite_pattern_tracks(no_overflow_pattern)
     assert_equal([
                     -100 + 300 + -100,   200 + -400 + 200,   300 + 0 + 300,   -400 + 0 + -400,
                     0 + 0 + 0,           0 + 0 + 0,          0 + 0 + 0,       0 + 0 + 0,
@@ -192,9 +192,9 @@ class AudioEngineTest < Minitest::Test
 
 
     # Simple case, no overflow (stereo)
-    engine = MockAudioEngine.new(Song.new, STEREO_KIT)
-    engine.step_sample_length = 4
-    primary, overflow = engine.composite_pattern_tracks(no_overflow_pattern)
+    audio_engine = MockAudioEngine.new(Song.new, STEREO_KIT)
+    audio_engine.step_sample_length = 4
+    primary, overflow = audio_engine.composite_pattern_tracks(no_overflow_pattern)
     assert_equal([
                     [-100 + 300 + -100,      800 + -600 + 800],
                         [200 + -400 + 200,   -700 + 400 + -700],
@@ -218,9 +218,9 @@ class AudioEngineTest < Minitest::Test
 
 
     # Some overflow (mono)
-    engine = MockAudioEngine.new(Song.new, MONO_KIT)
-    engine.step_sample_length = 3
-    primary, overflow = engine.composite_pattern_tracks(overflow_pattern)
+    audio_engine = MockAudioEngine.new(Song.new, MONO_KIT)
+    audio_engine.step_sample_length = 3
+    primary, overflow = audio_engine.composite_pattern_tracks(overflow_pattern)
     assert_equal([
                     -100 + 300 + 0,      200 + -400 + 0,     300 + 0 + 0,
                     -400 + 300 + -100,   0 + -400 + 200,     0 + 0 + 300,
@@ -232,9 +232,9 @@ class AudioEngineTest < Minitest::Test
 
 
     # Some overflow (stereo)
-    engine = MockAudioEngine.new(Song.new, STEREO_KIT)
-    engine.step_sample_length = 3
-    primary, overflow = engine.composite_pattern_tracks(overflow_pattern)
+    audio_engine = MockAudioEngine.new(Song.new, STEREO_KIT)
+    audio_engine.step_sample_length = 3
+    primary, overflow = audio_engine.composite_pattern_tracks(overflow_pattern)
     assert_equal([
                     [-100 + 300 + 0,        800 + -600 + 0],
                         [200 + -400 + 0,    -700 + 400 + 0],
