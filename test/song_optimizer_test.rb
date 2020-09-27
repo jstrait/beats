@@ -1,11 +1,5 @@
 require "includes"
 
-class MockSongOptimizer < SongOptimizer
-  def clone_song_ignoring_patterns_and_flow(original_song)
-    super
-  end
-end
-
 class SongOptimizerTest < Minitest::Test
   FIXTURE_BASE_PATH = File.dirname(__FILE__) + "/.."
 
