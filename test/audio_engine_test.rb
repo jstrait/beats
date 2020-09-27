@@ -177,7 +177,7 @@ class AudioEngineTest < Minitest::Test
     overflow_pattern = Pattern.new("overflow", overflow_tracks)
 
 
-    # Simple case, no overflow (stereo)
+    # Simple case, no overflow (mono)
     audio_engine = MockAudioEngine.new(Song.new, MONO_KIT)
     audio_engine.step_sample_length = 4
     primary, overflow = audio_engine.composite_pattern_tracks(no_overflow_pattern)
