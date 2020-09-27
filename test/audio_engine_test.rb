@@ -1,9 +1,5 @@
 require "includes"
 
-class MockAudioEngine < AudioEngine
-  attr_accessor :step_sample_length
-end
-
 class AudioEngineTest < Minitest::Test
   FIXTURES = [:repeats_not_specified,
               :pattern_with_overflow,
@@ -141,9 +137,11 @@ class AudioEngineTest < Minitest::Test
   end
 
   def helper_generate_track_sample_data(kit, rhythm, step_sample_length, expected_primary, expected_overflow = [])
+    song = song_with_step_sample_length(step_sample_length)
     track = Track.new("foo", rhythm)
-    audio_engine = MockAudioEngine.new(Song.new, kit)
-    audio_engine.step_sample_length = step_sample_length
+
+    audio_engine = AudioEngine.new(song, kit)
+    assert_equal(step_sample_length, audio_engine.step_sample_length)
     actual = audio_engine.send(:generate_track_sample_data, track, kit.get_sample_data("S"))
 
     assert_equal(Hash,                     actual.class)
@@ -169,8 +167,8 @@ class AudioEngineTest < Minitest::Test
 
 
     # Simple case, no overflow (mono)
-    audio_engine = MockAudioEngine.new(Song.new, MONO_KIT)
-    audio_engine.step_sample_length = 4
+    audio_engine = AudioEngine.new(song_with_step_sample_length(4), MONO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
     primary, overflow = audio_engine.send(:composite_pattern_tracks, no_overflow_pattern)
     assert_equal([
                     -100 + 300 + -100,   200 + -400 + 200,   300 + 0 + 300,   -400 + 0 + -400,
@@ -183,8 +181,8 @@ class AudioEngineTest < Minitest::Test
 
 
     # Simple case, no overflow (stereo)
-    audio_engine = MockAudioEngine.new(Song.new, STEREO_KIT)
-    audio_engine.step_sample_length = 4
+    audio_engine = AudioEngine.new(song_with_step_sample_length(4), STEREO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
     primary, overflow = audio_engine.send(:composite_pattern_tracks, no_overflow_pattern)
     assert_equal([
                     [-100 + 300 + -100,      800 + -600 + 800],
@@ -209,8 +207,8 @@ class AudioEngineTest < Minitest::Test
 
 
     # Some overflow (mono)
-    audio_engine = MockAudioEngine.new(Song.new, MONO_KIT)
-    audio_engine.step_sample_length = 3
+    audio_engine = AudioEngine.new(song_with_step_sample_length(3), MONO_KIT)
+    assert_equal(3, audio_engine.step_sample_length)
     primary, overflow = audio_engine.send(:composite_pattern_tracks, overflow_pattern)
     assert_equal([
                     -100 + 300 + 0,      200 + -400 + 0,     300 + 0 + 0,
@@ -223,8 +221,8 @@ class AudioEngineTest < Minitest::Test
 
 
     # Some overflow (stereo)
-    audio_engine = MockAudioEngine.new(Song.new, STEREO_KIT)
-    audio_engine.step_sample_length = 3
+    audio_engine = AudioEngine.new(song_with_step_sample_length(3), STEREO_KIT)
+    assert_equal(3, audio_engine.step_sample_length)
     primary, overflow = audio_engine.send(:composite_pattern_tracks, overflow_pattern)
     assert_equal([
                     [-100 + 300 + 0,        800 + -600 + 0],
@@ -242,5 +240,20 @@ class AudioEngineTest < Minitest::Test
                  ],
                  primary)
     assert_equal({"S" => [[-400, 400]], "S_OVERFLOW" => [], "S_LONG" => [[-400, 400], [0, 0], [0, 0]]}, overflow)
+  end
+
+  # Creates a song with a tempo such that each step will have the
+  # desired sample length. Since the tests in this file use unrealistically
+  # short sample lengths to make testing easier, this will result in tempos
+  # that are extremely fast.
+  def song_with_step_sample_length(step_sample_length)
+    sample_rate = 44100
+    samples_per_minute = sample_rate * 60.0
+    quarter_note_sample_length = step_sample_length * 4  # Each step is a sixteenth note
+
+    song = Song.new
+    song.tempo = samples_per_minute / quarter_note_sample_length
+
+    song
   end
 end
