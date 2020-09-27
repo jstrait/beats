@@ -54,7 +54,7 @@ Verse:
     optimized_song = optimizer.optimize(original_song, 4)
 
     assert_equal(optimized_song.tempo, 135)
-    #assert_equal(optimized_song.total_tracks, 5)
+    assert_equal(optimized_song.total_tracks, 4)
 
     # TODO: Add some sort of AudioEngine test to verify that optimized and unoptimized song have same sample data.
     #assert_equal(original_song.sample_length, optimized_song.sample_length)
