@@ -1,30 +1,14 @@
 require "includes"
 
 class AudioEngineTest < Minitest::Test
-  FIXTURES = [:repeats_not_specified,
-              :pattern_with_overflow,
-              :example_no_kit,
-              :example_with_kit]
-
-  def load_fixtures
-    test_audio_engines = {}
-    base_path = File.dirname(__FILE__) + "/.."
-
-    test_audio_engines[:blank] = AudioEngine.new(Song.new, KitBuilder.new(base_path).build_kit)
-
-    FIXTURES.each do |fixture_name|
-      song, kit = SongParser.parse(base_path, File.read("test/fixtures/valid/#{fixture_name}.txt"))
-      test_audio_engines[fixture_name] = AudioEngine.new(song, kit)
-    end
-
-    test_audio_engines
-  end
-
   def test_initialize
-    test_audio_engines = load_fixtures
+    audio_engine = AudioEngine.new(Song.new, MONO_KIT)  # Default song tempo of 120
+    assert_equal(5512.5, audio_engine.step_sample_length)
 
-    assert_equal(5512.5, test_audio_engines[:blank].step_sample_length)
-    assert_equal(6615.0, test_audio_engines[:repeats_not_specified].step_sample_length)
+    song = Song.new
+    song.tempo = 100
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(6615.0, audio_engine.step_sample_length)
   end
 
 
