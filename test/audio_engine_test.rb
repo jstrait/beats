@@ -25,6 +25,169 @@ class AudioEngineTest < Minitest::Test
   STEREO_KIT = Kit.new(STEREO_KIT_ITEMS, 2, 16)
 
 
+  # Simple case, no incoming or outgoing overflow
+  def test_generate_pattern_sample_data_no_overflow
+    tracks = [
+      Track.new("sound", "X..."),
+      Track.new("longer_sound", "X.X."),
+      Track.new("sound", "X.XX"),
+    ]
+
+    song = song_with_step_sample_length(4)
+    song.flow = [:pattern1]
+    song.pattern("pattern1", tracks)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+
+    assert_equal([
+                   (-10 + -100 + -10) / 3,  (20 + 200 + 20) / 3,  (30 + 300 + 30) / 3,  (-40 + -400 + -40) / 3,
+                   (0 + -500 + 0) / 3,      (0 + 600 + 0) / 3,    (0 + 0 + 0) / 3,      (0 + 0 + 0) / 3,
+                   (0 + -100 + -10) / 3,    (0 + 200 + 20) / 3,   (0 + 300 + 30) / 3,   (0 + -400 + -40) / 3,
+                   (0 + -500 + -10) / 3,    (0 + 600 + 20) / 3,   (0 + 0 + 30) / 3,     (0 + 0 + -40) / 3,
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
+  end
+
+
+  # Some incoming overflow, but no outgoing overflow
+  def test_generate_pattern_sample_data_incoming_overflow
+    tracks = [
+      Track.new("sound", "..X."),
+      Track.new("longer_sound", ".X.."),
+      Track.new("sound", "..X."),
+    ]
+
+    song = song_with_step_sample_length(2)
+    song.flow = [:pattern1]
+    song.pattern("pattern1", tracks)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(2, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data,
+                                    song.patterns["pattern1"],
+                                    {
+                                      "sound" => [30, -40],
+                                      "longer_sound" => [300, -400, -500, 600],
+                                      "non_pattern_sound" => [-1000, 2000]
+                                    })
+
+    # Note that incoming overflow for "sound" is only applied to the first track that uses that kit item
+    assert_equal([
+                   (30 + 300 + 0 + -1000) / 3,  (-40 + -400 + 0 + 2000) / 3,
+                   (0 + -100 + 0 + 0) / 3,      (0 + 200 + 0 + 0) / 3,
+                   (-10 + 300 + -10 + 0) / 3,   (20 + -400 + 20 + 0) / 3,
+                   (30 + -500 + 30 + 0) / 3,    (-40 + 600 + -40 + 0) / 3,
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
+  end
+
+
+  # Some incoming overflow, with some of the incoming overflow being longer than the pattern itself
+  def test_generate_pattern_sample_data_long_incoming_overflow
+    tracks = [
+      Track.new("sound", "X..."),
+      Track.new("longer_sound", ".X.."),
+    ]
+
+    song = song_with_step_sample_length(2)
+    song.flow = [:pattern1]
+    song.pattern("pattern1", tracks)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(2, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data,
+                                    song.patterns["pattern1"],
+                                    {
+                                      "sound" => [30, -40],
+                                      "longer_sound" => [300, -400, -500, 600],
+                                      "non_pattern_sound" => [-1000, 2000, 3000, -4000, -5000, 6000, 7000, -8000, 9000, 1000, -2000]
+                                    })
+
+    assert_equal([
+                   (-10 + 300 + -1000) / 2,  (20 + -400 + 2000) / 2,
+                   (30 + -100 + 3000) / 2,   (-40 + 200 + -4000) / 2,
+                   (0 + 300 + -5000) / 2,    (0 + -400 + 6000) / 2,
+                   (0 + -500 + 7000) / 2,    (0 + 600 + -8000) / 2,
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "non_pattern_sound" => [9000, 1000, -2000]}, sample_data[:overflow])
+  end
+
+
+  # No incoming overflow, but some outgoing overflow
+  def test_generate_pattern_sample_data_outgoing_overflow
+    tracks = [
+      Track.new("sound", "X."),
+      Track.new("longer_sound", ".X"),
+      Track.new("sound", "XX"),
+      Track.new("shorter_sound", ".X"),
+    ]
+
+    song = song_with_step_sample_length(2)
+    song.flow = [:pattern1]
+    song.pattern("pattern1", tracks)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(2, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+
+    assert_equal([
+                   (-10 + 0 + -10 + 0) / 4,     (20 + 0 + 20 + 0) / 4,
+                   (30 + -100 + -10 + -1) / 4,  (-40 + 200 + 20 + 2) / 4,
+                 ],
+                 sample_data[:primary])
+    assert_equal({
+                   "sound" => [],
+                   "longer_sound" => [300, -400, -500, 600],
+                   "sound2" => [30, -40],
+                   "shorter_sound" => []
+                 },
+                 sample_data[:overflow])
+  end
+
+
+  # Both incoming overflow and outgoing overflow
+  def test_generate_pattern_sample_data_incoming_and_outgoing_overflow
+    tracks = [
+      Track.new("sound", ".X"),
+      Track.new("longer_sound", ".X"),
+      Track.new("sound", "XX"),
+      Track.new("shorter_sound", ".X"),
+    ]
+
+    song = song_with_step_sample_length(4)
+    song.flow = [:pattern1]
+    song.pattern("pattern1", tracks)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data,
+                                    song.patterns["pattern1"],
+                                    {
+                                      "sound" => [30, -40],
+                                      "longer_sound" => [300, -400, -500, 600],
+                                      "non_pattern_sound" => [-1000, 2000]
+                                    })
+
+    assert_equal([
+                   (30 + 300 + -10 + 0 + -1000) / 4,  (-40 + -400 + 20 + 0 + 2000) / 4,  (0 + -500 + 30 + 0 + 0) / 4,  (0 + 600 + -40 + 0 + 0) / 4,
+                   (-10 + -100 + -10 + -1 + 0) / 4,   (20 + 200 + 20 + 2 + 0) / 4,       (30 + 300 + 30 + 0 + 0) / 4,  (-40 + -400 + -40 + 0 + 0) / 4,
+                 ],
+                 sample_data[:primary])
+    assert_equal({
+                   "sound" => [],
+                   "longer_sound" => [-500, 600],
+                   "sound2" => [],
+                   "shorter_sound" => []
+                 },
+                 sample_data[:overflow])
+  end
+
+
   # These tests use unrealistically short sounds and step sample lengths, to make tests easier to work with.
   #
   # "b" is short for "beat", and "r" is short for "rest", and "o" is short for "overflow"
