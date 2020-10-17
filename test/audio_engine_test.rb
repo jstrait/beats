@@ -25,6 +25,51 @@ class AudioEngineTest < Minitest::Test
   STEREO_KIT = Kit.new(STEREO_KIT_ITEMS, 2, 16)
 
 
+  # A completely empty pattern
+  def test_generate_pattern_sample_data_empty_pattern
+    tracks = []
+
+    song = song_with_step_sample_length(4)
+    song.flow = [:pattern1]
+    song.pattern("pattern1", tracks)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+
+    assert_equal([], sample_data[:primary])
+    assert_equal({}, sample_data[:overflow])
+  end
+
+
+  # A pattern with tracks, but none of the tracks play any sounds
+  def test_generate_pattern_sample_data_no_sounds
+    tracks = [
+      Track.new("sound", "...."),
+      Track.new("longer_sound", "...."),
+      Track.new("sound", "...."),
+      Track.new("shorter_sound", "...."),
+    ]
+
+    song = song_with_step_sample_length(4)
+    song.flow = [:pattern1]
+    song.pattern("pattern1", tracks)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+
+    assert_equal([
+                   0, 0, 0, 0,
+                   0, 0, 0, 0,
+                   0, 0, 0, 0,
+                   0, 0, 0, 0,
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => [], "shorter_sound" => []}, sample_data[:overflow])
+  end
+
+
   # Simple case, no incoming or outgoing overflow
   def test_generate_pattern_sample_data_no_overflow
     tracks = [
@@ -46,6 +91,43 @@ class AudioEngineTest < Minitest::Test
                    (0 + -500 + 0) / 3,      (0 + 600 + 0) / 3,    (0 + 0 + 0) / 3,      (0 + 0 + 0) / 3,
                    (0 + -100 + -10) / 3,    (0 + 200 + 20) / 3,   (0 + 300 + 30) / 3,   (0 + -400 + -40) / 3,
                    (0 + -500 + -10) / 3,    (0 + 600 + 20) / 3,   (0 + 0 + 30) / 3,     (0 + 0 + -40) / 3,
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
+  end
+
+
+  # A song with multiple patterns, and the pattern being generated has
+  # fewer tracks than the pattern with the most tracks.
+  def test_generate_pattern_sample_data_no_overflow_multiple_patterns
+    tracks1 = [
+      Track.new("sound", "XX."),
+      Track.new("longer_sound", "X..."),
+      Track.new("sound", "X..."),
+      Track.new("shorter_sound", "X..."),
+    ]
+    tracks2 = [
+      Track.new("sound", "X..."),
+      Track.new("longer_sound", "X.X."),
+      Track.new("sound", "X.XX"),
+    ]
+
+    song = song_with_step_sample_length(4)
+    song.flow = [:pattern1, :pattern2]
+    song.pattern("pattern1", tracks1)
+    song.pattern("pattern2", tracks2)
+
+    audio_engine = AudioEngine.new(song, MONO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern2"], {})
+
+    # Even though this pattern has 3 tracks, each sample should be divided by 4 (not 3) because
+    # the pattern in the song with the most number of tracks has 4 tracks.
+    assert_equal([
+                   (-10 + -100 + -10) / 4,  (20 + 200 + 20) / 4,  (30 + 300 + 30) / 4,  (-40 + -400 + -40) / 4,
+                   (0 + -500 + 0) / 4,      (0 + 600 + 0) / 4,    (0 + 0 + 0) / 4,      (0 + 0 + 0) / 4,
+                   (0 + -100 + -10) / 4,    (0 + 200 + 20) / 4,   (0 + 300 + 30) / 4,   (0 + -400 + -40) / 4,
+                   (0 + -500 + -10) / 4,    (0 + 600 + 20) / 4,   (0 + 0 + 30) / 4,     (0 + 0 + -40) / 4,
                  ],
                  sample_data[:primary])
     assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
