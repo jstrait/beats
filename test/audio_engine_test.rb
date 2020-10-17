@@ -33,12 +33,14 @@ class AudioEngineTest < Minitest::Test
     song.flow = [:pattern1]
     song.pattern("pattern1", tracks)
 
-    audio_engine = AudioEngine.new(song, MONO_KIT)
-    assert_equal(4, audio_engine.step_sample_length)
-    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+    [MONO_KIT, STEREO_KIT].each do |kit|
+      audio_engine = AudioEngine.new(song, kit)
+      assert_equal(4, audio_engine.step_sample_length)
+      sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
 
-    assert_equal([], sample_data[:primary])
-    assert_equal({}, sample_data[:overflow])
+      assert_equal([], sample_data[:primary])
+      assert_equal({}, sample_data[:overflow])
+    end
   end
 
 
@@ -67,6 +69,20 @@ class AudioEngineTest < Minitest::Test
                  ],
                  sample_data[:primary])
     assert_equal({"sound" => [], "longer_sound" => [], "sound2" => [], "shorter_sound" => []}, sample_data[:overflow])
+
+
+    audio_engine = AudioEngine.new(song, STEREO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+
+    assert_equal([
+                   [0, 0], [0, 0], [0, 0], [0, 0],
+                   [0, 0], [0, 0], [0, 0], [0, 0],
+                   [0, 0], [0, 0], [0, 0], [0, 0],
+                   [0, 0], [0, 0], [0, 0], [0, 0],
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => [], "shorter_sound" => []}, sample_data[:overflow])
   end
 
 
@@ -91,6 +107,32 @@ class AudioEngineTest < Minitest::Test
                    (0 + -500 + 0) / 3,      (0 + 600 + 0) / 3,    (0 + 0 + 0) / 3,      (0 + 0 + 0) / 3,
                    (0 + -100 + -10) / 3,    (0 + 200 + 20) / 3,   (0 + 300 + 30) / 3,   (0 + -400 + -40) / 3,
                    (0 + -500 + -10) / 3,    (0 + 600 + 20) / 3,   (0 + 0 + 30) / 3,     (0 + 0 + -40) / 3,
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
+
+
+    audio_engine = AudioEngine.new(song, STEREO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+
+    assert_equal([
+                   [(-10 + -100 + -10) / 3,        (90 + 900 + 90) / 3],
+                       [(20 + 200 + 20) / 3,       (-80 + -800 + -80) / 3],
+                       [(30 + 300 + 30) / 3,       (-70 + -700 + -70) / 3],
+                       [(-40 + -400 + -40) / 3,    (60 + 600 + 60) / 3],
+                   [(0 + -500 + 0) / 3,       (0 + 500 + 0) / 3],
+                       [(0 + 600 + 0) / 3,    (0 + -400 + 0) / 3],
+                       [(0 + 0 + 0) / 3,      (0 + 0 + 0) / 3],
+                       [(0 + 0 + 0) / 3,      (0 + 0 + 0) / 3],
+                   [(0 + -100 + -10) / 3,        (0 + 900 + 90) / 3],
+                       [(0 + 200 + 20) / 3,      (0 + -800 + -80) / 3],
+                       [(0 + 300 + 30) / 3,      (0 + -700 + -70) / 3],
+                       [(0 + -400 + -40) / 3,    (0 + 600 + 60) / 3],
+                   [(0 + -500 + -10) / 3,      (0 + 500 + 90) / 3],
+                       [(0 + 600 + 20) / 3,    (0 + -400 + -80) / 3],
+                       [(0 + 0 + 30) / 3,      (0 + 0 + -70) / 3],
+                       [(0 + 0 + -40) / 3,     (0 + 0 + 60) / 3],
                  ],
                  sample_data[:primary])
     assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
@@ -131,6 +173,34 @@ class AudioEngineTest < Minitest::Test
                  ],
                  sample_data[:primary])
     assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
+
+
+    audio_engine = AudioEngine.new(song, STEREO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern2"], {})
+
+    # Even though this pattern has 3 tracks, each sample should be divided by 4 (not 3) because
+    # the pattern in the song with the most number of tracks has 4 tracks.
+    assert_equal([
+                   [(-10 + -100 + -10) / 4,        (90 + 900 + 90) / 4],
+                       [(20 + 200 + 20) / 4,       (-80 + -800 + -80) / 4],
+                       [(30 + 300 + 30) / 4,       (-70 + -700 + -70) / 4],
+                       [(-40 + -400 + -40) / 4,    (60 + 600 + 60) / 4],
+                   [(0 + -500 + 0) / 4,       (0 + 500 + 0) / 4],
+                       [(0 + 600 + 0) / 4,    (0 + -400 + 0) / 4],
+                       [(0 + 0 + 0) / 4,      (0 + 0 + 0) / 4],
+                       [(0 + 0 + 0) / 4,      (0 + 0 + 0) / 4],
+                   [(0 + -100 + -10) / 4,        (0 + 900 + 90) / 4],
+                       [(0 + 200 + 20) / 4,      (0 + -800 + -80) / 4],
+                       [(0 + 300 + 30) / 4,      (0 + -700 + -70) / 4],
+                       [(0 + -400 + -40) / 4,    (0 + 600 + 60) / 4],
+                   [(0 + -500 + -10) / 4,      (0 + 500 + 90) / 4],
+                       [(0 + 600 + 20) / 4,    (0 + -400 + -80) / 4],
+                       [(0 + 0 + 30) / 4,      (0 + 0 + -70) / 4],
+                       [(0 + 0 + -40) / 4,     (0 + 0 + 60) / 4],
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
   end
 
 
@@ -162,6 +232,31 @@ class AudioEngineTest < Minitest::Test
                    (0 + -100 + 0 + 0) / 3,      (0 + 200 + 0 + 0) / 3,
                    (-10 + 300 + -10 + 0) / 3,   (20 + -400 + 20 + 0) / 3,
                    (30 + -500 + 30 + 0) / 3,    (-40 + 600 + -40 + 0) / 3,
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
+
+
+    audio_engine = AudioEngine.new(song, STEREO_KIT)
+    assert_equal(2, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data,
+                                    song.patterns["pattern1"],
+                                    {
+                                      "sound" => [[30, -70], [-40, 60]],
+                                      "longer_sound" => [[300, -700], [-400, 600], [-500, 500], [600, -400]],
+                                      "non_pattern_sound" => [[-1000, 9000], [2000, -8000]]
+                                    })
+
+    # Note that incoming overflow for "sound" is only applied to the first track that uses that kit item
+    assert_equal([
+                   [(30 + 300 + 0 + -1000) / 3,         (-70 + -700 + 0 + 9000) / 3],
+                       [(-40 + -400 + 0 + 2000) / 3,    (60 + 600 + 0 + -8000) / 3],
+                   [(0 + -100 + 0 + 0) / 3,       (0 + 900 + 0 + 0) / 3],
+                       [(0 + 200 + 0 + 0) / 3,    (0 + -800 + 0 + 0) / 3],
+                   [(-10 + 300 + -10 + 0) / 3,       (90 + -700 + 90 + 0) / 3],
+                       [(20 + -400 + 20 + 0) / 3,    (-80 + 600 + -80 + 0) / 3],
+                   [(30 + -500 + 30 + 0) / 3,         (-70 + 500 + -70 + 0) / 3],
+                       [(-40 + 600 + -40 + 0) / 3,    (60 + -400 + 60 + 0) / 3],
                  ],
                  sample_data[:primary])
     assert_equal({"sound" => [], "longer_sound" => [], "sound2" => []}, sample_data[:overflow])
@@ -197,6 +292,32 @@ class AudioEngineTest < Minitest::Test
                  ],
                  sample_data[:primary])
     assert_equal({"sound" => [], "longer_sound" => [], "non_pattern_sound" => [9000, 1000, -2000]}, sample_data[:overflow])
+
+
+    audio_engine = AudioEngine.new(song, STEREO_KIT)
+    assert_equal(2, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data,
+                                    song.patterns["pattern1"],
+                                    {
+                                      "sound" => [[30, -70], [-40, 60]],
+                                      "longer_sound" => [[300, -700], [-400, -600], [-500, 500], [600, -400]],
+                                      "non_pattern_sound" => [[-1000, 9000], [2000, -8000], [3000, -7000], [-4000, 6000],
+                                                              [-5000, 5000], [6000, -4000], [7000, -3000], [-8000, 2000],
+                                                              [9000, -1000], [1000, -9000], [-2000, 8000]]
+                                    })
+
+    assert_equal([
+                   [(-10 + 300 + -1000) / 2,       (90 + -700 + 9000) / 2],
+                       [(20 + -400 + 2000) / 2,    (-80 + -600 + -8000) / 2],
+                   [(30 + -100 + 3000) / 2,         (-70 + 900 + -7000) / 2],
+                       [(-40 + 200 + -4000) / 2,    (60 + -800 + 6000) / 2],
+                   [(0 + 300 + -5000) / 2,        (0 + -700 + 5000) / 2],
+                       [(0 + -400 + 6000) / 2,    (0 + 600 + -4000) / 2],
+                   [(0 + -500 + 7000) / 2,        (0 + 500 + -3000) / 2],
+                       [(0 + 600 + -8000) / 2,    (0 + -400 + 2000) / 2],
+                 ],
+                 sample_data[:primary])
+    assert_equal({"sound" => [], "longer_sound" => [], "non_pattern_sound" => [[9000, -1000], [1000, -9000], [-2000, 8000]]}, sample_data[:overflow])
   end
 
 
@@ -226,6 +347,26 @@ class AudioEngineTest < Minitest::Test
                    "sound" => [],
                    "longer_sound" => [300, -400, -500, 600],
                    "sound2" => [30, -40],
+                   "shorter_sound" => []
+                 },
+                 sample_data[:overflow])
+
+
+    audio_engine = AudioEngine.new(song, STEREO_KIT)
+    assert_equal(2, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data, song.patterns["pattern1"], {})
+
+    assert_equal([
+                   [(-10 + 0 + -10 + 0) / 4,      (90 + 0 + 90 + 0) / 4],
+                       [(20 + 0 + 20 + 0) / 4,    (-80 + 0 + -80 + 0) / 4],
+                   [(30 + -100 + -10 + -1) / 4,      (-70 + 900 + 90 + 9) / 4],
+                       [(-40 + 200 + 20 + 2) / 4,    (60 + -800 + -80 + -8) / 4],
+                 ],
+                 sample_data[:primary])
+    assert_equal({
+                   "sound" => [],
+                   "longer_sound" => [[300, -700], [-400, 600], [-500, 500], [600, -400]],
+                   "sound2" => [[30, -70], [-40, 60]],
                    "shorter_sound" => []
                  },
                  sample_data[:overflow])
@@ -263,6 +404,36 @@ class AudioEngineTest < Minitest::Test
     assert_equal({
                    "sound" => [],
                    "longer_sound" => [-500, 600],
+                   "sound2" => [],
+                   "shorter_sound" => []
+                 },
+                 sample_data[:overflow])
+
+
+    audio_engine = AudioEngine.new(song, STEREO_KIT)
+    assert_equal(4, audio_engine.step_sample_length)
+    sample_data = audio_engine.send(:generate_pattern_sample_data,
+                                    song.patterns["pattern1"],
+                                    {
+                                      "sound" => [[30, -70], [-40, 60]],
+                                      "longer_sound" => [[300, -700], [-400, 600], [-500, 500], [600, -400]],
+                                      "non_pattern_sound" => [[-1000, 9000], [2000, -8000]]
+                                    })
+
+    assert_equal([
+                   [(30 + 300 + -10 + -1000) / 4,        (-70 + -700 + 90 + 9000) / 4],
+                       [(-40 + -400 + 20 + 2000) / 4,    (60 + 600 + -80 + -8000) / 4],
+                       [(0 + -500 + 30 + 0) / 4,         (0 + 500 + -70 + 0) / 4],
+                       [(0 + 600 + -40 + 0) / 4,         (0 + -400 + 60 + 0) / 4],
+                   [(-10 + -100 + -10 + -1) / 4,       (90 + 900 + 90 + 9) / 4],
+                       [(20 + 200 + 20 + 2) / 4,       (-80 + -800 + -80 + -8) / 4],
+                       [(30 + 300 + 30 + 0) / 4,       (-70 + -700 + -70 + 0) / 4],
+                       [(-40 + -400 + -40 + 0) / 4,    (60 + 600 + 60 + 0) / 4],
+                 ],
+                 sample_data[:primary])
+    assert_equal({
+                   "sound" => [],
+                   "longer_sound" => [[-500, 500], [600, -400]],
                    "sound2" => [],
                    "shorter_sound" => []
                  },
