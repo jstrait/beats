@@ -59,10 +59,7 @@ class IntegrationTest < Minitest::Test
     beats.run
     assert(File.exist?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
-    # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
-    expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read() }
-    actual_output_file_contents = File.open(actual_output_file, "rb") {|f| f.read() }
-    assert_equal(expected_output_file_contents, actual_output_file_contents)
+    assert_file_contents_match(expected_output_file, actual_output_file)
 
     # Clean up after ourselves
     File.delete(actual_output_file)
@@ -98,10 +95,7 @@ class IntegrationTest < Minitest::Test
       expected_output_file = "#{expected_output_prefix}-#{track_name}.wav"
       assert(File.exist?(actual_output_file), "Expected file '#{actual_output_file}' to exist, but it doesn't.")
 
-      # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
-      expected_output_file_contents = File.open(expected_output_file, "rb") {|f| f.read }
-      actual_output_file_contents = File.open(actual_output_file, "rb") {|f| f.read }
-      assert_equal(expected_output_file_contents, actual_output_file_contents)
+      assert_file_contents_match(expected_output_file, actual_output_file)
 
       # Clean up after ourselves
       File.delete(actual_output_file)
@@ -110,6 +104,14 @@ class IntegrationTest < Minitest::Test
 
   def assert_directory_is_empty dir
     assert_equal([".", ".."].sort, Dir.new(dir).entries.sort)
+  end
+
+  def assert_file_contents_match(expected_output_filename, actual_output_filename)
+    # Reading the files this way instead of a plain File.read() for Windows compatibility with binary files
+    expected_output_file_contents = File.open(expected_output_filename, "rb") {|f| f.read }
+    actual_output_file_contents = File.open(actual_output_filename, "rb") {|f| f.read }
+
+    assert_equal(expected_output_file_contents, actual_output_file_contents)
   end
 
   def clean_output_folder()
