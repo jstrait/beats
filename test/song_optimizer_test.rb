@@ -134,6 +134,12 @@ Verse:
     optimized_song = optimizer.optimize(original_song, 4)
 
     assert_equal([:verse2_0, :verse_0, :verse_20], optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
+
+    assert_equal([
+                   :verse_0, :verse_0, :verse_0, :verse_0, :verse_0, :verse_20,
+                   :verse2_0, :verse2_0, :verse2_0, :verse2_0, :verse2_0, :verse2_0,
+                 ],
+                 optimized_song.flow)
   end
 
   def test_optimize_song_containing_empty_pattern
