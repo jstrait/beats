@@ -58,7 +58,7 @@ Verse:
 
     # Patterns :verse_0 and :verse_4 should be removed since they are identical to :chorus_0
     assert_equal([:chorus_0, :chorus_12, :chorus_4, :chorus_8, :verse_12, :verse_8],
-                 optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
+                 optimized_song.patterns.keys.sort)
 
     pattern = optimized_song.patterns[:verse_8]
     assert_equal(pattern.tracks.keys.sort, ["bass", "hh_closed"])
@@ -133,7 +133,7 @@ Verse:
     optimizer = SongOptimizer.new
     optimized_song = optimizer.optimize(original_song, 4)
 
-    assert_equal([:verse2_0, :verse_0, :verse_20], optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
+    assert_equal([:verse2_0, :verse_0, :verse_20], optimized_song.patterns.keys.sort)
 
     assert_equal([
                    :verse_0, :verse_0, :verse_0, :verse_0, :verse_0, :verse_20,
