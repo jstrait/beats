@@ -56,11 +56,6 @@ Verse:
     assert_equal(optimized_song.tempo, 135)
     assert_equal(optimized_song.total_tracks, 4)
 
-    # TODO: Add some sort of AudioEngine test to verify that optimized and unoptimized song have same sample data.
-    #assert_equal(original_song.sample_length, optimized_song.sample_length)
-    #assert_equal(original_song.sample_length_with_overflow, optimized_song.sample_length_with_overflow)
-    #assert_equal(original_song.sample_data(false), optimized_song.sample_data(false))
-
     # Patterns :verse_0 and :verse_4 should be removed since they are identical to :chorus_0
     assert_equal([:chorus_0, :chorus_12, :chorus_4, :chorus_8, :verse_12, :verse_8],
                  optimized_song.patterns.keys.sort {|x, y| x.to_s <=> y.to_s })
