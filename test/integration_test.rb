@@ -20,7 +20,7 @@ class IntegrationTest < Minitest::Test
 
     invalid_fixtures.each do |fixture_name|
       assert_raises(SongParser::ParseError) do
-        beats = BeatsRunner.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {:split => false})
+        beats = BeatsRunner.new("test/fixtures/invalid/#{fixture_name}", "doesn't matter", {split: false})
         beats.run
       end
     end
@@ -50,7 +50,7 @@ class IntegrationTest < Minitest::Test
     actual_output_file   = "#{OUTPUT_FOLDER}/example_combined_#{num_channels}_#{bits_per_sample}#{suffix}.wav"
     expected_output_file = "test/fixtures/expected_output/example_combined_#{num_channels}_#{bits_per_sample}.wav"
 
-    options = {:split => false}
+    options = {split: false}
     unless base_path == nil
       options[:base_path] = base_path
     end
@@ -76,11 +76,11 @@ class IntegrationTest < Minitest::Test
     # Make sure no output from previous tests is still around
     assert_directory_is_empty OUTPUT_FOLDER
 
-    song_fixture         = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}#{suffix}.txt"
+    song_fixture           = "test/fixtures/valid/example_#{num_channels}_#{bits_per_sample}#{suffix}.txt"
     actual_output_prefix   = "#{OUTPUT_FOLDER}/example_split_#{num_channels}_#{bits_per_sample}#{suffix}"
     expected_output_prefix = "test/fixtures/expected_output/example_split_#{num_channels}_#{bits_per_sample}"
 
-    options = {:split => true}
+    options = {split: true}
     unless base_path == nil
       options[:base_path] = base_path
     end
@@ -102,7 +102,7 @@ class IntegrationTest < Minitest::Test
     end
   end
 
-  def assert_directory_is_empty dir
+  def assert_directory_is_empty(dir)
     assert_equal([".", ".."].sort, Dir.new(dir).entries.sort)
   end
 
@@ -114,7 +114,7 @@ class IntegrationTest < Minitest::Test
     assert_equal(expected_output_file_contents, actual_output_file_contents)
   end
 
-  def clean_output_folder()
+  def clean_output_folder
     # Make the folder if it doesn't already exist
     Dir.mkdir(OUTPUT_FOLDER) unless File.exist?(OUTPUT_FOLDER)
 
