@@ -1,6 +1,5 @@
 # A song in which a pattern has multiple tracks that use the same sound
 # The output should be the same as example_mono_16.txt
-# TODO: Add integration tests to verify correct output
 
 Song:
   Tempo: 120
