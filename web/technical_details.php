@@ -30,9 +30,9 @@
   <h2>Song Normalization</h2>
   <p>After the YAML file is parsed and converted into a <code>Song</code> and <code>Kit</code>, the <code>Song</code> object is normalized to a standard format. This is done to allow the audio generation logic to be simpler.</p>
 
-<p>As far as the audio engine knows there is only one type of song in the universe: one in which all patterns in the flow are played, all tracks are mixed together and written to a single Wave file. If that&rsquo;s the case though, then how do we deal with the <code>-p</code> option, which only writes a single pattern to the Wave file? Or the <code>-s</code> option, which saves each track to a separate wave file?</p>
+<p>As far as the audio engine knows there is only one type of song in the universe: one in which all patterns in the flow are played, all tracks in each pattern are mixed together, and the result is written to a single Wave file. If that&rsquo;s the case though, then how do we deal with the <code>-p</code> option, which only writes a single pattern to the Wave file? Or the <code>-s</code> option, which saves each track to a separate wave file?</p>
 
-<p>The answer is that before audio generation happens, songs are converted to a normalized format. For example, when the <code>-p</code> option is used, the <code>Song</code> returned from <code>SongParser</code> is modified so that the flow only contains a single performance of the specified pattern. All other patterns are removed from the flow.</p>
+<p>The answer is that before audio generation happens, songs are converted to a normalized format. For example, when the <code>-p</code> option is used, the <code>Song</code> returned from <code>SongParser</code> is modified so that the flow only consists of a single performance of the specified pattern. All other patterns are removed from the flow.</p>
 
 <p>Original Song:</p>
 
@@ -66,7 +66,7 @@ Verse:
 
 <p>When the <code>-s</code> option is used, the <code>Song</code> is split into multiple <code>Song</code>s that contain a single track. If the <code>Song</code> has a total of 5 tracks spread out over a few patterns, it will be split into 5 different <code>Song</code> objects that each contain a single <code>Track</code>.</p>
 
-<p>The benefit of song normalization is to move complexity out of the audio domain and into the Ruby domain, where it is easier to deal with. For example, the output of the audio engine is arrays of integers thousands or even millions of elements long. If a test fails, it can be hard to tell why one long list of integers doesn&rsquo;t match the expected long list of integers. Song normalization reduces the number of tests of this type that need to be written. Normalization also allows the audio engine to be optimized more easily, by making the implementation simpler. (The audio engine is where almost all of the run time is located).</p>
+<p>The benefit of song normalization is that it moves complexity out of the audio domain and into the Ruby domain, where it is easier to deal with. For example, the output of the audio engine is arrays of integers thousands or even millions of elements long. If a test fails, it can be hard to tell why one long list of integers doesn&rsquo;t match the expected long list of integers. Song normalization reduces the number of tests of this type that need to be written. Normalization also allows the audio engine to be optimized more easily, by making the implementation simpler. (The audio engine is where almost all of the run time is located).</p>
 
 <p>In contrast, normalizing <code>Song</code> objects is generally straightforward, easy to understand, and easy to test. For example, it&rsquo;s usually simple to build a test that verfies hash A is transformed into hash B.</p>
 </div>
@@ -105,7 +105,7 @@ Verse:
 </div>
 <div class="content-box">
   <h2>Handling Pattern Overflow</h2>
-  <p>One complication that arises is that the last sound triggered in a track can extend past the track&rsquo;s end (and therefore also its parent pattern&rsquo;s end). If this is not accounted for, then sounds will suddenly cut off once the track or the parent pattern ends. This can especially be a problem after song optimization, since this introduces additional sub-patterns. During playback sounds will continually cut off at seemingly random times.</p>
+  <p>One complication that arises is that sounds triggered in a track can extend past the track&rsquo;s end (and therefore also its parent pattern&rsquo;s end). For example, imagine a long cymbal crash occurring in the last step of a track &ndash; it can easily extend into the next pattern. If this is not accounted for, then sounds will suddenly cut off once the track or the parent pattern ends. This can especially be a problem after song optimization, since it chops patterns into smaller pieces. During playback sounds will continually cut off at seemingly random times.</p>
 
 <p>To help deal with overflow, <code>AudioEngine.generate_track_sample_data()</code> actually returns two sample arrays: one containing the samples that occur during the normal track playback, and another containing samples that overflow into the next pattern.</p>
 
@@ -117,7 +117,7 @@ Verse:
 
 <p>There are actually two levels of pattern caching. The first level caches the result of compositing a pattern&rsquo;s track together. The second level caches the results of composited sample data converted into native <code>*.wav</code> file format.</p>
 
-<p>The reason for these two different caches has to do with overflow. The problem is that when caching composited sample data you have to store it in a format that will allow arbitrary incoming overflow to be applied at the beginning. Once sample data is converted into Wave file format, you can&rsquo;t do this. Cached data in wave file format is actually tied to specific incoming overflow. So if a pattern occurs in a song 5 times with different incoming overflow each time, there will be a single copy in the 1st cache (with no overflow applied), and 5 copies in the wave 2nd cache (each with different overflow applied).</p>
+<p>The reason for these two different caches has to do with overflow. The problem is that when caching composited sample data you have to store it in a format that will allow arbitrary incoming overflow to be applied at the beginning. Once sample data is converted into Wave file format, you can&rsquo;t do this. Cached data in wave file format is actually tied to specific incoming overflow. So if a pattern occurs in a song 5 times with different incoming overflow each time, there will be a single copy in the 1st cache (with no overflow applied), and 5 copies in the 2nd cache (each with different overflow applied).</p>
 
 <p>Track sample data is not cached, since performance tests show this only gives a very small performance improvement. Generating an individual track is relatively fast; it is compositing tracks together which is slow. This makes sense because painting sample data onto an array can be done with a single Ruby statement (and thus the bulk of the work and iteration is done at the C level inside the Ruby VM), whereas compositing sample data must be done at the Ruby level one sample at a time.</p>
 </div>
