@@ -190,7 +190,7 @@ Chorus:
   - conga_low.wav:    X.....X.X..X....|X.X....XX.X.....
   - conga_high.wav:   ....X....X......|................
   - cowbell_high.wav: ................|..............X.</code></pre></p>
-  <p>Beats will create the Wave files below. Note how the bass tracks (for example) for the verse and chorus patterns are combined into one wave file.</p>
+  <p>Beats will create the <code>*.wav</code> files below. Note how the bass tracks (for example) for the verse and chorus patterns are combined into one <code>*.wav</code> file.</p>
   <p class="last"><label>song-bass.wav</label><audio class="tutorial" src="/media/tutorial_8-bass.wav" controls>Your browser can't play this audio file.</audio></p>
   <p class="last"><label>song-snare.wav</label><audio class="tutorial" src="/media/tutorial_8-snare.wav" controls>Your browser can't play this audio file.</audio></p>
   <p class="last"><label>song-hh_closed.wav</label><audio class="tutorial" src="/media/tutorial_8-hh_closed.wav" controls>Your browser can't play this audio file.</audio></p>

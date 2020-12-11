@@ -12,7 +12,7 @@
   </div>
   <div class="content-box" id="drum-kits">
     <h2>Drum Sounds</h2>
-    <p>Beats is not terribly useful unless you have drum sounds to use with it. You can use many wave files as drum sounds. Here are a few collections of sounds to help you get started:</p>
+    <p>Beats is not terribly useful unless you have drum sounds to use with it. You can use many <code>*.wav</code> files as drum sounds. Here are a few collections of sounds to help you get started:</p>
     <ul>
       <li id="drumkit-hammerhead" class="drumkit">
         <h3><a href="/hammerhead_drum_sounds.zip">Hammerhead</a></h3>

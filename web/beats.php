@@ -2,7 +2,7 @@
    drawHeader(); ?>
   <div class="content-box">
     <h1>Beats</h1>
-    <p>is a command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled Wave file of impeccable timing and feel. Here is an example song:</p>
+    <p>is a command-line drum machine. Feed it a song notated in YAML, and it will produce a precision-milled <code>*.wav</code> file of impeccable timing and feel. Here is an example song:</p>
     <p><pre><code>Song:
   Tempo: 105
   Flow:

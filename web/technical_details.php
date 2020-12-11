@@ -2,12 +2,12 @@
    drawHeader(); ?>
 <div class="content-box">
   <h2>How It Works</h2>
-  <p>Every Beats song starts out life as a YAML file, and if lucky, undergoes a metamorphosis into a beautiful Wave file. Let&rsquo;s look at what happens during this process.</p>
+  <p>Every Beats song starts out life as a YAML file, and if lucky, undergoes a metamorphosis into a beautiful <code>*.wav</code> file. Let&rsquo;s look at what happens during this process.</p>
 </div>
 <div class="content-box">
   <h2>Getting Started</h2>
   <p>When you install the Beats gem, it adds <code>bin\beats</code> to your path. This is the entry point. It collects the command line arguments, and then calls <code>Beats.run()</code> (located in <code>lib/beats.rb</code>), which is the real driver of the program. When <code>Beats.run()</code> returns, <code>bin/beats</code> displays an exit message, or alternately lists any errors that occurred.</p>
-  <p><code>Beats.run()</code> manages the transformation of the YAML file into a Wave file, by calling the appropriate code to parse the YAML file, normalize the song into a standard format, convert the song into an equivalent song which will be generated faster, generate the song&rsquo;s audio data, and save it to disk. For more info on each of these steps, read on below.</p>
+  <p><code>Beats.run()</code> manages the transformation of the YAML file into a <code>*.wav</code> file, by calling the appropriate code to parse the YAML file, normalize the song into a standard format, convert the song into an equivalent song which will be generated faster, generate the song&rsquo;s audio data, and save it to disk. For more info on each of these steps, read on below.</p>
 </div>
 <div class="content-box">
   <h2>Song Parsing</h2>
@@ -30,7 +30,7 @@
   <h2>Song Normalization</h2>
   <p>After the YAML file is parsed and converted into a <code>Song</code> and <code>Kit</code>, the <code>Song</code> object is normalized to a standard format. This is done to allow the audio generation logic to be simpler.</p>
 
-<p>As far as the audio engine knows there is only one type of song in the universe: one in which all patterns in the flow are played, all tracks in each pattern are mixed together, and the result is written to a single Wave file. If that&rsquo;s the case though, then how do we deal with the <code>-p</code> option, which only writes a single pattern to the Wave file? Or the <code>-s</code> option, which saves each track to a separate wave file?</p>
+<p>As far as the audio engine knows there is only one type of song in the universe: one in which all patterns in the flow are played, all tracks in each pattern are mixed together, and the result is written to a single <code>*.wav</code> file. If that&rsquo;s the case though, then how do we deal with the <code>-p</code> option, which only writes a single pattern to the <code>*.wav</code> file? Or the <code>-s</code> option, which saves each track to a separate <code>*.wav</code> file?</p>
 
 <p>The answer is that before audio generation happens, songs are converted to a normalized format. For example, when the <code>-p</code> option is used, the <code>Song</code> returned from <code>SongParser</code> is modified so that the flow only consists of a single performance of the specified pattern. All other patterns are removed from the flow.</p>
 
@@ -117,7 +117,7 @@ Verse:
 
 <p>There are actually two levels of pattern caching. The first level caches the result of compositing a pattern&rsquo;s track together. The second level caches the results of composited sample data converted into native <code>*.wav</code> file format.</p>
 
-<p>The reason for these two different caches has to do with overflow. The problem is that when caching composited sample data you have to store it in a format that will allow arbitrary incoming overflow to be applied at the beginning. Once sample data is converted into Wave file format, you can&rsquo;t do this. Cached data in wave file format is actually tied to specific incoming overflow. So if a pattern occurs in a song 5 times with different incoming overflow each time, there will be a single copy in the 1st cache (with no overflow applied), and 5 copies in the 2nd cache (each with different overflow applied).</p>
+<p>The reason for these two different caches has to do with overflow. The problem is that when caching composited sample data you have to store it in a format that will allow arbitrary incoming overflow to be applied at the beginning. Once sample data is converted into <code>*.wav</code> file format, you can&rsquo;t do this. Cached data in <code>*.wav</code> file format is actually tied to specific incoming overflow. So if a pattern occurs in a song 5 times with different incoming overflow each time, there will be a single copy in the 1st cache (with no overflow applied), and 5 copies in the 2nd cache (each with different overflow applied).</p>
 
 <p>Track sample data is not cached, since performance tests show this only gives a very small performance improvement. Generating an individual track is relatively fast; it is compositing tracks together which is slow. This makes sense because painting sample data onto an array can be done with a single Ruby statement (and thus the bulk of the work and iteration is done at the C level inside the Ruby VM), whereas compositing sample data must be done at the Ruby level one sample at a time.</p>
 </div>
