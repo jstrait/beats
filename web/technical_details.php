@@ -38,9 +38,9 @@
 
 <p><pre><code>Song:
   Flow:
-    - Verse: x2
+    - Verse:  x2
     - Chorus: x4
-    - Verse: x2
+    - Verse:  x2
     - Chorus: x4
 
 Verse:
