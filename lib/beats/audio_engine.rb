@@ -30,14 +30,19 @@ module Beats
       writer = WaveFile::CachingWriter.new(output_file_name, format)
 
       # Generate each pattern's sample data, or pull it from cache, and append it to the wave file.
-      incoming_overflow = {}
+      incoming_overflow = { hash_code: {}.hash, sample_data: {}, }
       @song.flow.each do |pattern_name|
-        key = [pattern_name, incoming_overflow.hash]
+        key = [pattern_name, incoming_overflow[:hash_code]]
         unless packed_pattern_cache.member?(key)
-          sample_data = generate_pattern_sample_data(@song.patterns[pattern_name], incoming_overflow)
+          sample_data = generate_pattern_sample_data(@song.patterns[pattern_name], incoming_overflow[:sample_data])
 
-          packed_pattern_cache[key] = { primary:  WaveFile::Buffer.new(sample_data[:primary], format),
-                                        overflow: sample_data[:overflow] }
+          packed_pattern_cache[key] = {
+                                        primary: WaveFile::Buffer.new(sample_data[:primary], format),
+                                        overflow: {
+                                          hash_code: sample_data[:overflow].hash,
+                                          sample_data: sample_data[:overflow],
+                                        },
+                                      }
         end
 
         writer.write(packed_pattern_cache[key][:primary])
@@ -45,7 +50,7 @@ module Beats
       end
 
       # Write any remaining overflow from the final pattern
-      final_overflow_composite = AudioUtils.composite(incoming_overflow.values, format.channels)
+      final_overflow_composite = AudioUtils.composite(incoming_overflow[:sample_data].values, format.channels)
       final_overflow_composite = AudioUtils.scale(final_overflow_composite, format.channels, num_tracks_in_song)
       writer.write(WaveFile::Buffer.new(final_overflow_composite, format))
 
