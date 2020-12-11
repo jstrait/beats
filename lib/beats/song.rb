@@ -101,11 +101,5 @@ module Beats
 
     attr_reader :patterns, :tempo
     attr_accessor :flow
-
-  private
-
-    def longest_length_in_array(arr)
-      arr.inject(0) {|max_length, name| [name.to_s.length, max_length].max }
-    end
   end
 end
