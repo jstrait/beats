@@ -26,7 +26,7 @@
       </li>
       <li id="drumkit-casio" class="drumkit">
         <h3><a href="/casio_sa20_drum_sounds.zip">Casio SA-20</a></h3>
-        <p>20 sounds sampled from a <a href="https://static.kupindoslike.com/Sintisajzer-CASIO-SA-20_slika_XL_69005915.jpg">Casio SA-20 keyboard</a>.</p>
+        <p>20 sounds sampled from a <a href="/media/casio_sa_20.jpg">Casio SA-20 keyboard</a>.</p>
         <ul class="sample-list">
           <li><label>bass.wav</label><audio src="/media/bass.wav" controls>Your browser can't play this audio file.</audio></li>
           <li><label>snare.wav</label><audio src="/media/snare.wav" controls>Your browser can't play this audio file.</audio></li>
