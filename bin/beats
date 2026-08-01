@@ -55,10 +55,10 @@ def print_error(error, input_file_name)
     puts "Song file '#{input_file_name}' has an error:\n"
     puts "  #{error}\n"
   when StandardError
-    puts "An error occured while generating sound for '#{input_file_name}':\n"
+    puts "An error occurred while generating sound for '#{input_file_name}':\n"
     puts "  #{error}\n"
   else
-    puts "An unexpected error occured while running Beats Drum Machine:"
+    puts "An unexpected error occurred while running Beats Drum Machine:"
     puts "  #{error}\n"
   end
 end
